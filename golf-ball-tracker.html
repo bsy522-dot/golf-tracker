@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Golf Ball Tracker</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body {
+    width:100%; height:100%; overflow:hidden;
+    background:#000; color:#fff;
+    font-family: -apple-system, 'SF Pro Display', 'Pretendard', sans-serif;
+    user-select:none; -webkit-user-select:none;
+    touch-action:manipulation;
+  }
+  #app {
+    width:100%; height:100dvh; display:flex; flex-direction:column;
+    position:relative; overflow:hidden;
+  }
+
+  /* Camera */
+  #camera-container {
+    flex:1; position:relative; overflow:hidden; background:#000;
+  }
+  #video {
+    width:100%; height:100%; object-fit:cover; display:block;
+  }
+  #processingCanvas { display:none; }
+  #overlayCanvas {
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    pointer-events:none;
+  }
+
+  /* Top HUD */
+  #hud-top {
+    position:absolute; top:0; left:0; right:0; z-index:20;
+    padding: max(env(safe-area-inset-top,10px),10px) 14px 12px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent);
+    display:flex; justify-content:space-between; align-items:flex-start;
+  }
+  .hud-title { display:flex; align-items:center; gap:8px; }
+  .status-dot {
+    width:8px; height:8px; border-radius:50%; background:#555;
+    transition: all 0.3s;
+  }
+  .status-dot.active {
+    background:#00FF88;
+    box-shadow: 0 0 10px #00FF8880;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .hud-label { font-size:13px; font-weight:700; letter-spacing:1.5px; }
+  .hud-sub { font-size:11px; opacity:0.45; margin-top:3px; margin-left:16px; }
+
+  .icon-btn {
+    width:38px; height:38px; border-radius:19px;
+    border:1px solid rgba(255,255,255,0.2);
+    background:rgba(0,0,0,0.4); color:#fff;
+    font-size:17px; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    transition: transform 0.15s;
+  }
+  .icon-btn:active { transform:scale(0.92); }
+  .btn-row { display:flex; gap:8px; }
+
+  /* Stats */
+  #stats-panel {
+    position:absolute; z-index:20;
+    top: max(calc(env(safe-area-inset-top,10px) + 58px), 68px);
+    left:12px;
+    background:rgba(0,0,0,0.55); border-radius:10px;
+    padding:8px 14px; backdrop-filter:blur(12px);
+    border:1px solid rgba(0,255,136,0.12);
+    display:none;
+  }
+  #stats-panel.visible { display:block; }
+  .stat-row { display:flex; gap:18px; margin-top:4px; }
+  .stat-val { font-size:22px; font-weight:700; }
+  .stat-label { font-size:9px; opacity:0.4; }
+
+  /* Settings */
+  #settings-panel {
+    position:absolute; z-index:25;
+    top: max(calc(env(safe-area-inset-top,10px) + 58px), 68px);
+    right:12px;
+    background:rgba(0,0,0,0.8); border-radius:12px;
+    padding:16px; backdrop-filter:blur(20px);
+    border:1px solid rgba(255,255,255,0.1);
+    width:230px; display:none;
+  }
+  #settings-panel.visible { display:block; }
+  .setting-title { font-size:13px; font-weight:700; margin-bottom:14px; }
+  .setting-group { margin-bottom:14px; }
+  .setting-header { font-size:11px; opacity:0.5; margin-bottom:5px; display:flex; justify-content:space-between; }
+  .setting-hint { font-size:9px; opacity:0.3; margin-top:3px; line-height:1.4; }
+  input[type="range"] { width:100%; accent-color:#00FF88; height:4px; }
+
+  /* Center guide */
+  #center-guide {
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%); text-align:center;
+    pointer-events:none; z-index:10;
+  }
+  #center-guide.hidden { display:none; }
+  .guide-circle {
+    width:80px; height:80px; border:2px solid rgba(255,255,255,0.2);
+    border-radius:50%; display:flex; align-items:center;
+    justify-content:center; margin:0 auto 14px; font-size:32px;
+  }
+  .guide-text { font-size:14px; opacity:0.6; font-weight:500; line-height:1.6; }
+  .guide-hint { font-size:11px; opacity:0.3; margin-top:12px; line-height:1.5; }
+
+  /* Scan line */
+  #scan-line {
+    position:absolute; left:0; right:0; height:2px;
+    background: linear-gradient(to right, transparent, #00FF8844, transparent);
+    pointer-events:none; display:none; z-index:11;
+    animation: scan 2s linear infinite;
+  }
+  #scan-line.active { display:block; }
+
+  /* Bottom Controls */
+  #controls {
+    padding:12px 16px max(env(safe-area-inset-bottom,16px),16px);
+    background:linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0.5));
+    display:flex; align-items:center; justify-content:center; gap:24px;
+    flex-shrink:0; backdrop-filter:blur(20px);
+  }
+  .ctrl-btn {
+    width:50px; height:50px; border-radius:25px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(255,255,255,0.06); color:#fff;
+    font-size:20px; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:center; transition:transform 0.15s;
+  }
+  .ctrl-btn:active { transform:scale(0.93); }
+  .ctrl-btn-label { font-size:8px; opacity:0.5; margin-top:1px; }
+
+  #track-btn {
+    width:74px; height:74px; border-radius:37px; border:none;
+    cursor:pointer; display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    font-weight:800; letter-spacing:1px; line-height:1.2;
+    transition: all 0.2s;
+  }
+  #track-btn.start {
+    background: linear-gradient(135deg, #00FF88, #4ECDC4);
+    color:#000;
+    box-shadow: 0 0 30px rgba(0,255,136,0.3), inset 0 0 20px rgba(255,255,255,0.15);
+  }
+  #track-btn.stop {
+    background: linear-gradient(135deg, #FF3366, #FF6B35);
+    color:#fff;
+    box-shadow: 0 0 30px rgba(255,51,102,0.4), inset 0 0 20px rgba(255,255,255,0.1);
+  }
+  #track-btn:active { transform:scale(0.94); }
+
+  /* Permission screen */
+  #permission-screen {
+    position:absolute; inset:0; z-index:100;
+    background:rgba(0,0,0,0.95);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center; padding:40px;
+  }
+  #permission-screen.hidden { display:none; }
+  .perm-icon { font-size:60px; margin-bottom:20px; }
+  .perm-title { font-size:20px; font-weight:700; margin-bottom:10px; }
+  .perm-desc { font-size:14px; opacity:0.5; line-height:1.6; margin-bottom:30px; }
+  #perm-btn {
+    padding:14px 40px; border-radius:12px; border:none;
+    background:linear-gradient(135deg, #00FF88, #4ECDC4);
+    color:#000; font-size:16px; font-weight:700;
+    cursor:pointer; letter-spacing:1px;
+  }
+  #perm-btn:active { transform:scale(0.96); }
+
+  @keyframes pulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+  @keyframes scan { 0%{top:0%} 100%{top:100%} }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- Permission Screen -->
+  <div id="permission-screen">
+    <div class="perm-icon">📸</div>
+    <div class="perm-title">카메라 권한이 필요합니다</div>
+    <div class="perm-desc">
+      골프공을 실시간으로 추적하려면<br>카메라 접근을 허용해주세요.
+    </div>
+    <button id="perm-btn" onclick="initCamera()">카메라 시작</button>
+  </div>
+
+  <!-- Camera Area -->
+  <div id="camera-container">
+    <video id="video" playsinline muted autoplay></video>
+    <canvas id="processingCanvas"></canvas>
+    <canvas id="overlayCanvas"></canvas>
+    <div id="scan-line"></div>
+
+    <!-- Center Guide -->
+    <div id="center-guide">
+      <div class="guide-circle">⛳</div>
+      <div class="guide-text">
+        골프공이 보이게 카메라를 배치하고<br>트래킹을 시작하세요
+      </div>
+      <div class="guide-hint">
+        후방 카메라로 공 뒤에서 촬영하면<br>궤적이 실시간으로 그려집니다
+      </div>
+    </div>
+  </div>
+
+  <!-- Top HUD -->
+  <div id="hud-top">
+    <div>
+      <div class="hud-title">
+        <div class="status-dot" id="status-dot"></div>
+        <span class="hud-label">BALL TRACKER</span>
+      </div>
+      <div class="hud-sub" id="detect-status"></div>
+    </div>
+    <div class="btn-row">
+      <button class="icon-btn" onclick="switchCamera()" title="카메라 전환">🔄</button>
+      <button class="icon-btn" id="settings-btn" onclick="toggleSettings()" title="설정">⚙️</button>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div id="stats-panel">
+    <div style="font-size:10px;opacity:0.5;letter-spacing:1px;">TRACKING</div>
+    <div class="stat-row">
+      <div>
+        <div class="stat-val" style="color:#00FF88" id="stat-points">0</div>
+        <div class="stat-label">포인트</div>
+      </div>
+      <div>
+        <div class="stat-val" style="color:#4ECDC4" id="stat-speed">0</div>
+        <div class="stat-label">속도(px/s)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div id="settings-panel">
+    <div class="setting-title">감지 설정</div>
+    <div class="setting-group">
+      <div class="setting-header"><span>밝기 민감도</span><span id="val-sens">85%</span></div>
+      <input type="range" min="40" max="98" value="85" id="slider-sens" oninput="updateSetting()">
+      <div class="setting-hint">어두운 환경에서는 낮추세요</div>
+    </div>
+    <div class="setting-group">
+      <div class="setting-header"><span>최소 공 크기</span><span id="val-min">4px</span></div>
+      <input type="range" min="2" max="25" value="4" id="slider-min" oninput="updateSetting()">
+    </div>
+    <div class="setting-group">
+      <div class="setting-header"><span>최대 공 크기</span><span id="val-max">45px</span></div>
+      <input type="range" min="20" max="100" value="45" id="slider-max" oninput="updateSetting()">
+    </div>
+    <div class="setting-hint" style="margin-top:4px">
+      💡 밝은 야외에서 가장 잘 작동합니다.<br>공과 배경의 대비가 클수록 정확도가 올라갑니다.
+    </div>
+  </div>
+
+  <!-- Bottom Controls -->
+  <div id="controls">
+    <button class="ctrl-btn" onclick="clearTrail()" title="초기화">
+      <span>🗑</span>
+      <span class="ctrl-btn-label">초기화</span>
+    </button>
+    <button id="track-btn" class="start" onclick="toggleTracking()">
+      <span style="font-size:11px;letter-spacing:1.5px">START</span>
+      <span style="font-size:9px;opacity:0.7;margin-top:1px">TRACKING</span>
+    </button>
+    <button class="ctrl-btn" onclick="captureScreenshot()" title="캡처">
+      <span>📷</span>
+      <span class="ctrl-btn-label">캡처</span>
+    </button>
+  </div>
+</div>
+
+<script>
+// State
+let stream = null;
+let facingMode = "environment";
+let isTracking = false;
+let trail = [];
+let prevPos = null;
+let lostFrames = 0;
+let animId = null;
+
+// Settings
+let sensitivity = 85;
+let minBallSize = 4;
+let maxBallSize = 45;
+
+// DOM
+const video = document.getElementById("video");
+const procCanvas = document.getElementById("processingCanvas");
+const overlay = document.getElementById("overlayCanvas");
+const permScreen = document.getElementById("permission-screen");
+const centerGuide = document.getElementById("center-guide");
+const statusDot = document.getElementById("status-dot");
+const detectStatus = document.getElementById("detect-status");
+const statsPanel = document.getElementById("stats-panel");
+const scanLine = document.getElementById("scan-line");
+const trackBtn = document.getElementById("track-btn");
+
+// Init camera
+async function initCamera() {
+  try {
+    if (stream) stream.getTracks().forEach(t => t.stop());
+
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: facingMode,
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+        frameRate: { ideal: 60, min: 30 }
+      },
+      audio: false
+    });
+
+    video.srcObject = stream;
+    await video.play();
+    permScreen.classList.add("hidden");
+    resizeOverlay();
+
+    if (!animId) processFrame();
+  } catch (err) {
+    console.error("Camera error:", err);
+    alert("카메라를 열 수 없습니다.\n브라우저 설정에서 카메라 권한을 허용해주세요.\n\n에러: " + err.message);
+  }
+}
+
+async function switchCamera() {
+  facingMode = facingMode === "environment" ? "user" : "environment";
+  video.style.transform = facingMode === "user" ? "scaleX(-1)" : "none";
+  overlay.style.transform = facingMode === "user" ? "scaleX(-1)" : "none";
+  await initCamera();
+}
+
+function resizeOverlay() {
+  const container = document.getElementById("camera-container");
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  overlay.width = container.clientWidth * dpr;
+  overlay.height = container.clientHeight * dpr;
+  overlay.style.width = container.clientWidth + "px";
+  overlay.style.height = container.clientHeight + "px";
+}
+window.addEventListener("resize", resizeOverlay);
+
+// Settings
+function updateSetting() {
+  sensitivity = +document.getElementById("slider-sens").value;
+  minBallSize = +document.getElementById("slider-min").value;
+  maxBallSize = +document.getElementById("slider-max").value;
+  document.getElementById("val-sens").textContent = sensitivity + "%";
+  document.getElementById("val-min").textContent = minBallSize + "px";
+  document.getElementById("val-max").textContent = maxBallSize + "px";
+}
+
+function toggleSettings() {
+  const panel = document.getElementById("settings-panel");
+  panel.classList.toggle("visible");
+  document.getElementById("settings-btn").style.background =
+    panel.classList.contains("visible") ? "rgba(0,255,136,0.2)" : "rgba(0,0,0,0.4)";
+}
+
+// Ball detection
+function detectBall(ctx, w, h) {
+  const imageData = ctx.getImageData(0, 0, w, h);
+  const data = imageData.data;
+  const thresh = sensitivity * 2.55;
+  const step = 2;
+
+  // Find bright, low-saturation pixels (white ball)
+  const candidates = [];
+  for (let y = 0; y < h; y += step) {
+    for (let x = 0; x < w; x += step) {
+      const i = (y * w + x) * 4;
+      const r = data[i], g = data[i+1], b = data[i+2];
+      const brightness = (r + g + b) / 3;
+      const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+      const sat = mx > 0 ? (mx - mn) / mx : 0;
+
+      if (brightness > thresh && sat < 0.28) {
+        candidates.push({ x, y, brightness });
+      }
+    }
+  }
+
+  if (candidates.length === 0) return null;
+
+  // Grid-based clustering
+  const gs = 14;
+  const grid = {};
+  for (const p of candidates) {
+    const key = (Math.floor(p.x / gs)) + "," + (Math.floor(p.y / gs));
+    if (!grid[key]) grid[key] = { sx:0, sy:0, cnt:0, br:0 };
+    grid[key].sx += p.x;
+    grid[key].sy += p.y;
+    grid[key].cnt++;
+    grid[key].br += p.brightness;
+  }
+
+  const clusters = [];
+  for (const k in grid) {
+    const g = grid[k];
+    clusters.push({
+      x: g.sx / g.cnt, y: g.sy / g.cnt,
+      size: g.cnt, brightness: g.br / g.cnt
+    });
+  }
+
+  // Merge nearby clusters
+  const merged = [];
+  const used = new Set();
+  for (let i = 0; i < clusters.length; i++) {
+    if (used.has(i)) continue;
+    let cx = clusters[i].x * clusters[i].size;
+    let cy = clusters[i].y * clusters[i].size;
+    let ts = clusters[i].size;
+    let tb = clusters[i].brightness * clusters[i].size;
+    used.add(i);
+
+    for (let j = i + 1; j < clusters.length; j++) {
+      if (used.has(j)) continue;
+      const dx = clusters[i].x - clusters[j].x;
+      const dy = clusters[i].y - clusters[j].y;
+      if (Math.sqrt(dx*dx + dy*dy) < gs * 3) {
+        cx += clusters[j].x * clusters[j].size;
+        cy += clusters[j].y * clusters[j].size;
+        ts += clusters[j].size;
+        tb += clusters[j].brightness * clusters[j].size;
+        used.add(j);
+      }
+    }
+    merged.push({
+      x: cx/ts, y: cy/ts, size: ts,
+      brightness: tb/ts,
+      radius: Math.sqrt(ts * step * step / Math.PI)
+    });
+  }
+
+  // Filter by ball size
+  const valid = merged.filter(c => c.radius >= minBallSize && c.radius <= maxBallSize);
+  if (valid.length === 0) return null;
+
+  // Prefer closest to previous position
+  if (prevPos) {
+    let bestDist = Infinity, best = null;
+    for (const c of valid) {
+      const d = Math.sqrt((c.x - prevPos.rawX)**2 + (c.y - prevPos.rawY)**2);
+      if (d < bestDist) { bestDist = d; best = c; }
+    }
+    if (best && bestDist < Math.max(w, h) * 0.35) return best;
+  }
+
+  // Otherwise brightest
+  valid.sort((a, b) => b.brightness - a.brightness);
+  return valid[0];
+}
+
+// Main processing loop
+function processFrame() {
+  if (video.readyState < 2) {
+    animId = requestAnimationFrame(processFrame);
+    return;
+  }
+
+  const vw = video.videoWidth;
+  const vh = video.videoHeight;
+  if (!vw || !vh) { animId = requestAnimationFrame(processFrame); return; }
+
+  procCanvas.width = vw;
+  procCanvas.height = vh;
+  const pctx = procCanvas.getContext("2d", { willReadFrequently: true });
+  pctx.drawImage(video, 0, 0, vw, vh);
+
+  // Overlay drawing
+  const container = document.getElementById("camera-container");
+  const dw = container.clientWidth;
+  const dh = container.clientHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  if (overlay.width !== dw * dpr || overlay.height !== dh * dpr) {
+    overlay.width = dw * dpr;
+    overlay.height = dh * dpr;
+    overlay.style.width = dw + "px";
+    overlay.style.height = dh + "px";
+  }
+
+  const octx = overlay.getContext("2d");
+  octx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  octx.clearRect(0, 0, dw, dh);
+
+  const scaleX = dw / vw;
+  const scaleY = dh / vh;
+
+  let ballFound = false;
+
+  if (isTracking) {
+    const ball = detectBall(pctx, vw, vh);
+
+    if (ball) {
+      ballFound = true;
+      lostFrames = 0;
+      const sx = ball.x * scaleX;
+      const sy = ball.y * scaleY;
+      const now = Date.now();
+
+      // Speed calc
+      let speed = 0;
+      if (prevPos) {
+        const dx = ball.x - prevPos.rawX;
+        const dy = ball.y - prevPos.rawY;
+        const dt = (now - prevPos.t) / 1000;
+        if (dt > 0) speed = Math.round(Math.sqrt(dx*dx + dy*dy) / dt);
+      }
+
+      const pt = { x: sx, y: sy, t: now, rawX: ball.x, rawY: ball.y };
+      prevPos = pt;
+      trail.push(pt);
+
+      // Update stats
+      document.getElementById("stat-points").textContent = trail.length;
+      document.getElementById("stat-speed").textContent = speed;
+
+      // Draw ball indicator
+      const sr = Math.max(10, ball.radius * Math.min(scaleX, scaleY));
+
+      // Glow
+      const glow = octx.createRadialGradient(sx, sy, 0, sx, sy, sr * 4);
+      glow.addColorStop(0, "rgba(0,255,136,0.35)");
+      glow.addColorStop(1, "rgba(0,255,136,0)");
+      octx.fillStyle = glow;
+      octx.fillRect(sx - sr*4, sy - sr*4, sr*8, sr*8);
+
+      // Circle
+      octx.beginPath();
+      octx.arc(sx, sy, sr + 5, 0, Math.PI * 2);
+      octx.strokeStyle = "#00FF88cc";
+      octx.lineWidth = 2.5;
+      octx.stroke();
+
+      // Corner brackets
+      const bk = sr + 14;
+      const bl = 8;
+      octx.strokeStyle = "#00FF8888";
+      octx.lineWidth = 2;
+      // top-left
+      octx.beginPath(); octx.moveTo(sx-bk, sy-bk+bl); octx.lineTo(sx-bk, sy-bk); octx.lineTo(sx-bk+bl, sy-bk); octx.stroke();
+      // top-right
+      octx.beginPath(); octx.moveTo(sx+bk-bl, sy-bk); octx.lineTo(sx+bk, sy-bk); octx.lineTo(sx+bk, sy-bk+bl); octx.stroke();
+      // bottom-left
+      octx.beginPath(); octx.moveTo(sx-bk, sy+bk-bl); octx.lineTo(sx-bk, sy+bk); octx.lineTo(sx-bk+bl, sy+bk); octx.stroke();
+      // bottom-right
+      octx.beginPath(); octx.moveTo(sx+bk-bl, sy+bk); octx.lineTo(sx+bk, sy+bk); octx.lineTo(sx+bk, sy+bk-bl); octx.stroke();
+
+      // Label
+      octx.font = "bold 10px -apple-system, sans-serif";
+      octx.fillStyle = "#00FF88cc";
+      octx.textAlign = "center";
+      octx.fillText("BALL", sx, sy - sr - 18);
+    } else {
+      lostFrames++;
+    }
+
+    // Draw trail
+    if (trail.length > 1) {
+      // Outer glow
+      octx.beginPath();
+      octx.moveTo(trail[0].x, trail[0].y);
+      for (let i = 1; i < trail.length; i++) octx.lineTo(trail[i].x, trail[i].y);
+      octx.strokeStyle = "rgba(0,255,136,0.08)";
+      octx.lineWidth = 18;
+      octx.lineCap = "round"; octx.lineJoin = "round";
+      octx.stroke();
+
+      // Mid
+      octx.beginPath();
+      octx.moveTo(trail[0].x, trail[0].y);
+      for (let i = 1; i < trail.length; i++) octx.lineTo(trail[i].x, trail[i].y);
+      octx.strokeStyle = "rgba(0,255,136,0.3)";
+      octx.lineWidth = 6;
+      octx.stroke();
+
+      // Core
+      octx.beginPath();
+      octx.moveTo(trail[0].x, trail[0].y);
+      for (let i = 1; i < trail.length; i++) octx.lineTo(trail[i].x, trail[i].y);
+      octx.strokeStyle = "rgba(0,255,136,0.85)";
+      octx.lineWidth = 2.5;
+      octx.stroke();
+
+      // Dots
+      const step = Math.max(1, Math.floor(trail.length / 40));
+      for (let i = 0; i < trail.length; i += step) {
+        const p = trail[i];
+        const progress = i / trail.length;
+        octx.beginPath();
+        octx.arc(p.x, p.y, 2 + progress * 2.5, 0, Math.PI * 2);
+        octx.fillStyle = `rgba(0,255,136,${0.25 + progress * 0.55})`;
+        octx.fill();
+      }
+
+      // Start marker
+      octx.beginPath();
+      octx.arc(trail[0].x, trail[0].y, 5, 0, Math.PI * 2);
+      octx.fillStyle = "#00FF8866";
+      octx.fill();
+      octx.strokeStyle = "#00FF88";
+      octx.lineWidth = 1.5;
+      octx.stroke();
+    }
+
+    // Update UI
+    detectStatus.textContent = ballFound ? "공 감지됨 ✓" : "공을 찾는 중...";
+    scanLine.classList.toggle("active", !ballFound);
+  }
+
+  octx.setTransform(1, 0, 0, 1, 0, 0);
+  animId = requestAnimationFrame(processFrame);
+}
+
+// Controls
+function toggleTracking() {
+  if (isTracking) {
+    isTracking = false;
+    statusDot.classList.remove("active");
+    statsPanel.classList.remove("visible");
+    scanLine.classList.remove("active");
+    detectStatus.textContent = "";
+    trackBtn.className = "start";
+    trackBtn.innerHTML = '<span style="font-size:11px;letter-spacing:1.5px">START</span><span style="font-size:9px;opacity:0.7;margin-top:1px">TRACKING</span>';
+  } else {
+    clearTrail();
+    isTracking = true;
+    statusDot.classList.add("active");
+    statsPanel.classList.add("visible");
+    centerGuide.classList.add("hidden");
+    trackBtn.className = "stop";
+    trackBtn.innerHTML = '<span style="font-size:20px">■</span><span style="font-size:9px;margin-top:2px">STOP</span>';
+  }
+}
+
+function clearTrail() {
+  trail = [];
+  prevPos = null;
+  lostFrames = 0;
+  document.getElementById("stat-points").textContent = "0";
+  document.getElementById("stat-speed").textContent = "0";
+}
+
+function captureScreenshot() {
+  // Composite video + overlay into one canvas
+  const container = document.getElementById("camera-container");
+  const cw = container.clientWidth;
+  const ch = container.clientHeight;
+  const captureCanvas = document.createElement("canvas");
+  captureCanvas.width = cw * 2;
+  captureCanvas.height = ch * 2;
+  const cctx = captureCanvas.getContext("2d");
+  cctx.scale(2, 2);
+
+  // Draw video
+  cctx.drawImage(video, 0, 0, cw, ch);
+
+  // Draw overlay
+  cctx.drawImage(overlay, 0, 0, cw, ch);
+
+  // Timestamp
+  cctx.fillStyle = "rgba(0,0,0,0.5)";
+  cctx.fillRect(0, ch - 30, cw, 30);
+  cctx.font = "bold 11px -apple-system, sans-serif";
+  cctx.fillStyle = "#fff";
+  cctx.textAlign = "left";
+  cctx.fillText("BALL TRACKER · " + new Date().toLocaleString("ko-KR"), 10, ch - 11);
+  cctx.textAlign = "right";
+  cctx.fillText(trail.length + " points", cw - 10, ch - 11);
+
+  // Download
+  const link = document.createElement("a");
+  link.download = "golf-tracker-" + Date.now() + ".png";
+  link.href = captureCanvas.toDataURL("image/png");
+  link.click();
+}
+
+// Auto-init if possible
+if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+  // Show permission screen, wait for user tap
+} else {
+  alert("이 브라우저는 카메라를 지원하지 않습니다.");
+}
+</script>
+</body>
+</html>
