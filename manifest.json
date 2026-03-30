@@ -1,0 +1,17 @@
+{
+  "name": "Golf Ball Tracker",
+  "short_name": "GolfTracker",
+  "description": "골프공 궤적 추적 앱",
+  "start_url": "./golf-ball-tracker.html",
+  "display": "standalone",
+  "background_color": "#1a5c1a",
+  "theme_color": "#1a5c1a",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a5c1a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300B4D8' stroke-width='2.5' fill='none' stroke-dasharray='4 3'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300B4D8'/%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
