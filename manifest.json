@@ -1,7 +1,7 @@
 {
-  "name": "Golf Ball Tracker",
+  "name": "Golf Ball Tracker Pro",
   "short_name": "GolfTracker",
-  "description": "골프공 궤적 추적 앱",
+  "description": "AI Frame Differencing 골프공 궤적 추적 - 클럽별 트래킹, 궤적분석, 샷히스토리",
   "start_url": "./golf-ball-tracker.html",
   "display": "standalone",
   "background_color": "#1a5c1a",
