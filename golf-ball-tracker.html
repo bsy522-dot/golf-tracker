@@ -6,8 +6,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="description" content="AI-powered golf ball trajectory tracker with frame differencing, shot history, and trajectory analysis">
-<title>Golf Ball Tracker Pro</title>
+<meta name="description" content="AI-powered golf ball tracker with video recording, slow-mo replay, practice drills, round tracking, achievements">
+<title>Golf Ball Tracker Pro v3</title>
 <style>
 :root {
   --primary: #00FF88;
@@ -406,6 +406,139 @@ input[type="range"]::-webkit-slider-thumb {
   .ctrl-btn { width:42px; height:42px; }
   #track-btn { width:64px; height:64px; }
 }
+
+/* ===== VIDEO RECORDING ===== */
+#rec-indicator {
+  position:absolute; top:calc(var(--safe-top) + 8px); left:50%;
+  transform:translateX(-50%); z-index:25;
+  display:none; align-items:center; gap:6px;
+  padding:6px 14px; border-radius:20px;
+  background:rgba(255,51,102,0.2); border:1px solid rgba(255,51,102,0.4);
+  font-size:11px; font-weight:700; color:var(--danger);
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+}
+#rec-indicator.active { display:flex; }
+.rec-dot { width:8px; height:8px; border-radius:50%; background:var(--danger); animation:pulse 0.8s ease-in-out infinite; }
+
+/* ===== REPLAY VIEW ===== */
+#replay-view { background:var(--bg-dark); z-index:55; }
+.replay-header { padding:var(--safe-top) 16px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); }
+.replay-title { font-size:18px; font-weight:800; letter-spacing:1px; }
+.replay-close { width:36px; height:36px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.replay-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
+.replay-canvas-wrap { width:100%; max-width:500px; aspect-ratio:16/9; background:#111; border-radius:var(--radius); overflow:hidden; position:relative; margin-bottom:16px; }
+.replay-canvas-wrap canvas { width:100%; height:100%; }
+.replay-controls { display:flex; align-items:center; gap:10px; width:100%; max-width:500px; padding:12px 16px; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--glass-border); }
+.replay-speed-btn { padding:5px 10px; border-radius:8px; border:1px solid var(--glass-border); background:var(--glass); color:#fff; font-size:10px; font-weight:600; cursor:pointer; }
+.replay-speed-btn.active { background:var(--primary-dim); border-color:var(--primary); color:var(--primary); }
+.replay-play-btn { width:40px; height:40px; border-radius:20px; border:none; background:var(--primary); color:#000; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.replay-progress { flex:1; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; cursor:pointer; position:relative; }
+.replay-progress-fill { height:100%; background:var(--primary); border-radius:2px; transition:width 0.05s; }
+.replay-info { display:flex; gap:20px; margin-top:14px; }
+.replay-info-item { text-align:center; }
+.replay-info-val { font-size:18px; font-weight:700; }
+.replay-info-label { font-size:9px; opacity:0.35; margin-top:2px; }
+
+/* ===== PRACTICE VIEW ===== */
+#practice-view { background:var(--bg-dark); z-index:50; }
+.practice-header { padding:var(--safe-top) 16px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); }
+.practice-title { font-size:18px; font-weight:800; letter-spacing:1px; }
+.practice-close { width:36px; height:36px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.practice-body { flex:1; overflow-y:auto; padding:16px; }
+.drill-card { background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius); padding:20px; margin-bottom:12px; cursor:pointer; transition:all 0.2s; }
+.drill-card:active { transform:scale(0.98); }
+.drill-card-top { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.drill-icon { font-size:28px; }
+.drill-name { font-size:15px; font-weight:700; }
+.drill-desc { font-size:12px; opacity:0.4; line-height:1.6; margin-bottom:8px; }
+.drill-target { font-size:11px; color:var(--primary); font-weight:600; }
+.drill-best { font-size:10px; opacity:0.3; margin-top:6px; }
+.drill-hud { position:absolute; top:calc(var(--safe-top) + 60px); left:12px; right:12px; z-index:36;
+  background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius);
+  padding:12px 16px; backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); display:none; }
+.drill-hud.active { display:block; }
+.drill-hud-title { font-size:12px; font-weight:700; color:var(--primary); margin-bottom:6px; }
+.drill-hud-progress { display:flex; gap:6px; margin-bottom:8px; }
+.drill-hud-dot { width:22px; height:22px; border-radius:11px; background:rgba(255,255,255,0.05);
+  border:1px solid var(--glass-border); display:flex; align-items:center; justify-content:center; font-size:10px; }
+.drill-hud-dot.done { background:var(--primary-dim); border-color:var(--primary); color:var(--primary); }
+.drill-hud-dot.current { border-color:var(--warning); color:var(--warning); animation:pulse 1s infinite; }
+.drill-hud-target { font-size:11px; opacity:0.4; }
+
+/* ===== ROUND VIEW ===== */
+#round-view { background:var(--bg-dark); z-index:50; }
+.round-header { padding:var(--safe-top) 16px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); }
+.round-title { font-size:18px; font-weight:800; letter-spacing:1px; }
+.round-close { width:36px; height:36px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border); color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.round-body { flex:1; overflow-y:auto; padding:16px; }
+.scorecard { background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius); overflow:hidden; margin-bottom:16px; }
+.scorecard-row { display:flex; border-bottom:1px solid var(--glass-border); }
+.scorecard-row:last-child { border-bottom:none; }
+.scorecard-cell { flex:1; padding:10px 4px; text-align:center; font-size:11px; min-width:0; }
+.scorecard-cell.hole-header { font-weight:700; opacity:0.5; font-size:9px; }
+.scorecard-cell.hole-active { background:var(--primary-dim); color:var(--primary); font-weight:700; }
+.scorecard-cell.par-cell { opacity:0.3; font-size:10px; }
+.scorecard-cell.score-cell { font-weight:700; }
+.scorecard-cell.birdie { color:var(--primary); }
+.scorecard-cell.bogey { color:var(--danger); }
+.round-start-btn { width:100%; padding:14px; border-radius:var(--radius); border:none;
+  background:linear-gradient(135deg,#00FF88,#4ECDC4); color:#000; font-size:14px; font-weight:800;
+  cursor:pointer; letter-spacing:1px; margin-top:12px; }
+.round-hole-display { text-align:center; padding:20px; }
+.round-hole-num { font-size:48px; font-weight:800; color:var(--primary); }
+.round-hole-par { font-size:13px; opacity:0.4; margin-top:4px; }
+
+/* ===== ACHIEVEMENT POPUP ===== */
+.achievement-popup {
+  position:fixed; top:calc(var(--safe-top) + 50px); left:50%;
+  transform:translateX(-50%) translateY(-150px); z-index:300;
+  background:linear-gradient(135deg,rgba(20,20,25,0.96),rgba(30,30,40,0.96));
+  border:1px solid rgba(0,255,136,0.3); border-radius:16px;
+  padding:14px 22px; display:flex; align-items:center; gap:14px;
+  backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 24px rgba(0,255,136,0.1);
+}
+.achievement-popup.show { transform:translateX(-50%) translateY(0); }
+.achievement-icon { font-size:32px; }
+.ach-label { font-size:9px; color:var(--primary); font-weight:700; letter-spacing:2px; margin-bottom:2px; }
+.ach-name { font-size:14px; font-weight:700; }
+.ach-desc { font-size:10px; opacity:0.4; margin-top:2px; }
+
+/* ===== GHOST TRAIL ===== */
+.ghost-toggle { position:absolute; z-index:20; bottom:108px; right:12px; display:none; }
+.ghost-toggle.visible { display:block; }
+.ghost-btn { padding:6px 10px; border-radius:8px; border:1px solid var(--glass-border);
+  background:var(--glass); color:#fff; font-size:10px; font-weight:600; cursor:pointer;
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.ghost-btn.active { background:rgba(168,85,247,0.15); border-color:rgba(168,85,247,0.4); color:#A855F7; }
+
+/* ===== CONTROLS ENHANCED ===== */
+.ctrl-btn.recording { background:rgba(255,51,102,0.2)!important; border-color:rgba(255,51,102,0.4)!important; color:var(--danger)!important; }
+#controls { gap:10px; flex-wrap:wrap; }
+
+/* ===== HEATMAP ===== */
+.heatmap-canvas { width:100%; height:180px; border-radius:10px; background:rgba(0,0,0,0.3); margin-top:8px; }
+.mini-chart { width:100%; height:70px; margin-top:8px; }
+
+/* ===== EXPORT BTN ===== */
+.export-row { display:flex; gap:8px; margin-top:12px; }
+.export-btn { flex:1; padding:10px; border-radius:10px; border:1px solid var(--glass-border);
+  background:var(--glass); color:#fff; font-size:11px; font-weight:600; cursor:pointer;
+  text-align:center; transition:all 0.2s; }
+.export-btn:active { transform:scale(0.96); }
+
+/* ===== LANDSCAPE ===== */
+@media (orientation:landscape) and (max-height:500px) {
+  #hud-top { padding-top:6px; }
+  #controls { padding:6px 12px 8px; gap:8px; }
+  #track-btn { width:56px; height:56px; }
+  .ctrl-btn { width:38px; height:38px; font-size:15px; }
+  #club-bar { bottom:70px; }
+  #stats-panel { top:44px; }
+  .ghost-toggle { bottom:78px; }
+}
+
 </style>
 </head>
 <body>
@@ -447,6 +580,16 @@ input[type="range"]::-webkit-slider-thumb {
       <canvas id="prevFrameCanvas"></canvas>
       <canvas id="overlayCanvas"></canvas>
       <div id="scan-line"></div>
+
+      <div id="rec-indicator"><div class="rec-dot"></div><span id="rec-time">00:00</span></div>
+      <div class="drill-hud" id="drill-hud">
+        <div class="drill-hud-title" id="drill-hud-title"></div>
+        <div class="drill-hud-progress" id="drill-hud-progress"></div>
+        <div class="drill-hud-target" id="drill-hud-target"></div>
+      </div>
+      <div class="ghost-toggle" id="ghost-toggle">
+        <button class="ghost-btn" id="ghost-btn" onclick="toggleGhost()">&#x1f47b; Ghost</button>
+      </div>
 
       <div id="center-guide">
         <div class="guide-circle">&#x26f3;</div>
@@ -550,6 +693,14 @@ input[type="range"]::-webkit-slider-thumb {
         <span>&#x1f4f7;</span>
         <span class="ctrl-btn-label">&#xcea1;&#xcc98;</span>
       </button>
+      <button class="ctrl-btn" onclick="openPractice()" title="&#xc5f0;&#xc2b5;">
+        <span>&#x1f3af;</span>
+        <span class="ctrl-btn-label">&#xc5f0;&#xc2b5;</span>
+      </button>
+      <button class="ctrl-btn" id="rec-btn" onclick="toggleRecording()" title="&#xb179;&#xd654;">
+        <span>&#x23fa;</span>
+        <span class="ctrl-btn-label">&#xb179;&#xd654;</span>
+      </button>
       <button class="ctrl-btn" onclick="openHistory()" title="&#xae30;&#xb85d;">
         <span>&#x1f4cb;</span>
         <span class="ctrl-btn-label">&#xae30;&#xb85d;</span>
@@ -577,6 +728,56 @@ input[type="range"]::-webkit-slider-thumb {
       <button class="dash-close" onclick="closeDashboard()">&#xd7;</button>
     </div>
     <div class="dash-body" id="dash-body"></div>
+  </div>
+
+
+  <!-- Replay View -->
+  <div class="view" id="replay-view">
+    <div class="replay-header">
+      <div class="replay-title">&#xc2ac;&#xb85c;&#xbaa8;&#xc158; &#xb9ac;&#xd50c;&#xb808;&#xc774;</div>
+      <button class="replay-close" onclick="closeReplay()">&#xd7;</button>
+    </div>
+    <div class="replay-body">
+      <div class="replay-canvas-wrap"><canvas id="replay-canvas"></canvas></div>
+      <div class="replay-controls">
+        <button class="replay-play-btn" id="replay-play-btn" onclick="toggleReplayPlay()">&#x25b6;</button>
+        <div class="replay-progress" id="replay-progress" onclick="seekReplay(event)">
+          <div class="replay-progress-fill" id="replay-progress-fill" style="width:0%"></div>
+        </div>
+        <button class="replay-speed-btn" data-speed="0.25" onclick="setReplaySpeed(0.25,this)">0.25x</button>
+        <button class="replay-speed-btn active" data-speed="0.5" onclick="setReplaySpeed(0.5,this)">0.5x</button>
+        <button class="replay-speed-btn" data-speed="1" onclick="setReplaySpeed(1,this)">1x</button>
+      </div>
+      <div class="replay-info" id="replay-info"></div>
+    </div>
+  </div>
+
+  <!-- Practice View -->
+  <div class="view" id="practice-view">
+    <div class="practice-header">
+      <div class="practice-title">&#xc5f0;&#xc2b5; &#xbaa8;&#xb4dc;</div>
+      <button class="practice-close" onclick="closePractice()">&#xd7;</button>
+    </div>
+    <div class="practice-body" id="practice-body"></div>
+  </div>
+
+  <!-- Round View -->
+  <div class="view" id="round-view">
+    <div class="round-header">
+      <div class="round-title">&#xb77c;&#xc6b4;&#xb4dc; &#xbaa8;&#xb4dc;</div>
+      <button class="round-close" onclick="closeRound()">&#xd7;</button>
+    </div>
+    <div class="round-body" id="round-body"></div>
+  </div>
+
+  <!-- Achievement Popup -->
+  <div class="achievement-popup" id="achievement-popup">
+    <div class="achievement-icon" id="ach-icon"></div>
+    <div>
+      <div class="ach-label">ACHIEVEMENT UNLOCKED</div>
+      <div class="ach-name" id="ach-name"></div>
+      <div class="ach-desc" id="ach-desc"></div>
+    </div>
   </div>
 
   <!-- Toast -->
@@ -654,6 +855,7 @@ function init() {
   initClubBar();
   initColorPicker();
   loadShotHistory();
+  loadAchievements();
   if (!localStorage.getItem("gt_tutorial_done")) {
     showTutorial();
   }
@@ -1091,6 +1293,9 @@ function processFrame() {
   octx.setTransform(dpr, 0, 0, dpr, 0, 0);
   octx.clearRect(0, 0, dw, dh);
 
+  // Ghost trail
+  drawGhostTrail(octx);
+
   const scaleX = dw / vw;
   const scaleY = dh / vh;
 
@@ -1121,7 +1326,7 @@ function processFrame() {
       if (speed > 200 && !shotDetected && trail.length < 5) {
         shotDetected = true;
         shotStartFrame = frameCount;
-        playShotSound();
+        playClubSound(selectedClub);
         if (navigator.vibrate) navigator.vibrate(50);
       }
 
@@ -1133,9 +1338,10 @@ function processFrame() {
         trail.push(pt);
       }
 
-      // First detection sound
+      // First detection sound + particles
       if (wasLost || trail.length === 1) {
         playDetectSound();
+        spawnParticles(sx, sy, 12, trailColor);
       }
 
       // Update stats
@@ -1352,6 +1558,12 @@ function processFrame() {
     scanLine.classList.toggle("active", !ballFound && lostFrames > 5);
   }
 
+  // Particles
+  updateParticles(octx);
+
+  // Composite for recording
+  updateCompositeFrame();
+
   octx.setTransform(1, 0, 0, 1, 0, 0);
   animId = requestAnimationFrame(processFrame);
 }
@@ -1365,9 +1577,14 @@ function toggleTracking() {
     statsPanel.classList.remove("visible");
     scanLine.classList.remove("active");
     clubBar.classList.remove("visible");
+    document.getElementById("ghost-toggle").classList.remove("visible");
+    document.getElementById("drill-hud").classList.remove("active");
     detectStatus.textContent = "";
     trackBtn.className = "start";
     trackBtn.innerHTML = '<span style="font-size:11px;letter-spacing:1.5px">START</span><span style="font-size:8px;opacity:0.6;margin-top:1px">TRACKING</span>';
+
+    // Stop recording if active
+    if (isRecording) stopRecording();
 
     // Auto-save if we have trail data
     if (trail.length > 5) {
@@ -1380,6 +1597,7 @@ function toggleTracking() {
     statusDot.classList.add("active");
     statsPanel.classList.add("visible");
     clubBar.classList.add("visible");
+    if (shotHistory.length > 0) document.getElementById("ghost-toggle").classList.add("visible");
     centerGuide.classList.add("hidden");
     trackBtn.className = "stop";
     trackBtn.innerHTML = '<span style="font-size:20px">\u25a0</span><span style="font-size:8px;margin-top:2px">STOP</span>';
@@ -1430,6 +1648,16 @@ function saveShotToHistory() {
   } catch(e) { /* storage full */ }
 
   showToast("\uc0f7 \uc800\uc7a5\ub428 - " + selectedClub + " #" + totalShots);
+  checkAchievements();
+
+  // Drill callback
+  if (activeDrill) {
+    var analysis2 = analyzeTrajectory(trail);
+    onDrillShotComplete({ distance: analysis2.distance, angle: analysis2.angle, maxSpeed: maxSpeed, curve: analysis2.curve });
+  }
+
+  // Celebration particles
+  if (trail.length > 0) spawnParticles(trail[trail.length-1].x, trail[trail.length-1].y, 25, trailColor);
 }
 
 function loadShotHistory() {
@@ -1475,6 +1703,7 @@ function renderHistory() {
     html += '<div><div class="shot-stat-val">' + (shot.curve || "--") + '</div><div class="shot-stat-label">\uad6c\uc9c8</div></div>';
     html += '</div>';
     html += '<canvas class="shot-card-canvas" id="shot-canvas-' + idx + '"></canvas>';
+    html += '<div style="display:flex;gap:6px;margin-top:8px"><button class="export-btn" style="flex:0" onclick="event.stopPropagation();openReplay(' + idx + ')">\u25b6 \ub9ac\ud50c\ub808\uc774</button><button class="export-btn" style="flex:0" onclick="event.stopPropagation();shareShot(' + idx + ')">\ud83d\udce4 \uacf5\uc720</button></div>';
     html += '</div>';
   });
   body.innerHTML = html;
@@ -1528,9 +1757,7 @@ function renderHistory() {
 }
 
 function viewShot(idx) {
-  const shot = shotHistory[idx];
-  if (!shot) return;
-  showToast(shot.club + " - " + shot.time);
+  openReplay(idx);
 }
 
 // ===== DASHBOARD =====
@@ -1607,6 +1834,44 @@ function renderDashboard() {
     html += '</div>';
   }
 
+  // Heatmap
+  if (shotHistory.length >= 2) {
+    html += '<div class="dash-card">';
+    html += '<div class="dash-card-title">SHOT HEATMAP</div>';
+    html += '<canvas class="heatmap-canvas" id="dash-heatmap"></canvas>';
+    html += '</div>';
+  }
+
+  // Speed trend chart
+  if (shotHistory.length >= 3) {
+    html += '<div class="dash-card">';
+    html += '<div class="dash-card-title">SPEED TREND</div>';
+    html += '<canvas class="mini-chart" id="dash-speed-chart"></canvas>';
+    html += '</div>';
+  }
+
+  // Achievements
+  html += '<div class="dash-card">';
+  html += '<div class="dash-card-title">ACHIEVEMENTS (' + unlockedAchievements.length + '/' + ACHIEVEMENTS.length + ')</div>';
+  ACHIEVEMENTS.forEach(function(a) {
+    var done = unlockedAchievements.indexOf(a.id) >= 0;
+    html += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;opacity:' + (done ? '1' : '0.3') + '">';
+    html += '<span style="font-size:20px">' + a.icon + '</span>';
+    html += '<div><div style="font-size:12px;font-weight:600">' + a.name + '</div>';
+    html += '<div style="font-size:10px;opacity:0.5">' + a.desc + '</div></div>';
+    if (done) html += '<span style="color:var(--primary);font-size:14px;margin-left:auto">\u2713</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Export + Share
+  html += '<div class="dash-card">';
+  html += '<div class="dash-card-title">DATA</div>';
+  html += '<div class="export-row">';
+  html += '<button class="export-btn" onclick="exportCSV()">\ud83d\udcc4 CSV \ub0b4\ubcf4\ub0b4\uae30</button>';
+  html += '<button class="export-btn" onclick="clearAllData()">\ud83d\uddd1 \ub370\uc774\ud130 \ucd08\uae30\ud654</button>';
+  html += '</div></div>';
+
   // Tips
   html += '<div class="dash-card">';
   html += '<div class="dash-card-title">\ud300</div>';
@@ -1614,10 +1879,34 @@ function renderDashboard() {
   html += '\u2022 \ubc1d\uc740 \uc57c\uc678\uc5d0\uc11c \uac00\uc7a5 \uc815\ud655\ud569\ub2c8\ub2e4<br>';
   html += '\u2022 \ud6c4\ubc29 \uce74\uba54\ub77c\ub85c \uacf5 \ub4a4\uc5d0\uc11c \ucd2c\uc601\ud558\uc138\uc694<br>';
   html += '\u2022 \ubbfc\uac10\ub3c4\ub97c \uc870\uc808\ud558\uc5ec \ud658\uacbd\uc5d0 \ub9de\ucd94\uc138\uc694<br>';
-  html += '\u2022 \ud504\ub808\uc784 \ub514\ud37c\ub7f0\uc2f1\uc774 \uc6c0\uc9c1\uc784;\uc744 \uac10\uc9c0\ud569\ub2c8\ub2e4';
+  html += '\u2022 \uace0\uc2a4\ud2b8 \ud2b8\ub808\uc77c\ub85c \uc774\uc804 \uc0f7\uacfc \ube44\uad50\ud558\uc138\uc694';
   html += '</div></div>';
 
   body.innerHTML = html;
+
+  // Render charts after DOM update
+  setTimeout(function() {
+    drawHeatmap("dash-heatmap");
+    if (shotHistory.length >= 3) {
+      var speeds = shotHistory.slice(0, 20).reverse().map(function(s){return s.maxSpeed||0;});
+      drawMiniChart("dash-speed-chart", speeds, "#4ECDC4", "RECENT SHOTS MAX SPEED");
+    }
+  }, 50);
+}
+
+
+function clearAllData() {
+  if (!confirm("\ubaa8\ub4e0 \ub370\uc774\ud130\ub97c \uc0ad\uc81c\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?")) return;
+  shotHistory = [];
+  totalShots = 0;
+  unlockedAchievements = [];
+  localStorage.removeItem("gt_shots");
+  localStorage.removeItem("gt_total");
+  localStorage.removeItem("gt_achievements");
+  localStorage.removeItem("gt_practice_count");
+  PRACTICE_DRILLS.forEach(function(d) { localStorage.removeItem("gt_drill_" + d.id); });
+  showToast("\ub370\uc774\ud130 \ucd08\uae30\ud654 \uc644\ub8cc");
+  closeDashboard();
 }
 
 // ===== SCREENSHOT =====
@@ -1669,6 +1958,909 @@ function captureScreenshot() {
   showToast("\uc2a4\ud06c\ub9b0\uc0f7 \uc800\uc7a5\ub428");
 }
 
+
+// ===== PARTICLE SYSTEM =====
+const particles = [];
+function spawnParticles(x, y, count, color) {
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x, y,
+      vx: (Math.random() - 0.5) * 10,
+      vy: (Math.random() - 0.5) * 10 - 3,
+      life: 1,
+      decay: 0.015 + Math.random() * 0.025,
+      size: 1.5 + Math.random() * 3,
+      color
+    });
+  }
+}
+function updateParticles(ctx) {
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.12;
+    p.vx *= 0.98;
+    p.life -= p.decay;
+    if (p.life <= 0) { particles.splice(i, 1); continue; }
+    ctx.globalAlpha = p.life;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ===== GHOST TRAIL =====
+let ghostTrail = null;
+let ghostVisible = false;
+
+function toggleGhost() {
+  ghostVisible = !ghostVisible;
+  const btn = document.getElementById("ghost-btn");
+  btn.classList.toggle("active", ghostVisible);
+  if (ghostVisible && shotHistory.length > 0) {
+    ghostTrail = shotHistory[0].trail;
+    showToast("고스트 트레일 ON");
+  } else {
+    ghostTrail = null;
+    showToast("고스트 트레일 OFF");
+  }
+}
+
+function drawGhostTrail(ctx) {
+  if (!ghostVisible || !ghostTrail || ghostTrail.length < 2) return;
+  ctx.beginPath();
+  ctx.moveTo(ghostTrail[0].x, ghostTrail[0].y);
+  for (let i = 1; i < ghostTrail.length; i++) {
+    if (i < ghostTrail.length - 1) {
+      const mx = (ghostTrail[i].x + ghostTrail[i+1].x) / 2;
+      const my = (ghostTrail[i].y + ghostTrail[i+1].y) / 2;
+      ctx.quadraticCurveTo(ghostTrail[i].x, ghostTrail[i].y, mx, my);
+    } else {
+      ctx.lineTo(ghostTrail[i].x, ghostTrail[i].y);
+    }
+  }
+  ctx.strokeStyle = "rgba(168,85,247,0.25)";
+  ctx.lineWidth = 6;
+  ctx.lineCap = "round";
+  ctx.setLineDash([8, 6]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.strokeStyle = "rgba(168,85,247,0.5)";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(ghostTrail[0].x, ghostTrail[0].y);
+  for (let i = 1; i < ghostTrail.length; i++) {
+    if (i < ghostTrail.length - 1) {
+      const mx = (ghostTrail[i].x + ghostTrail[i+1].x) / 2;
+      const my = (ghostTrail[i].y + ghostTrail[i+1].y) / 2;
+      ctx.quadraticCurveTo(ghostTrail[i].x, ghostTrail[i].y, mx, my);
+    } else {
+      ctx.lineTo(ghostTrail[i].x, ghostTrail[i].y);
+    }
+  }
+  ctx.stroke();
+  ctx.font = "bold 8px -apple-system, sans-serif";
+  ctx.fillStyle = "rgba(168,85,247,0.6)";
+  ctx.textAlign = "center";
+  ctx.fillText("GHOST", ghostTrail[0].x, ghostTrail[0].y - 12);
+}
+
+// ===== VIDEO RECORDING =====
+let isRecording = false;
+let mediaRecorder = null;
+let recordedChunks = [];
+let recStartTime = 0;
+let recTimerInterval = null;
+let compositeCanvas = null;
+let compositeCtx = null;
+
+function toggleRecording() {
+  if (isRecording) { stopRecording(); }
+  else { startRecording(); }
+}
+
+function startRecording() {
+  if (!isTracking) {
+    showToast("트래킹을 먼저 시작하세요");
+    return;
+  }
+  try {
+    if (!compositeCanvas) {
+      compositeCanvas = document.createElement("canvas");
+      compositeCtx = compositeCanvas.getContext("2d");
+    }
+    const container = document.getElementById("camera-container");
+    compositeCanvas.width = container.clientWidth * 2;
+    compositeCanvas.height = container.clientHeight * 2;
+
+    const compStream = compositeCanvas.captureStream(30);
+    if (audioCtx && audioCtx.state === "running") {
+      const dest = audioCtx.createMediaStreamDestination();
+      const oscDummy = audioCtx.createOscillator();
+      oscDummy.connect(dest);
+      compStream.addTrack(dest.stream.getAudioTracks()[0]);
+    }
+
+    mediaRecorder = new MediaRecorder(compStream, {
+      mimeType: MediaRecorder.isTypeSupported("video/webm;codecs=vp9") ?
+        "video/webm;codecs=vp9" : "video/webm"
+    });
+    recordedChunks = [];
+    mediaRecorder.ondataavailable = function(e) {
+      if (e.data.size > 0) recordedChunks.push(e.data);
+    };
+    mediaRecorder.onstop = onRecordingStop;
+    mediaRecorder.start(100);
+
+    isRecording = true;
+    recStartTime = Date.now();
+    document.getElementById("rec-indicator").classList.add("active");
+    document.getElementById("rec-btn").classList.add("recording");
+    recTimerInterval = setInterval(updateRecTimer, 1000);
+    showToast("녹화 시작");
+    if (navigator.vibrate) navigator.vibrate([30, 30, 30]);
+  } catch(e) {
+    showToast("녹화를 시작할 수 없습니다");
+  }
+}
+
+function updateRecTimer() {
+  const sec = Math.floor((Date.now() - recStartTime) / 1000);
+  const m = String(Math.floor(sec / 60)).padStart(2, "0");
+  const s = String(sec % 60).padStart(2, "0");
+  document.getElementById("rec-time").textContent = m + ":" + s;
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  }
+  isRecording = false;
+  clearInterval(recTimerInterval);
+  document.getElementById("rec-indicator").classList.remove("active");
+  document.getElementById("rec-btn").classList.remove("recording");
+  showToast("녹화 완료");
+}
+
+function onRecordingStop() {
+  if (recordedChunks.length === 0) return;
+  const blob = new Blob(recordedChunks, { type: "video/webm" });
+  const url = URL.createObjectURL(blob);
+  lastRecordedVideoURL = url;
+  lastRecordedBlob = blob;
+  showToast("리플레이 준비 완료");
+}
+
+let lastRecordedVideoURL = null;
+let lastRecordedBlob = null;
+
+function updateCompositeFrame() {
+  if (!isRecording || !compositeCanvas) return;
+  const container = document.getElementById("camera-container");
+  const cw = container.clientWidth;
+  const ch = container.clientHeight;
+  compositeCtx.drawImage(video, 0, 0, compositeCanvas.width, compositeCanvas.height);
+  compositeCtx.drawImage(overlay, 0, 0, compositeCanvas.width, compositeCanvas.height);
+}
+
+// ===== REPLAY SYSTEM =====
+let replayData = null;
+let replayPlaying = false;
+let replayFrame = 0;
+let replaySpeed = 0.5;
+let replayAnimId = null;
+let replayLastTime = 0;
+
+function openReplay(shotIdx) {
+  if (typeof shotIdx === "number" && shotHistory[shotIdx]) {
+    replayData = shotHistory[shotIdx];
+  } else if (shotHistory.length > 0) {
+    replayData = shotHistory[0];
+  } else {
+    showToast("리플레이할 데이터가 없습니다");
+    return;
+  }
+  document.getElementById("replay-view").classList.add("active");
+  replayFrame = 0;
+  replayPlaying = false;
+
+  const info = document.getElementById("replay-info");
+  const a = analyzeTrajectory(replayData.trail.map(function(p,i){return {x:p.x,y:p.y,speed:0,t:i*33};}));
+  info.innerHTML = '<div class="replay-info-item"><div class="replay-info-val" style="color:var(--primary)">' + replayData.club + '</div><div class="replay-info-label">CLUB</div></div>'
+    + '<div class="replay-info-item"><div class="replay-info-val" style="color:var(--accent)">' + replayData.points + '</div><div class="replay-info-label">POINTS</div></div>'
+    + '<div class="replay-info-item"><div class="replay-info-val" style="color:#FFB800">' + (replayData.angle !== null ? replayData.angle + "°" : "--") + '</div><div class="replay-info-label">ANGLE</div></div>'
+    + '<div class="replay-info-item"><div class="replay-info-val" style="color:#FF6B9D">' + (replayData.curve || "--") + '</div><div class="replay-info-label">CURVE</div></div>';
+
+  drawReplayFrame();
+}
+
+function closeReplay() {
+  document.getElementById("replay-view").classList.remove("active");
+  replayPlaying = false;
+  if (replayAnimId) cancelAnimationFrame(replayAnimId);
+  replayAnimId = null;
+}
+
+function toggleReplayPlay() {
+  if (!replayData) return;
+  replayPlaying = !replayPlaying;
+  document.getElementById("replay-play-btn").textContent = replayPlaying ? "❚❚" : "▶";
+  if (replayPlaying) {
+    if (replayFrame >= replayData.trail.length - 1) replayFrame = 0;
+    replayLastTime = performance.now();
+    animateReplay();
+  } else {
+    if (replayAnimId) cancelAnimationFrame(replayAnimId);
+  }
+}
+
+function animateReplay() {
+  if (!replayPlaying || !replayData) return;
+  const now = performance.now();
+  const elapsed = now - replayLastTime;
+  if (elapsed > 33 / replaySpeed) {
+    replayFrame++;
+    replayLastTime = now;
+    if (replayFrame >= replayData.trail.length) {
+      replayFrame = replayData.trail.length - 1;
+      replayPlaying = false;
+      document.getElementById("replay-play-btn").textContent = "▶";
+    }
+    drawReplayFrame();
+    updateReplayProgress();
+  }
+  if (replayPlaying) replayAnimId = requestAnimationFrame(animateReplay);
+}
+
+function drawReplayFrame() {
+  if (!replayData || !replayData.trail) return;
+  const canvas = document.getElementById("replay-canvas");
+  const dpr = 2;
+  const cw = canvas.parentElement.clientWidth;
+  const ch = canvas.parentElement.clientHeight || cw * 9 / 16;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  canvas.style.width = cw + "px";
+  canvas.style.height = ch + "px";
+  const ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, cw, ch);
+
+  const t = replayData.trail;
+  if (t.length < 2) return;
+
+  var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  t.forEach(function(p) { minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x); minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y); });
+  var rangeX = maxX - minX || 1;
+  var rangeY = maxY - minY || 1;
+  var pad = 40;
+  var sx = (cw - pad * 2) / rangeX;
+  var sy = (ch - pad * 2) / rangeY;
+  var s = Math.min(sx, sy);
+  var ox = pad + (cw - pad * 2 - rangeX * s) / 2;
+  var oy = pad + (ch - pad * 2 - rangeY * s) / 2;
+
+  function tx(p) { return ox + (p.x - minX) * s; }
+  function ty(p) { return oy + (p.y - minY) * s; }
+
+  var endIdx = Math.min(replayFrame, t.length - 1);
+
+  // Grid
+  ctx.strokeStyle = "rgba(255,255,255,0.03)";
+  ctx.lineWidth = 1;
+  for (var gx = 0; gx < cw; gx += 40) { ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, ch); ctx.stroke(); }
+  for (var gy = 0; gy < ch; gy += 40) { ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(cw, gy); ctx.stroke(); }
+
+  // Full trail (dimmed)
+  ctx.beginPath();
+  ctx.moveTo(tx(t[0]), ty(t[0]));
+  for (var i = 1; i < t.length; i++) ctx.lineTo(tx(t[i]), ty(t[i]));
+  ctx.strokeStyle = "rgba(255,255,255,0.06)";
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.stroke();
+
+  // Active trail
+  if (endIdx > 0) {
+    ctx.beginPath();
+    ctx.moveTo(tx(t[0]), ty(t[0]));
+    for (var i = 1; i <= endIdx; i++) ctx.lineTo(tx(t[i]), ty(t[i]));
+    ctx.strokeStyle = trailColor + "20";
+    ctx.lineWidth = 16;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(tx(t[0]), ty(t[0]));
+    for (var i = 1; i <= endIdx; i++) ctx.lineTo(tx(t[i]), ty(t[i]));
+    ctx.strokeStyle = trailColor + "88";
+    ctx.lineWidth = 4;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(tx(t[0]), ty(t[0]));
+    for (var i = 1; i <= endIdx; i++) ctx.lineTo(tx(t[i]), ty(t[i]));
+    ctx.strokeStyle = trailColor;
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
+  // Current ball position
+  var cp = t[endIdx];
+  ctx.beginPath();
+  ctx.arc(tx(cp), ty(cp), 8, 0, Math.PI * 2);
+  ctx.fillStyle = trailColor;
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(tx(cp), ty(cp), 14, 0, Math.PI * 2);
+  ctx.strokeStyle = trailColor + "44";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // TEE marker
+  ctx.font = "bold 9px -apple-system, sans-serif";
+  ctx.fillStyle = trailColor + "88";
+  ctx.textAlign = "center";
+  ctx.fillText("TEE", tx(t[0]), ty(t[0]) - 14);
+  ctx.beginPath();
+  ctx.arc(tx(t[0]), ty(t[0]), 5, 0, Math.PI * 2);
+  ctx.strokeStyle = trailColor + "66";
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Frame counter
+  ctx.font = "bold 10px -apple-system, sans-serif";
+  ctx.fillStyle = "rgba(255,255,255,0.3)";
+  ctx.textAlign = "left";
+  ctx.fillText("Frame " + (endIdx + 1) + " / " + t.length, 12, ch - 10);
+
+  ctx.textAlign = "right";
+  ctx.fillText(replaySpeed + "x", cw - 12, ch - 10);
+}
+
+function updateReplayProgress() {
+  if (!replayData) return;
+  var pct = replayData.trail.length > 1 ? (replayFrame / (replayData.trail.length - 1)) * 100 : 0;
+  document.getElementById("replay-progress-fill").style.width = pct + "%";
+}
+
+function seekReplay(e) {
+  if (!replayData) return;
+  var bar = document.getElementById("replay-progress");
+  var rect = bar.getBoundingClientRect();
+  var pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  replayFrame = Math.round(pct * (replayData.trail.length - 1));
+  drawReplayFrame();
+  updateReplayProgress();
+}
+
+function setReplaySpeed(spd, btn) {
+  replaySpeed = spd;
+  document.querySelectorAll(".replay-speed-btn").forEach(function(b) {
+    b.classList.toggle("active", parseFloat(b.getAttribute("data-speed")) === spd);
+  });
+}
+
+// ===== PRACTICE MODE =====
+const PRACTICE_DRILLS = [
+  { id:"accuracy", name:"정확도 훈련", desc:"연속 5샷의 궤적 일관성을 유지하세요", target:"궤적 편차 20px 이하", shots:5, icon:"🎯" },
+  { id:"distance", name:"거리 훈련", desc:"매 샷마다 더 긴 궤적을 기록하세요", target:"매 샷 거리 증가", shots:5, icon:"📏" },
+  { id:"angle", name:"각도 조절", desc:"목표 각도(30°)에 가깍게 샷하세요", target:"목표 각도 ±5°", shots:5, icon:"📐", targetAngle:30 },
+  { id:"speed", name:"스피드 훈련", desc:"최대 속도를 높여가며 샷하세요", target:"속도 300+ 달성", shots:5, icon:"⚡" },
+  { id:"consistency", name:"일관성 훈련", desc:"동일 클럽으로 일관된 샷을 하세요", target:"속도 편차 15% 이하", shots:5, icon:"🔄" }
+];
+
+let activeDrill = null;
+let drillShots = [];
+let drillShotCount = 0;
+
+function openPractice() {
+  document.getElementById("practice-view").classList.add("active");
+  renderPractice();
+}
+function closePractice() {
+  document.getElementById("practice-view").classList.remove("active");
+}
+
+function renderPractice() {
+  var body = document.getElementById("practice-body");
+  var html = '<div style="margin-bottom:16px"><div style="font-size:13px;opacity:0.4;line-height:1.7">구조화된 연습 드릴로 실력을 향상시키세요.<br>각 드릴은 5샷으로 구성됩니다.</div></div>';
+  PRACTICE_DRILLS.forEach(function(d) {
+    var best = localStorage.getItem("gt_drill_" + d.id) || "--";
+    html += '<div class="drill-card" onclick="startDrill(\x27' + d.id + '\x27)">';
+    html += '<div class="drill-card-top"><div class="drill-icon">' + d.icon + '</div><div class="drill-name">' + d.name + '</div></div>';
+    html += '<div class="drill-desc">' + d.desc + '</div>';
+    html += '<div class="drill-target">목표: ' + d.target + '</div>';
+    html += '<div class="drill-best">최고 기록: ' + best + '</div>';
+    html += '</div>';
+  });
+  body.innerHTML = html;
+}
+
+function startDrill(drillId) {
+  var drill = PRACTICE_DRILLS.find(function(d) { return d.id === drillId; });
+  if (!drill) return;
+  activeDrill = drill;
+  drillShots = [];
+  drillShotCount = 0;
+  closePractice();
+
+  if (!isTracking) toggleTracking();
+
+  document.getElementById("drill-hud").classList.add("active");
+  document.getElementById("drill-hud-title").textContent = drill.icon + " " + drill.name;
+  document.getElementById("drill-hud-target").textContent = "목표: " + drill.target;
+  updateDrillProgress();
+  showToast(drill.name + " 시작!");
+}
+
+function updateDrillProgress() {
+  if (!activeDrill) return;
+  var container = document.getElementById("drill-hud-progress");
+  var html = "";
+  for (var i = 0; i < activeDrill.shots; i++) {
+    var cls = "drill-hud-dot";
+    var content = (i + 1).toString();
+    if (i < drillShotCount) {
+      cls += " done";
+      content = "✓";
+    } else if (i === drillShotCount) {
+      cls += " current";
+    }
+    html += '<div class="' + cls + '">' + content + '</div>';
+  }
+  container.innerHTML = html;
+}
+
+function onDrillShotComplete(shotData) {
+  if (!activeDrill) return;
+  drillShots.push(shotData);
+  drillShotCount++;
+  updateDrillProgress();
+
+  if (drillShotCount >= activeDrill.shots) {
+    completeDrill();
+  } else {
+    showToast("샷 " + drillShotCount + "/" + activeDrill.shots + " 완료");
+  }
+}
+
+function completeDrill() {
+  document.getElementById("drill-hud").classList.remove("active");
+  var score = evaluateDrill();
+  var key = "gt_drill_" + activeDrill.id;
+  var prev = parseInt(localStorage.getItem(key) || "0");
+  if (score > prev) localStorage.setItem(key, score.toString());
+
+  var cnt = parseInt(localStorage.getItem("gt_practice_count") || "0") + 1;
+  localStorage.setItem("gt_practice_count", cnt.toString());
+
+  showToast(activeDrill.name + " 완료! 점수: " + score);
+  playAchievementSound();
+  activeDrill = null;
+  checkAchievements();
+}
+
+function evaluateDrill() {
+  if (drillShots.length === 0) return 0;
+  var score = 0;
+  if (activeDrill.id === "accuracy") {
+    var dists = drillShots.map(function(s) { return s.distance || 0; });
+    var avg = dists.reduce(function(a,b){return a+b;},0) / dists.length;
+    var variance = dists.reduce(function(a,d){return a + Math.abs(d-avg);},0) / dists.length;
+    score = Math.max(0, Math.round(100 - variance));
+  } else if (activeDrill.id === "distance") {
+    var increasing = 0;
+    for (var i = 1; i < drillShots.length; i++) {
+      if ((drillShots[i].distance||0) > (drillShots[i-1].distance||0)) increasing++;
+    }
+    score = Math.round(increasing / (drillShots.length - 1) * 100);
+  } else if (activeDrill.id === "angle") {
+    var tgt = activeDrill.targetAngle || 30;
+    var diffs = drillShots.map(function(s) { return Math.abs((s.angle||0) - tgt); });
+    var avgDiff = diffs.reduce(function(a,b){return a+b;},0) / diffs.length;
+    score = Math.max(0, Math.round(100 - avgDiff * 5));
+  } else if (activeDrill.id === "speed") {
+    var maxSpd = Math.max.apply(null, drillShots.map(function(s){return s.maxSpeed||0;}));
+    score = Math.min(100, Math.round(maxSpd / 5));
+  } else if (activeDrill.id === "consistency") {
+    var speeds = drillShots.map(function(s){return s.maxSpeed||0;});
+    var avgS = speeds.reduce(function(a,b){return a+b;},0) / speeds.length;
+    if (avgS === 0) return 0;
+    var dev = speeds.reduce(function(a,s){return a + Math.abs(s-avgS);},0) / speeds.length;
+    var pctDev = dev / avgS * 100;
+    score = Math.max(0, Math.round(100 - pctDev * 3));
+  }
+  return score;
+}
+
+// ===== ROUND MODE =====
+let roundActive = false;
+let roundHole = 1;
+let roundScores = [];
+let roundPars = [4,3,5,4,4,3,4,5,4, 4,4,3,5,4,3,4,5,4];
+let roundShotsPerHole = [];
+
+function openRound() {
+  document.getElementById("round-view").classList.add("active");
+  renderRound();
+}
+function closeRound() {
+  document.getElementById("round-view").classList.remove("active");
+}
+
+function renderRound() {
+  var body = document.getElementById("round-body");
+  var html = "";
+
+  if (!roundActive) {
+    html += '<div style="text-align:center;padding:40px 20px">';
+    html += '<div style="font-size:48px;margin-bottom:16px">&#x26f3;</div>';
+    html += '<div style="font-size:20px;font-weight:800;margin-bottom:8px">18홀 라운드</div>';
+    html += '<div style="font-size:13px;opacity:0.4;line-height:1.8;margin-bottom:24px">';
+    html += '샷을 트래킹하면서 18홀을 돌아보세요.<br>각 홀의 샷 수를 기록합니다.</div>';
+    html += '<button class="round-start-btn" onclick="startRound()">START ROUND</button>';
+    if (roundScores.length > 0) {
+      html += '<div style="margin-top:20px">';
+      html += renderScorecard();
+      html += '</div>';
+    }
+    html += '</div>';
+  } else {
+    html += '<div class="round-hole-display">';
+    html += '<div class="round-hole-num">Hole ' + roundHole + '</div>';
+    html += '<div class="round-hole-par">Par ' + roundPars[roundHole - 1] + '</div>';
+    html += '<div style="font-size:13px;opacity:0.4;margin-top:12px">샷 수: ' + (roundShotsPerHole[roundHole - 1] || 0) + '</div>';
+    html += '</div>';
+    html += '<div style="display:flex;gap:8px;margin:16px 0">';
+    html += '<button class="round-start-btn" style="background:var(--glass);color:#fff;border:1px solid var(--glass-border)" onclick="addRoundShot()">+1 샷</button>';
+    html += '<button class="round-start-btn" style="background:var(--glass);color:#fff;border:1px solid var(--glass-border)" onclick="undoRoundShot()">-1 샷</button>';
+    html += '</div>';
+    html += '<button class="round-start-btn" onclick="nextHole()">' + (roundHole < 18 ? '다음 홀 →' : '라운드 완료') + '</button>';
+    html += '<div style="margin-top:16px">' + renderScorecard() + '</div>';
+  }
+  body.innerHTML = html;
+}
+
+function renderScorecard() {
+  var html = '<div class="scorecard">';
+  // Front 9
+  html += '<div class="scorecard-row">';
+  html += '<div class="scorecard-cell hole-header">HOLE</div>';
+  for (var i = 1; i <= 9; i++) {
+    var cls = "scorecard-cell hole-header" + (roundActive && i === roundHole ? " hole-active" : "");
+    html += '<div class="' + cls + '">' + i + '</div>';
+  }
+  html += '<div class="scorecard-cell hole-header">OUT</div></div>';
+
+  html += '<div class="scorecard-row"><div class="scorecard-cell par-cell">PAR</div>';
+  var frontPar = 0;
+  for (var i = 0; i < 9; i++) { html += '<div class="scorecard-cell par-cell">' + roundPars[i] + '</div>'; frontPar += roundPars[i]; }
+  html += '<div class="scorecard-cell par-cell">' + frontPar + '</div></div>';
+
+  html += '<div class="scorecard-row"><div class="scorecard-cell score-cell">SCORE</div>';
+  var frontTotal = 0;
+  for (var i = 0; i < 9; i++) {
+    var s = roundScores[i];
+    var cls = "scorecard-cell score-cell";
+    if (s !== undefined) {
+      frontTotal += s;
+      if (s < roundPars[i]) cls += " birdie";
+      else if (s > roundPars[i]) cls += " bogey";
+    }
+    html += '<div class="' + cls + '">' + (s !== undefined ? s : "-") + '</div>';
+  }
+  html += '<div class="scorecard-cell score-cell">' + (frontTotal || "-") + '</div></div>';
+
+  // Back 9
+  html += '<div class="scorecard-row"><div class="scorecard-cell hole-header">HOLE</div>';
+  for (var i = 10; i <= 18; i++) {
+    var cls = "scorecard-cell hole-header" + (roundActive && i === roundHole ? " hole-active" : "");
+    html += '<div class="' + cls + '">' + i + '</div>';
+  }
+  html += '<div class="scorecard-cell hole-header">IN</div></div>';
+
+  html += '<div class="scorecard-row"><div class="scorecard-cell par-cell">PAR</div>';
+  var backPar = 0;
+  for (var i = 9; i < 18; i++) { html += '<div class="scorecard-cell par-cell">' + roundPars[i] + '</div>'; backPar += roundPars[i]; }
+  html += '<div class="scorecard-cell par-cell">' + backPar + '</div></div>';
+
+  html += '<div class="scorecard-row"><div class="scorecard-cell score-cell">SCORE</div>';
+  var backTotal = 0;
+  for (var i = 9; i < 18; i++) {
+    var s = roundScores[i];
+    var cls = "scorecard-cell score-cell";
+    if (s !== undefined) {
+      backTotal += s;
+      if (s < roundPars[i]) cls += " birdie";
+      else if (s > roundPars[i]) cls += " bogey";
+    }
+    html += '<div class="' + cls + '">' + (s !== undefined ? s : "-") + '</div>';
+  }
+  html += '<div class="scorecard-cell score-cell">' + (backTotal || "-") + '</div></div>';
+
+  html += '</div>';
+  return html;
+}
+
+function startRound() {
+  roundActive = true;
+  roundHole = 1;
+  roundScores = [];
+  roundShotsPerHole = [];
+  for (var i = 0; i < 18; i++) roundShotsPerHole.push(0);
+  renderRound();
+  showToast("라운드 시작!");
+}
+
+function addRoundShot() {
+  if (!roundActive) return;
+  roundShotsPerHole[roundHole - 1]++;
+  renderRound();
+}
+
+function undoRoundShot() {
+  if (!roundActive || roundShotsPerHole[roundHole - 1] <= 0) return;
+  roundShotsPerHole[roundHole - 1]--;
+  renderRound();
+}
+
+function nextHole() {
+  if (!roundActive) return;
+  roundScores[roundHole - 1] = roundShotsPerHole[roundHole - 1] || roundPars[roundHole - 1];
+  if (roundHole >= 18) {
+    roundActive = false;
+    var total = roundScores.reduce(function(a,b){return a+b;}, 0);
+    var parTotal = roundPars.reduce(function(a,b){return a+b;}, 0);
+    var diff = total - parTotal;
+    var diffStr = diff === 0 ? "E" : (diff > 0 ? "+" + diff : diff.toString());
+    showToast("라운드 완료! 총 " + total + " (" + diffStr + ")");
+    playAchievementSound();
+    try { localStorage.setItem("gt_round_scores", JSON.stringify(roundScores)); } catch(e){}
+  } else {
+    roundHole++;
+    showToast("Hole " + roundHole + " (Par " + roundPars[roundHole - 1] + ")");
+  }
+  renderRound();
+}
+
+// ===== ACHIEVEMENT SYSTEM =====
+const ACHIEVEMENTS = [
+  { id:"first_shot", name:"첫 샷!", desc:"첫 번째 샷을 트래킹하세요", icon:"🏌️" },
+  { id:"ten_shots", name:"10샷 달성", desc:"10개의 샷을 트래킹하세요", icon:"🎯" },
+  { id:"fifty_shots", name:"50샷 달성", desc:"50개의 샷을 트래킹하세요", icon:"🏆" },
+  { id:"all_clubs", name:"클럽 마스터", desc:"5종류 이상의 클럽을 사용하세요", icon:"🏌️‍♂️" },
+  { id:"high_speed", name:"파워 히터", desc:"속도 500 이상의 샷을 기록하세요", icon:"💪" },
+  { id:"high_angle", name:"하이 볼러", desc:"45° 이상의 발사각을 기록하세요", icon:"🚀" },
+  { id:"draw_master", name:"드로우 마스터", desc:"Draw 구질의 샷을 기록하세요", icon:"↩️" },
+  { id:"practice_5", name:"연습벌레", desc:"5회 이상 연습 모드를 완료하세요", icon:"📚" }
+];
+
+let unlockedAchievements = [];
+
+function loadAchievements() {
+  try {
+    var saved = localStorage.getItem("gt_achievements");
+    if (saved) unlockedAchievements = JSON.parse(saved);
+  } catch(e) { unlockedAchievements = []; }
+}
+
+function checkAchievements() {
+  var newlyUnlocked = [];
+  var clubSet = {};
+  shotHistory.forEach(function(s) { clubSet[s.club] = true; });
+  var clubCount = Object.keys(clubSet).length;
+  var pracCount = parseInt(localStorage.getItem("gt_practice_count") || "0");
+
+  ACHIEVEMENTS.forEach(function(a) {
+    if (unlockedAchievements.indexOf(a.id) >= 0) return;
+    var unlocked = false;
+    if (a.id === "first_shot" && totalShots >= 1) unlocked = true;
+    if (a.id === "ten_shots" && totalShots >= 10) unlocked = true;
+    if (a.id === "fifty_shots" && totalShots >= 50) unlocked = true;
+    if (a.id === "all_clubs" && clubCount >= 5) unlocked = true;
+    if (a.id === "high_speed" && shotHistory.some(function(s){return s.maxSpeed >= 500;})) unlocked = true;
+    if (a.id === "high_angle" && shotHistory.some(function(s){return s.angle >= 45;})) unlocked = true;
+    if (a.id === "draw_master" && shotHistory.some(function(s){return s.curve === "Draw";})) unlocked = true;
+    if (a.id === "practice_5" && pracCount >= 5) unlocked = true;
+    if (unlocked) {
+      newlyUnlocked.push(a);
+      unlockedAchievements.push(a.id);
+    }
+  });
+
+  if (newlyUnlocked.length > 0) {
+    try { localStorage.setItem("gt_achievements", JSON.stringify(unlockedAchievements)); } catch(e) {}
+    showAchievement(newlyUnlocked[0]);
+  }
+}
+
+function showAchievement(a) {
+  document.getElementById("ach-icon").textContent = a.icon;
+  document.getElementById("ach-name").textContent = a.name;
+  document.getElementById("ach-desc").textContent = a.desc;
+  var popup = document.getElementById("achievement-popup");
+  popup.classList.add("show");
+  playAchievementSound();
+  setTimeout(function() { popup.classList.remove("show"); }, 4000);
+}
+
+function playAchievementSound() {
+  if (!audioCtx) return;
+  var notes = [523.25, 659.25, 783.99, 1046.5];
+  notes.forEach(function(freq, i) {
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + i * 0.1);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime + i * 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + i * 0.1 + 0.3);
+    osc.start(audioCtx.currentTime + i * 0.1);
+    osc.stop(audioCtx.currentTime + i * 0.1 + 0.3);
+  });
+}
+
+// ===== CLUB-SPECIFIC SOUNDS =====
+function playClubSound(club) {
+  if (!audioCtx) return;
+  var baseFreq = 400;
+  if (club === "Driver") baseFreq = 350;
+  else if (club === "Putter") baseFreq = 600;
+  else if (club.indexOf("W") >= 0) baseFreq = 380;
+  else if (club.indexOf("i") >= 0) baseFreq = 450;
+  else baseFreq = 500;
+
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+  var filt = audioCtx.createBiquadFilter();
+  osc.connect(filt);
+  filt.connect(gain);
+  gain.connect(audioCtx.destination);
+  filt.type = "lowpass";
+  filt.frequency.setValueAtTime(baseFreq * 4, audioCtx.currentTime);
+  filt.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.15);
+  osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(baseFreq * 2.5, audioCtx.currentTime + 0.2);
+  gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.25);
+}
+
+// ===== DATA EXPORT =====
+function exportCSV() {
+  if (shotHistory.length === 0) { showToast("내보낼 데이터가 없습니다"); return; }
+  var csv = "Club,Time,Points,MaxSpeed,Angle,Apex,Curve,Distance\n";
+  shotHistory.forEach(function(s) {
+    csv += s.club + "," + s.time + "," + s.points + "," + s.maxSpeed + ","
+      + (s.angle !== null ? s.angle : "") + "," + (s.apex || "") + ","
+      + (s.curve || "") + "," + (s.distance || "") + "\n";
+  });
+  var blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8" });
+  var url = URL.createObjectURL(blob);
+  var link = document.createElement("a");
+  link.download = "golf-tracker-export-" + new Date().toISOString().slice(0,10) + ".csv";
+  link.href = url;
+  link.click();
+  URL.revokeObjectURL(url);
+  showToast("CSV 내보내기 완료");
+}
+
+function shareShot(idx) {
+  var shot = shotHistory[idx];
+  if (!shot) return;
+  var text = "Golf Ball Tracker Pro - " + shot.club + "\n"
+    + "포인트: " + shot.points + " | 속도: " + shot.maxSpeed
+    + " | 각도: " + (shot.angle !== null ? shot.angle + "°" : "--")
+    + " | 구질: " + (shot.curve || "--");
+  if (navigator.share) {
+    navigator.share({ title: "Golf Tracker - " + shot.club, text: text }).catch(function(){});
+  } else {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(function() { showToast("클립보드에 복사됨"); });
+    }
+  }
+}
+
+// ===== ENHANCED DASHBOARD =====
+function drawHeatmap(canvasId) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas || shotHistory.length < 2) return;
+  var dpr = 2;
+  var cw = canvas.clientWidth;
+  var ch = canvas.clientHeight;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  var ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  ctx.fillStyle = "rgba(0,0,0,0.3)";
+  ctx.fillRect(0, 0, cw, ch);
+
+  var endpoints = [];
+  shotHistory.forEach(function(s) {
+    if (s.trail && s.trail.length > 1) {
+      var last = s.trail[s.trail.length - 1];
+      endpoints.push({ x: last.x, y: last.y });
+    }
+  });
+  if (endpoints.length < 2) return;
+
+  var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  endpoints.forEach(function(p) { minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x); minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y); });
+  var rx = maxX - minX || 1;
+  var ry = maxY - minY || 1;
+  var pad = 20;
+  var sx = (cw - pad * 2) / rx;
+  var sy = (ch - pad * 2) / ry;
+  var s = Math.min(sx, sy);
+
+  endpoints.forEach(function(ep) {
+    var px = pad + (ep.x - minX) * s;
+    var py = pad + (ep.y - minY) * s;
+    var grad = ctx.createRadialGradient(px, py, 0, px, py, 30);
+    grad.addColorStop(0, "rgba(0,255,136,0.35)");
+    grad.addColorStop(0.5, "rgba(0,255,136,0.1)");
+    grad.addColorStop(1, "rgba(0,255,136,0)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(px - 30, py - 30, 60, 60);
+
+    ctx.beginPath();
+    ctx.arc(px, py, 3, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(0,255,136,0.8)";
+    ctx.fill();
+  });
+
+  ctx.font = "bold 9px -apple-system, sans-serif";
+  ctx.fillStyle = "rgba(255,255,255,0.2)";
+  ctx.textAlign = "center";
+  ctx.fillText("SHOT ENDPOINTS HEATMAP", cw / 2, ch - 8);
+}
+
+function drawMiniChart(canvasId, dataArr, color, label) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas || dataArr.length === 0) return;
+  var dpr = 2;
+  var cw = canvas.clientWidth;
+  var ch = canvas.clientHeight;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  var ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  var maxVal = Math.max.apply(null, dataArr) || 1;
+  var barW = Math.min(20, (cw - 20) / dataArr.length - 2);
+  var gap = 2;
+  var totalW = dataArr.length * (barW + gap);
+  var startX = (cw - totalW) / 2;
+
+  dataArr.forEach(function(val, i) {
+    var barH = (val / maxVal) * (ch - 25);
+    var x = startX + i * (barW + gap);
+    var y = ch - 15 - barH;
+
+    var grad = ctx.createLinearGradient(x, y + barH, x, y);
+    grad.addColorStop(0, color + "33");
+    grad.addColorStop(1, color + "cc");
+    ctx.fillStyle = grad;
+    ctx.fillRect(x, y, barW, barH);
+
+    ctx.fillStyle = "rgba(255,255,255,0.15)";
+    ctx.font = "7px -apple-system, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(val, x + barW / 2, y - 3);
+  });
+
+  ctx.fillStyle = "rgba(255,255,255,0.2)";
+  ctx.font = "bold 8px -apple-system, sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(label, cw / 2, ch - 3);
+}
+
 // ===== INIT =====
 init();
 
@@ -1677,6 +2869,12 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 } else {
   alert("\uc774 \ube0c\ub77c\uc6b0\uc800\ub294 \uce74\uba54\ub77c\ub97c \uc9c0\uc6d0\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.");
 }
+
+// ===== SERVICE WORKER =====
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").catch(function(){});
+}
+
 </script>
 </body>
 </html>
