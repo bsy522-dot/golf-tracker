@@ -1,4 +1,4 @@
-const CACHE_NAME = 'golf-tracker-v3';
+const CACHE_NAME = 'golf-tracker-v4';
 const ASSETS = [
   './',
   './index.html',
@@ -29,17 +29,34 @@ self.addEventListener('activate', function(e) {
 
 self.addEventListener('fetch', function(e) {
   if (e.request.method !== 'GET') return;
-  e.respondWith(
-    fetch(e.request).then(function(resp) {
-      if (resp.ok) {
-        var clone = resp.clone();
-        caches.open(CACHE_NAME).then(function(cache) {
-          cache.put(e.request, clone);
+  var url = e.request.url;
+  if (url.endsWith('.html') || url.endsWith('/')) {
+    e.respondWith(
+      fetch(e.request).then(function(resp) {
+        if (resp.ok) {
+          var clone = resp.clone();
+          caches.open(CACHE_NAME).then(function(cache) {
+            cache.put(e.request, clone);
+          });
+        }
+        return resp;
+      }).catch(function() {
+        return caches.match(e.request);
+      })
+    );
+  } else {
+    e.respondWith(
+      caches.match(e.request).then(function(cached) {
+        return cached || fetch(e.request).then(function(resp) {
+          if (resp.ok) {
+            var clone = resp.clone();
+            caches.open(CACHE_NAME).then(function(cache) {
+              cache.put(e.request, clone);
+            });
+          }
+          return resp;
         });
-      }
-      return resp;
-    }).catch(function() {
-      return caches.match(e.request);
-    })
-  );
+      })
+    );
+  }
 });
