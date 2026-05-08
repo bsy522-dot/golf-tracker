@@ -6,9 +6,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="description" content="AI-powered golf ball tracker with video recording, slow-mo replay, practice drills, round tracking, achievements">
-<title>Golf Ball Tracker Pro v3</title>
+<meta name="description" content="AI-powered golf ball tracker with video recording, slow-mo replay, practice drills, round tracking, achievements, BGM, warm-up routines">
+<title>Golf Ball Tracker Pro v4</title>
 <style>
+/* ===== CSS VARIABLES (DARK THEME - DEFAULT) ===== */
 :root {
   --primary: #00FF88;
   --primary-dim: rgba(0,255,136,0.15);
@@ -24,7 +25,40 @@
   --radius: 14px;
   --safe-top: max(env(safe-area-inset-top,10px),10px);
   --safe-bottom: max(env(safe-area-inset-bottom,16px),16px);
+  --theme-transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
+
+/* ===== LIGHT THEME ===== */
+html.light-mode {
+  --bg-dark: #f5f5f0;
+  --text: #1a1a1a;
+  --text-dim: rgba(26,26,26,0.45);
+  --bg-card: rgba(255,255,255,0.92);
+  --glass: rgba(255,255,255,0.7);
+  --glass-border: rgba(0,0,0,0.1);
+}
+html.light-mode body { color: var(--text); }
+html.light-mode .icon-btn { color: var(--text); }
+html.light-mode .history-close,
+html.light-mode .dash-close,
+html.light-mode .replay-close,
+html.light-mode .practice-close,
+html.light-mode .round-close { color: var(--text); }
+html.light-mode .club-chip { color: var(--text); }
+html.light-mode .club-chip.selected { color: var(--primary); }
+html.light-mode .ctrl-btn { color: var(--text); }
+html.light-mode .replay-speed-btn { color: var(--text); }
+html.light-mode .replay-speed-btn.active { color: var(--primary); }
+html.light-mode .ghost-btn { color: var(--text); }
+html.light-mode .ghost-btn.active { color: #A855F7; }
+html.light-mode .export-btn { color: var(--text); }
+html.light-mode .hud-label { color: var(--text); }
+html.light-mode #rec-indicator { color: var(--danger); }
+html.light-mode #controls { background: linear-gradient(to top, rgba(245,245,240,0.95) 0%, rgba(245,245,240,0.7) 60%, transparent 100%); }
+html.light-mode #hud-top { background: linear-gradient(to bottom, rgba(245,245,240,0.85) 0%, rgba(245,245,240,0.4) 60%, transparent 100%); }
+html.light-mode #permission-screen { background: linear-gradient(135deg, #e8f0e8 0%, #e8e8f0 50%, #f0f0f0 100%); }
+html.light-mode .perm-logo { background: linear-gradient(135deg, #d0e8d0, #c0d8d0); border-color: rgba(0,255,136,0.25); }
+
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 html, body {
   width:100%; height:100%; overflow:hidden;
@@ -32,6 +66,7 @@ html, body {
   font-family: -apple-system, 'SF Pro Display', 'Pretendard', system-ui, sans-serif;
   user-select:none; -webkit-user-select:none;
   touch-action:manipulation;
+  transition: var(--theme-transition);
 }
 #app { width:100%; height:100dvh; display:flex; flex-direction:column; position:relative; overflow:hidden; }
 
@@ -51,6 +86,7 @@ html, body {
   padding: var(--safe-top) 14px 12px;
   background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
   display:flex; justify-content:space-between; align-items:flex-start;
+  transition: var(--theme-transition);
 }
 .hud-title { display:flex; align-items:center; gap:8px; }
 .status-dot {
@@ -94,6 +130,7 @@ html, body {
   border:1px solid var(--glass-border);
   display:none;
   animation: slideDown 0.3s ease;
+  transition: var(--theme-transition);
 }
 #stats-panel.visible { display:block; }
 .stats-grid {
@@ -126,6 +163,7 @@ html, body {
   cursor:pointer; white-space:nowrap;
   backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
   transition: all 0.2s;
+  position:relative;
 }
 .club-chip:active { transform:scale(0.95); }
 .club-chip.selected {
@@ -133,6 +171,12 @@ html, body {
   border-color: var(--primary);
   color: var(--primary);
   box-shadow: 0 0 12px rgba(0,255,136,0.15);
+}
+.club-chip .ai-badge {
+  position:absolute; top:-6px; right:-4px;
+  background: var(--warning); color:#000;
+  font-size:6px; font-weight:800; padding:1px 4px;
+  border-radius:4px; letter-spacing:0.5px;
 }
 
 /* Settings Panel */
@@ -147,6 +191,7 @@ html, body {
   width:260px; display:none;
   animation: slideDown 0.3s ease;
   max-height:70vh; overflow-y:auto;
+  transition: var(--theme-transition);
 }
 #settings-panel.visible { display:block; }
 .setting-title { font-size:14px; font-weight:800; margin-bottom:16px; letter-spacing:1px; }
@@ -163,6 +208,13 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius:50%; background: var(--primary);
   cursor:pointer; box-shadow: 0 0 8px rgba(0,255,136,0.4);
 }
+input[type="number"] {
+  width:100%; padding:8px 10px; border-radius:8px;
+  border:1px solid var(--glass-border);
+  background:rgba(255,255,255,0.05); color:var(--text);
+  font-size:13px; outline:none;
+}
+input[type="number"]:focus { border-color: var(--primary); }
 
 /* Trail Color Picker */
 .color-options { display:flex; gap:8px; margin-top:8px; }
@@ -203,6 +255,7 @@ input[type="range"]::-webkit-slider-thumb {
   background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 60%, transparent 100%);
   display:flex; align-items:center; justify-content:center; gap:20px;
   flex-shrink:0;
+  transition: var(--theme-transition);
 }
 .ctrl-btn {
   width:48px; height:48px; border-radius:24px;
@@ -242,6 +295,7 @@ input[type="range"]::-webkit-slider-thumb {
   display:flex; flex-direction:column;
   align-items:center; justify-content:center;
   text-align:center; padding:40px;
+  transition: var(--theme-transition);
 }
 #permission-screen.hidden { display:none; }
 .perm-logo {
@@ -279,6 +333,7 @@ input[type="range"]::-webkit-slider-thumb {
 /* ===== HISTORY VIEW ===== */
 #history-view {
   background: var(--bg-dark); z-index:50;
+  transition: var(--theme-transition);
 }
 .history-header {
   padding: var(--safe-top) 16px 12px;
@@ -297,6 +352,16 @@ input[type="range"]::-webkit-slider-thumb {
   text-align:center; padding:60px 20px;
   opacity:0.3; font-size:14px;
 }
+.history-actions { display:flex; gap:8px; padding:8px 16px; border-bottom:1px solid var(--glass-border); }
+.history-action-btn {
+  padding:6px 14px; border-radius:8px;
+  border:1px solid var(--glass-border);
+  background: var(--glass); color: var(--text);
+  font-size:11px; font-weight:600; cursor:pointer;
+  transition: all 0.2s;
+}
+.history-action-btn.active { background: var(--primary-dim); border-color: var(--primary); color: var(--primary); }
+.history-action-btn:active { transform:scale(0.96); }
 .shot-card {
   background: var(--bg-card);
   border:1px solid var(--glass-border);
@@ -305,6 +370,7 @@ input[type="range"]::-webkit-slider-thumb {
   cursor:pointer; transition: all 0.2s;
 }
 .shot-card:active { transform:scale(0.98); }
+.shot-card.compare-selected { border-color: var(--primary); box-shadow: 0 0 12px rgba(0,255,136,0.15); }
 .shot-card-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
 .shot-club { font-size:13px; font-weight:700; color: var(--primary); }
 .shot-time { font-size:10px; opacity:0.3; }
@@ -312,10 +378,19 @@ input[type="range"]::-webkit-slider-thumb {
 .shot-stat-val { font-size:16px; font-weight:700; }
 .shot-stat-label { font-size:9px; opacity:0.35; }
 .shot-card-canvas { width:100%; height:80px; border-radius:8px; margin-top:10px; background:rgba(0,0,0,0.3); }
+.compare-checkbox {
+  width:20px; height:20px; border-radius:6px;
+  border:2px solid var(--glass-border);
+  background:transparent; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; color:var(--primary); transition:all 0.2s;
+}
+.compare-checkbox.checked { border-color:var(--primary); background:var(--primary-dim); }
 
 /* ===== DASHBOARD VIEW ===== */
 #dashboard-view {
   background: var(--bg-dark); z-index:50;
+  transition: var(--theme-transition);
 }
 .dash-header {
   padding: var(--safe-top) 16px 12px;
@@ -335,6 +410,7 @@ input[type="range"]::-webkit-slider-thumb {
   border:1px solid var(--glass-border);
   border-radius: var(--radius);
   padding:20px; margin-bottom:14px;
+  transition: var(--theme-transition);
 }
 .dash-card-title { font-size:11px; opacity:0.4; letter-spacing:1.5px; margin-bottom:12px; font-weight:700; }
 .dash-big-stat { font-size:42px; font-weight:800; }
@@ -539,6 +615,68 @@ input[type="range"]::-webkit-slider-thumb {
   .ghost-toggle { bottom:78px; }
 }
 
+/* ===== v4.0 NEW: COMPARE VIEW ===== */
+#compare-view { background:var(--bg-dark); z-index:56; }
+.compare-header { padding:var(--safe-top) 16px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); }
+.compare-title { font-size:18px; font-weight:800; letter-spacing:1px; }
+.compare-close { width:36px; height:36px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border); color:var(--text); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.compare-body { flex:1; overflow-y:auto; padding:16px; }
+.compare-canvas-wrap { width:100%; aspect-ratio:16/9; background:#111; border-radius:var(--radius); overflow:hidden; margin-bottom:16px; }
+.compare-canvas-wrap canvas { width:100%; height:100%; }
+.compare-table { width:100%; border-collapse:collapse; margin-top:12px; }
+.compare-table th, .compare-table td { padding:8px 6px; text-align:center; font-size:11px; border-bottom:1px solid var(--glass-border); }
+.compare-table th { opacity:0.4; font-weight:600; letter-spacing:1px; }
+.compare-legend { display:flex; gap:12px; justify-content:center; margin-bottom:12px; }
+.compare-legend-item { display:flex; align-items:center; gap:6px; font-size:11px; }
+.compare-legend-dot { width:10px; height:10px; border-radius:5px; }
+
+/* ===== v4.0 NEW: WARM-UP VIEW ===== */
+#warmup-view { background:var(--bg-dark); z-index:50; }
+.warmup-header { padding:var(--safe-top) 16px 12px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--glass-border); }
+.warmup-title { font-size:18px; font-weight:800; letter-spacing:1px; }
+.warmup-close { width:36px; height:36px; border-radius:18px; background:var(--glass); border:1px solid var(--glass-border); color:var(--text); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.warmup-body { flex:1; overflow-y:auto; padding:16px; }
+.warmup-card { background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius); padding:20px; margin-bottom:12px; cursor:pointer; transition:all 0.2s; }
+.warmup-card:active { transform:scale(0.98); }
+.warmup-card-top { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.warmup-icon { font-size:28px; }
+.warmup-name { font-size:15px; font-weight:700; }
+.warmup-desc { font-size:12px; opacity:0.4; line-height:1.6; margin-bottom:8px; }
+.warmup-time { font-size:11px; color:var(--accent); font-weight:600; }
+.warmup-active-display { text-align:center; padding:30px 20px; }
+.warmup-timer-svg { width:160px; height:160px; margin:0 auto 20px; }
+.warmup-timer-text { font-size:36px; font-weight:800; color:var(--primary); }
+.warmup-phase-name { font-size:16px; font-weight:700; margin-top:8px; }
+.warmup-phase-desc { font-size:12px; opacity:0.4; margin-top:4px; }
+
+/* ===== v4.0 NEW: ROUND HISTORY ===== */
+.round-history-card { background:var(--bg-card); border:1px solid var(--glass-border); border-radius:var(--radius); padding:16px; margin-bottom:10px; }
+.round-history-card.best-round { border-color: var(--warning); box-shadow: 0 0 12px rgba(255,184,0,0.15); }
+.round-history-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.round-history-date { font-size:12px; font-weight:600; }
+.round-history-score { font-size:18px; font-weight:800; }
+.round-history-diff { font-size:13px; font-weight:700; }
+.round-history-diff.under-par { color: var(--primary); }
+.round-history-diff.over-par { color: var(--danger); }
+.round-history-diff.even-par { color: var(--warning); }
+
+/* ===== v4.0 NEW: PERFORMANCE TREND CHART ===== */
+.trend-chart { width:100%; height:120px; border-radius:10px; background:rgba(0,0,0,0.3); margin-top:8px; }
+
+/* ===== v4.0 NEW: DISPERSION ANALYSIS ===== */
+.dispersion-stats { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+.dispersion-stat { text-align:center; padding:8px; background:rgba(255,255,255,0.02); border-radius:8px; }
+.dispersion-val { font-size:16px; font-weight:700; }
+.dispersion-label { font-size:9px; opacity:0.35; margin-top:2px; }
+
+/* ===== v4.0 NEW: BGM TOGGLE ===== */
+.bgm-toggle { position:absolute; z-index:20; bottom:108px; left:12px; display:none; }
+.bgm-toggle.visible { display:block; }
+.bgm-btn { padding:6px 10px; border-radius:8px; border:1px solid var(--glass-border);
+  background:var(--glass); color:#fff; font-size:10px; font-weight:600; cursor:pointer;
+  backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+.bgm-btn.active { background:rgba(78,205,196,0.15); border-color:rgba(78,205,196,0.4); color:var(--accent); }
+
 </style>
 </head>
 <body>
@@ -547,7 +685,7 @@ input[type="range"]::-webkit-slider-thumb {
   <div id="permission-screen">
     <div class="perm-logo">&#x26f3;</div>
     <div class="perm-title">Golf Ball Tracker</div>
-    <div class="perm-subtitle">PRO EDITION</div>
+    <div class="perm-subtitle">PRO EDITION v4</div>
     <div class="perm-desc">
       AI &#xae30;&#xbc18; &#xd504;&#xb808;&#xc784; &#xb514;&#xd37c;&#xb7f0;&#xc2f1;&#xc73c;&#xb85c; &#xace8;&#xd504;&#xacf5; &#xada4;&#xc801;&#xc744;<br>&#xc2e4;&#xc2dc;&#xac04;&#xc73c;&#xb85c; &#xcd94;&#xc801;&#xd558;&#xace0; &#xbd84;&#xc11d;&#xd569;&#xb2c8;&#xb2e4;.
     </div>
@@ -590,6 +728,9 @@ input[type="range"]::-webkit-slider-thumb {
       <div class="ghost-toggle" id="ghost-toggle">
         <button class="ghost-btn" id="ghost-btn" onclick="toggleGhost()">&#x1f47b; Ghost</button>
       </div>
+      <div class="bgm-toggle" id="bgm-toggle">
+        <button class="bgm-btn" id="bgm-btn" onclick="toggleBGM()">&#x1f3b5; BGM</button>
+      </div>
 
       <div id="center-guide">
         <div class="guide-circle">&#x26f3;</div>
@@ -612,6 +753,7 @@ input[type="range"]::-webkit-slider-thumb {
         <div class="hud-sub" id="detect-status"></div>
       </div>
       <div class="btn-row">
+        <button class="icon-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="&#xd14c;&#xb9c8; &#xc804;&#xd658;">&#x1f319;</button>
         <button class="icon-btn" onclick="switchCamera()" title="&#xce74;&#xba54;&#xb77c; &#xc804;&#xd658;">&#x1f504;</button>
         <button class="icon-btn" id="settings-btn" onclick="toggleSettings()" title="&#xc124;&#xc815;">&#x2699;&#xfe0f;</button>
       </div>
@@ -664,6 +806,18 @@ input[type="range"]::-webkit-slider-thumb {
         <div class="setting-header"><span>&#xada4;&#xc801; &#xc0c9;&#xc0c1;</span></div>
         <div class="color-options" id="color-options"></div>
       </div>
+      <div class="setting-group">
+        <div class="setting-header"><span>&#xac70;&#xb9ac; &#xcea0;&#xb9ac;&#xbe0c;&#xb808;&#xc774;&#xc158;</span></div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:6px">
+          <input type="number" id="calib-distance" placeholder="&#xae30;&#xc900; &#xac70;&#xb9ac; (&#xbbf8;&#xd130;)" min="1" max="500" style="flex:1">
+          <button class="export-btn" style="flex:0;padding:8px 12px;font-size:10px" onclick="calibrateDistance()">&#xcea0;&#xb9ac;</button>
+        </div>
+        <div class="setting-hint">&#xc54c;&#xb824;&#xc9c4; &#xac70;&#xb9ac;&#xc5d0; &#xacf5;&#xc744; &#xb193;&#xace0; &#xcea0;&#xb9ac;&#xbe0c;&#xb808;&#xc774;&#xc158;&#xd558;&#xc138;&#xc694;</div>
+      </div>
+      <div class="setting-group">
+        <div class="setting-header"><span>BGM &#xc74c;&#xb7c9;</span><span id="val-bgm-vol">50%</span></div>
+        <input type="range" min="0" max="100" value="50" id="slider-bgm-vol" oninput="updateBGMVolume()">
+      </div>
       <div class="setting-hint" style="margin-top:8px">
         &#x1f4a1; &#xd504;&#xb808;&#xc784; &#xb514;&#xd37c;&#xb7f0;&#xc2f1; + &#xbc1d;&#xae30; &#xac10;&#xc9c0; &#xd558;&#xc774;&#xbe0c;&#xb9ac;&#xb4dc; &#xc54c;&#xace0;&#xb9ac;&#xc998;&#xc73c;&#xb85c;<br>
         &#xc815;&#xd655;&#xb3c4;&#xac00; &#xb300;&#xd3ed; &#xd5a5;&#xc0c1;&#xb418;&#xc5c8;&#xc2b5;&#xb2c8;&#xb2e4;.
@@ -713,6 +867,10 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="history-header">
       <div class="history-title">&#xc0f7; &#xd788;&#xc2a4;&#xd1a0;&#xb9ac;</div>
       <button class="history-close" onclick="closeHistory()">&#xd7;</button>
+    </div>
+    <div class="history-actions" id="history-actions">
+      <button class="history-action-btn" id="compare-mode-btn" onclick="toggleCompareMode()">&#xbe44;&#xad50; &#xbaa8;&#xb4dc;</button>
+      <button class="history-action-btn" id="compare-go-btn" onclick="openCompareView()" style="display:none">&#xbe44;&#xad50; &#xbcf4;&#xae30; (0)</button>
     </div>
     <div class="history-body" id="history-body">
       <div class="history-empty" id="history-empty">
@@ -770,6 +928,24 @@ input[type="range"]::-webkit-slider-thumb {
     <div class="round-body" id="round-body"></div>
   </div>
 
+  <!-- Compare View -->
+  <div class="view" id="compare-view">
+    <div class="compare-header">
+      <div class="compare-title">&#xc0f7; &#xbe44;&#xad50;</div>
+      <button class="compare-close" onclick="closeCompare()">&#xd7;</button>
+    </div>
+    <div class="compare-body" id="compare-body"></div>
+  </div>
+
+  <!-- Warm-up View -->
+  <div class="view" id="warmup-view">
+    <div class="warmup-header">
+      <div class="warmup-title">&#xc6cc;&#xbc0d;&#xc5c5;</div>
+      <button class="warmup-close" onclick="closeWarmup()">&#xd7;</button>
+    </div>
+    <div class="warmup-body" id="warmup-body"></div>
+  </div>
+
   <!-- Achievement Popup -->
   <div class="achievement-popup" id="achievement-popup">
     <div class="achievement-icon" id="ach-icon"></div>
@@ -809,6 +985,33 @@ let maxBallSize = 45;
 // Audio context for sound effects
 let audioCtx = null;
 
+// v4.0: Distance calibration
+let calibrationPxPerMeter = 0;
+let calibrationUnit = "px";
+
+// v4.0: Compare mode
+let compareMode = false;
+let compareSelections = [];
+
+// v4.0: Theme
+let darkMode = true;
+
+// v4.0: BGM state
+let bgmPlaying = false;
+let bgmGainNode = null;
+let bgmOscillators = [];
+let bgmVolume = 0.5;
+let bgmInterval = null;
+
+// v4.0: Warm-up
+let warmupActive = null;
+let warmupTimer = null;
+let warmupElapsed = 0;
+let warmupPhaseIdx = 0;
+
+// v4.0: Round history
+let roundHistory = [];
+
 // Trail colors
 const TRAIL_COLORS = [
   { name: "Green", hex: "#00FF88" },
@@ -830,10 +1033,10 @@ const CLUBS = [
 
 // Tutorial steps
 const TUTORIAL_STEPS = [
-  { icon: "\u26f3", title: "Golf Ball Tracker Pro", desc: "AI \uae30\ubc18 \ud504\ub808\uc784 \ub514\ud37c\ub7f0\uc2f1\uc73c\ub85c \uace8\ud504\uacf5 \uada4\uc801\uc744 \uc2e4\uc2dc\uac04 \ucd94\uc801\ud569\ub2c8\ub2e4. \uce74\uba54\ub77c\ub97c \uace8\ud504\uacf5 \ubc29\ud5a5\uc73c\ub85c \ud5a5\ud558\uc138\uc694." },
-  { icon: "\ud83c\udfa5", title: "\ud504\ub808\uc784 \ub514\ud37c\ub7f0\uc2f1", desc: "\uc774\uc804 \ud504\ub808\uc784\uacfc \ube44\uad50\ud558\uc5ec \uc6c0\uc9c1\uc774\ub294 \ubb3c\uccb4\ub97c \uac10\uc9c0\ud569\ub2c8\ub2e4. \ubc1d\uae30 \uac10\uc9c0\uc640 \uacb0\ud569\ud558\uc5ec \uc815\ud655\ub3c4\uac00 \ub192\uc2b5\ub2c8\ub2e4." },
-  { icon: "\ud83d\udcca", title: "\uada4\uc801 \ubd84\uc11d", desc: "\ubc1c\uc0ac \uac01\ub3c4, \ucd5c\uace0\uc810(Apex), \uc18d\ub3c4\ub97c \uc790\ub3d9 \ubd84\uc11d\ud569\ub2c8\ub2e4. \ud074\ub7fd\ubcc4\ub85c \uc0f7 \uae30\ub85d\uc744 \uc800\uc7a5\ud558\uc138\uc694." },
-  { icon: "\ud83c\udfc6", title: "\uc2dc\uc791\ud558\uae30", desc: "START \ubc84\ud2bc\uc744 \ub20c\ub7ec \ud2b8\ub798\ud0b9\uc744 \uc2dc\uc791\ud558\uc138\uc694. \uacf5\uc774 \uac10\uc9c0\ub418\uba74 \uc790\ub3d9\uc73c\ub85c \uada4\uc801\uc774 \uadf8\ub824\uc9d1\ub2c8\ub2e4!" }
+  { icon: "⛳", title: "Golf Ball Tracker Pro", desc: "AI 기반 프레임 디퍼런싱으로 골프공 궤적을 실시간으로 추적합니다. 카메라를 골프공 방향으로 향하세요." },
+  { icon: "🎥", title: "프레임 디퍼런싱", desc: "이전 프레임과 비교하여 움직이는 물체를 감지합니다. 밝기 감지와 결합하여 정확도가 높습니다." },
+  { icon: "📊", title: "궤적 분석", desc: "발사 각도, 최고점(Apex), 속도를 자동 분석합니다. 클럽별로 샷 기록을 저장하세요." },
+  { icon: "🏆", title: "시작하기", desc: "START 버튼을 눌러 트래킹을 시작하세요. 공이 감지되면 자동으로 궤적이 그려집니다!" }
 ];
 
 // DOM references
@@ -849,17 +1052,6 @@ const statsPanel = document.getElementById("stats-panel");
 const scanLine = document.getElementById("scan-line");
 const trackBtn = document.getElementById("track-btn");
 const clubBar = document.getElementById("club-bar");
-
-// ===== INIT =====
-function init() {
-  initClubBar();
-  initColorPicker();
-  loadShotHistory();
-  loadAchievements();
-  if (!localStorage.getItem("gt_tutorial_done")) {
-    showTutorial();
-  }
-}
 
 // ===== AUDIO ENGINE =====
 function initAudio() {
@@ -972,7 +1164,7 @@ function renderTutStep() {
     dots.appendChild(d);
   }
   document.getElementById("tut-next").textContent =
-    tutStep === TUTORIAL_STEPS.length - 1 ? "\uc2dc\uc791!" : "\ub2e4\uc74c";
+    tutStep === TUTORIAL_STEPS.length - 1 ? "시작!" : "다음";
 }
 function nextTutorial() {
   tutStep++;
@@ -991,10 +1183,17 @@ function skipTutorial() {
 function initClubBar() {
   const scroll = document.getElementById("club-scroll");
   scroll.innerHTML = "";
+  var recommended = getRecommendedClub();
   CLUBS.forEach(club => {
     const chip = document.createElement("div");
     chip.className = "club-chip" + (club === selectedClub ? " selected" : "");
     chip.textContent = club;
+    if (recommended && club === recommended) {
+      var badge = document.createElement("span");
+      badge.className = "ai-badge";
+      badge.textContent = "AI SUGGEST";
+      chip.appendChild(badge);
+    }
     chip.onclick = () => selectClub(club);
     scroll.appendChild(chip);
   });
@@ -1002,9 +1201,9 @@ function initClubBar() {
 function selectClub(club) {
   selectedClub = club;
   document.querySelectorAll(".club-chip").forEach(c => {
-    c.classList.toggle("selected", c.textContent === club);
+    c.classList.toggle("selected", c.textContent.replace("AI SUGGEST","") === club);
   });
-  showToast(club + " \uc120\ud0dd");
+  showToast(club + " 선택");
 }
 
 // ===== COLOR PICKER =====
@@ -1046,7 +1245,7 @@ async function initCamera() {
     if (!animId) processFrame();
   } catch (err) {
     console.error("Camera error:", err);
-    alert("\uce74\uba54\ub77c\ub97c \uc5f4 \uc218 \uc5c6\uc2b5\ub2c8\ub2e4.\n\ube0c\ub77c\uc6b0\uc800 \uc124\uc815\uc5d0\uc11c \uce74\uba54\ub77c \uad8c\ud55c\uc744 \ud5c8\uc6a9\ud574\uc8fc\uc138\uc694.\n\n\uc5d0\ub7ec: " + err.message);
+    alert("카메라를 열 수 없습니다.\n브라우저 설정에서 카메라 권한을 허용해주세요.\n\n에러: " + err.message);
   }
 }
 
@@ -1056,7 +1255,7 @@ async function switchCamera() {
   overlay.style.transform = facingMode === "user" ? "scaleX(-1)" : "none";
   prevFrameData = null;
   await initCamera();
-  showToast(facingMode === "user" ? "\uc804\uba74 \uce74\uba54\ub77c" : "\ud6c4\uba74 \uce74\uba54\ub77c");
+  showToast(facingMode === "user" ? "전면 카메라" : "후면 카메라");
 }
 
 function resizeOverlay() {
@@ -1256,6 +1455,15 @@ function analyzeTrajectory(trail) {
   };
 }
 
+// ===== v4.0: FORMAT DISTANCE =====
+function formatDistance(pxDist) {
+  if (calibrationPxPerMeter > 0 && pxDist > 0) {
+    var yards = (pxDist / calibrationPxPerMeter) * 1.09361;
+    return Math.round(yards) + "yd";
+  }
+  return pxDist + "px";
+}
+
 // ===== MAIN PROCESSING LOOP =====
 let frameCount = 0;
 let lastDetectTime = 0;
@@ -1350,7 +1558,7 @@ function processFrame() {
 
       // Trajectory analysis
       const analysis = analyzeTrajectory(trail);
-      document.getElementById("stat-angle").textContent = analysis.angle !== null ? analysis.angle + "\u00b0" : "--";
+      document.getElementById("stat-angle").textContent = analysis.angle !== null ? analysis.angle + "°" : "--";
       document.getElementById("stat-apex").textContent = analysis.apex !== null ? analysis.apex + "px" : "--";
 
       // Draw ball indicator
@@ -1541,7 +1749,7 @@ function processFrame() {
           octx.font = "bold 9px -apple-system, sans-serif";
           octx.fillStyle = "#FFB800aa";
           octx.textAlign = "left";
-          octx.fillText(analysis.angle + "\u00b0", 34, -8);
+          octx.fillText(analysis.angle + "°", 34, -8);
 
           // Curve label
           if (analysis.curve !== "Straight") {
@@ -1554,7 +1762,7 @@ function processFrame() {
     }
 
     // Update status UI
-    detectStatus.textContent = ballFound ? "\uacf5 \uac10\uc9c0\ub428 \u2713" : (lostFrames > 10 ? "\uacf5\uc744 \ucc3e\ub294 \uc911..." : "\ucd94\uc801 \uc911...");
+    detectStatus.textContent = ballFound ? "공 감지됨 ✓" : (lostFrames > 10 ? "공을 찾는 중..." : "추적 중...");
     scanLine.classList.toggle("active", !ballFound && lostFrames > 5);
   }
 
@@ -1578,6 +1786,7 @@ function toggleTracking() {
     scanLine.classList.remove("active");
     clubBar.classList.remove("visible");
     document.getElementById("ghost-toggle").classList.remove("visible");
+    document.getElementById("bgm-toggle").classList.remove("visible");
     document.getElementById("drill-hud").classList.remove("active");
     detectStatus.textContent = "";
     trackBtn.className = "start";
@@ -1598,11 +1807,23 @@ function toggleTracking() {
     statsPanel.classList.add("visible");
     clubBar.classList.add("visible");
     if (shotHistory.length > 0) document.getElementById("ghost-toggle").classList.add("visible");
+    document.getElementById("bgm-toggle").classList.add("visible");
     centerGuide.classList.add("hidden");
     trackBtn.className = "stop";
-    trackBtn.innerHTML = '<span style="font-size:20px">\u25a0</span><span style="font-size:8px;margin-top:2px">STOP</span>';
-    showToast("\ud2b8\ub798\ud0b9 \uc2dc\uc791 - " + selectedClub);
+    trackBtn.innerHTML = '<span style="font-size:20px">■</span><span style="font-size:8px;margin-top:2px">STOP</span>';
+    showToast("트래킹 시작 - " + selectedClub);
     if (navigator.vibrate) navigator.vibrate(30);
+
+    // v4.0: Club recommendation toast
+    var rec = getRecommendedClub();
+    if (rec && rec !== selectedClub) {
+      setTimeout(function() { showToast("AI 추천: " + rec + " 클럽"); }, 2800);
+    }
+
+    // v4.0: BGM auto-start preference
+    if (localStorage.getItem("gt_bgm_autostart") === "1" && !bgmPlaying) {
+      startBGM();
+    }
   }
 }
 
@@ -1647,7 +1868,7 @@ function saveShotToHistory() {
     localStorage.setItem("gt_total", totalShots.toString());
   } catch(e) { /* storage full */ }
 
-  showToast("\uc0f7 \uc800\uc7a5\ub428 - " + selectedClub + " #" + totalShots);
+  showToast("샷 저장됨 - " + selectedClub + " #" + totalShots);
   checkAchievements();
 
   // Drill callback
@@ -1671,11 +1892,56 @@ function loadShotHistory() {
 
 // ===== HISTORY VIEW =====
 function openHistory() {
+  compareMode = false;
+  compareSelections = [];
   document.getElementById("history-view").classList.add("active");
   renderHistory();
 }
 function closeHistory() {
+  compareMode = false;
+  compareSelections = [];
   document.getElementById("history-view").classList.remove("active");
+}
+
+// v4.0: Compare mode toggle
+function toggleCompareMode() {
+  compareMode = !compareMode;
+  compareSelections = [];
+  document.getElementById("compare-mode-btn").classList.toggle("active", compareMode);
+  document.getElementById("compare-go-btn").style.display = compareMode ? "block" : "none";
+  updateCompareGoBtn();
+  renderHistory();
+}
+
+function updateCompareGoBtn() {
+  var btn = document.getElementById("compare-go-btn");
+  btn.textContent = "비교 보기 (" + compareSelections.length + ")";
+  btn.style.opacity = compareSelections.length >= 2 ? "1" : "0.4";
+}
+
+function toggleCompareSelection(idx) {
+  var pos = compareSelections.indexOf(idx);
+  if (pos >= 0) {
+    compareSelections.splice(pos, 1);
+  } else {
+    if (compareSelections.length >= 3) {
+      showToast("최대 3개까지 선택 가능합니다");
+      return;
+    }
+    compareSelections.push(idx);
+  }
+  updateCompareGoBtn();
+  // Update card styling
+  document.querySelectorAll(".shot-card").forEach(function(card, i) {
+    card.classList.toggle("compare-selected", compareSelections.indexOf(i) >= 0);
+    var cb = card.querySelector(".compare-checkbox");
+    if (cb) cb.classList.toggle("checked", compareSelections.indexOf(i) >= 0);
+  });
+
+  // v4.0: Check compare achievement
+  if (compareSelections.length >= 2) {
+    checkAchievements();
+  }
 }
 
 function renderHistory() {
@@ -1691,19 +1957,25 @@ function renderHistory() {
   // Build shot cards
   let html = "";
   shotHistory.forEach((shot, idx) => {
-    html += '<div class="shot-card" onclick="viewShot(' + idx + ')">';
+    var isSelected = compareSelections.indexOf(idx) >= 0;
+    html += '<div class="shot-card' + (isSelected ? ' compare-selected' : '') + '" onclick="' + (compareMode ? 'toggleCompareSelection(' + idx + ')' : 'viewShot(' + idx + ')') + '">';
     html += '<div class="shot-card-top">';
+    if (compareMode) {
+      html += '<div class="compare-checkbox' + (isSelected ? ' checked' : '') + '">' + (isSelected ? '✓' : '') + '</div>';
+    }
     html += '<div class="shot-club">' + shot.club + '</div>';
     html += '<div class="shot-time">' + shot.time + '</div>';
     html += '</div>';
     html += '<div class="shot-stats">';
-    html += '<div><div class="shot-stat-val">' + shot.points + '</div><div class="shot-stat-label">\ud3ec\uc778\ud2b8</div></div>';
-    html += '<div><div class="shot-stat-val">' + shot.maxSpeed + '</div><div class="shot-stat-label">\ucd5c\uace0\uc18d\ub3c4</div></div>';
-    html += '<div><div class="shot-stat-val">' + (shot.angle !== null ? shot.angle + "\u00b0" : "--") + '</div><div class="shot-stat-label">\uac01\ub3c4</div></div>';
-    html += '<div><div class="shot-stat-val">' + (shot.curve || "--") + '</div><div class="shot-stat-label">\uad6c\uc9c8</div></div>';
+    html += '<div><div class="shot-stat-val">' + shot.points + '</div><div class="shot-stat-label">포인트</div></div>';
+    html += '<div><div class="shot-stat-val">' + shot.maxSpeed + '</div><div class="shot-stat-label">최고속도</div></div>';
+    html += '<div><div class="shot-stat-val">' + (shot.angle !== null ? shot.angle + "°" : "--") + '</div><div class="shot-stat-label">각도</div></div>';
+    html += '<div><div class="shot-stat-val">' + (shot.curve || "--") + '</div><div class="shot-stat-label">구질</div></div>';
     html += '</div>';
     html += '<canvas class="shot-card-canvas" id="shot-canvas-' + idx + '"></canvas>';
-    html += '<div style="display:flex;gap:6px;margin-top:8px"><button class="export-btn" style="flex:0" onclick="event.stopPropagation();openReplay(' + idx + ')">\u25b6 \ub9ac\ud50c\ub808\uc774</button><button class="export-btn" style="flex:0" onclick="event.stopPropagation();shareShot(' + idx + ')">\ud83d\udce4 \uacf5\uc720</button></div>';
+    if (!compareMode) {
+      html += '<div style="display:flex;gap:6px;margin-top:8px"><button class="export-btn" style="flex:0" onclick="event.stopPropagation();openReplay(' + idx + ')">▶ 리플레이</button><button class="export-btn" style="flex:0" onclick="event.stopPropagation();shareShot(' + idx + ')">📤 공유</button></div>';
+    }
     html += '</div>';
   });
   body.innerHTML = html;
@@ -1803,18 +2075,18 @@ function renderDashboard() {
   html += '<div class="dash-card">';
   html += '<div class="dash-card-title">SESSION SUMMARY</div>';
   html += '<div class="dash-grid">';
-  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--primary)">' + totalShots + '</div><div class="dash-grid-label">\uc804\uccb4 \uc0f7</div></div>';
-  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--accent)">' + sessionMin + 'm</div><div class="dash-grid-label">\uc5f0\uc2b5 \uc2dc\uac04</div></div>';
-  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:#FFB800">' + topClub + '</div><div class="dash-grid-label">\ucd5c\ub2e4 \uc0ac\uc6a9</div></div>';
-  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:#FF6B9D">' + shotHistory.length + '</div><div class="dash-grid-label">\uc800\uc7a5\ub41c \uc0f7</div></div>';
+  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--primary)">' + totalShots + '</div><div class="dash-grid-label">전체 샷</div></div>';
+  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--accent)">' + sessionMin + 'm</div><div class="dash-grid-label">연습 시간</div></div>';
+  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:#FFB800">' + topClub + '</div><div class="dash-grid-label">최다 사용</div></div>';
+  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:#FF6B9D">' + shotHistory.length + '</div><div class="dash-grid-label">저장된 샷</div></div>';
   html += '</div></div>';
 
   // Averages
   html += '<div class="dash-card">';
   html += '<div class="dash-card-title">AVERAGES</div>';
   html += '<div class="dash-grid">';
-  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--primary)">' + avgAngle + '</div><div class="dash-grid-label">\ud3c9\uade0 \uac01\ub3c4</div></div>';
-  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--accent)">' + avgSpeed + '</div><div class="dash-grid-label">\ud3c9\uade0 \uc18d\ub3c4</div></div>';
+  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--primary)">' + avgAngle + '</div><div class="dash-grid-label">평균 각도</div></div>';
+  html += '<div class="dash-grid-item"><div class="dash-grid-val" style="color:var(--accent)">' + avgSpeed + '</div><div class="dash-grid-label">평균 속도</div></div>';
   html += '</div></div>';
 
   // Club breakdown
@@ -1834,11 +2106,21 @@ function renderDashboard() {
     html += '</div>';
   }
 
-  // Heatmap
+  // Heatmap with Dispersion
   if (shotHistory.length >= 2) {
     html += '<div class="dash-card">';
-    html += '<div class="dash-card-title">SHOT HEATMAP</div>';
+    html += '<div class="dash-card-title">SHOT HEATMAP &amp; DISPERSION</div>';
     html += '<canvas class="heatmap-canvas" id="dash-heatmap"></canvas>';
+    // v4.0: Dispersion stats
+    var dispersion = calcDispersion();
+    if (dispersion) {
+      html += '<div class="dispersion-stats">';
+      html += '<div class="dispersion-stat"><div class="dispersion-val" style="color:var(--primary)">' + dispersion.cep + '</div><div class="dispersion-label">CEP (50%)</div></div>';
+      html += '<div class="dispersion-stat"><div class="dispersion-val" style="color:var(--accent)">' + dispersion.sigma1 + '</div><div class="dispersion-label">1σ 반경</div></div>';
+      html += '<div class="dispersion-stat"><div class="dispersion-val" style="color:#FFB800">' + dispersion.lrBias + '</div><div class="dispersion-label">좌/우 편향</div></div>';
+      html += '<div class="dispersion-stat"><div class="dispersion-val" style="color:#FF6B9D">' + dispersion.lsBias + '</div><div class="dispersion-label">장/단 편향</div></div>';
+      html += '</div>';
+    }
     html += '</div>';
   }
 
@@ -1847,6 +2129,17 @@ function renderDashboard() {
     html += '<div class="dash-card">';
     html += '<div class="dash-card-title">SPEED TREND</div>';
     html += '<canvas class="mini-chart" id="dash-speed-chart"></canvas>';
+    html += '</div>';
+  }
+
+  // v4.0: Performance Trend Charts
+  if (shotHistory.length >= 3) {
+    html += '<div class="dash-card">';
+    html += '<div class="dash-card-title">PERFORMANCE TRENDS</div>';
+    html += '<canvas class="trend-chart" id="trend-speed-chart"></canvas>';
+    html += '<div style="font-size:9px;opacity:0.3;text-align:center;margin:4px 0 8px">최고 속도 추세</div>';
+    html += '<canvas class="trend-chart" id="trend-angle-chart"></canvas>';
+    html += '<div style="font-size:9px;opacity:0.3;text-align:center;margin-top:4px">각도 일관성 추세</div>';
     html += '</div>';
   }
 
@@ -1859,7 +2152,7 @@ function renderDashboard() {
     html += '<span style="font-size:20px">' + a.icon + '</span>';
     html += '<div><div style="font-size:12px;font-weight:600">' + a.name + '</div>';
     html += '<div style="font-size:10px;opacity:0.5">' + a.desc + '</div></div>';
-    if (done) html += '<span style="color:var(--primary);font-size:14px;margin-left:auto">\u2713</span>';
+    if (done) html += '<span style="color:var(--primary);font-size:14px;margin-left:auto">✓</span>';
     html += '</div>';
   });
   html += '</div>';
@@ -1868,35 +2161,37 @@ function renderDashboard() {
   html += '<div class="dash-card">';
   html += '<div class="dash-card-title">DATA</div>';
   html += '<div class="export-row">';
-  html += '<button class="export-btn" onclick="exportCSV()">\ud83d\udcc4 CSV \ub0b4\ubcf4\ub0b4\uae30</button>';
-  html += '<button class="export-btn" onclick="clearAllData()">\ud83d\uddd1 \ub370\uc774\ud130 \ucd08\uae30\ud654</button>';
+  html += '<button class="export-btn" onclick="exportCSV()">📄 CSV 내보내기</button>';
+  html += '<button class="export-btn" onclick="clearAllData()">🗑 데이터 초기화</button>';
   html += '</div></div>';
 
   // Tips
   html += '<div class="dash-card">';
-  html += '<div class="dash-card-title">\ud300</div>';
+  html += '<div class="dash-card-title">팁</div>';
   html += '<div style="font-size:12px;opacity:0.4;line-height:1.8">';
-  html += '\u2022 \ubc1d\uc740 \uc57c\uc678\uc5d0\uc11c \uac00\uc7a5 \uc815\ud655\ud569\ub2c8\ub2e4<br>';
-  html += '\u2022 \ud6c4\ubc29 \uce74\uba54\ub77c\ub85c \uacf5 \ub4a4\uc5d0\uc11c \ucd2c\uc601\ud558\uc138\uc694<br>';
-  html += '\u2022 \ubbfc\uac10\ub3c4\ub97c \uc870\uc808\ud558\uc5ec \ud658\uacbd\uc5d0 \ub9de\ucd94\uc138\uc694<br>';
-  html += '\u2022 \uace0\uc2a4\ud2b8 \ud2b8\ub808\uc77c\ub85c \uc774\uc804 \uc0f7\uacfc \ube44\uad50\ud558\uc138\uc694';
+  html += '• 밝은 야외에서 가장 정확합니다<br>';
+  html += '• 후방 카메라로 공 뒤에서 촬영하세요<br>';
+  html += '• 민감도를 조절하여 환경에 맞추세요<br>';
+  html += '• 고스트 트레일로 이전 샷과 비교하세요';
   html += '</div></div>';
 
   body.innerHTML = html;
 
   // Render charts after DOM update
   setTimeout(function() {
-    drawHeatmap("dash-heatmap");
+    drawHeatmapWithDispersion("dash-heatmap");
     if (shotHistory.length >= 3) {
       var speeds = shotHistory.slice(0, 20).reverse().map(function(s){return s.maxSpeed||0;});
       drawMiniChart("dash-speed-chart", speeds, "#4ECDC4", "RECENT SHOTS MAX SPEED");
+      drawTrendChart("trend-speed-chart", shotHistory.slice(0,30).reverse().map(function(s){return s.maxSpeed||0;}), "최고 속도");
+      drawTrendChart("trend-angle-chart", shotHistory.slice(0,30).reverse().map(function(s){return s.angle !== null ? s.angle : 0;}), "각도");
     }
   }, 50);
 }
 
 
 function clearAllData() {
-  if (!confirm("\ubaa8\ub4e0 \ub370\uc774\ud130\ub97c \uc0ad\uc81c\ud558\uc2dc\uaca0\uc2b5\ub2c8\uae4c?")) return;
+  if (!confirm("모든 데이터를 삭제하시겠습니까?")) return;
   shotHistory = [];
   totalShots = 0;
   unlockedAchievements = [];
@@ -1904,8 +2199,10 @@ function clearAllData() {
   localStorage.removeItem("gt_total");
   localStorage.removeItem("gt_achievements");
   localStorage.removeItem("gt_practice_count");
+  localStorage.removeItem("gt_round_history");
+  localStorage.removeItem("gt_calibration");
   PRACTICE_DRILLS.forEach(function(d) { localStorage.removeItem("gt_drill_" + d.id); });
-  showToast("\ub370\uc774\ud130 \ucd08\uae30\ud654 \uc644\ub8cc");
+  showToast("데이터 초기화 완료");
   closeDashboard();
 }
 
@@ -1939,15 +2236,15 @@ function captureScreenshot() {
   cctx.font = "bold 11px -apple-system, sans-serif";
   cctx.fillStyle = "#fff";
   cctx.textAlign = "left";
-  cctx.fillText("GOLF BALL TRACKER PRO \u00b7 " + selectedClub, 12, ch - 14);
+  cctx.fillText("GOLF BALL TRACKER PRO · " + selectedClub, 12, ch - 14);
   cctx.textAlign = "right";
-  cctx.fillText(trail.length + " pts \u00b7 " + new Date().toLocaleString("ko-KR"), cw - 12, ch - 14);
+  cctx.fillText(trail.length + " pts · " + new Date().toLocaleString("ko-KR"), cw - 12, ch - 14);
 
   // Watermark
   cctx.font = "bold 9px -apple-system, sans-serif";
   cctx.fillStyle = "rgba(0,255,136,0.3)";
   cctx.textAlign = "right";
-  cctx.fillText("BALL TRACKER PRO", cw - 12, 20);
+  cctx.fillText("BALL TRACKER PRO v4", cw - 12, 20);
 
   // Download
   const link = document.createElement("a");
@@ -1955,7 +2252,7 @@ function captureScreenshot() {
   link.href = captureCanvas.toDataURL("image/png");
   link.click();
 
-  showToast("\uc2a4\ud06c\ub9b0\uc0f7 \uc800\uc7a5\ub428");
+  showToast("스크린샷 저장됨");
 }
 
 
@@ -2367,6 +2664,14 @@ function closePractice() {
 function renderPractice() {
   var body = document.getElementById("practice-body");
   var html = '<div style="margin-bottom:16px"><div style="font-size:13px;opacity:0.4;line-height:1.7">구조화된 연습 드릴로 실력을 향상시키세요.<br>각 드릴은 5샷으로 구성됩니다.</div></div>';
+
+  // v4.0: Warm-up button
+  html += '<div class="drill-card" onclick="openWarmup()" style="border-color:rgba(78,205,196,0.3)">';
+  html += '<div class="drill-card-top"><div class="drill-icon">🧘</div><div class="drill-name">워밍업 루틴</div></div>';
+  html += '<div class="drill-desc">본격적인 연습 전 워밍업 루틴을 진행하세요</div>';
+  html += '<div class="drill-target" style="color:var(--accent)">5가지 루틴 선택 가능</div>';
+  html += '</div>';
+
   PRACTICE_DRILLS.forEach(function(d) {
     var best = localStorage.getItem("gt_drill_" + d.id) || "--";
     html += '<div class="drill-card" onclick="startDrill(\x27' + d.id + '\x27)">';
@@ -2507,6 +2812,8 @@ function renderRound() {
       html += renderScorecard();
       html += '</div>';
     }
+    // v4.0: Round History
+    html += renderRoundHistory();
     html += '</div>';
   } else {
     html += '<div class="round-hole-display">';
@@ -2618,7 +2925,12 @@ function nextHole() {
     var diffStr = diff === 0 ? "E" : (diff > 0 ? "+" + diff : diff.toString());
     showToast("라운드 완료! 총 " + total + " (" + diffStr + ")");
     playAchievementSound();
+
+    // v4.0: Save round to history
+    saveRoundToHistory(roundScores.slice());
+
     try { localStorage.setItem("gt_round_scores", JSON.stringify(roundScores)); } catch(e){}
+    checkAchievements();
   } else {
     roundHole++;
     showToast("Hole " + roundHole + " (Par " + roundPars[roundHole - 1] + ")");
@@ -2626,7 +2938,7 @@ function nextHole() {
   renderRound();
 }
 
-// ===== ACHIEVEMENT SYSTEM =====
+// ===== ACHIEVEMENT SYSTEM (v4.0 EXPANDED: 8 -> 16) =====
 const ACHIEVEMENTS = [
   { id:"first_shot", name:"첫 샷!", desc:"첫 번째 샷을 트래킹하세요", icon:"🏌️" },
   { id:"ten_shots", name:"10샷 달성", desc:"10개의 샷을 트래킹하세요", icon:"🎯" },
@@ -2635,7 +2947,16 @@ const ACHIEVEMENTS = [
   { id:"high_speed", name:"파워 히터", desc:"속도 500 이상의 샷을 기록하세요", icon:"💪" },
   { id:"high_angle", name:"하이 볼러", desc:"45° 이상의 발사각을 기록하세요", icon:"🚀" },
   { id:"draw_master", name:"드로우 마스터", desc:"Draw 구질의 샷을 기록하세요", icon:"↩️" },
-  { id:"practice_5", name:"연습벌레", desc:"5회 이상 연습 모드를 완료하세요", icon:"📚" }
+  { id:"practice_5", name:"연습벌레", desc:"5회 이상 연습 모드를 완료하세요", icon:"📚" },
+  // v4.0: 8 new achievements
+  { id:"round_complete", name:"라운드 완주", desc:"18홀 라운드를 완주하세요", icon:"⛳" },
+  { id:"under_par", name:"언더파", desc:"라운드에서 언더파를 기록하세요", icon:"🥇" },
+  { id:"hundred_shots", name:"100샷 달성", desc:"100개의 샷을 트래킹하세요", icon:"💯" },
+  { id:"night_owl", name:"야간 력객", desc:"야간(21:00~05:00)에 샷을 트래킹하세요", icon:"🦉" },
+  { id:"speed_demon", name:"스피드 데몬", desc:"속도 800 이상의 샷을 기록하세요", icon:"👹" },
+  { id:"fade_master", name:"페이드 마스터", desc:"Fade 구질의 샷을 기록하세요", icon:"↪️" },
+  { id:"warmup_complete", name:"워밍업 완료", desc:"워밍업 루틴을 완료하세요", icon:"🧘" },
+  { id:"compare_shots", name:"비교 분석가", desc:"2개 이상의 샷을 비교하세요", icon:"🔍" }
 ];
 
 let unlockedAchievements = [];
@@ -2653,6 +2974,7 @@ function checkAchievements() {
   shotHistory.forEach(function(s) { clubSet[s.club] = true; });
   var clubCount = Object.keys(clubSet).length;
   var pracCount = parseInt(localStorage.getItem("gt_practice_count") || "0");
+  var hour = new Date().getHours();
 
   ACHIEVEMENTS.forEach(function(a) {
     if (unlockedAchievements.indexOf(a.id) >= 0) return;
@@ -2665,6 +2987,18 @@ function checkAchievements() {
     if (a.id === "high_angle" && shotHistory.some(function(s){return s.angle >= 45;})) unlocked = true;
     if (a.id === "draw_master" && shotHistory.some(function(s){return s.curve === "Draw";})) unlocked = true;
     if (a.id === "practice_5" && pracCount >= 5) unlocked = true;
+    // v4.0 new achievements
+    if (a.id === "round_complete" && roundHistory.length > 0) unlocked = true;
+    if (a.id === "under_par") {
+      var parTotal = roundPars.reduce(function(a,b){return a+b;},0);
+      unlocked = roundHistory.some(function(r){ return r.total < parTotal; });
+    }
+    if (a.id === "hundred_shots" && totalShots >= 100) unlocked = true;
+    if (a.id === "night_owl" && totalShots > 0 && (hour >= 21 || hour < 5)) unlocked = true;
+    if (a.id === "speed_demon" && shotHistory.some(function(s){return s.maxSpeed >= 800;})) unlocked = true;
+    if (a.id === "fade_master" && shotHistory.some(function(s){return s.curve === "Fade";})) unlocked = true;
+    if (a.id === "warmup_complete" && localStorage.getItem("gt_warmup_done") === "1") unlocked = true;
+    if (a.id === "compare_shots" && compareSelections.length >= 2) unlocked = true;
     if (unlocked) {
       newlyUnlocked.push(a);
       unlockedAchievements.push(a.id);
@@ -2766,8 +3100,8 @@ function shareShot(idx) {
   }
 }
 
-// ===== ENHANCED DASHBOARD =====
-function drawHeatmap(canvasId) {
+// ===== ENHANCED DASHBOARD: HEATMAP WITH DISPERSION =====
+function drawHeatmapWithDispersion(canvasId) {
   var canvas = document.getElementById(canvasId);
   if (!canvas || shotHistory.length < 2) return;
   var dpr = 2;
@@ -2799,6 +3133,54 @@ function drawHeatmap(canvasId) {
   var sy = (ch - pad * 2) / ry;
   var s = Math.min(sx, sy);
 
+  // Calculate average endpoint for dispersion
+  var avgX = 0, avgY = 0;
+  endpoints.forEach(function(ep) { avgX += ep.x; avgY += ep.y; });
+  avgX /= endpoints.length;
+  avgY /= endpoints.length;
+  var avgPx = pad + (avgX - minX) * s;
+  var avgPy = pad + (avgY - minY) * s;
+
+  // Calculate sigma (standard deviation)
+  var sumSqDist = 0;
+  endpoints.forEach(function(ep) {
+    var dx = (ep.x - avgX) * s;
+    var dy = (ep.y - avgY) * s;
+    sumSqDist += dx*dx + dy*dy;
+  });
+  var sigma = Math.sqrt(sumSqDist / endpoints.length);
+  var cep = sigma * 0.6745; // CEP = 0.6745 * sigma for circular
+
+  // Draw dispersion circles (2sigma, 1sigma)
+  if (endpoints.length >= 3) {
+    ctx.beginPath();
+    ctx.arc(avgPx, avgPy, sigma * 2, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(255,184,0,0.15)";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.beginPath();
+    ctx.arc(avgPx, avgPy, sigma, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(255,184,0,0.25)";
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Average center marker
+    ctx.beginPath();
+    ctx.arc(avgPx, avgPy, 4, 0, Math.PI * 2);
+    ctx.fillStyle = "rgba(255,184,0,0.8)";
+    ctx.fill();
+    ctx.font = "bold 8px -apple-system, sans-serif";
+    ctx.fillStyle = "rgba(255,184,0,0.6)";
+    ctx.textAlign = "center";
+    ctx.fillText("AVG", avgPx, avgPy - 8);
+  }
+
+  // Heatmap dots
   endpoints.forEach(function(ep) {
     var px = pad + (ep.x - minX) * s;
     var py = pad + (ep.y - minY) * s;
@@ -2818,7 +3200,44 @@ function drawHeatmap(canvasId) {
   ctx.font = "bold 9px -apple-system, sans-serif";
   ctx.fillStyle = "rgba(255,255,255,0.2)";
   ctx.textAlign = "center";
-  ctx.fillText("SHOT ENDPOINTS HEATMAP", cw / 2, ch - 8);
+  ctx.fillText("SHOT ENDPOINTS HEATMAP + DISPERSION", cw / 2, ch - 8);
+}
+
+// v4.0: Calculate dispersion stats
+function calcDispersion() {
+  var endpoints = [];
+  shotHistory.forEach(function(s) {
+    if (s.trail && s.trail.length > 1) {
+      var last = s.trail[s.trail.length - 1];
+      var first = s.trail[0];
+      endpoints.push({ x: last.x - first.x, y: last.y - first.y });
+    }
+  });
+  if (endpoints.length < 3) return null;
+
+  var avgX = 0, avgY = 0;
+  endpoints.forEach(function(p) { avgX += p.x; avgY += p.y; });
+  avgX /= endpoints.length;
+  avgY /= endpoints.length;
+
+  var sumSq = 0;
+  endpoints.forEach(function(p) {
+    var dx = p.x - avgX;
+    var dy = p.y - avgY;
+    sumSq += dx*dx + dy*dy;
+  });
+  var sigma = Math.sqrt(sumSq / endpoints.length);
+  var cep = Math.round(sigma * 0.6745);
+
+  var lrBias = avgX > 5 ? "우측 +" + Math.round(avgX) : (avgX < -5 ? "좌측 " + Math.round(avgX) : "중앙");
+  var lsBias = avgY > 5 ? "짧음 +" + Math.round(avgY) : (avgY < -5 ? "김 " + Math.round(avgY) : "적정");
+
+  return {
+    cep: cep + "px",
+    sigma1: Math.round(sigma) + "px",
+    lrBias: lrBias,
+    lsBias: lsBias
+  };
 }
 
 function drawMiniChart(canvasId, dataArr, color, label) {
@@ -2861,13 +3280,682 @@ function drawMiniChart(canvasId, dataArr, color, label) {
   ctx.fillText(label, cw / 2, ch - 3);
 }
 
+// ===== v4.0: PERFORMANCE TREND CHART =====
+function drawTrendChart(canvasId, dataArr, label) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas || dataArr.length < 3) return;
+  var dpr = 2;
+  var cw = canvas.clientWidth;
+  var ch = canvas.clientHeight;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  var ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  var maxVal = Math.max.apply(null, dataArr) || 1;
+  var minVal = Math.min.apply(null, dataArr);
+  var range = maxVal - minVal || 1;
+  var pad = 25;
+
+  // Calculate trend direction
+  var firstHalf = dataArr.slice(0, Math.floor(dataArr.length / 2));
+  var secondHalf = dataArr.slice(Math.floor(dataArr.length / 2));
+  var avgFirst = firstHalf.reduce(function(a,b){return a+b;},0) / firstHalf.length;
+  var avgSecond = secondHalf.reduce(function(a,b){return a+b;},0) / secondHalf.length;
+  var improving = avgSecond >= avgFirst;
+  var trendColor = improving ? "#00FF88" : "#FF3366";
+
+  // Draw grid lines
+  ctx.strokeStyle = "rgba(255,255,255,0.04)";
+  ctx.lineWidth = 1;
+  for (var gy = 0; gy < 4; gy++) {
+    var yy = pad + gy * ((ch - pad * 2) / 3);
+    ctx.beginPath(); ctx.moveTo(pad, yy); ctx.lineTo(cw - pad, yy); ctx.stroke();
+  }
+
+  // Plot line
+  ctx.beginPath();
+  var stepX = (cw - pad * 2) / (dataArr.length - 1);
+  dataArr.forEach(function(val, i) {
+    var x = pad + i * stepX;
+    var y = pad + (1 - (val - minVal) / range) * (ch - pad * 2);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = trendColor + "22";
+  ctx.lineWidth = 10;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.stroke();
+
+  ctx.beginPath();
+  dataArr.forEach(function(val, i) {
+    var x = pad + i * stepX;
+    var y = pad + (1 - (val - minVal) / range) * (ch - pad * 2);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = trendColor;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Dots
+  dataArr.forEach(function(val, i) {
+    var x = pad + i * stepX;
+    var y = pad + (1 - (val - minVal) / range) * (ch - pad * 2);
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = trendColor;
+    ctx.fill();
+  });
+
+  // Labels
+  ctx.font = "bold 9px -apple-system, sans-serif";
+  ctx.fillStyle = "rgba(255,255,255,0.3)";
+  ctx.textAlign = "left";
+  ctx.fillText(label, pad, ch - 4);
+  ctx.textAlign = "right";
+  ctx.fillStyle = trendColor;
+  ctx.fillText(improving ? "↑ 향상" : "↓ 하락", cw - pad, ch - 4);
+}
+
+// ===== v4.0: DARK/LIGHT MODE TOGGLE =====
+function toggleTheme() {
+  darkMode = !darkMode;
+  document.documentElement.classList.toggle("light-mode", !darkMode);
+  var btn = document.getElementById("theme-toggle-btn");
+  btn.textContent = darkMode ? "🌙" : "☀️";
+  try { localStorage.setItem("gt_theme", darkMode ? "dark" : "light"); } catch(e) {}
+}
+
+function loadTheme() {
+  var saved = localStorage.getItem("gt_theme");
+  if (saved === "light") {
+    darkMode = false;
+    document.documentElement.classList.add("light-mode");
+    document.getElementById("theme-toggle-btn").textContent = "☀️";
+  }
+}
+
+// ===== v4.0: DISTANCE CALIBRATION =====
+function calibrateDistance() {
+  var input = document.getElementById("calib-distance");
+  var meters = parseFloat(input.value);
+  if (!meters || meters <= 0) {
+    showToast("유효한 거리를 입력하세요");
+    return;
+  }
+  // Use the last shot distance as reference
+  if (shotHistory.length === 0 || !shotHistory[0].distance) {
+    showToast("먼저 샷을 트래킹하세요");
+    return;
+  }
+  var lastDist = shotHistory[0].distance;
+  calibrationPxPerMeter = lastDist / meters;
+  calibrationUnit = "yd";
+  try { localStorage.setItem("gt_calibration", JSON.stringify({ pxPerMeter: calibrationPxPerMeter })); } catch(e) {}
+  showToast("캘리브레이션 완료: " + Math.round(calibrationPxPerMeter) + "px/m");
+}
+
+function loadCalibration() {
+  try {
+    var saved = localStorage.getItem("gt_calibration");
+    if (saved) {
+      var data = JSON.parse(saved);
+      calibrationPxPerMeter = data.pxPerMeter || 0;
+      if (calibrationPxPerMeter > 0) calibrationUnit = "yd";
+    }
+  } catch(e) {}
+}
+
+// ===== v4.0: CLUB RECOMMENDATION AI =====
+function getRecommendedClub() {
+  if (shotHistory.length < 10) return null;
+
+  var clubStats = {};
+  shotHistory.forEach(function(s) {
+    if (!clubStats[s.club]) clubStats[s.club] = { distances:[], angles:[], speeds:[], curves:{} };
+    var cs = clubStats[s.club];
+    if (s.distance > 0) cs.distances.push(s.distance);
+    if (s.angle !== null) cs.angles.push(s.angle);
+    if (s.maxSpeed > 0) cs.speeds.push(s.maxSpeed);
+    if (s.curve) cs.curves[s.curve] = (cs.curves[s.curve]||0) + 1;
+  });
+
+  var bestClub = null;
+  var bestScore = -1;
+
+  for (var club in clubStats) {
+    var cs = clubStats[club];
+    if (cs.distances.length < 2) continue;
+
+    var avgDist = cs.distances.reduce(function(a,b){return a+b;},0) / cs.distances.length;
+    var avgAngle = cs.angles.length > 0 ? cs.angles.reduce(function(a,b){return a+b;},0) / cs.angles.length : 0;
+
+    // Angle consistency (lower deviation = better)
+    var angleDev = 0;
+    if (cs.angles.length > 1) {
+      cs.angles.forEach(function(a) { angleDev += Math.abs(a - avgAngle); });
+      angleDev /= cs.angles.length;
+    }
+
+    // Curve tendency (more straight = better)
+    var straightPct = (cs.curves["Straight"] || 0) / cs.distances.length;
+
+    // Score: distance * 0.4 + consistency * 0.3 + straight * 0.3
+    var score = (avgDist / 500) * 0.4 + Math.max(0, 1 - angleDev / 20) * 0.3 + straightPct * 0.3;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestClub = club;
+    }
+  }
+
+  return bestClub;
+}
+
+// ===== v4.0: MULTI-SHOT COMPARISON VIEW =====
+function openCompareView() {
+  if (compareSelections.length < 2) {
+    showToast("2개 이상의 샷을 선택하세요");
+    return;
+  }
+  // Trigger compare achievement
+  checkAchievements();
+  document.getElementById("compare-view").classList.add("active");
+  renderCompare();
+}
+
+function closeCompare() {
+  document.getElementById("compare-view").classList.remove("active");
+}
+
+function renderCompare() {
+  var body = document.getElementById("compare-body");
+  var colors = ["#00FF88", "#4ECDC4", "#FF6B9D"];
+  var shots = compareSelections.map(function(idx) { return shotHistory[idx]; });
+  var html = '';
+
+  // Legend
+  html += '<div class="compare-legend">';
+  shots.forEach(function(s, i) {
+    html += '<div class="compare-legend-item"><div class="compare-legend-dot" style="background:' + colors[i] + '"></div>' + s.club + ' #' + (compareSelections[i]+1) + '</div>';
+  });
+  html += '</div>';
+
+  // Canvas for overlaid trails
+  html += '<div class="compare-canvas-wrap"><canvas id="compare-canvas"></canvas></div>';
+
+  // Stats comparison table
+  html += '<div class="dash-card"><div class="dash-card-title">샷 비교</div>';
+  html += '<table class="compare-table"><tr><th></th>';
+  shots.forEach(function(s, i) {
+    html += '<th style="color:' + colors[i] + '">' + s.club + '</th>';
+  });
+  html += '</tr>';
+
+  var rows = [
+    { label: "포인트", key: "points" },
+    { label: "최고속도", key: "maxSpeed" },
+    { label: "각도", key: "angle", suffix: "°" },
+    { label: "거리", key: "distance", suffix: "px" },
+    { label: "구질", key: "curve" }
+  ];
+
+  rows.forEach(function(row) {
+    html += '<tr><td style="opacity:0.5">' + row.label + '</td>';
+    shots.forEach(function(s, i) {
+      var val = s[row.key];
+      if (val === null || val === undefined) val = "--";
+      else if (row.suffix) val = val + row.suffix;
+      html += '<td style="font-weight:700;color:' + colors[i] + '">' + val + '</td>';
+    });
+    html += '</tr>';
+  });
+  html += '</table></div>';
+
+  body.innerHTML = html;
+
+  // Draw comparison canvas
+  setTimeout(function() { drawCompareCanvas(shots, colors); }, 50);
+}
+
+function drawCompareCanvas(shots, colors) {
+  var canvas = document.getElementById("compare-canvas");
+  if (!canvas) return;
+  var dpr = 2;
+  var cw = canvas.parentElement.clientWidth;
+  var ch = canvas.parentElement.clientHeight || cw * 9 / 16;
+  canvas.width = cw * dpr;
+  canvas.height = ch * dpr;
+  canvas.style.width = cw + "px";
+  canvas.style.height = ch + "px";
+  var ctx = canvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+
+  ctx.fillStyle = "#111";
+  ctx.fillRect(0, 0, cw, ch);
+
+  // Find combined bounds
+  var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  shots.forEach(function(s) {
+    if (!s.trail) return;
+    s.trail.forEach(function(p) {
+      minX = Math.min(minX, p.x); maxX = Math.max(maxX, p.x);
+      minY = Math.min(minY, p.y); maxY = Math.max(maxY, p.y);
+    });
+  });
+  var rangeX = maxX - minX || 1;
+  var rangeY = maxY - minY || 1;
+  var pad = 30;
+  var sx = (cw - pad*2) / rangeX;
+  var sy = (ch - pad*2) / rangeY;
+  var sc = Math.min(sx, sy);
+  var ox = pad + (cw - pad*2 - rangeX*sc)/2;
+  var oy = pad + (ch - pad*2 - rangeY*sc)/2;
+
+  function tx(p) { return ox + (p.x - minX) * sc; }
+  function ty(p) { return oy + (p.y - minY) * sc; }
+
+  // Grid
+  ctx.strokeStyle = "rgba(255,255,255,0.03)";
+  ctx.lineWidth = 1;
+  for (var gx = 0; gx < cw; gx += 40) { ctx.beginPath(); ctx.moveTo(gx,0); ctx.lineTo(gx,ch); ctx.stroke(); }
+  for (var gy = 0; gy < ch; gy += 40) { ctx.beginPath(); ctx.moveTo(0,gy); ctx.lineTo(cw,gy); ctx.stroke(); }
+
+  // Draw each shot trail
+  shots.forEach(function(s, i) {
+    if (!s.trail || s.trail.length < 2) return;
+    var t = s.trail;
+    var color = colors[i];
+
+    // Glow
+    ctx.beginPath();
+    ctx.moveTo(tx(t[0]), ty(t[0]));
+    for (var j = 1; j < t.length; j++) ctx.lineTo(tx(t[j]), ty(t[j]));
+    ctx.strokeStyle = color + "20";
+    ctx.lineWidth = 10;
+    ctx.lineCap = "round";
+    ctx.stroke();
+
+    // Line
+    ctx.beginPath();
+    ctx.moveTo(tx(t[0]), ty(t[0]));
+    for (var j = 1; j < t.length; j++) ctx.lineTo(tx(t[j]), ty(t[j]));
+    ctx.strokeStyle = color + "cc";
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    // Start dot
+    ctx.beginPath();
+    ctx.arc(tx(t[0]), ty(t[0]), 4, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // End dot
+    var last = t[t.length-1];
+    ctx.beginPath();
+    ctx.arc(tx(last), ty(last), 5, 0, Math.PI*2);
+    ctx.fillStyle = color;
+    ctx.fill();
+  });
+
+  ctx.font = "bold 9px -apple-system, sans-serif";
+  ctx.fillStyle = "rgba(255,255,255,0.2)";
+  ctx.textAlign = "center";
+  ctx.fillText("MULTI-SHOT COMPARISON", cw/2, ch-8);
+}
+
+// ===== v4.0: ROUND HISTORY =====
+function loadRoundHistory() {
+  try {
+    var saved = localStorage.getItem("gt_round_history");
+    if (saved) roundHistory = JSON.parse(saved);
+  } catch(e) { roundHistory = []; }
+}
+
+function saveRoundToHistory(scores) {
+  var total = scores.reduce(function(a,b){return a+b;},0);
+  var parTotal = roundPars.reduce(function(a,b){return a+b;},0);
+  var diff = total - parTotal;
+  roundHistory.unshift({
+    date: new Date().toLocaleString("ko-KR"),
+    scores: scores,
+    total: total,
+    diff: diff
+  });
+  if (roundHistory.length > 20) roundHistory.pop();
+  try { localStorage.setItem("gt_round_history", JSON.stringify(roundHistory)); } catch(e) {}
+}
+
+function renderRoundHistory() {
+  if (roundHistory.length === 0) return '';
+  var html = '<div style="margin-top:24px;text-align:left">';
+  html += '<div style="font-size:14px;font-weight:800;margin-bottom:12px;letter-spacing:1px">라운드 기록</div>';
+
+  // Find best round
+  var bestIdx = 0;
+  roundHistory.forEach(function(r, i) {
+    if (r.total < roundHistory[bestIdx].total) bestIdx = i;
+  });
+
+  roundHistory.forEach(function(r, i) {
+    var isBest = i === bestIdx;
+    var diffStr = r.diff === 0 ? "E" : (r.diff > 0 ? "+" + r.diff : r.diff.toString());
+    var diffClass = r.diff < 0 ? "under-par" : (r.diff > 0 ? "over-par" : "even-par");
+    html += '<div class="round-history-card' + (isBest ? ' best-round' : '') + '">';
+    html += '<div class="round-history-top">';
+    html += '<div class="round-history-date">' + r.date + (isBest ? ' 🏆' : '') + '</div>';
+    html += '<div><span class="round-history-score">' + r.total + '</span> ';
+    html += '<span class="round-history-diff ' + diffClass + '">' + diffStr + '</span></div>';
+    html += '</div></div>';
+  });
+  html += '</div>';
+  return html;
+}
+
+// ===== v4.0: WARM-UP ROUTINES =====
+const WARMUP_ROUTINES = [
+  { id:"stretch", name:"스트레칭", desc:"상체/하체 스트레칭으로 근육 풀기", duration:120, icon:"🧘", phases:[
+    { name:"목/어깨 스트레칭", dur:30 },
+    { name:"허리 회전 스트레칭", dur:30 },
+    { name:"햇스트링 스트레칭", dur:30 },
+    { name:"전신 스트레칭", dur:30 }
+  ]},
+  { id:"chipping", name:"치핑 연습", desc:"그린 주변 치핑 워밍업", duration:180, icon:"⛳", phases:[
+    { name:"SW 치핑 (10yd)", dur:60 },
+    { name:"PW 치핑 (20yd)", dur:60 },
+    { name:"피치샷 연습", dur:60 }
+  ]},
+  { id:"putting", name:"퍼팅 연습", desc:"다양한 거리의 퍼팅 연습", duration:180, icon:"🏌️", phases:[
+    { name:"숙 퍼팅 (3ft)", dur:60 },
+    { name:"미들 퍼팅 (10ft)", dur:60 },
+    { name:"롱 퍼팅 (20ft)", dur:60 }
+  ]},
+  { id:"iron", name:"아이언 연습", desc:"아이언 샷 워밍업", duration:300, icon:"🎯", phases:[
+    { name:"9i 하프스윙", dur:60 },
+    { name:"7i 풀스윙", dur:80 },
+    { name:"5i 풀스윙", dur:80 },
+    { name:"타겟 드릴", dur:80 }
+  ]},
+  { id:"driver", name:"드라이버 연습", desc:"드라이버 샷 워밍업", duration:300, icon:"🚀", phases:[
+    { name:"하프스윙 (50%)", dur:80 },
+    { name:"3/4 스윙", dur:80 },
+    { name:"풀스윙 (80%)", dur:70 },
+    { name:"풀스윙 (100%)", dur:70 }
+  ]}
+];
+
+function openWarmup() {
+  closePractice();
+  document.getElementById("warmup-view").classList.add("active");
+  renderWarmup();
+}
+
+function closeWarmup() {
+  if (warmupTimer) {
+    clearInterval(warmupTimer);
+    warmupTimer = null;
+  }
+  warmupActive = null;
+  document.getElementById("warmup-view").classList.remove("active");
+}
+
+function renderWarmup() {
+  var body = document.getElementById("warmup-body");
+  var html = '';
+
+  if (warmupActive) {
+    // Active warm-up display
+    var routine = warmupActive;
+    var totalDur = routine.duration;
+    var phaseDur = routine.phases[warmupPhaseIdx] ? routine.phases[warmupPhaseIdx].dur : totalDur;
+    var phaseElapsed = warmupElapsed;
+    for (var pi = 0; pi < warmupPhaseIdx; pi++) {
+      phaseElapsed -= routine.phases[pi].dur;
+    }
+    var phaseRemaining = Math.max(0, phaseDur - phaseElapsed);
+    var totalRemaining = Math.max(0, totalDur - warmupElapsed);
+    var progress = warmupElapsed / totalDur;
+    var phaseProgress = phaseElapsed / phaseDur;
+
+    html += '<div class="warmup-active-display">';
+    // SVG circular progress
+    var r = 68;
+    var circum = 2 * Math.PI * r;
+    var dashoffset = circum * (1 - Math.min(1, phaseProgress));
+    html += '<svg class="warmup-timer-svg" viewBox="0 0 160 160">';
+    html += '<circle cx="80" cy="80" r="' + r + '" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>';
+    html += '<circle cx="80" cy="80" r="' + r + '" fill="none" stroke="var(--primary)" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + circum + '" stroke-dashoffset="' + dashoffset + '" transform="rotate(-90 80 80)" style="transition:stroke-dashoffset 1s linear"/>';
+    html += '</svg>';
+
+    var mins = Math.floor(phaseRemaining / 60);
+    var secs = phaseRemaining % 60;
+    html += '<div class="warmup-timer-text">' + mins + ':' + String(secs).padStart(2,'0') + '</div>';
+    html += '<div class="warmup-phase-name">' + routine.phases[warmupPhaseIdx].name + '</div>';
+    html += '<div class="warmup-phase-desc">단계 ' + (warmupPhaseIdx+1) + ' / ' + routine.phases.length + '</div>';
+    html += '<div style="margin-top:16px;font-size:11px;opacity:0.3">전체 남은 시간: ' + Math.floor(totalRemaining/60) + ':' + String(totalRemaining%60).padStart(2,'0') + '</div>';
+    html += '<div style="display:flex;gap:8px;margin-top:20px;justify-content:center">';
+    html += '<button class="round-start-btn" style="width:auto;padding:12px 24px;background:var(--glass);color:var(--text);border:1px solid var(--glass-border)" onclick="closeWarmup()">중단</button>';
+    html += '<button class="round-start-btn" style="width:auto;padding:12px 24px" onclick="skipWarmupPhase()">다음 단계</button>';
+    html += '</div></div>';
+  } else {
+    html += '<div style="margin-bottom:16px"><div style="font-size:13px;opacity:0.4;line-height:1.7">본격적인 연습 전 워밍업 루틴을 선택하세요.</div></div>';
+    WARMUP_ROUTINES.forEach(function(w) {
+      var mins = Math.floor(w.duration / 60);
+      html += '<div class="warmup-card" onclick="startWarmup(\x27' + w.id + '\x27)">';
+      html += '<div class="warmup-card-top"><div class="warmup-icon">' + w.icon + '</div><div class="warmup-name">' + w.name + '</div></div>';
+      html += '<div class="warmup-desc">' + w.desc + '</div>';
+      html += '<div class="warmup-time">' + mins + '분 | ' + w.phases.length + '단계</div>';
+      html += '</div>';
+    });
+  }
+  body.innerHTML = html;
+}
+
+function startWarmup(routineId) {
+  var routine = WARMUP_ROUTINES.find(function(w) { return w.id === routineId; });
+  if (!routine) return;
+  warmupActive = routine;
+  warmupElapsed = 0;
+  warmupPhaseIdx = 0;
+
+  showToast(routine.name + " 시작!");
+  playPhaseChangeSound();
+
+  warmupTimer = setInterval(function() {
+    warmupElapsed++;
+    // Check phase transition
+    var elapsed = warmupElapsed;
+    var newPhaseIdx = 0;
+    for (var i = 0; i < routine.phases.length; i++) {
+      if (elapsed >= routine.phases[i].dur) {
+        elapsed -= routine.phases[i].dur;
+        newPhaseIdx = i + 1;
+      } else {
+        break;
+      }
+    }
+    if (newPhaseIdx !== warmupPhaseIdx && newPhaseIdx < routine.phases.length) {
+      warmupPhaseIdx = newPhaseIdx;
+      playPhaseChangeSound();
+      showToast(routine.phases[warmupPhaseIdx].name);
+    }
+    if (warmupElapsed >= routine.duration) {
+      completeWarmup();
+      return;
+    }
+    renderWarmup();
+  }, 1000);
+
+  renderWarmup();
+}
+
+function skipWarmupPhase() {
+  if (!warmupActive) return;
+  var remaining = 0;
+  for (var i = 0; i <= warmupPhaseIdx; i++) {
+    remaining += warmupActive.phases[i].dur;
+  }
+  warmupElapsed = remaining;
+  warmupPhaseIdx++;
+  if (warmupPhaseIdx >= warmupActive.phases.length) {
+    completeWarmup();
+  } else {
+    playPhaseChangeSound();
+    showToast(warmupActive.phases[warmupPhaseIdx].name);
+    renderWarmup();
+  }
+}
+
+function completeWarmup() {
+  clearInterval(warmupTimer);
+  warmupTimer = null;
+  showToast(warmupActive.name + " 완료!");
+  playAchievementSound();
+  warmupActive = null;
+  localStorage.setItem("gt_warmup_done", "1");
+  checkAchievements();
+  renderWarmup();
+}
+
+function playPhaseChangeSound() {
+  if (!audioCtx) return;
+  var osc = audioCtx.createOscillator();
+  var gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(660, audioCtx.currentTime);
+  osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1);
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+  osc.start();
+  osc.stop(audioCtx.currentTime + 0.3);
+}
+
+// ===== v4.0: BGM SYSTEM =====
+function toggleBGM() {
+  if (bgmPlaying) {
+    stopBGM();
+  } else {
+    startBGM();
+  }
+}
+
+function startBGM() {
+  if (!audioCtx) initAudio();
+  if (bgmPlaying) return;
+  bgmPlaying = true;
+  document.getElementById("bgm-btn").classList.add("active");
+  localStorage.setItem("gt_bgm_autostart", "1");
+
+  bgmGainNode = audioCtx.createGain();
+  bgmGainNode.gain.setValueAtTime(bgmVolume * 0.08, audioCtx.currentTime);
+  bgmGainNode.connect(audioCtx.destination);
+
+  // Pentatonic notes: C D E G A in multiple octaves
+  var pentatonic = [261.63, 293.66, 329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
+  var noteIdx = 0;
+  var patternStep = 0;
+
+  function playBGMNote() {
+    if (!bgmPlaying || !audioCtx) return;
+
+    // Arpeggiated pattern
+    var note = pentatonic[noteIdx % pentatonic.length];
+    var now = audioCtx.currentTime;
+
+    // Soft pad oscillator
+    var osc = audioCtx.createOscillator();
+    var oscGain = audioCtx.createGain();
+    var filter = audioCtx.createBiquadFilter();
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(note, now);
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(1200, now);
+    oscGain.gain.setValueAtTime(0, now);
+    oscGain.gain.linearRampToValueAtTime(1, now + 0.3);
+    oscGain.gain.setValueAtTime(1, now + 1.5);
+    oscGain.gain.linearRampToValueAtTime(0, now + 2.5);
+
+    osc.connect(filter);
+    filter.connect(oscGain);
+    oscGain.connect(bgmGainNode);
+    osc.start(now);
+    osc.stop(now + 2.8);
+
+    // Secondary harmonic (5th above, very quiet)
+    if (patternStep % 2 === 0) {
+      var osc2 = audioCtx.createOscillator();
+      var g2 = audioCtx.createGain();
+      osc2.type = "sine";
+      osc2.frequency.setValueAtTime(note * 1.5, now);
+      g2.gain.setValueAtTime(0, now);
+      g2.gain.linearRampToValueAtTime(0.3, now + 0.5);
+      g2.gain.linearRampToValueAtTime(0, now + 2.0);
+      osc2.connect(g2);
+      g2.connect(bgmGainNode);
+      osc2.start(now);
+      osc2.stop(now + 2.2);
+    }
+
+    noteIdx = (noteIdx + 1) % pentatonic.length;
+    patternStep++;
+
+    // Vary rhythm slightly for natural feel
+    if (patternStep % 8 === 0) {
+      noteIdx = Math.floor(Math.random() * 3); // Jump to lower register occasionally
+    }
+  }
+
+  playBGMNote();
+  bgmInterval = setInterval(function() {
+    if (bgmPlaying) playBGMNote();
+  }, 2200);
+}
+
+function stopBGM() {
+  bgmPlaying = false;
+  document.getElementById("bgm-btn").classList.remove("active");
+  localStorage.setItem("gt_bgm_autostart", "0");
+  if (bgmInterval) {
+    clearInterval(bgmInterval);
+    bgmInterval = null;
+  }
+  if (bgmGainNode) {
+    bgmGainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+  }
+}
+
+function updateBGMVolume() {
+  bgmVolume = parseInt(document.getElementById("slider-bgm-vol").value) / 100;
+  document.getElementById("val-bgm-vol").textContent = Math.round(bgmVolume * 100) + "%";
+  if (bgmGainNode && bgmPlaying) {
+    bgmGainNode.gain.setValueAtTime(bgmVolume * 0.08, audioCtx.currentTime);
+  }
+}
+
 // ===== INIT =====
+function init() {
+  loadTheme();
+  loadCalibration();
+  loadRoundHistory();
+  initClubBar();
+  initColorPicker();
+  loadShotHistory();
+  loadAchievements();
+  if (!localStorage.getItem("gt_tutorial_done")) {
+    showTutorial();
+  }
+}
+
 init();
 
 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
   // Wait for user tap on permission screen
 } else {
-  alert("\uc774 \ube0c\ub77c\uc6b0\uc800\ub294 \uce74\uba54\ub77c\ub97c \uc9c0\uc6d0\ud558\uc9c0 \uc54a\uc2b5\ub2c8\ub2e4.");
+  alert("이 브라우저는 카메라를 지원하지 않습니다.");
 }
 
 // ===== SERVICE WORKER =====
