@@ -50,7 +50,7 @@ function showCourseSimulator(){
     html+='<div style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap">';
     for(var k=0;k<9;k++){
       var done=k<scores.length;var cur=k===currentHole;
-      html+='<div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.75em;font-weight:600;'+(cur?'background:rgba(0,180,216,0.3);color:#00B4D8;border:1px solid #00B4D8':done?'background:rgba(0,255,136,0.15);color:#00FF88;border:1px solid rgba(0,255,136,0.3)':'background:rgba(255,255,255,0.04);color:#666;border:1px solid rgba(255,255,255,0.08)')+'">'+(k+1)+'</div>';
+      html+='<div style="width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.75em;font-weight:600;'+(cur?'background:rgba(0,180,216,0.3);color:#00B4D8;border:1px solid #00B4D8':done?'background:rgba(0,255,136,0.15);color:#00FF88;border:1px solid rgba(0,255,136,0.3)':'background:rgba(255,255,255,0.04);color:#666;border:1px solid rgba(255,255,255,0.08)')+'">'+( k+1)+'</div>';
     }
     html+='</div>';
     html+='<div class="v6-card"><h3>Hole '+(currentHole+1)+' &mdash; Par '+h.par+' &middot; '+h.dist+'yd</h3>';
@@ -131,7 +131,7 @@ function showPracticePlanner(){
     var areas=[{id:'driving',name:'드라이버'},{id:'iron',name:'아이언'},{id:'chipping',name:'숏게임'},{id:'putting',name:'퍼팅'},{id:'bunker',name:'벙커'},{id:'course',name:'코스 플레이'}];
     for(var i=0;i<areas.length;i++){
       var active=goals.focusAreas.indexOf(areas[i].id)!==-1;
-      html+='<span class="v6-tag '+(active?'v6-tag-active':'v6-tag-inactive')+'" onclick="window._v6ToggleFocus(\''+areas[i].id+'\')">'+ areas[i].name+'</span>';
+      html+='<span class="v6-tag '+(active?'v6-tag-active':'v6-tag-inactive')+'" onclick="window._v6ToggleFocus(\''+areas[i].id+'\')">'+areas[i].name+'</span>';
     }
     html+='</div>';
     html+='<div style="margin-top:12px;display:flex;gap:8px">';
@@ -161,7 +161,7 @@ function showPracticePlanner(){
 
 function calcStreak(practiced){var d=new Date(),s=0;while(true){var ds=d.toISOString().slice(0,10);if(practiced[ds]){s++;d.setDate(d.getDate()-1)}else break}return s}
 function countThisWeek(practiced){var now=new Date(),day=now.getDay()||7,mon=new Date(now);mon.setDate(now.getDate()-(day-1));var c=0;for(var i=0;i<7;i++){var d=new Date(mon);d.setDate(mon.getDate()+i);var ds=d.toISOString().slice(0,10);if(practiced[ds])c++}return c}
-function buildCalendar(practiced){var now=new Date(),y=now.getFullYear(),m=now.getMonth();var first=new Date(y,m,1),last=new Date(y,m+1,0);var startDay=first.getDay()||7;var html='<div class="v6-cal-grid">';var days=['월','화','수','목','금','토','일'];for(var d=0;d<7;d++)html+='<div class="v6-cal-header">'+days[d]+'</div>';for(var e=1;e<startDay;e++)html+='<div class="v6-cal-day v6-cal-empty"></div>';var today=todayStr();for(var dd=1;dd<=last.getDate();dd++){var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');var isToday=ds===today;var done=practiced[ds];html+='<div class="v6-cal-day'+(done?' v6-cal-done':'')+(isToday?' v6-cal-today':'')+'">'+ dd+'</div>'}html+='</div>';return html}
+function buildCalendar(practiced){var now=new Date(),y=now.getFullYear(),m=now.getMonth();var first=new Date(y,m,1),last=new Date(y,m+1,0);var startDay=first.getDay()||7;var html='<div class="v6-cal-grid">';var days=['월','화','수','목','금','토','일'];for(var d=0;d<7;d++)html+='<div class="v6-cal-header">'+days[d]+'</div>';for(var e=1;e<startDay;e++)html+='<div class="v6-cal-day v6-cal-empty"></div>';var today=todayStr();for(var dd=1;dd<=last.getDate();dd++){var ds=y+'-'+String(m+1).padStart(2,'0')+'-'+String(dd).padStart(2,'0');var isToday=ds===today;var done=practiced[ds];html+='<div class="v6-cal-day'+(done?' v6-cal-done':'')+(isToday?' v6-cal-today':'')+'">'+dd+'</div>'}html+='</div>';return html}
 
 window._v6ToggleFocus=function(area){var g=lsGet('goals',{sessionsPerWeek:3,minutesPerSession:30,focusAreas:['driving','iron','putting']});var idx=g.focusAreas.indexOf(area);if(idx===-1)g.focusAreas.push(area);else g.focusAreas.splice(idx,1);lsSet('goals',g);showPracticePlanner()};
 window._v6CompletePractice=function(){var min=parseInt(document.getElementById('v6-practice-min').value)||30;var practiced=lsGet('practiced',{});practiced[todayStr()]={minutes:min,timestamp:Date.now()};lsSet('practiced',practiced);playSfx('goal');showToast('오늘 연습 '+min+'분 완료! 수고했어요!');showPracticePlanner()};
@@ -322,13 +322,13 @@ function showJournal(){
   html+='<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">';
   var moods=[{id:'great',emoji:'&#128170;',label:'컨디션 최고'},{id:'good',emoji:'&#128077;',label:'좋음'},{id:'normal',emoji:'&#128528;',label:'보통'},{id:'tired',emoji:'&#128564;',label:'피곤'},{id:'bad',emoji:'&#128078;',label:'나쁨'}];
   for(var m=0;m<moods.length;m++){
-    html+='<span class="v6-tag v6-tag-inactive" id="v6-mood-'+moods[m].id+'" onclick="window._v6SelectMood(\''+moods[m].id+'\')">'+ moods[m].emoji+' '+moods[m].label+'</span>';
+    html+='<span class="v6-tag v6-tag-inactive" id="v6-mood-'+moods[m].id+'" onclick="window._v6SelectMood(\''+moods[m].id+'\')">'+moods[m].emoji+' '+moods[m].label+'</span>';
   }
   html+='</div>';
   html+='<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">';
   var weathers=[{id:'sunny',label:'&#9728;&#xFE0E; 맑음'},{id:'cloudy',label:'&#9729;&#xFE0E; 흐림'},{id:'rainy',label:'&#127783;&#xFE0E; 비'},{id:'windy',label:'&#127788;&#xFE0E; 바람'}];
   for(var w=0;w<weathers.length;w++){
-    html+='<span class="v6-tag v6-tag-inactive" id="v6-weather-'+weathers[w].id+'" onclick="window._v6SelectWeather(\''+weathers[w].id+'\')">'+ weathers[w].label+'</span>';
+    html+='<span class="v6-tag v6-tag-inactive" id="v6-weather-'+weathers[w].id+'" onclick="window._v6SelectWeather(\''+weathers[w].id+'\')">'+weathers[w].label+'</span>';
   }
   html+='</div>';
   html+='<button class="v6-btn v6-btn-primary" style="margin-top:10px" onclick="window._v6SaveJournal()">저장</button>';
