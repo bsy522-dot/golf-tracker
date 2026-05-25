@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Golf Ball Tracker Pro v6</title>
-<meta name="description" content="AI 프레임 디퍼런싱 골프공 궤적 추적 앱. 코스 전략, AI 인사이트, 클럽 피팅, 연습 플래너, 샷 클러스터링, 리더보드.">
-<meta name="keywords" content="골프,골프공추적,궤적분석,Shot Tracer,골프연습,스윙분석,클럽피팅,코스전략">
-<meta property="og:title" content="Golf Ball Tracker Pro v6">
-<meta property="og:description" content="AI 프레임 디퍼런싱 골프공 궤적 추적. 코스전략 시뮬레이터, 클럽 피팅, AI 인사이트, 연습 플래너.">
+<title>Golf Ball Tracker Pro v7</title>
+<meta name="description" content="AI 프레임 디퍼런싱 골프공 궤적 추적 앱. Strokes Gained 분석, 날씨 보정, 거리 계산기, 클럽 갭 분석, 워밍업 루틴, 코스 전략, 연습 플래너.">
+<meta name="keywords" content="골프,골프공추적,궤적분석,Shot Tracer,Arccos,스트로크게인,날씨보정,클럽피팅,코스전략,비거리계산,골프연습,스윙분석">
+<meta property="og:title" content="Golf Ball Tracker Pro v7">
+<meta property="og:description" content="AI 골프공 궤적 추적 + Strokes Gained + 날씨보정 + 거리계산 + 클럽갭분석 + 워밍업 + 프로필카드">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Golf Ball Tracker Pro v6">
-<meta name="twitter:description" content="AI 골프공 궤적 추적 + 코스전략 + 클럽피팅 + 연습플래너">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2388CCFF'/%3E%3Cstop offset='100%25' stop-color='%2344AA44'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='20' cy='46' r='8' fill='%23fff' stroke='%23ddd' stroke-width='1'/%3E%3Cpath d='M20 46c0-2 1.5-3.5 3-2s1 3-1 4' stroke='%23ccc' stroke-width='.5' fill='none'/%3E%3Cpath d='M20 46c0 1.5-2 2.5-3 1.5s0-3 2-3.5' stroke='%23ccc' stroke-width='.5' fill='none'/%3E%3Cpath d='M22 44Q30 20 48 12' stroke='%2300B4D8' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-dasharray='4 3'/%3E%3Ccircle cx='48' cy='12' r='3' fill='%2300B4D8' opacity='.6'/%3E%3Ccircle cx='38' cy='22' r='2' fill='%2300B4D8' opacity='.4'/%3E%3Crect x='50' y='38' width='2' height='16' rx='1' fill='%23888'/%3E%3Ctriangle%3E%3C/triangle%3E%3Cpath d='M50 38l6-4v8z' fill='%23FF4444'/%3E%3Crect x='0' y='50' width='64' height='14' rx='0' fill='%232D8B2D'/%3E%3C/svg%3E">
+<meta name="twitter:title" content="Golf Ball Tracker Pro v7">
+<meta name="twitter:description" content="AI 골프공 궤적 추적. Strokes Gained, 날씨 영향 분석, 거리 계산, 클럽 갭, 워밍업 루틴, 스마트 목표">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='sky' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0%25' stop-color='%2388CCFF'/%3E%3Cstop offset='100%25' stop-color='%2344AA44'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='20' cy='46' r='8' fill='%23fff' stroke='%23ddd' stroke-width='1'/%3E%3Cpath d='M20 46c0-2 1.5-3.5 3-2s1 3-1 4' stroke='%23ccc' stroke-width='.5' fill='none'/%3E%3Cpath d='M20 46c0 1.5-2 2.5-3 1.5s0-3 2-3.5' stroke='%23ccc' stroke-width='.5' fill='none'/%3E%3Cpath d='M22 44Q30 20 48 12' stroke='%2300B4D8' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-dasharray='4 3'/%3E%3Ccircle cx='48' cy='12' r='3' fill='%2300B4D8' opacity='.6'/%3E%3Ccircle cx='38' cy='22' r='2' fill='%2300B4D8' opacity='.4'/%3E%3Crect x='50' y='38' width='2' height='16' rx='1' fill='%23888'/%3E%3Cpath d='M50 38l6-4v8z' fill='%23FF4444'/%3E%3Crect x='0' y='50' width='64' height='14' rx='0' fill='%232D8B2D'/%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231a5c1a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300B4D8' stroke-width='2.5' fill='none' stroke-dasharray='4 3'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300B4D8'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0a0a0a">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Golf Ball Tracker Pro","applicationCategory":"SportsApplication","operatingSystem":"Web","description":"AI 프레임 디퍼런싱 골프공 궤적 추적 - 코스전략, AI인사이트, 클럽피팅, 연습플래너, 샷클러스터링, 리더보드","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Golf Ball Tracker Pro","applicationCategory":"SportsApplication","operatingSystem":"Web","description":"AI 프레임 디퍼런싱 골프공 궤적 추적 - Strokes Gained 분석, 날씨 영향 보정, 거리 계산기, 클럽 갭 분석, 워밍업 루틴, 코스전략 시뮬레이터, 연습플래너, 골퍼 프로필, 스마�� 목표","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"featureList":"Strokes Gained Analysis, Weather Impact Calculator, Distance Calculator, Club Gapping Chart, Warm-up Routine, Course Strategy Simulator, Practice Planner, Golfer Profile, Smart Goals, Shot Clustering, AI Insights"}</script>
 <meta http-equiv="refresh" content="0;url=golf-ball-tracker.html">
 <style>
 body{margin:0;background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;font-family:sans-serif}
