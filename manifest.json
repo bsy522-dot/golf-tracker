@@ -1,7 +1,7 @@
 {
-  "name": "Golf Ball Tracker Pro v9",
+  "name": "Golf Ball Tracker Pro v10",
   "short_name": "GolfTracker",
-  "description": "AI 프레임 디퍼런싱 골프공 궤적 추적 - 18홀 스코어카드, Strokes Gained 분석, 퍼팅 분석기, 코스 전략 시뮬레이터, 클럽 캘리브레이션, 골프 피트니스, 라운드 일지, 룰북, WHS 핸디캡, 버추얼 캐디 AI, 골프 퀴즈 30문",
+  "description": "AI 프레임 디퍼런싱 골프공 궤적 추적 - 드라이빙레인지 트래커, 라운드 통계 대시보드, 코스 핸디캡 계산기, 샷 셰이프 분석기, 워밍업 루틴 빌더, 스크램블링 트래커, 골프 영양 가이드, 핀 포지션 어프로치 분석, 골프 퀴즈 45문",
   "start_url": "./golf-ball-tracker.html",
   "display": "standalone",
   "orientation": "any",
@@ -23,21 +23,27 @@
       "description": "SG 4영역 분석기"
     },
     {
-      "name": "퍼팅 분석기",
-      "short_name": "퍼팅",
-      "url": "./golf-ball-tracker.html#putting",
-      "description": "거리별 퍼팅 성공률"
+      "name": "드라이빙레인지",
+      "short_name": "레인지",
+      "url": "./golf-ball-tracker.html#range",
+      "description": "드라이빙레인지 세션 트래커"
+    },
+    {
+      "name": "핸디캡 계산기",
+      "short_name": "핸디캡",
+      "url": "./golf-ball-tracker.html#handicap",
+      "description": "WHS 코스 핸디캡 계산"
     },
     {
       "name": "골프 퀴즈",
       "short_name": "퀴즈",
       "url": "./golf-ball-tracker.html#quiz",
-      "description": "골프 지식 퀴즈 30문항"
+      "description": "골프 지식 퀴즈 45문항"
     }
   ],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff' stroke='%23ddd' stroke-width='.5'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300FF88' opacity='.8'/%3E%3Ccircle cx='38' cy='20' r='1.5' fill='%2300FF88' opacity='.4'/%3E%3Ctext x='50' y='28' font-size='8' fill='%2300FF88' opacity='.5' text-anchor='middle' font-family='sans-serif' font-weight='bold'%3Ev9%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff' stroke='%23ddd' stroke-width='.5'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300FF88' opacity='.8'/%3E%3Ccircle cx='38' cy='20' r='1.5' fill='%2300FF88' opacity='.4'/%3E%3Ctext x='50' y='28' font-size='8' fill='%2300FF88' opacity='.5' text-anchor='middle' font-family='sans-serif' font-weight='bold'%3Ev10%3C/text%3E%3C/svg%3E",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
