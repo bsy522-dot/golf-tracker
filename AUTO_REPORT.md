@@ -1,5 +1,57 @@
 # AUTO REPORT - Golf Ball Tracker
 
+## [AUTO] 2026-06-14 golf-tracker v11.0 - 바람보정계산기WindRoseCanvas+클럽비거리트래커BarCanvas+Par별성적분석RadarCanvas+멘탈게임트래커+코스전략저널+라운드비교BarCanvas+주간연습목표6종+스윙템포트레이너Canvas+공유카드Canvas+퀴즈+15(45->60)+업적+12(36->48)+SFX12종+키보드8종
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 바람 보정 계산기 추가 (풍속/풍향/샷방향 → 보정 비거리 + Wind Rose Canvas)
+2. 클럽별 실제 비거리 트래커 (AVG/MAX/MIN/캐리 통계 + Bar Canvas)
+3. 라운드 비교 분석 (2개 라운드 홀별 비교 Bar Canvas)
+4. 스윙 템포 트레이너 (Web Audio 3:1 비율 메트로놈 + Canvas 시각화)
+5. Par 3/4/5 세분 분석 (5축 레이더 Canvas)
+
+**Arccos 대비 열위점 해결:**
+6. 멘탈 게임 트래커 (자신감/집중력/프리샷/압박감 기록 + 통계)
+7. 코스 전략 저널 (코스별 그린스피드/페어웨이/난이도/전략 메모)
+8. 주간 연습 목표 플래너 (6종 목표 + 주간 달성률)
+9. 공유 카드 Canvas (600x380 6통계 PNG다운로드/클립보드)
+10. 클럽별 캐리/토탈 비거리 분리 추적
+
+### 2차: 개발 상세
+
+**v11_patch.js** 신규 (1056줄 ~70KB, 자기완결형 IIFE 패치 모듈)
+
+| 기능 | 설명 |
+|------|------|
+| 바람 보정 계산기 | 풍속/풍향/샷방향 입력 → 맞/뒷/측바람 보정 비거리, Wind Rose Canvas 320x320, 클럽 추천 |
+| 클럽 비거리 트래커 | 13클럽 비거리+캐리 기록, AVG/MAX/MIN/캐리 통계, Bar Canvas 560x300 |
+| Par 성적 분석기 | Par3/4/5 버디/파/보기/더블+ 집계, 5축 Radar Canvas 360x360, 파이하 비율 |
+| 멘탈 게임 트래커 | 자신감/집중력/프리샷루틴/압박감 기록, 4지표 대시보드, 멘탈 팁 |
+| 코스 전략 저널 | 코스명/컨디션/그린스피드/페어웨이/난이도/메모 기록, 50건 저장 |
+| 라운드 비교 분석 | 2라운드 선택 → 총타수/퍼팅/GIR/FIR 비교, 홀별 Bar Canvas 560x220 |
+| 주간 연습 목표 | 레인지/퍼팅/칩/멘탈/영상/스트레칭 6목표, 주간 달성률 프로그레스 |
+| 스윙 템포 트레이너 | 40~120 BPM, 3:1/2:1/2.5:1/4:1 비율, Canvas 280x280 시각화, Web Audio 비트 |
+| 공유 카드 | Canvas 600x380 그래디언트, 6통계, PNG다운로드/클립보드 복사 |
+| 퀴즈 v4 | 15문항 4지선다: 레이업/스윙템포/스팅어/WHS/캐리토탈/딤플/프리샷루틴/SG분석 등 |
+| 업적 +12개 | 바람마스터/클럽분석가/풀세트분석/Par분석가/멘탈트레이너/코스탐험가/비교분석가/주간목표달성/템포트레이너/공유달인/퀴즈v4만점/v11탐험가 |
+| SFX 12종 | wind_calc/club_record/par_view/mental_save/journal_save/compare_view/goal_done/tempo_tick/tempo_accent/share_capture/v11_achieve/v11_quiz |
+| 키보드 8종 | Shift+A/D/E/M/J/O/G/B |
+| 퀵액션 8종 | 좌측 FAB 바람/클럽/Par/멘탈/저널/비교/목표/템포 |
+
+### 3차: 품질 검증
+
+| 항목 | 결과 |
+|------|------|
+| JS 문법 (node -c) | PASS |
+| 괄호 밸런스 | Braces 313/313, Brackets 155/155 |
+| div 태그 | 298/298 |
+| CDN 사용 | 0건 |
+| 개인정보 노출 | 0건 |
+| SW.js 문법 | PASS |
+| manifest.json 문법 | PASS |
+| 총 라인 수 | 1056줄 (v11_patch.js)
+
 ## [AUTO] 2026-05-25 golf-tracker v7.0 - StrokesGained분석+날씨영향계산기+거리계산기+클럽갭분석+워밍업루틴5단계+골퍼프로필+라운드트렌드차트+스마트목표6종+공유카드Canvas+SFX6종+키보드단축키8종
 
 ### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf 대비)
