@@ -1,5 +1,74 @@
 # AUTO REPORT - Golf Ball Tracker
 
+## [AUTO] 2026-06-19 golf-tracker v12.0 - 퍼팅분석대시보드Canvas+샷분산도ScatterCanvas+스트로크게인4분야BarCanvas+코스매니지먼트AI6원칙+컨디션보정계산기BarCanvas+퍼팅그린리딩Canvas+클럽갭분석BarCanvas+시즌통계LineCanvas+퀴즈+15(60->75)+업적+12(48->60)+SFX12종+키보드8종
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 샷 분산도 시각화 추가 (Scatter Plot Canvas, 좌우/장단 편차 기록, 표준편차 타원, 분석 코멘트)
+2. 퍼팅 분석 대시보드 추가 (거리별 성공률, 평균 퍼트, 1퍼트율, 3퍼트 회피율, 추이 Canvas)
+3. 그린 리딩 가이드 추가 (경사/속도/잔디결 → 에임포인트 Canvas, 브레이크량, 체감거리)
+4. 스트로크 게인 세부 분석 (SG: Tee/Approach/Around/Putting 4분야 Bar Canvas)
+5. 시즌 통계 요약 추가 (월별 스코어 추이 Line Canvas, 베스트/평균, GIR 추적)
+
+**Arccos 대비 열위점 해결:**
+1. 코스 매니지먼트 AI 추가 (홀별 공략 추천, 클럽 선택, 리스크/리워드 분석)
+2. 컨디션 보정 계산기 추가 (기온/고도/습도 → 비거리 보정%, Bar Canvas)
+3. 클럽 갭 분석 추가 (14클럽 비거리 갭 시각화, 갭 이슈 감지, Bar Canvas)
+4. 퍼팅 통계 시스템 추가 (거리별/경사별 퍼팅 성공률 분석)
+5. Smart Caddie 대응 (코스 매니지먼트 6원칙 + AI 공략 분석)
+
+### 2차: 개발팀 전체 투입
+
+**v12_patch.js** 신규 (1,129줄 ~76KB, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드
+- v12 전용 CSS 시스템: 오버레이/패널/카드/스탯/테이블/배지/토스트/업적팝업
+- 하단 가로 스크롤 네비게이션 바 (8종 기능 바로가기, v11 FAB 겹침 해결)
+- 반응형 모바일 최적화 (480px 이하 패딩/폰트/버튼 자동 조절)
+- 다크모드 기본 + 라이트모드 호환
+
+#### 백엔드/로직 (8개 신규 기능)
+1. **퍼팅 분석 대시보드**: 거리/퍼트수/경사 기록, 평균퍼트/1퍼트율/3퍼트비율, 거리별(숏/미들/롱) 통계, Bar Canvas 분포도 + Line Canvas 추이
+2. **샷 분산도 분석**: 클럽별 좌우/장단 편차 기록, Scatter Plot Canvas (동심원+타겟), 표준편차 타원 시각화, 경향 분석 코멘트
+3. **스트로크 게인 분석기**: SG Tee/Approach/Around/Putting 4분야, Bar Canvas (양수/음수 양방향), S~D 등급 해석 가이드
+4. **코스 매니지먼트 AI**: 홀번호/Par/거리/해저드/바람/핀위치 입력 → 클럽추천+전략분석, 리스크 레벨(LOW/MED/HIGH), 코스 매니지먼트 6원칙
+5. **컨디션 보정 계산기**: 기온/고도/습도 → 비거리 보정%, Bar Canvas 3요인 시각화, 상세 보정 원칙 표
+6. **퍼팅 그린 리딩**: 거리/경사/경사도/그린스피드/잔디결 → 체감거리+브레이크량+에임포인트, Canvas 그린 시각화 (홀+볼+퍼팅라인+에임포인트)
+7. **클럽 갭 분석**: 13클럽 비거리 설정 → 갭 시각화 Bar Canvas, 갭 이슈 자동 감지 (>20yd/< 5yd), 개선 추천
+8. **시즌 통계 요약**: 라운드 기록 (날짜/스코어/퍼트/GIR), 종합 통계 5지표, Line Canvas 스코어 추이 (Par72 기준선), 최근 라운드 테이블
+
+#### 콘텐츠
+- 퀴즈 v5 +15문 (60→75): 래그퍼트/스트로크게인/스팀프미터/에임포인트/분산도/클럽갭/기온보정/고도보정/Arccos캐디/레이업/3퍼트/내리막퍼팅/미스사이드/ShotTracer/SG해석
+- 업적 +12개 (48→60): 퍼팅분석가/퍼팅기록가/분산도마스터/착탄수집가/SG분석가/SG전문가/AI캐디사용자/컨디션전문가/그린리더/갭분석가/시즌관리자/v12탐험가
+
+#### 오디오
+- SFX 12종: putting_view/putting_record/dispersion_plot/sg_analyze/caddie_advice/condition_calc/green_read/gap_view/season_view/v12_achieve/v12_quiz/quiz_correct12
+
+#### UI/인터랙션
+- 키보드 8종: Shift+P(퍼팅)/T(분산도)/S(SG)/C(AI캐디)/W(컨디션)/R(그린리딩)/K(클럽갭)/N(시즌통계)
+- 하단 스크롤 네비바 8종 (모바일 터치 최적화)
+
+### 3차: 품질팀 검증
+
+- **JS 문법**: node -c PASS
+- **괄호 균형**: 중괄호 292/292, 대괄호 183/183 ALL BALANCED
+- **HTML div 균형**: 298/298 ALL BALANCED
+- **스크립트 로드**: v6~v12 7개 정상 로드 확인
+- **CDN 외부 링크**: 0건
+- **개인정보 노출**: 0건
+- **SEO**: title/desc/keywords/OG/Twitter/JSON-LD 전부 v12 갱신
+- **PWA**: manifest.json v12 shortcuts 8종, sw.js v12 캐시+자동주입
+
+### 4차: 마무리
+
+- index.html: v12.0 SEO 전면 갱신
+- golf-ball-tracker.html: v12.0 SEO+스크립트태그 갱신
+- sw.js: v11→v12 (golf-tracker-v12 캐시, v12_patch.js PRECACHE+자동주입)
+- manifest.json: v12.0 설명+shortcuts 8종(퍼팅/분산도/SG/AI캐디/컨디션/그린리딩/클럽갭/시즌통계)
+
+---
+
 ## [AUTO] 2026-06-14 golf-tracker v11.0 - 바람보정계산기WindRoseCanvas+클럽비거리트래커BarCanvas+Par별성적분석RadarCanvas+멘탈게임트래커+코스전략저널+라운드비교BarCanvas+주간연습목표6종+스윙템포트레이너Canvas+공유카드Canvas+퀴즈+15(45->60)+업적+12(36->48)+SFX12종+키보드8종
 
 ### 1차: 벤치마킹 분석 (Shot Tracer / Arccos 대비)
