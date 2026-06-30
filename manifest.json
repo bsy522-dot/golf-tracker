@@ -1,7 +1,7 @@
 {
-  "name": "Golf Ball Tracker Pro v13",
+  "name": "Golf Ball Tracker Pro v14",
   "short_name": "GolfTracker",
-  "description": "AI 프레임 디퍼런싱 골프공 궤적 추적 - 스코어 히트맵, 핸디캡 트래커, FIR/GIR 레이더, 스윙 노트, 장비 매니저, 드릴 라이브러리, 스태미나 트래커, 프로 비교 분석, 퍼팅 분석, 샷 분산도, 스트로크 게인, 코스 매니지먼트 AI, 컨디션 보정, 그린 리딩, 클럽 갭 분석, 시즌 통계, 바람 보정 계산기, 클럽 비거리 트래커, Par별 성적 분석, 멘탈 게임 트래커, 코스 전략 저널, 라운드 비교 분석, 주간 연습 목표, 스윙 템포 트레이너, 공유 카드, 골프 퀴즈 90문",
+  "description": "AI 프레임 디퍼런싱 골프공 궤적 추적 - 스코어 히트맵, 핸디캡 트래커, FIR/GIR 레이더, 스윙 노트, 장비 매니저, 드릴 라이브러리, 스태미나 트래커, 프로 비교 분석, 퍼팅 분석, 샷 분산도, 스트로크 게인, 코스 매니지먼트 AI, 컨디션 보정, 그린 리딩, 클럽 갭 분석, 시즌 통계, 바람 보정 계산기, 클럽 비거리 트래커, Par별 성적 분석, 멘탈 게임 트래커, 코스 전략 저널, 라운드 비교 분석, 주간 연습 목표, 스윙 템포 트레이너, 공유 카드, 페이스 타이머, 코스 평가, 스윙 스피드 추정기, 퍼팅 패스 분석, 날씨 퍼포먼스, AI 클럽 추천, 피트니스 플래너, 라운드 체크리스트, 골프 퀴즈 105문",
   "start_url": "./golf-ball-tracker.html",
   "display": "standalone",
   "orientation": "any",
@@ -105,11 +105,59 @@
       "short_name": "프로",
       "url": "./golf-ball-tracker.html#procompare",
       "description": "PGA Tour 평균 비교 분석"
+    },
+    {
+      "name": "페이스 타이머",
+      "short_name": "페이스",
+      "url": "./golf-ball-tracker.html#pace",
+      "description": "18홀 페이스 오브 플레이 타이머"
+    },
+    {
+      "name": "코스 평가",
+      "short_name": "코스평가",
+      "url": "./golf-ball-tracker.html#courserate",
+      "description": "코스 레이팅 12개 카테고리 평가"
+    },
+    {
+      "name": "스윙 스피드",
+      "short_name": "스피드",
+      "url": "./golf-ball-tracker.html#swingspeed",
+      "description": "스윙 스피드 & 스매시 팩터 추정"
+    },
+    {
+      "name": "퍼팅 패스",
+      "short_name": "퍼팅패스",
+      "url": "./golf-ball-tracker.html#puttpath",
+      "description": "퍼팅 패스 & 페이스 앵글 분석"
+    },
+    {
+      "name": "날씨 분석",
+      "short_name": "날씨",
+      "url": "./golf-ball-tracker.html#weather",
+      "description": "날씨별 퍼포먼스 분석"
+    },
+    {
+      "name": "AI 클럽 추천",
+      "short_name": "클럽추천",
+      "url": "./golf-ball-tracker.html#clubrec",
+      "description": "상황별 AI 클럽 추천"
+    },
+    {
+      "name": "피트니스 플래너",
+      "short_name": "피트니스",
+      "url": "./golf-ball-tracker.html#fitness",
+      "description": "골프 피트니스 8주 프로그램"
+    },
+    {
+      "name": "라운드 체크리스트",
+      "short_name": "체크리스트",
+      "url": "./golf-ball-tracker.html#checklist",
+      "description": "라운드 전/중/후 체크리스트"
     }
   ],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff' stroke='%23ddd' stroke-width='.5'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300FF88'/%3E%3Ccircle cx='38' cy='20' r='1.5' fill='%2300FF88' opacity='.4'/%3E%3Ctext x='50' y='28' font-size='8' fill='%2300FF88' opacity='.5' text-anchor='middle' font-family='sans-serif' font-weight='bold'%3Ev13%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff' stroke='%23ddd' stroke-width='.5'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300FF88'/%3E%3Ccircle cx='38' cy='20' r='1.5' fill='%2300FF88' opacity='.4'/%3E%3Ctext x='50' y='28' font-size='8' fill='%2300FF88' opacity='.5' text-anchor='middle' font-family='sans-serif' font-weight='bold'%3Ev14%3C/text%3E%3C/svg%3E",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"
