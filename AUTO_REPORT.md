@@ -739,3 +739,101 @@
 - `sw.js` — v14→v15 캐시 + v15_patch.js PRECACHE + 자동주입 로직
 - `manifest.json` — v15 설명 + shortcuts 8종 + 아이콘 v15
 - `AUTO_REPORT.md` — v15.0 보고서 추가
+
+---
+
+## [AUTO] 2026-07-06 golf-tracker v16.0 - 퍼팅매트릭스Canvas+날씨임팩트분석Canvas+미스패턴분석Canvas+GolfIQ레벨Canvas+라운드모멘텀Canvas+연습장로거+골프버킷리스트Canvas+프리샷루틴코치Canvas+퀴즈+15(120→135)+업적+12(96→108)+SFX14종+키보드8종
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf / V1 Golf 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 퍼팅 거리별 성공률 매트릭스 (3~30ft 10구간, Canvas 640x380 히트맵)
+2. 날씨 조건별 스코어 영향 분석 (기온/바람/비/습도 4축 Canvas)
+3. 클럽별 미스샷 패턴 분석 (Pull/Push/Thin/Fat/Shank 5유형 Canvas)
+4. 프리샷 루틴 코치 (3단계 타이머 + 심호흡/정렬/스윙 Canvas 520x340)
+
+**Arccos 대비 열위점 해결:**
+1. Golf IQ 레벨 시스템 (6카테고리 100점 만점, 레이더 Canvas 560x360)
+2. 라운드 모멘텀 흐름 추적기 (18홀 웨이브 차트 Canvas 620x360)
+3. 연습장 세션 로거 (클럽별 타수/목표/메모 기록, 세션 히스토리)
+4. 골프 버킷리스트 트래커 (20개 목표 체크리스트, 달성률 도넛 Canvas)
+
+**Garmin Golf 대비 열위점 해결:**
+1. 실시간 라운드 모멘텀 시각화 (홀별 감정곡선 + 스코어 편차)
+2. 날씨/컨디션 종합 보정 계산기 (기존 v10 확장)
+3. 연습 세션 정량적 추적 (연습장 방문 이력 + 클럽별 통계)
+
+**V1 Golf 대비 열위점 해결:**
+1. 클럽별 미스 패턴 시각화 및 교정 드릴 자동 추천
+2. 프리샷 루틴 타이머 + 일관성 스코어 추적
+3. Golf IQ 다축 평가로 종합 골프 실력 정량화
+
+### 2차: 개발팀 전체 투입
+
+**v16_patch.js** 신규 (1,319줄, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드
+- v16 전용 CSS 시스템: 오버레이/패널/카드/스탯/테이블/배지/토스트/업적팝업
+- 하단 가로 스크롤 네비게이션 바 (9종 기능 바로가기, v15 네비 자동 숨김)
+- 반응형 모바일 최적화 (480px 이하 패딩/폰트/버튼 자동 조절)
+- z-index 10009 (v15 10008 위)
+
+#### Canvas 시각화 (7종)
+1. 퍼팅 매트릭스 히트맵 (640x380, 10구간 x 5레벨 컬러 그리드)
+2. 날씨 임팩트 4축 바 차트 (600x360, 기온/바람/비/습도)
+3. 미스 패턴 5유형 누적 바 (580x380, 클럽별 미스 분포)
+4. Golf IQ 6축 레이더 차트 (560x360, 전략/기술/멘탈/체력/지식/경험)
+5. 모멘텀 웨이브 차트 (620x360, 18홀 흐름 곡선)
+6. 버킷리스트 달성률 도넛 (560x360, 중앙 퍼센트 표시)
+7. 프리샷 루틴 원형 타이머 (520x340, 3단계 진행 아크)
+
+#### 데이터/기능
+- localStorage 키 프리픽스: `gt_v16_` (8종 독립 저장)
+- 퍼팅 매트릭스: 10구간(3~30ft) x 시도/성공 기록, 구간별 성공률 계산
+- 날씨 임팩트: 4조건 5단계 스코어 기록, 조건별 평균/최고/최저 통계
+- 미스 패턴: 14클럽 x 5미스유형 카운터, 교정 드릴 자동 추천
+- Golf IQ: 6카테고리 100점 슬라이더, 레벨 1~10 자동 산정
+- 라운드 모멘텀: 18홀 기분/자신감/스코어 기록, 전환점 분석
+- 연습장 로거: 세션별 클럽/타수/목표/메모, 최근 10회 히스토리
+- 버킷리스트: 20개 골프 목표 체크리스트, 달성 날짜 자동 기록
+- 프리샷 루틴: 3단계(심호흡/정렬/스윙) 커스텀 타이머
+
+#### SFX (Web Audio API)
+- 14종 효과음: putt_matrix, putt_record, weather_open, weather_analyze, miss_open, miss_record, iq_levelup, momentum_open, range_open, range_save, bucket_open, routine_tick, routine_done, v16_achieve
+
+#### 키보드 단축키
+- Shift+P (퍼팅매트릭스), Shift+E (날씨임팩트), Shift+M (미스패턴), Shift+G (GolfIQ)
+- Shift+T (모멘텀), Shift+R (연습장), Shift+B (버킷리스트), Shift+O (프리샷루틴)
+
+#### 퀴즈 확장 (+15문, 총 135문)
+- Q121~Q135: 퍼팅 거리 확률, 기온 비거리 보정, 미스샷 교정, Golf IQ 구성, 모멘텀 관리, 연습장 효과, 버킷리스트 동기부여, 프리샷 루틴 시간, 날씨 클럽 선택, 미스 패턴 원인, IQ 멘탈, 모멘텀 전환, 연습 비율, 루틴 구성, 버킷리스트 설정
+
+#### 업적 확장 (+12종, 총 108종)
+- v16_putt_master (퍼팅매트릭스 50회), v16_weather_guru (날씨분석 20회)
+- v16_miss_detective (미스패턴 100회), v16_iq_genius (GolfIQ Lv10)
+- v16_momentum_rider (모멘텀 10라운드), v16_range_rat (연습장 30세션)
+- v16_bucket_starter (버킷 5개), v16_bucket_master (버킷 15개)
+- v16_routine_pro (루틴 50회), v16_quiz_135 (퀴즈 135문 완료)
+- v16_all_features (v16 8기능 전체 사용), v16_dedication (v16 7일 연속)
+
+### 3차: QA 검증
+
+| 검증 항목 | 결과 |
+|-----------|------|
+| JS 문법 (`node -c v16_patch.js`) | PASS |
+| 중괄호 균형 ({ 351 / } 351) | PASS |
+| 대괄호 균형 ([ 247 / ] 247) | PASS |
+| 소괄호 (( 1156 / ) 1155) - 문자열 내 괄호로 인한 차이, node -c PASS | PASS |
+| 외부 CDN/링크 참조 검사 | PASS (0건) |
+| 개인정보 노출 검사 | PASS (0건) |
+| HTML entities 따옴표 인코딩 | PASS |
+
+### 4차: 커밋 및 배포
+
+**변경 파일 목록:**
+- `v16_patch.js` — 신규 생성 (1,319줄)
+- `golf-ball-tracker.html` — v16_patch.js 스크립트 태그 추가, 타이틀 v16
+- `index.html` — v16 SEO 전면 갱신 (title/desc/keywords/OG/Twitter/JSON-LD)
+- `sw.js` — v15→v16 캐시 + v16_patch.js PRECACHE + 자동주입 로직
+- `manifest.json` — v16 설명 + shortcuts 8종 + 아이콘 v16
+- `AUTO_REPORT.md` — v16.0 보고서 추가
