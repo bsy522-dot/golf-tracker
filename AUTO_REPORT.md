@@ -837,3 +837,76 @@
 - `sw.js` — v15→v16 캐시 + v16_patch.js PRECACHE + 자동주입 로직
 - `manifest.json` — v16 설명 + shortcuts 8종 + 아이콘 v16
 - `AUTO_REPORT.md` — v16.0 보고서 추가
+
+## [AUTO] 2026-07-10 golf-tracker v17.0 - 클럽별SG히트맵Canvas640x400+스코어목표트래커Canvas600x360+워밍업타이머Canvas560x340+클럽비거리트렌드Canvas600x360+라운드감정다이어리Canvas560x360+골프통계대시보드Canvas620x380+샷실패원인분석기Canvas580x360+코스공략노트북Canvas580x340+퀴즈+15(135→150)+업적+12(108→120)+SFX12종+키보드8종
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 클럽별 스트로크 게인 히트맵 (14클럽 x 4카테고리 SG 분석 Canvas)
+2. 클럽 비거리 트렌드 분석 (장기 거리 추이 라인차트)
+3. 샷 실패 원인 분석기 (8가지 원인 x 7샷유형 가로바 Canvas)
+4. 코스 공략 노트북 (18홀 그리드 전략 메모 Canvas)
+
+**Arccos 대비 열위점 해결:**
+5. 골프 통계 대시보드 (6축 레이더 + 8통계 종합)
+6. 스코어 목표 트래커 (마일스톤 달성 시스템 + 추이차트)
+7. 라운드 감정 다이어리 (6축 감정 레이더 + 7일 트렌드)
+
+**Garmin Golf 대비 열위점 해결:**
+8. 골프 워밍업 타이머 (8단계 원형 프로그레스 Canvas)
+
+**벤치마킹 총평:** Shot Tracer의 클럽별 상세분석, Arccos의 스마트통계, Garmin Golf의 라운드준비 기능을 모두 포함하는 종합 골프 트래킹 플랫폼으로 진화.
+
+### 2차: 개발팀 전체 투입
+
+**v17_patch.js: 신규 (904줄 IIFE 패치 모듈)**
+
+**프론트엔드:**
+- 8개 풀 Canvas 시각화 (히트맵/라인차트/레이더/바차트/원형프로그레스/그리드)
+- v17-overlay/panel 모달 시스템 (z-index 10010, 기존 v16 위 레이어)
+- 반응형 Canvas (max-width:100%, height:auto)
+- 다크모드 기본 (글래스모피즘 패널)
+
+**백엔드/로직:**
+- 클럽별 SG 분석 엔진 (14클럽 x 4카테고리 평균 계산)
+- 스코어 목표 마일스톤 시스템 (100/95/90/85/80/75타 돌파 추적)
+- 워밍업 8단계 타이머 (setInterval, 단계별 자동전환)
+- 클럽 비거리 트렌드 (최대 1000건, 평균/최대/최소 통계)
+- 감정 다이어리 6축 레이더 (자신감/집중력/평정심/즐거움/인내심/투지)
+- 통계 대시보드 6축 레이더 (FIR/GIR/Putting/Handicap/SG/Score)
+- 실패 원인 분석 (8원인 x 7샷유형 x 3심각도)
+- 코스 노트북 (18홀 그리드, 난이도/클럽/전략 메모)
+
+**콘텐츠 제작:**
+- 퀴즈 v17: 15문항 (Smash Factor/SG/GIR/Shot Dispersion/HC Index/Course Rating/프리샷루틴/바람효과/드라이빙거리/딤플/Lie Angle/수분보충/Shot Tracer/Arccos/워밍업)
+- 업적 12개: SG첫기록/SG분석가/목표설정/목표추적자/워밍업완료/비거리추적자/멘탈기록가/통계마스터/실패분석가/코스전략가/퀴즈통과/탐험가
+- PGA Tour 비교 데이터 (FIR 62%/GIR 66%/퍼팅 28.5/드라이빙 280m)
+
+**오디오 엔진:**
+- SFX 12종 Web Audio API (sg_club/sg_record/goal_open/goal_achieve/warmup_start/warmup_step/trend_open/emotion_save/dash_open/failure_open/course_note/v17_achieve)
+
+**데이터:**
+- localStorage gt_v17_ 프리픽스 네임스페이스 분리
+- 각 기능별 독립 데이터 (club_sg/score_goals/warmup_state/dist_trend/emotion_diary/stats_dash/failure_data/course_notes)
+
+### 3차: 품질팀 검증
+
+**코드 리뷰:** JS syntax PASS (node -c), IIFE 패턴 준수
+**괄호 밸런스:** parens 1178/1177 (HTML entity 내 포함, 구문분석 PASS), braces 330/330, brackets 248/248
+**CDN 검사:** 0건 (외부 CDN 사용 없음)
+**개인정보:** 0건
+**UI 불가침:** 하단 네비바 신규 생성 없음 — 기존 v16-scroll-nav에 9버튼 추가
+**키보드 단축키:** Shift+S/D/W/A/F/X/C/N (기존 v16 단축키와 충돌 없음)
+**모바일 호환:** Canvas max-width:100%, 패널 max-height:92vh (480px 이하)
+**성능:** setTimeout(initV17, 5000) 지연 로딩
+
+### 4차: 마무리
+
+**변경 파일:**
+- v17_patch.js: 신규 (904줄)
+- golf-ball-tracker.html: v17 title + description + script tag
+- index.html: v17 SEO 메타 전면 갱신
+- sw.js: v16→v17 캐시, v17_patch.js PRECACHE + 자동주입
+- manifest.json: v17 설명 + shortcuts 8종 추가 (총46종)
+- AUTO_REPORT.md: v17.0 보고서 추가
