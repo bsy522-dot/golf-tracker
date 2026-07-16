@@ -1,4 +1,4 @@
-var CACHE_NAME = 'golf-tracker-v18';
+var CACHE_NAME = 'golf-tracker-v19';
 var PRECACHE = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ var PRECACHE = [
   './v16_patch.js',
   './v17_patch.js',
   './v18_patch.js',
+  './v19_patch.js',
   './manifest.json'
 ];
 
@@ -49,6 +50,9 @@ self.addEventListener('fetch', function(e) {
       fetch(e.request).then(function(resp) {
         if (resp.ok) {
           return resp.text().then(function(html) {
+            if (html.indexOf('v19_patch.js') === -1 && html.indexOf('</body>') !== -1) {
+              html = html.replace('</body>', '<script src="v19_patch.js"><\/script>\n</body>');
+            }
             if (html.indexOf('v18_patch.js') === -1 && html.indexOf('</body>') !== -1) {
               html = html.replace('</body>', '<script src="v18_patch.js"><\/script>\n</body>');
             }
@@ -104,6 +108,9 @@ self.addEventListener('fetch', function(e) {
         return caches.match(e.request).then(function(cached) {
           if (cached) {
             return cached.text().then(function(html) {
+              if (html.indexOf('v19_patch.js') === -1 && html.indexOf('</body>') !== -1) {
+                html = html.replace('</body>', '<script src="v19_patch.js"><\/script>\n</body>');
+              }
               if (html.indexOf('v18_patch.js') === -1 && html.indexOf('</body>') !== -1) {
                 html = html.replace('</body>', '<script src="v18_patch.js"><\/script>\n</body>');
               }
