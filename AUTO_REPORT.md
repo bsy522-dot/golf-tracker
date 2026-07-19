@@ -1,5 +1,73 @@
 # AUTO REPORT - Golf Ball Tracker
 
+## [AUTO] 2026-07-19 golf-tracker v20.0 - 샷쉐이프경향분석기Canvas+클럽갭핑시각화Canvas+라운드비교오버레이Canvas+스마트연습플랜생성기Canvas+GIR근접도분석기Canvas+바람물리계산기Canvas+Par별퍼포먼스분석Canvas+멘탈게임로그Canvas+퀴즈+15(180→195)+업적+12(144→156)+SFX14종+키보드Shift+1~9
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 샷 쉐이프 경향 분석기 (Draw/Fade/Hook/Slice 빈도 Pie Canvas + 경향 라인)
+2. 라운드 비교 오버레이 (2라운드 18홀 동시 Canvas 비교, 차이 하이라이트)
+3. 바람 물리 계산기 (풍속/풍향/탄도 → Magnus/Drag 보정 비거리 + Canvas 시각화)
+4. Par별 퍼포먼스 브레이크다운 (Par3/4/5 스코어 분포 Canvas Bar + 평균/최빈)
+
+**Arccos / Garmin Golf 대비 열위점 해결:**
+5. 클럽 갭핑 시각화 (14클럽 비거리 갭 Canvas Bar + 위험 갭 표시)
+6. GIR 근접도 분석기 (거리별 핀 근접도 Scatter Canvas + 추이 라인)
+7. 스마트 연습 플랜 생성기 (약점 기반 4주 AI 플랜 + 주간 진행률 Canvas)
+8. 멘탈 게임 로그 (상황/감정/결과 기록, 패턴 분석 Canvas Radar)
+
+### 2차: 개발팀 전체 투입
+
+**v20_patch.js** 신규 (678줄, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드
+- v20 전용 CSS: 오버레이/패널/카드/히트맵뱃지/토스트/업적팝업
+- 기존 네비바 감지 + 버튼 자동 추가 (UI 불가침 규칙 준수)
+- 반응형 모바일 최적화 (480px 이하)
+- 다크모드 기본 + 라이트모드 호환
+
+#### 백엔드/로직 (8개 신규 기능)
+1. **샷 쉐이프 경향 분석기**: 클럽별 Draw/Fade/Straight/Hook/Slice 기록, Pie Canvas 340x340, 마지막 10샷 경향 텍스트
+2. **클럽 갭핑 시각화**: 14클럽 비거리 입력, Bar Canvas 560x320, 위험 갭(>25yd) 빨강 표시, 추천 코멘트
+3. **라운드 비교 오버레이**: 2라운드 18홀 스코어 입력, Canvas 600x340 이중 Bar, 차이 하이라이트, 합계/평균 비교
+4. **스마트 연습 플랜**: 약점 영역(Driving/Iron/ShortGame/Putting) 선택, 4주 AI 생성 플랜, 주별 진행률 Canvas 500x200 Bar
+5. **GIR 근접도 분석기**: 홀번호/거리/핀거리 기록, Scatter Canvas 500x340, 추이 라인, 평균/최근 통계
+6. **바람 물리 계산기**: 풍속/풍향/샷방향/탄도고도 입력, Magnus+Drag 보정 계산, Canvas 460x320 Arrow 시각화
+7. **Par별 퍼포먼스 분석**: Par3/4/5 각 스코어 기록, Bar Canvas 560x300 분포도, 평균/버디율/보기율 통계
+8. **멘탈 게임 로그**: 상황/감정(5단계)/결과 기록, Radar Canvas 400x400 5축(자신감/집중/루틴/압박대응/회복력), 최근 패턴 분석
+
+#### 콘텐츠
+- 퀴즈 +15문 (180→195): 샷쉐이프/클럽갭핑/라운드비교/연습플랜/GIR/바람물리/Par별분석/멘탈게임 관련
+- 업적 +12개 (144→156): 쉐이프마스터/갭전문가/비교분석가/연습왕/GIR스나이퍼/바람전문가/Par마스터/멘탈코치/데이터수집가/v20탐험가/올라운더/분석광
+
+#### 오디오
+- SFX 14종: shape_record/gap_view/compare_view/plan_generate/gir_record/wind_calc/par_view/mental_record/achieve_unlock/quiz_correct/panel_open/panel_close/btn_click/toast_show
+
+#### UI/인터랙션
+- 키보드 Shift+1~9 (8기능 + 퀴즈)
+- 기존 navbar 자동 감지 + 버튼 어펜드 (position:fixed bottom 미사용)
+
+### 3차: 품질팀 검증
+
+| 항목 | 결과 |
+|------|------|
+| JS 문법 (node -c) | PASS |
+| 외부 CDN 참조 | 0건 |
+| 개인정보 노출 | 0건 |
+| SEO 메타태그 | v20 전면 갱신 |
+| PWA manifest.json | v20 shortcuts 63종 |
+| sw.js | golf-tracker-v20 캐시 |
+
+### 4차: 변경 파일
+- `v20_patch.js` — 신규 (678줄)
+- `golf-ball-tracker.html` — v20 타이틀 + v20_patch.js 스크립트 태그
+- `index.html` — v20.0 SEO 전면 갱신
+- `sw.js` — v19→v20 캐시 + v20_patch.js PRECACHE + 자동주입
+- `manifest.json` — v20.0 설명 + shortcuts 8종 추가 + 아이콘 v20
+- `AUTO_REPORT.md` — v20.0 보고서 추가
+
+---
+
 ## [AUTO] 2026-06-25 golf-tracker v13.0 - 스코어히트맵Canvas+핸디캡트래커WHS+FIR/GIR레이더5축Canvas+스윙노트100건+장비매니저14클럽+드릴라이브러리12종+스태미나트래커3선Canvas+프로비교6축RadarCanvas+퀴즈+15(75->90)+업적+12(60->72)+SFX12종+키보드8종
 
 ### 1차: 벤치마킹 분석 (Shot Tracer / Arccos 대비)
