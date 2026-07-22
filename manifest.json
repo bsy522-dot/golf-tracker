@@ -1,7 +1,7 @@
 {
-  "name": "Golf Ball Tracker Pro v20",
+  "name": "Golf Ball Tracker Pro v21",
   "short_name": "GolfTracker",
-  "description": "AI 프레임 디퍼런싱 골프공 궤적 추적 - 샷쉐이프경향분석기, 클럽갭핑시각화, 라운드비교오버레이, 스마트연습플랜생성기, GIR근접도분석기, 바람물리계산기, Par별퍼포먼스분석, 멘탈게임로그, 어프로치샷셀렉터, 샷분산패턴, 라운드피로모니터, SG브레이크다운, 페널티트래커, 라이평가도구, 코스컨디션로그, 골프근육활성맵, 스윙일관성분석기, 홀별전략플래너, 클럽교체트래커, 라운드비용계산기, 퍼팅그린스피드캘리브레이터, 샷거리히스토그램, 골프피트니스테스트, 라운드후리뷰체크리스트, 스코어 히트맵, 핸디캡 트래커, FIR/GIR 레이더, 스윙 노트, 장비 매니저, 드릴 라이브러리, 스태미나 트래커, 프로 비교 분석, 퍼팅 분석, 샷 분산도, 스트로크 게인, 코스 매니지먼트 AI, 컨디션 보정, 그린 리딩, 클럽 갭 분석, 시즌 통계, 클럽 비거리 트래커, Par별 성적 분석, 멘탈 게임 트래커, 코스 전략 저널, 라운드 비교 분석, 주간 연습 목표, 스윙 템포 트레이너, 공유 카드, 샷 셰이프 분석, 스마트 캐디 GPS, 토너먼트 모드, 라운드 리포트, 스코어 트렌드, 연습 임팩트 트래커, 코스 플라이오버, 골프 피트니스, 라운드 리듬 분석, 클럽 추천 AI, 스코어 예측, 홀인원 시뮬레이터, 스윙 비교, 코스 난이도 평가, 골프 영양 타이머, 골프 룰북, 퍼팅 매트릭스, 날씨 임팩트, 미스 패턴, Golf IQ, 라운드 모멘텀, 연습장 로거, 골프 버킷리스트, 프리샷 루틴 코치, 클럽별SG히트맵, 스코어목표트래커, 워밍업타이머, 클럽비거리트렌드, 라운드감정다이어리, 골프통계대시보드, 샷실패분석기, 코스공략노트북, 골프 퀴즈 195문",
+  "description": "AI 프레임 디퍼런싱 골프공 궤적 추적 - 스윙리듬분석기, 클럽결정트리, 스코어카드히트맵생성기, 퍼팅브레이크시각화, 코스매니지먼트시나리오, 라운드페이스타이머, 핸디캡목표로드맵, 그립압력가이드, 샷쉐이프경향분석기, 클럽갭핑시각화, 라운드비교오버레이, 스마트연습플랜생성기, GIR근접도분석기, 바람물리계산기, Par별퍼포먼스분석, 멘탈게임로그, 어프로치샷셀렉터, 샷분산패턴, 라운드피로모니터, SG브레이크다운, 페널티트래커, 라이평가도구, 코스컨디션로그, 골프근육활성맵, 스윙일관성분석기, 홀별전략플래너, 클럽교체트래커, 라운드비용계산기, 퍼팅그린스피드캘리브레이터, 샷거리히스토그램, 골프피트니스테스트, 라운드후리뷰체크리스트, 스코어 히트맵, 핸디캡 트래커, FIR/GIR 레이더, 스윙 노트, 장비 매니저, 드릴 라이브러리, 스태미나 트래커, 프로 비교 분석, 퍼팅 분석, 샷 분산도, 스트로크 게인, 코스 매니지먼트 AI, 컨디션 보정, 그린 리딩, 클럽 갭 분석, 시즌 통계, 클럽 비거리 트래커, Par별 성적 분석, 멘탈 게임 트래커, 코스 전략 저널, 라운드 비교 분석, 주간 연습 목표, 스윙 템포 트레이너, 공유 카드, 샷 셰이프 분석, 스마트 캐디 GPS, 토너먼트 모드, 라운드 리포트, 스코어 트렌드, 연습 임팩트 트래커, 코스 플라이오버, 골프 피트니스, 라운드 리듬 분석, 클럽 추천 AI, 스코어 예측, 홀인원 시뮬레이터, 스윙 비교, 코스 난이도 평가, 골프 영양 타이머, 골프 룰북, 퍼팅 매트릭스, 날씨 임팩트, 미스 패턴, Golf IQ, 라운드 모멘텀, 연습장 로거, 골프 버킷리스트, 프리샷 루틴 코치, 클럽별SG히트맵, 스코어목표트래커, 워밍업타이머, 클럽비거리트렌드, 라운드감정다이어리, 골프통계대시보드, 샷실패분석기, 코스공략노트북, 골프 퀴즈 210문",
   "start_url": "./golf-ball-tracker.html",
   "display": "standalone",
   "orientation": "any",
@@ -441,11 +441,59 @@
       "short_name": "멘탈",
       "url": "./golf-ball-tracker.html#mentallog",
       "description": "멘탈 게임 로그"
+    },
+    {
+      "name": "스윙 리듬 분석기",
+      "short_name": "스윙리듬",
+      "url": "./golf-ball-tracker.html#swingrhythm",
+      "description": "TAP 템포 BPM 측정 및 리듬 분석"
+    },
+    {
+      "name": "클럽 결정 트리",
+      "short_name": "클럽결정",
+      "url": "./golf-ball-tracker.html#clubdecision",
+      "description": "6요소 클럽 추천 결정 트리"
+    },
+    {
+      "name": "스코어카드 히트맵",
+      "short_name": "히트맵",
+      "url": "./golf-ball-tracker.html#scorecardheatmap",
+      "description": "18홀 멀티라운드 스코어 히트맵"
+    },
+    {
+      "name": "퍼팅 브레이크 시각화",
+      "short_name": "퍼팅브레이크",
+      "url": "./golf-ball-tracker.html#puttingbreak",
+      "description": "그린 퍼팅 브레이크 시각화"
+    },
+    {
+      "name": "코스 매니지먼트 시나리오",
+      "short_name": "코스시나리오",
+      "url": "./golf-ball-tracker.html#coursescenario",
+      "description": "12가지 리스크/리워드 시나리오"
+    },
+    {
+      "name": "라운드 페이스 타이머",
+      "short_name": "페이스타이머",
+      "url": "./golf-ball-tracker.html#pacetimer",
+      "description": "홀별 스톱워치 타이머"
+    },
+    {
+      "name": "핸디캡 목표 로드맵",
+      "short_name": "핸디캡목표",
+      "url": "./golf-ball-tracker.html#handicapgoal",
+      "description": "핸디캡 목표 달성 로드맵"
+    },
+    {
+      "name": "그립 압력 가이드",
+      "short_name": "그립가이드",
+      "url": "./golf-ball-tracker.html#gripguide",
+      "description": "클럽별 그립 압력 가이드"
     }
   ],
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff' stroke='%23ddd' stroke-width='.5'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300FF88'/%3E%3Ccircle cx='38' cy='20' r='1.5' fill='%2300FF88' opacity='.4'/%3E%3Ctext x='50' y='28' font-size='8' fill='%2300FF88' opacity='.5' text-anchor='middle' font-family='sans-serif' font-weight='bold'%3Ev20%3C/text%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ccircle cx='24' cy='38' r='8' fill='%23fff' stroke='%23ddd' stroke-width='.5'/%3E%3Cpath d='M26 36Q34 16 50 10' stroke='%2300FF88' stroke-width='2.5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='10' r='3' fill='%2300FF88'/%3E%3Ccircle cx='38' cy='20' r='1.5' fill='%2300FF88' opacity='.4'/%3E%3Ctext x='50' y='28' font-size='8' fill='%2300FF88' opacity='.5' text-anchor='middle' font-family='sans-serif' font-weight='bold'%3Ev21%3C/text%3E%3C/svg%3E",
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "any maskable"

@@ -1081,3 +1081,49 @@
 - sw.js: v18->v19 캐시, v19_patch.js PRECACHE + 자동주입
 - manifest.json: v19 설명 + shortcuts 8종 추가 (총65종)
 - AUTO_REPORT.md: v19.0 보고서 추가
+
+---
+
+## [AUTO] 2026-07-22 golf-tracker v21.0
+
+### Benchmarking (Stage 1)
+- **Competitors**: Shot Tracer, Arccos, V1 Sports, Garmin Golf
+- **Gaps identified**: swing tempo/rhythm tracking, smart club selection AI, scorecard color heatmaps, putting break visualization, on-course scenario decision tools, pace-of-play tracking, handicap goal planning, grip technique guidance
+
+### New Features (Stage 2) — v21_patch.js (858 lines)
+
+| # | Feature | Canvas | Description |
+|---|---------|--------|-------------|
+| 1 | Swing Rhythm Analyzer | 600x380 | TAP 템포 BPM 측정, 8 tempo zones, 30-session trend line + zone distribution bars |
+| 2 | Club Decision Tree | 620x400 | 6-factor input (distance/wind/slope/lie/pin/risk), funnel visualization, confidence % |
+| 3 | Scorecard Heatmap Generator | 620x380 | 18-hole multi-round color-coded heatmap (HIO→Triple+), 7 score categories |
+| 4 | Putting Break Visualizer | 600x360 | Green ellipse, ball path curve, aim line, slope arrows, Stimpmeter input |
+| 5 | Course Management Scenarios | 620x400 | 12 risk/reward scenarios, safe/aggressive choices, scatter plot matrix |
+| 6 | Round Pace Timer | 580x360 | Per-hole stopwatch timer, bar chart vs target, slow play alerts |
+| 7 | Handicap Goal Roadmap | 620x380 | Milestone roadmap, progress tracking, history trend line |
+| 8 | Grip Pressure Guide | 600x360 | Hand wireframe, club-specific pressure bars (1-10 scale), 5 club categories |
+
+### Additional Content
+- **Quiz v21**: 15 new questions (195→210 total)
+- **Achievements v21**: 12 new achievements (156→168 total)
+- **SFX**: 14 AudioContext oscillator sounds (tap, recommend, generate, putt, scenario, timer, milestone, grip, correct, wrong, achieve, complete, start, stop)
+- **Keyboard Shortcuts**: Shift+A~H (8 features), Shift+0 (quiz)
+- **Nav Buttons**: Purple-themed (rgba(168,85,247)), appended to existing nav bar
+
+### Files Modified
+- v21_patch.js: 858-line IIFE with 8 Canvas features, quiz, achievements, SFX, nav, keyboard shortcuts
+- golf-ball-tracker.html: v21 script tag 추가
+- index.html: v21 SEO 메타 전면 갱신 (title/desc/keywords/OG/Twitter/JSON-LD)
+- sw.js: v20→v21 캐시, v21_patch.js PRECACHE + 자동주입
+- manifest.json: v21 설명 + shortcuts 8종 추가 (총73종)
+- AUTO_REPORT.md: v21.0 보고서 추가
+
+### Quality Verification (Stage 3)
+- [x] JavaScript syntax validation: PASS (node -c)
+- [x] No external CDN references
+- [x] No personal information
+- [x] No new fixed bottom navigation bars
+- [x] IIFE module isolation
+- [x] LocalStorage namespaced (gt_v21_)
+- [x] Canvas responsive rendering
+- [x] Service worker cache versioning correct
