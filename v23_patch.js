@@ -909,7 +909,7 @@ document.head.appendChild(style);
 // ===== NAVIGATION =====
 window._v23Close=function(id){closePanel(id);};
 function addNavButtons(){
-var existing=document.querySelector('[id*="v22"]')||document.querySelector('[id*="v21"]')||document.querySelector('[id*="v20"]')||document.querySelector('.gt-bottom-nav')||document.querySelector('[style*="position:fixed"][style*="bottom"]');
+var existing=document.querySelector('.v16-scroll-nav')||document.querySelector('.gt-bottom-nav')||document.querySelector('[style*="position:fixed"][style*="bottom"]');
 var nav=existing;
 if(!nav){
 var allFixed=document.querySelectorAll('[style*="position: fixed"], [style*="position:fixed"]');

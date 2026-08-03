@@ -1280,3 +1280,70 @@
 - sw.js: CACHE_NAME v24, PRECACHE v24_patch.js, auto-inject v24
 - index.html: v24 SEO 메타 태그
 - manifest.json: v24 이름/설명, 8 shortcuts 추가 (총 97개)
+
+## [AUTO] 2026-08-03 golf-tracker v25.0 - 샷궤적시뮬레이터Canvas+바람영향매트릭스Canvas+클럽수명사이클Canvas+코스전략미니맵Canvas+라운드영양관리Canvas+스윙평면분석기Canvas+피어그룹비교Canvas+종합라운드인텔리전스Canvas+퀴즈+15(255→270)+업적+12(192→204)+SFX16종+키보드Shift+Q/W/E/R/T/Y/U/I/0 + 네비게이션 주입 회귀 수정(v20~v25)
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Golfshot 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 샷 궤적 시뮬레이터 (6클럽 2D 측면 탄도 Canvas 620x400, apex/carry/roll 분해)
+2. 스윙 평면 분석기 (8축 Attack/Path/Face/Lie/Lean/Hip/Shoulder/Wrist Radar Canvas 620x400)
+
+**Arccos 대비 열위점 해결:**
+3. 바람 영향 매트릭스 (8방위 x 6클럽 히트맵 Canvas 640x400, head/side wind 분리 계산)
+4. 피어 그룹 비교 (Scratch~Pro Tour 6그룹 6축 Radar Canvas 620x380)
+5. 종합 라운드 인텔리전스 (6 KPI 반원 게이지 + 종합 등급 Canvas 620x400)
+
+**Golfshot 대비 열위점 해결:**
+6. 클럽 수명 사이클 트래커 (14클럽 그루브/샤프트 이중 막대 + S~C 등급 Canvas 620x400)
+7. 코스 전략 미니맵 (홀 유형별 페어웨이/그린/벙커/워터 공략 시각화 Canvas 620x380)
+8. 라운드 영양 관리 (18홀 칼로리 누적 라인 차트 Canvas 600x380)
+
+### 2차: 개발팀 전체 투입
+
+**v25_patch.js** 신규 (자기완결형 IIFE 패치 모듈, 867줄)
+
+- 8개 Canvas 기능, 15 퀴즈(255→270), 12 업적(192→204), 16 SFX
+- coral #FF7B54 컬러 테마, 기존 nav append 방식
+- 키보드: Shift+Q/W/E/R/T/Y/U/I/0
+
+**회귀 수정 — 네비게이션 주입 실패 (v20~v25 공통)**
+
+헤드리스 브라우저 검증 중 v20 이후 6개 버전(약 54개 기능)의 네비 버튼이
+실제로는 DOM에 전혀 추가되지 않아 키보드 단축키로만 접근 가능한 상태였음을 발견.
+
+- 원인: 셀렉터 체인이 `.gt-bottom-nav`(존재하지 않는 클래스)와
+  `[id*="vNN"]`(지연 생성되는 오버레이 패널 id, 초기화 시점엔 null)만 탐색.
+  최종 폴백은 `z-index > 9000`을 요구했으나 실제 네비(`.v16-scroll-nav`)는 z-index 1002.
+- 수정: v20~v25 셀렉터 체인 선두에 `.v16-scroll-nav`를 추가 (파일당 1줄).
+- 결과: 네비 버튼 36개 → 90개. v20~v24의 기존 기능 45개가 다시 클릭 가능해짐.
+
+**PWA 결함 수정**
+
+- `golf-ball-tracker.html`(manifest의 start_url)에 `<link rel="manifest">`가 없어
+  앱 페이지에서 직접 설치가 불가능했음 → manifest/favicon/apple-touch-icon/theme-color 추가.
+- 동 페이지 title/description이 v20에 고정되어 있던 것을 v25로 갱신 (favicon 404 동시 해소).
+- v24_patch.js 스크립트 태그가 HTML에 누락되어 서비스워커 주입에만 의존하던 문제 수정
+  (v24/v25 태그 명시 추가).
+
+### 3차: 품질 검증 (헤드리스 Chromium 실측)
+
+- [x] `node --check` 구문 검증 통과 (v20~v25, sw.js 전체)
+- [x] manifest.json JSON 파싱 통과, shortcuts 112개, URL 중복 0
+- [x] 8개 Canvas 전부 실제 렌더 확인 (620x400 / 640x400 / 620x380 / 600x380 크기 일치)
+- [x] 네비 버튼 9개 전부 클릭 → 패널 오픈 확인
+- [x] 콘솔 에러 0건, HTTP 4xx 0건
+- [x] 기존 메인 네비 첫 버튼 hit-test 통과 (가림/차단 없음)
+- [x] 모바일 뷰포트(390x844) 단일행 가로 스크롤 유지, 네비 높이 55px
+- [x] 네비 라벨 중복 0건 (v21 'Wind'와 충돌하여 v25는 'WindMtx'로 변경)
+- [x] 외부 CDN/링크 없음
+- [x] 개인정보 노출 없음
+- [x] 하단 고정 네비바 신설 없음 (기존 `.v16-scroll-nav`에 append만 수행)
+
+### 4차: 배포
+
+- sw.js: CACHE_NAME v25, PRECACHE v25_patch.js, auto-inject v25 (network/cache 양쪽 경로)
+- index.html: v25 SEO 메타 태그 (title/description/keywords/OG/Twitter/JSON-LD, 퀴즈 270문)
+- manifest.json: v25 이름/설명, 8 shortcuts 추가 (총 112개), 아이콘 v25
+- golf-ball-tracker.html: manifest 링크 + 아이콘 + v24/v25 스크립트 태그
+- **Commit:** `[AUTO] 2026-08-03 golf-tracker v25.0`
