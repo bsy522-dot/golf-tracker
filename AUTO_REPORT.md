@@ -1347,3 +1347,60 @@
 - manifest.json: v25 이름/설명, 8 shortcuts 추가 (총 112개), 아이콘 v25
 - golf-ball-tracker.html: manifest 링크 + 아이콘 + v24/v25 스크립트 태그
 - **Commit:** `[AUTO] 2026-08-03 golf-tracker v25.0`
+
+---
+
+## [AUTO] 2026-08-06 golf-tracker v26.0 - 샷템포분석기Canvas+SG딥다이브Canvas+멘탈게임압력트래커Canvas+코스난이도평가시스템Canvas+장비마모대시보드Canvas+스코어예측엔진Canvas+날씨임팩트분석기Canvas+종합라운드대시보드Canvas+퀴즈+15(270→285)+업적+12(168→180)+SFX16종+키보드Shift+Q/W/E/R/T/Y/U/I/0
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 샷 템포 분석기 (8단계 스윙 페이즈 백스윙→팔로우스루 breakdown bar chart Canvas)
+2. 스코어 예측 엔진 (최근 10라운드 트렌드 + 3라운드 예측 라인차트 Canvas)
+3. 날씨 임팩트 분석기 (6가지 날씨 요소별 성적 영향도 Canvas 시각화)
+
+**Arccos 대비 열위점 해결:**
+4. SG 딥다이브 (6개 카테고리 스트로크게인 심층 분석 bar chart Canvas)
+5. 코스 난이도 평가 시스템 (8가지 요소 히트맵 Canvas)
+6. 종합 라운드 대시보드 (8개 KPI 게이지 대시보드 Canvas)
+
+**Garmin Golf 대비 열위점 해결:**
+7. 멘탈게임 압력 트래커 (8축 레이더 차트 Canvas 멘탈 퍼포먼스 시각화)
+8. 장비 마모 대시보드 (14개 클럽 x 4가지 마모 지표 Canvas)
+
+### 2차: 개발 (v26_patch.js IIFE 모듈)
+
+**Canvas 시각화 8종:**
+1. Shot Tempo Analyzer (620x400) - 8단계 스윙 페이즈 breakdown bar chart + 이상적 템포 라인
+2. Strokes Gained Deep Dive (640x400) - OTT/Approach/Around/Putting/Recovery/Total 6카테고리 bar chart
+3. Mental Game Pressure Tracker (620x400) - 자신감/집중/평정/루틴/적응/결단/체력/즐거움 8축 레이더
+4. Course Difficulty Rating System (640x400) - 길이/러프/벙커/워터/OB/그린/바람/슬로프 8요소 히트맵
+5. Equipment Wear Dashboard (620x400) - 14클럽 x 사용횟수/마모도/교체시기/성능 4메트릭 그리드
+6. Score Prediction Engine (620x400) - 최근 10라운드 실제 + 3라운드 예측 라인차트
+7. Weather Impact Analyzer (620x400) - 기온/습도/바람/비/자외선/기압 6요소 bar chart
+8. Comprehensive Round Dashboard (620x400) - 8개 핵심 KPI 원형 게이지 대시보드
+
+**기타 콘텐츠:**
+- 골프 퀴즈 15문 추가 (누적 285문)
+- 업적 12종 추가 (누적 180종)
+- SFX 16종 (Web Audio API oscillator/noise 기반)
+- 내비게이션 버튼 9종 (기존 `.v16-scroll-nav`에 append)
+- 키보드 단축키 Shift+Q/W/E/R/T/Y/U/I/0
+- localStorage prefix: `gt_v26_`
+- 액센트 컬러: #00D4B4 (teal)
+
+### 3차: 품질 검증
+
+- [x] `node --check v26_patch.js` 구문 오류 없음
+- [x] `manifest.json` JSON 파싱 정상
+- [x] 외부 CDN/링크 사용 없음
+- [x] 개인정보 노출 없음
+- [x] 하단 고정 네비바 신설 없음 (기존 `.v16-scroll-nav`에 append만 수행)
+
+### 4차: 배포
+
+- sw.js: CACHE_NAME v26, PRECACHE v26_patch.js, auto-inject v26 (network/cache 양쪽 경로)
+- index.html: v26 SEO 메타 태그 (title/description/keywords/OG/Twitter/JSON-LD, 퀴즈 285문)
+- manifest.json: v26 이름/설명, 8 shortcuts 추가 (총 120개), 아이콘 v26
+- golf-ball-tracker.html: v26 스크립트 태그 추가
+- **Commit:** `[AUTO] 2026-08-06 golf-tracker v26.0`
