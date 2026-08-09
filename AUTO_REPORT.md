@@ -1404,3 +1404,44 @@
 - manifest.json: v26 이름/설명, 8 shortcuts 추가 (총 120개), 아이콘 v26
 - golf-ball-tracker.html: v26 스크립트 태그 추가
 - **Commit:** `[AUTO] 2026-08-06 golf-tracker v26.0`
+
+---
+
+## [AUTO] 2026-08-09 golf-tracker v27.0 - 클럽거리정규분포분석기Canvas+홀공략시나리오시뮬레이터Canvas+퍼팅존히트맵Canvas+라운드에너지매니지먼트Canvas+캐디어드바이스결정트리Canvas+핸디캡트렌드예측Canvas+샷결과예측기Canvas+코스IQ대시보드Canvas+퀴즈+15(285→300)+업적+12(168→180)+SFX16종+키보드Shift+Q/W/E/R/T/Y/U/I/0
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos 대비)
+- **Shot Tracer 미보유 기능:** 클럽별 거리 정규분포(벨커브) 시각화, 홀 유형별 공략 전략 시나리오, 동심원 퍼팅 존 히트맵
+- **Arccos 미보유 기능:** 18홀 에너지 매니지먼트 히트맵, 캐디 어드바이스 결정 트리, 핸디캡 트렌드 3개월 예측
+- **양쪽 미보유:** 8파라미터 샷 결과 물리 예측, 8 KPI 반원 게이지 코스 IQ 종합 대시보드
+
+### 2차: 풀팀 개발 (v27_patch.js)
+**8개 신규 Canvas 기능:**
+1. **클럽 거리 정규분포 분석기** (showDistAnalyzer) - 620x400 벨커브, σ 존 색상, 14클럽 선택, 정규분포 PDF 수식
+2. **홀 공략 시나리오 시뮬레이터** (showHoleSimulator) - 640x400, 6홀 유형(Par3/4/5 직선/도그레그) × 3전략(안전/보통/공격)
+3. **퍼팅 존 히트맵** (showPuttingZone) - 620x400, 5개 동심원 존(~1m/1-2m/2-3m/3-5m/5m+), PGA 벤치마크 비교
+4. **라운드 에너지 매니지먼트** (showEnergyMgmt) - 620x400, 18홀 × 8요소 히트맵(체력/집중/자신감/전략/수분/영양/온도/멘탈)
+5. **캐디 어드바이스 결정 트리** (showCaddieAdvice) - 620x400, 트리 시각화, 5단계 결정 노드, 자동 추천
+6. **핸디캡 트렌드 예측** (showHandicapTrend) - 620x400, 라인차트 + 3개월 선형 외삽, 목표 라인 표시
+7. **샷 결과 예측기** (showShotPredictor) - 620x400, 8파라미터 입력, 포물선 궤적, 캐리/토탈 거리 계산
+8. **코스 IQ 대시보드** (showCourseIQ) - 620x400, 8개 KPI 반원 게이지, 가중 평균 종합 점수
+
+**퀴즈:** QUIZ_V27 배열 15문항 (누적 300문)
+**업적:** ACHIEVE_V27 배열 12항목 (누적 180개)
+**SFX:** Web Audio API 16종 (analyze/simulate/zone/energy/caddie/trend/predict/iq/quiz_correct/quiz_wrong/achieve/export/switch/reset/save/complete)
+**키보드:** Shift+Q(정규분포), Shift+W(홀시뮬), Shift+E(퍼팅존), Shift+R(에너지), Shift+T(캐디), Shift+Y(핸디캡), Shift+U(샷예측), Shift+I(코스IQ), Shift+0(퀴즈)
+**네비게이션:** 기존 `.v16-scroll-nav` / `.gt-bottom-nav`에 9개 버튼 추가 (틸색 #4ECDC4)
+**localStorage:** 네임스페이스 `gt_v27_` (기존 데이터 비파괴)
+
+### 3차: 품질 검증
+- `node --check v27_patch.js` → 문법 오류 0
+- `manifest.json` JSON 유효성 → 통과
+- 외부 CDN 참조 → 0건
+- 하단 고정 네비바 신규 생성 → 0건 (기존 네비 탐색만 수행)
+- 개인정보 노출 → 0건
+
+### 4차: 최종 반영
+- sw.js: CACHE_NAME v27, PRECACHE v27_patch.js, auto-inject v27 (network/cache 양쪽 경로)
+- index.html: v27 SEO 메타 태그 (title/description/keywords/OG/Twitter/JSON-LD, 퀴즈 300문)
+- manifest.json: v27 이름/설명, 8 shortcuts 추가 (총 128개), 아이콘 v27
+- golf-ball-tracker.html: v27 타이틀/메타 업데이트
+- **Commit:** `[AUTO] 2026-08-09 golf-tracker v27.0`
