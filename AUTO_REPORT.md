@@ -1445,3 +1445,46 @@
 - manifest.json: v27 이름/설명, 8 shortcuts 추가 (총 128개), 아이콘 v27
 - golf-ball-tracker.html: v27 타이틀/메타 업데이트
 - **Commit:** `[AUTO] 2026-08-09 golf-tracker v27.0`
+
+---
+
+## [AUTO] 2026-08-13 golf-tracker v28.0 - 샷그루핑밀도분석기Canvas+라운드페이싱전략Canvas+연습세션ROI계산기Canvas+고도영향분석기Canvas+SG트렌드분석기Canvas+그린컨투어리딩맵Canvas+클럽조합시뮬레이터Canvas+코스전략인덱스대시보드Canvas+퀴즈+15(300→315)+업적+12(180→192)+SFX16종+키보드Shift+Q/W/E/R/T/Y/U/I/0
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / GolfLogix 대비)
+- **Shot Tracer 미보유 기능:** 클럽별 샷 그루핑 밀도 스캐터+CEP 등고선, 라운드 페이싱 타임 전략, 연습 유형별 ROI 효율 프론티어
+- **Arccos 미보유 기능:** 고도 존별 비거리 임팩트 듀얼 바, SG 4카테고리 영역차트+5R 이동평균, 그린 컨투어 등고선+에임포인트
+- **GolfLogix 미보유 기능:** 22클럽 갭 분석+최적 14클럽 조합 시뮬레이터, 8 KPI 가중 코스 전략~방어 인덱스
+- **양쪽 미보유:** 연습 세션 ROI scatter 효율 프론티어, 코스 전략 인덱스 반원 게이지 대시보드
+
+### 2차: 풀팀 개발 (v28_patch.js)
+**8개 신규 Canvas 기능:**
+1. **샷 그루핑 밀도 분석기** (showShotGrouping) - 620x400 스캐터+CEP 등고선, 14클럽 선택, 평균·σ·CEP50/CEP90 표시
+2. **라운드 페이싱 전략** (showRoundPacing) - 640x400, 18홀 타임 바+누적 라인, 목표 페이스 비교, 빠름/느림 색상
+3. **연습 세션 ROI 계산기** (showPracticeROI) - 620x400, 8가지 연습 유형 scatter, 효율 프론티어 곡선, ROI 수치
+4. **고도 영향 분석기** (showElevation) - 620x400, 6존 듀얼 바(오르막/내리막), 고도 보정 계수 표시
+5. **SG 트렌드 분석기** (showSGTrend) - 640x400, 4카테고리(OTT/APP/ATG/PUTT) 영역차트+5R 이동평균
+6. **그린 컨투어 리딩 맵** (showGreenContour) - 620x400, 5가지 그린 타입, 등고선+에임포인트+브레이크 화살표
+7. **클럽 조합 시뮬레이터** (showClubCombo) - 620x400, 22클럽 풀 목록, 갭 분석 바, 최적 14클럽 조합 선택
+8. **코스 전략 인덱스 대시보드** (showStrategyIndex) - 620x400, 8 KPI 반원 게이지, 가중 전략~방어 인덱스 점수
+
+**퀴즈:** QUIZ_V28 배열 15문항 (누적 315문)
+**업적:** ACHIEVE_V28 배열 12항목 (누적 192개)
+**SFX:** Web Audio API 16종 (grouping/pacing/roi/elevation/sgtrend/contour/combo/strategy/quiz_correct/quiz_wrong/achieve/export/switch/reset/save/complete)
+**키보드:** Shift+Q(그루핑), Shift+W(페이싱), Shift+E(ROI), Shift+R(고도), Shift+T(SG트렌드), Shift+Y(컨투어), Shift+U(클럽조합), Shift+I(전략IDX), Shift+0(퀴즈)
+**네비게이션:** 기존 `.v16-scroll-nav` / `.gt-bottom-nav`에 9개 버튼 추가 (보라색 #A855F7)
+**localStorage:** 네임스페이스 `gt_v28_` (기존 데이터 비파괴)
+
+### 3차: 품질 검증
+- `node --check v28_patch.js` → 문법 오류 0
+- `node --check sw.js` → 문법 오류 0
+- `manifest.json` JSON 유효성 → 통과
+- 외부 CDN 참조 → 0건
+- 하단 고정 네비바 신규 생성 → 0건 (기존 네비 탐색만 수행)
+- 개인정보 노출 → 0건
+
+### 4차: 최종 반영
+- sw.js: CACHE_NAME v28, PRECACHE v28_patch.js, auto-inject v28 (network/cache 양쪽 경로)
+- index.html: v28 SEO 메타 태그 (title/description/keywords/OG/Twitter/JSON-LD, 퀴즈 315문)
+- manifest.json: v28 이름/설명, 8 shortcuts 추가 (총 136개), 아이콘 v28
+- golf-ball-tracker.html: v28 스크립트 태그 추가, 타이틀/메타 업데이트
+- **Commit:** `[AUTO] 2026-08-13 golf-tracker v28.0`
