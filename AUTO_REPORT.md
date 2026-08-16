@@ -1,5 +1,74 @@
 # AUTO REPORT - Golf Ball Tracker
 
+## [AUTO] 2026-08-16 golf-tracker v29.0 - 샷타원피터Canvas+라이임팩트분석기Canvas+코스히트인덱스Canvas+하이브리드클럽비교Canvas+모멘텀분석기Canvas+드릴트래커Canvas+바람보정계산기v29Canvas+분석대시보드Canvas+퀴즈+15(315→330)+업적+12(276→288)+SFX16종+키보드Shift+Q/W/E/R/T/Y/U/I/0
+
+### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf 대비)
+
+**Shot Tracer 대비 열위점 해결:**
+1. 샷 타원 피터 (샷 분산 데이터 → 타원 피팅 Canvas 620x400, CEP/R95 통계)
+2. 코스 히트 인덱스 (18홀 히트 인덱스 Canvas 640x400 히트맵, 난이도/바람/거리 가중 점수)
+3. 모멘텀 분석기 (18홀 모멘텀 흐름 Canvas 620x400 라인차트, 턴포인트 감지)
+4. 바람 보정 계산기 v29 (풍속/풍향/탄도 → Canvas 620x400 벡터 시각화, 보정 비거리)
+
+**Arccos / Garmin Golf 대비 열위점 해결:**
+5. 라이 임팩트 분석기 (Fairway/Rough/Sand/Uphill/Downhill/Sidehill 6종 라이별 Canvas 620x400 바차트)
+6. 하이브리드 클럽 비교 (하이브리드 vs 롱아이언 Canvas 620x400 듀얼바, 상황별 추천)
+7. 드릴 트래커 (10종 드릴 진행률 Canvas 620x400 바 트래커, 주간/월간 통계)
+8. 분석 대시보드 (8개 KPI 반원 게이지 Canvas 620x400 종합 대시보드)
+
+### 2차: 개발팀 전체 투입
+
+**v29_patch.js** 신규 (~900줄, 자기완결형 IIFE 패치 모듈)
+
+#### 프론트엔드
+- v29 전용 CSS: 오버레이/패널/카드/히트맵뱃지/토스트/업적팝업
+- 기존 네비바 감지 (.v16-scroll-nav) + 버튼 자동 추가 (UI 불가침 규칙 준수)
+- 반응형 모바일 최적화 (480px 이하)
+- 다크모드 기본 + 라이트모드 호환
+- 포커스 컬러 #FF6B6B (레드)
+
+#### 백엔드/로직 (8개 신규 기능)
+1. **샷 타원 피터**: 좌우/장단 분산 입력, 타원 피팅 Canvas 620x400, CEP(50%)/R95(95%) 반경 계산, PGA Tour 벤치마크 비교
+2. **라이 임팩트 분석기**: 6종 라이별 비거리 % 기록, Canvas 620x400 수평 바차트, 평균 임팩트 통계, 최적 라이 하이라이트
+3. **코스 히트 인덱스**: 18홀별 난이도/바람/거리 가중 점수, Canvas 640x400 셀 히트맵, 3단계 색상(쿨~핫), 전체 인덱스 평균
+4. **하이브리드 클럽 비교**: 하이브리드 vs 롱아이언 거리/정확도/탄도 입력, Canvas 620x400 듀얼바, 상황별(FW/Rough/Wind) 추천
+5. **모멘텀 분석기**: 18홀 스코어 입력 → 모멘텀 점수 계산, Canvas 620x400 라인차트, 턴포인트 감지, 전반/후반 비교
+6. **드릴 트래커**: 10종 드릴(퍼팅게이트/칩투서클/피치컨트롤 등) 세트/횟수 기록, Canvas 620x400 수평바, 주간 달성률
+7. **바람 보정 계산기 v29**: 풍속/풍향/샷방향/탄도 입력, Canvas 620x400 벡터 화살표 시각화, 보정 비거리/클럽 추천
+8. **분석 대시보드**: 8개 KPI(드라이빙/아이언/숏게임/퍼팅/SG/코스관리/멘탈/피트니스) 반원 게이지 Canvas 620x400, 종합 등급
+
+#### 콘텐츠
+- 퀴즈 +15문 (315→330): 타원피팅/CEP/라이임팩트/하이브리드/모멘텀/드릴효과/바람보정/KPI분석 관련
+- 업적 +12개 (276→288): 타원마스터/라이전문가/히트인덱스분석가/하이브리드전문가/모멘텀분석가/드릴트레이너/바람보정v29/분석대시보드/데이터수집가/v29탐험가/올라운더/분석광
+
+#### 오디오
+- SFX 16종: ellipse_open/lie_open/heat_open/hybrid_open/momentum_open/drill_open/windadj_open/analytics_open/quiz_correct_v29/quiz_wrong_v29/achieve_v29/nav_v29/save_v29/hover_v29/click_v29/reset_v29
+
+#### UI/인터랙션
+- 키보드 Shift+Q/W/E/R/T/Y/U/I (8기능) + Shift+0 (퀴즈)
+- 기존 navbar 자동 감지 + 버튼 어펜드 (position:fixed bottom 미사용)
+
+### 3차: 품질팀 검증
+
+| 항목 | 결과 |
+|------|------|
+| JS 문법 (node -c) | PASS |
+| 외부 CDN 참조 | 0건 |
+| 개인정보 노출 | 0건 |
+| SEO 메타태그 | v29 전면 갱신 |
+| PWA manifest.json | v29 shortcuts 144종 |
+| sw.js | golf-tracker-v29 캐시 |
+
+### 4차: 변경 파일
+- `v29_patch.js` — 신규 (~900줄)
+- `golf-ball-tracker.html` — v29 타이틀 + v29_patch.js 스크립트 태그
+- `index.html` — v29.0 SEO 전면 갱신
+- `sw.js` — v28→v29 캐시 + v29_patch.js PRECACHE + 자동주입
+- `manifest.json` — v29.0 설명 + shortcuts 8종 추가 + 아이콘 v29
+- `AUTO_REPORT.md` — v29.0 보고서 추가
+
+---
+
 ## [AUTO] 2026-07-19 golf-tracker v20.0 - 샷쉐이프경향분석기Canvas+클럽갭핑시각화Canvas+라운드비교오버레이Canvas+스마트연습플랜생성기Canvas+GIR근접도분석기Canvas+바람물리계산기Canvas+Par별퍼포먼스분석Canvas+멘탈게임로그Canvas+퀴즈+15(180→195)+업적+12(144→156)+SFX14종+키보드Shift+1~9
 
 ### 1차: 벤치마킹 분석 (Shot Tracer / Arccos / Garmin Golf 대비)
