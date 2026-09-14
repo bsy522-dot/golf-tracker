@@ -962,7 +962,9 @@ input[type="number"]:focus { border-color: var(--primary); }
 
   <!-- Toast -->
   <div class="toast" id="toast"></div>
+
 </div>
+<script src="hub-back.js"></script>
 
 <script>
 // ===== STATE =====
@@ -3967,6 +3969,82 @@ if ("serviceWorker" in navigator) {
   navigator.serviceWorker.register("./sw.js").catch(function(){});
 }
 
+
+/* ===== 폰 뒤로가기(◁) 한 단계 되돌리기 — hub-back 배선 (2026-09-14) =====
+   화면(기록·대시보드·리플레이·연습·라운드·비교·워밍업)과 전체화면 오버레이(튜토리얼·설정·
+   vNN 패치 패널)를 열 때 히스토리에 한 칸 쌓고, ◁ 를 누르면 그 화면만 닫는다.
+   스택이 비면 앱이 평소대로 닫힌다(= 원허브로 복귀).
+   패치 모듈(v6~v29)은 모두 body 바로 아래 전체화면 오버레이에 active 를 켜고 끄므로
+   개별 수정 없이 관찰자 하나로 함께 배선된다(앞으로 추가될 vNN 패치도 자동 적용). */
+(function(){
+  if (!window.HubBack || !window.MutationObserver) return;
+  var HB = window.HubBack;
+
+  function call(name){
+    return function(){ if (typeof window[name] === 'function') window[name](); };
+  }
+
+  /* 화면: 홈(camera-view)은 바닥이므로 제외 */
+  var VIEWS = {
+    'history-view':   call('closeHistory'),
+    'dashboard-view': call('closeDashboard'),
+    'replay-view':    call('closeReplay'),
+    'practice-view':  call('closePractice'),
+    'round-view':     call('closeRound'),
+    'compare-view':   call('closeCompare'),
+    'warmup-view':    call('closeWarmup')
+  };
+
+  function bind(el, name, isOpen, closeFn){
+    if (isOpen) {
+      if (!el.__hbTok) {
+        el.__hbTok = HB.push(name, function(){
+          el.__hbTok = null;
+          try { closeFn(); } catch(e) {}
+        });
+      }
+    } else if (el.__hbTok) {
+      var t = el.__hbTok; el.__hbTok = null; HB.pop(t);
+    }
+  }
+
+  /* body 바로 아래 전체화면 오버레이(vNN 패치 패널)인가 */
+  function isFullOverlay(el){
+    if (el.parentNode !== document.body) return false;
+    if (!el.classList.contains('active') && !el.classList.contains('show')) return false;
+    var cs = window.getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || cs.position !== 'fixed') return false;
+    var r = el.getBoundingClientRect();
+    return r.width >= window.innerWidth * 0.6 && r.height >= window.innerHeight * 0.5;
+  }
+
+  function sync(el){
+    if (!el || el.nodeType !== 1 || !el.classList) return;
+
+    if (VIEWS[el.id]) {
+      bind(el, el.id, el.classList.contains('active'), VIEWS[el.id]);
+      return;
+    }
+    if (el.id === 'tutorial-overlay') {
+      bind(el, 'tutorial', el.classList.contains('active'), call('skipTutorial'));
+      return;
+    }
+    if (el.id === 'settings-panel') {
+      bind(el, 'settings', el.classList.contains('visible'), call('toggleSettings'));
+      return;
+    }
+    if (el.parentNode === document.body) {
+      bind(el, el.id || 'panel', isFullOverlay(el), function(){
+        el.classList.remove('active'); el.classList.remove('show');
+      });
+    }
+  }
+
+  new MutationObserver(function(muts){
+    for (var i = 0; i < muts.length; i++) sync(muts[i].target);
+  }).observe(document.documentElement, {subtree:true, attributes:true, attributeFilter:['class']});
+})();
+/* ===== hub-back 배선 끝 ===== */
 </script>
 <script src="v6_patch.js"></script>
 <script src="v7_patch.js"></script>
