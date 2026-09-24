@@ -19,7 +19,7 @@ function getPanel(id){var ov=document.getElementById('v8-'+id);if(!ov){var pn=cr
 function showHandicap(){
 var pn=getPanel('handicap');
 var rounds=lsGet('hcp_rounds',[]);
-var html='<div class="v8-title">&#128203; 핸디캡 인덱스 계산기</div>';
+var html='<div class="v8-title">📋 핸디캡 인덱스 계산기</div>';
 
 html+='<div class="v8-card"><h3>WHS 핸디캡 시스템</h3>';
 html+='<p style="margin-bottom:12px">World Handicap System 기반 핸디캡 인덱스를 계산합니다. 최근 20라운드 중 최상의 8개 디퍼런셜로 산출합니다.</p>';
@@ -45,7 +45,7 @@ if(rounds.length>0){
   html+='<div style="text-align:center;margin:16px 0;padding:20px;background:linear-gradient(135deg,rgba(0,180,216,0.1),rgba(0,255,136,0.1));border-radius:14px">';
   html+='<div style="font-size:0.8em;color:#888;margin-bottom:4px">Handicap Index</div>';
   html+='<div style="font-size:3em;font-weight:800;color:#00FF88">'+hcpIndex.toFixed(1)+'</div>';
-  html+='<div style="font-size:0.8em;color:#888;margin-top:4px">'+(hcpIndex<=5?'&#127942; 싱글 핸디캡퍼!':hcpIndex<=15?'&#11088; 중급 골퍼':'&#127793; 발전 가능성 충분!')+'</div>';
+  html+='<div style="font-size:0.8em;color:#888;margin-top:4px">'+(hcpIndex<=5?'🏆 싱글 핸디캡퍼!':hcpIndex<=15?'⭐ 중급 골퍼':'🌱 발전 가능성 충분!')+'</div>';
   html+='</div>';
 
   html+='<div style="margin:12px 0"><div style="font-size:0.8em;color:#888;margin-bottom:8px">디퍼런셜 분포 (사용: '+numToUse+'개 / 전체: '+rounds.length+'개)</div>';
@@ -73,7 +73,7 @@ if(rounds.length>0){
 
 html+='</div>';
 
-html+='<div class="v8-card"><h3>&#10133; 라운드 추가</h3>';
+html+='<div class="v8-card"><h3>➕ 라운드 추가</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v8-label">코스명</label><input id="v8-hcp-course" class="v8-input" type="text" placeholder="골프장 이름" maxlength="30"></div>';
 html+='<div><label class="v8-label">스코어</label><input id="v8-hcp-score" class="v8-input" type="number" min="60" max="150" value="90"></div>';
@@ -82,13 +82,13 @@ html+='<div><label class="v8-label">슬로프 레이팅</label><input id="v8-hcp
 html+='</div>';
 html+='<button class="v8-btn v8-btn-primary" style="margin-top:12px;width:100%" onclick="window._v8AddHcpRound()">라운드 기록 추가</button></div>';
 
-html+='<div class="v8-card"><h3>&#128161; 핸디캡 가이드</h3>';
+html+='<div class="v8-card"><h3>💡 핸디캡 가이드</h3>';
 html+='<table class="v8-table"><tr><th>핸디캡</th><th>수준</th><th>인구 비율</th></tr>';
-html+='<tr><td>+2~5</td><td>&#127942; 스크래치~싱글</td><td>~5%</td></tr>';
-html+='<tr><td>6~12</td><td>&#11088; 중상급</td><td>~15%</td></tr>';
-html+='<tr><td>13~20</td><td>&#128170; 중급</td><td>~30%</td></tr>';
-html+='<tr><td>21~28</td><td>&#127793; 초중급</td><td>~30%</td></tr>';
-html+='<tr><td>29~36</td><td>&#9971;&#xFE0E; 입문</td><td>~20%</td></tr>';
+html+='<tr><td>+2~5</td><td>🏆 스크래치~싱글</td><td>~5%</td></tr>';
+html+='<tr><td>6~12</td><td>⭐ 중상급</td><td>~15%</td></tr>';
+html+='<tr><td>13~20</td><td>💪 중급</td><td>~30%</td></tr>';
+html+='<tr><td>21~28</td><td>🌱 초중급</td><td>~30%</td></tr>';
+html+='<tr><td>29~36</td><td>⛳︎ 입문</td><td>~20%</td></tr>';
 html+='</table></div>';
 
 pn.innerHTML='<button class="v8-close" onclick="window._v8Close(\'handicap\')">&times;</button>'+html;
@@ -111,7 +111,7 @@ playSfx('handicap');showToast('라운드 기록 추가!');showHandicap();
 function showDispersion(){
 var pn=getPanel('dispersion');
 var shots=getShotHistory();
-var html='<div class="v8-title">&#128205; 샷 분산 맵</div>';
+var html='<div class="v8-title">📍 샷 분산 맵</div>';
 
 html+='<div class="v8-card"><h3>Shot Dispersion Pattern</h3>';
 html+='<p style="margin-bottom:12px">샷 정확도와 일관성을 시각적으로 분석합니다. 원이 작을수록 정확한 골퍼입니다.</p>';
@@ -255,7 +255,7 @@ var CADDIE_CLUBS=[
 
 function showVirtualCaddie(){
 var pn=getPanel('caddie');
-var html='<div class="v8-title">&#129302; 버추얼 캐디 AI</div>';
+var html='<div class="v8-title">🤖 버추얼 캐디 AI</div>';
 
 html+='<div class="v8-card"><h3>스마트 클럽 추천</h3>';
 html+='<p style="margin-bottom:12px">거리, 날씨, 지형 조건을 입력하면 최적의 클럽과 전략을 추천합니다.</p>';
@@ -272,7 +272,7 @@ html+='<button class="v8-btn v8-btn-primary" style="margin-top:12px;width:100%" 
 
 html+='<div id="v8-caddie-result"></div>';
 
-html+='<div class="v8-card"><h3>&#128218; 클럽별 특성 가이드</h3>';
+html+='<div class="v8-card"><h3>📚 클럽별 특성 가이드</h3>';
 html+='<table class="v8-table"><tr><th>클럽</th><th>거리</th><th>로프트</th><th>용도</th></tr>';
 for(var i=0;i<CADDIE_CLUBS.length;i++){
   var c=CADDIE_CLUBS[i];
@@ -320,14 +320,14 @@ var alt2=clubs[2];
 
 var strategy='';var confidence=90;
 if(hazard==='water_front'||hazard==='bunker_front'){
-  strategy='&#9888;&#xFE0E; 앞에 해저드가 있으므로 클럽 1개 더 잡고 그린 뒤쪽을 공략하세요.';
+  strategy='⚠︎ 앞에 해저드가 있으므로 클럽 1개 더 잡고 그린 뒤쪽을 공략하세요.';
   confidence=75;
   if(primary.dist<adjustedDist&&alt1)primary=clubs.find(function(c){return c.dist>=adjustedDist})||alt1;
 }else if(hazard==='water_back'||hazard==='bunker_back'){
-  strategy='&#9888;&#xFE0E; 뒤에 해저드가 있으므로 클럽 1개 짧게 잡고 그린 앞쪽을 공략하세요.';
+  strategy='⚠︎ 뒤에 해저드가 있으므로 클럽 1개 짧게 잡고 그린 앞쪽을 공략하세요.';
   confidence=75;
 }else{
-  strategy='&#9989; 표준 공략입니다. '+primary.name+'으로 타겟 정면을 노리세요.';
+  strategy='✅ 표준 공략입니다. '+primary.name+'으로 타겟 정면을 노리세요.';
   confidence=Math.max(60,90-primary.diff*2);
 }
 
@@ -336,7 +336,7 @@ if(lie==='deeprough'){strategy+=' <span style="color:#FFC107">딥러프에서는
 
 var html='<div class="v8-card" style="border-left:3px solid #00FF88">';
 html+='<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">';
-html+='<div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,180,216,0.15));display:flex;align-items:center;justify-content:center;font-size:1.6em">&#129302;</div>';
+html+='<div style="width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,rgba(0,255,136,0.15),rgba(0,180,216,0.15));display:flex;align-items:center;justify-content:center;font-size:1.6em">🤖</div>';
 html+='<div><div style="font-size:1.3em;font-weight:800;color:#00FF88">'+primary.name+'</div>';
 html+='<div style="font-size:0.8em;color:#888">추천 신뢰도: '+Math.round(confidence)+'%</div></div>';
 html+='</div>';
@@ -373,7 +373,7 @@ var tempoInterval=null;var tempoBeats=0;var tempoBPM=72;var tempoPhase='idle';
 function showTempoTrainer(){
 var pn=getPanel('tempo');
 var bestTempos=lsGet('tempo_records',[]);
-var html='<div class="v8-title">&#127926; 스윙 템포 트레이너</div>';
+var html='<div class="v8-title">🎶 스윙 템포 트레이너</div>';
 
 html+='<div class="v8-card"><h3>이상적인 스윙 템포</h3>';
 html+='<p>PGA Tour 프로들의 평균 백스윙:다운스윙 비율은 <strong style="color:#00FF88">3:1</strong>입니다. 72 BPM에서 백스윙 3박, 다운스윙 1박이 이상적입니다.</p></div>';
@@ -397,8 +397,8 @@ html+='<div id="v8-tempo-label" style="position:absolute;bottom:-30px;width:100%
 html+='</div>';
 
 html+='<div style="display:flex;gap:8px;justify-content:center;margin-top:24px">';
-html+='<button id="v8-tempo-start" class="v8-btn v8-btn-primary" onclick="window._v8TempoStart()" style="padding:12px 32px;font-size:1em">&#9654; 시작</button>';
-html+='<button id="v8-tempo-stop" class="v8-btn" onclick="window._v8TempoStop()" style="padding:12px 32px;font-size:1em;display:none">&#9724; 정지</button>';
+html+='<button id="v8-tempo-start" class="v8-btn v8-btn-primary" onclick="window._v8TempoStart()" style="padding:12px 32px;font-size:1em">▶ 시작</button>';
+html+='<button id="v8-tempo-stop" class="v8-btn" onclick="window._v8TempoStop()" style="padding:12px 32px;font-size:1em;display:none">◼ 정지</button>';
 html+='</div>';
 
 html+='<div style="margin-top:16px">';
@@ -410,10 +410,10 @@ html+='</div>';
 html+='<div style="margin-top:8px;font-size:0.75em;color:#666">백스윙(1-2-3) &rarr; 다운스윙(4)</div>';
 html+='</div></div>';
 
-html+='<div class="v8-card"><h3>&#128218; 템포 가이드</h3>';
+html+='<div class="v8-card"><h3>📚 템포 가이드</h3>';
 html+='<table class="v8-table"><tr><th>BPM</th><th>스타일</th><th>적합한 골퍼</th></tr>';
 html+='<tr><td>55~65</td><td>Ernie Els 스타일</td><td>유연한 스윙, 시니어</td></tr>';
-html+='<tr><td>66~76</td><td>&#11088; 표준 (추천)</td><td>대부분의 아마추어</td></tr>';
+html+='<tr><td>66~76</td><td>⭐ 표준 (추천)</td><td>대부분의 아마추어</td></tr>';
 html+='<tr><td>77~85</td><td>Tiger Woods 스타일</td><td>빠른 스윙, 파워형</td></tr>';
 html+='<tr><td>86~100</td><td>Nick Price 스타일</td><td>고급자, 속도형</td></tr>';
 html+='</table></div>';
@@ -489,11 +489,11 @@ tempoBeats=0;
 
 // ===== 5. MENTAL GAME TOOLKIT =====
 var MENTAL_ROUTINES=[
-{name:'프리샷 루틴',icon:'&#127919;',duration:'30초',steps:['타겟 확인 (뒤에서 라인 확인)','중간 목표 설정 (볼 앞 1m 지점)','어드레스 &amp; 왜글 1~2회','마지막 타겟 확인 후 즉시 스윙','결과에 무관하게 2초간 자세 유지']},
-{name:'호흡 리셋',icon:'&#127756;',duration:'60초',steps:['4초간 코로 깊게 들이마시기','4초간 숨 참기','6초간 입으로 천천히 내쉬기','3회 반복','마지막에 &quot;다음 샷에 집중&quot; 자기 암시']},
-{name:'시각화 훈련',icon:'&#128065;&#xFE0E;',duration:'20초',steps:['눈을 감고 완벽한 샷 상상','볼이 높이 날아가는 궤적 시각화','그린에 정확히 안착하는 장면','볼이 구르며 홀에 빨려들어가는 장면','눈을 뜨고 실제로 그대로 실행']},
-{name:'분노 관리',icon:'&#128545;',duration:'15초',steps:['10yd 앞으로 걸어가기','심호흡 3회','&quot;다음 샷이 중요하다&quot; 반복','클럽을 내려놓고 5초 대기','미소 짓고 새로운 마음으로 시작']},
-{name:'자신감 빌더',icon:'&#128170;',duration:'10초',steps:['최근 최고의 샷 떠올리기','&quot;나는 이 샷을 칠 수 있다&quot;','어깨를 펴고 당당하게 서기','클럽을 자신있게 잡기','집중!']}
+{name:'프리샷 루틴',icon:'🎯',duration:'30초',steps:['타겟 확인 (뒤에서 라인 확인)','중간 목표 설정 (볼 앞 1m 지점)','어드레스 &amp; 왜글 1~2회','마지막 타겟 확인 후 즉시 스윙','결과에 무관하게 2초간 자세 유지']},
+{name:'호흡 리셋',icon:'🌌',duration:'60초',steps:['4초간 코로 깊게 들이마시기','4초간 숨 참기','6초간 입으로 천천히 내쉬기','3회 반복','마지막에 &quot;다음 샷에 집중&quot; 자기 암시']},
+{name:'시각화 훈련',icon:'👁︎',duration:'20초',steps:['눈을 감고 완벽한 샷 상상','볼이 높이 날아가는 궤적 시각화','그린에 정확히 안착하는 장면','볼이 구르며 홀에 빨려들어가는 장면','눈을 뜨고 실제로 그대로 실행']},
+{name:'분노 관리',icon:'😡',duration:'15초',steps:['10yd 앞으로 걸어가기','심호흡 3회','&quot;다음 샷이 중요하다&quot; 반복','클럽을 내려놓고 5초 대기','미소 짓고 새로운 마음으로 시작']},
+{name:'자신감 빌더',icon:'💪',duration:'10초',steps:['최근 최고의 샷 떠올리기','&quot;나는 이 샷을 칠 수 있다&quot;','어깨를 펴고 당당하게 서기','클럽을 자신있게 잡기','집중!']}
 ];
 
 var SCORING_ZONES=[
@@ -506,7 +506,7 @@ var SCORING_ZONES=[
 
 function showMentalGame(){
 var pn=getPanel('mental');
-var html='<div class="v8-title">&#129504; 멘탈 게임 코칭</div>';
+var html='<div class="v8-title">🧠 멘탈 게임 코칭</div>';
 
 html+='<div class="v8-card"><h3>라운드 심리 관리</h3>';
 html+='<p>골프의 90%는 멘탈입니다. 프로 수준의 심리 기법으로 스코어를 낮추세요.</p></div>';
@@ -523,7 +523,7 @@ for(var i=0;i<MENTAL_ROUTINES.length;i++){
   html+='</ol></div>';
 }
 
-html+='<div class="v8-card"><h3>&#127959;&#xFE0E; 스코어링 존 전략</h3>';
+html+='<div class="v8-card"><h3>🏗︎ 스코어링 존 전략</h3>';
 html+='<p style="margin-bottom:12px">18홀을 5개 존으로 나누어 각 구간에 맞는 마인드셋을 유지하세요.</p>';
 for(var z=0;z<SCORING_ZONES.length;z++){
   var sz=SCORING_ZONES[z];
@@ -535,7 +535,7 @@ for(var z=0;z<SCORING_ZONES.length;z++){
 }
 html+='</div>';
 
-html+='<div class="v8-card"><h3>&#128172; 라운드 중 자기 대화</h3>';
+html+='<div class="v8-card"><h3>💬 라운드 중 자기 대화</h3>';
 var selfTalks=[
   {bad:'&quot;또 슬라이스...&quot;',good:'&quot;다음 샷에서 그립을 확인하자&quot;'},
   {bad:'&quot;이 홀은 항상 안 돼&quot;',good:'&quot;오늘은 새로운 기회다&quot;'},
@@ -543,7 +543,7 @@ var selfTalks=[
   {bad:'&quot;오늘 컨디션이 최악&quot;',good:'&quot;적응하면서 플레이하자&quot;'},
   {bad:'&quot;동반자가 잘 치니까 긴장돼&quot;',good:'&quot;내 게임에만 집중하자&quot;'}
 ];
-html+='<table class="v8-table"><tr><th style="color:#ff6b6b">&#10060; 나쁜 자기 대화</th><th style="color:#00FF88">&#9989; 좋은 자기 대화</th></tr>';
+html+='<table class="v8-table"><tr><th style="color:#ff6b6b">❌ 나쁜 자기 대화</th><th style="color:#00FF88">✅ 좋은 자기 대화</th></tr>';
 for(var st=0;st<selfTalks.length;st++){
   html+='<tr><td style="color:#ff6b6b;font-size:0.85em">'+selfTalks[st].bad+'</td><td style="color:#00FF88;font-size:0.85em">'+selfTalks[st].good+'</td></tr>';
 }
@@ -566,7 +566,7 @@ var bag=lsGet('equipment_bag',[
   {name:'Putter',brand:'',shaft:'Steel',flex:'-',loft:'3',gripsAge:0,rounds:0}
 ]);
 
-var html='<div class="v8-title">&#127991;&#xFE0E; 장비 관리</div>';
+var html='<div class="v8-title">🏷︎ 장비 관리</div>';
 
 html+='<div class="v8-card"><h3>내 골프백</h3>';
 html+='<p style="margin-bottom:12px">클럽 '+(bag.length)+'/14개 &mdash; 클릭하여 상세 정보를 수정하세요.</p>';
@@ -595,12 +595,12 @@ for(var i=0;i<bag.length;i++){
 }
 
 if(gripWarning){
-  html+='<div class="v8-card" style="border-left:3px solid #ff6b6b"><h3 style="color:#ff6b6b">&#9888;&#xFE0E; 그립 교체 권장</h3>';
+  html+='<div class="v8-card" style="border-left:3px solid #ff6b6b"><h3 style="color:#ff6b6b">⚠︎ 그립 교체 권장</h3>';
   html+='<p>40라운드 이상 사용된 그립은 성능이 저하됩니다. 그립 교체를 권장합니다.</p></div>';
 }
 html+='</div>';
 
-html+='<div class="v8-card"><h3>&#10133; 클럽 추가/수정</h3>';
+html+='<div class="v8-card"><h3>➕ 클럽 추가/수정</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v8-label">클럽 이름</label><input id="v8-eq-name" class="v8-input" type="text" placeholder="예: 7 Iron" maxlength="20"></div>';
 html+='<div><label class="v8-label">브랜드</label><input id="v8-eq-brand" class="v8-input" type="text" placeholder="예: Titleist" maxlength="20"></div>';
@@ -611,7 +611,7 @@ html+='<div><label class="v8-label">사용 라운드</label><input id="v8-eq-rou
 html+='</div>';
 html+='<button class="v8-btn v8-btn-primary" style="margin-top:12px;width:100%" onclick="window._v8AddClub()">클럽 추가</button></div>';
 
-html+='<div class="v8-card"><h3>&#128197; 라운드 후 업데이트</h3>';
+html+='<div class="v8-card"><h3>📅 라운드 후 업데이트</h3>';
 html+='<button class="v8-btn" style="width:100%" onclick="window._v8RoundPlayed()">라운드 1회 사용 기록</button>';
 html+='<p style="font-size:0.75em;color:#666;margin-top:6px">모든 클럽의 그립 사용 횟수가 +1 됩니다.</p></div>';
 
@@ -647,7 +647,7 @@ playSfx('equip');showToast('라운드 기록 업데이트!');showEquipment();
 // ===== 7. SCORE PREDICTOR =====
 function showScorePredictor(){
 var pn=getPanel('predict');
-var html='<div class="v8-title">&#128302; 스코어 예측기</div>';
+var html='<div class="v8-title">🔮 스코어 예측기</div>';
 
 html+='<div class="v8-card"><h3>AI 스코어 예측</h3>';
 html+='<p style="margin-bottom:12px">오늘의 컨디션과 코스 난이도를 기반으로 예상 스코어를 예측합니다.</p>';
@@ -715,7 +715,7 @@ html+='<div><div style="font-size:0.7em;color:#888">Worst Case</div><div style="
 html+='</div></div>';
 
 if(factors.length>0){
-  html+='<div class="v8-card"><h3>&#128200; 보정 요인</h3>';
+  html+='<div class="v8-card"><h3>📈 보정 요인</h3>';
   html+='<div style="margin-top:8px">';
   for(var f=0;f<factors.length;f++){
     var fc=factors[f];
@@ -731,7 +731,7 @@ if(factors.length>0){
   html+='</div></div>';
 }
 
-html+='<div class="v8-card"><h3>&#128161; 오늘의 전략 조언</h3>';
+html+='<div class="v8-card"><h3>💡 오늘의 전략 조언</h3>';
 if(predicted<=80)html+='<p style="color:#00FF88">최상의 라운드가 예상됩니다! 공격적으로 플레이하세요.</p>';
 else if(predicted<=90)html+='<p style="color:#00B4D8">좋은 라운드입니다. 페어웨이 중앙 + GIR에 집중하세요.</p>';
 else if(predicted<=100)html+='<p style="color:#FFC107">안정적인 플레이가 핵심입니다. 트리플 보기 이상을 방지하세요.</p>';
@@ -764,13 +764,13 @@ var QUIZ_QUESTIONS=[
 function showQuiz(){
 var pn=getPanel('quiz');
 var quizState=lsGet('quiz_state',{current:0,correct:0,answered:[]});
-var html='<div class="v8-title">&#128218; 골프 지식 퀴즈</div>';
+var html='<div class="v8-title">📚 골프 지식 퀴즈</div>';
 
 if(quizState.answered.length>=QUIZ_QUESTIONS.length){
   var grade=quizState.correct>=14?'S':quizState.correct>=12?'A':quizState.correct>=10?'B':quizState.correct>=7?'C':'D';
   var gradeColor=grade==='S'?'#00FF88':grade==='A'?'#00B4D8':grade==='B'?'#FFC107':'#ff6b6b';
   html+='<div class="v8-card" style="text-align:center">';
-  html+='<div style="font-size:3em;margin-bottom:8px">&#127942;</div>';
+  html+='<div style="font-size:3em;margin-bottom:8px">🏆</div>';
   html+='<h3>퀴즈 완료!</h3>';
   html+='<div style="font-size:2.5em;font-weight:800;color:'+gradeColor+';margin:12px 0">'+grade+'</div>';
   html+='<div style="font-size:1.2em;color:#aaa">'+quizState.correct+' / '+QUIZ_QUESTIONS.length+' 정답</div>';
@@ -808,8 +808,8 @@ var quizState=lsGet('quiz_state',{current:0,correct:0,answered:[]});
 var q=QUIZ_QUESTIONS[quizState.current];
 var isCorrect=idx===q.a;
 quizState.answered.push(isCorrect);
-if(isCorrect){quizState.correct++;playSfx('quiz_correct');showToast('&#9989; 정답!')}
-else{playSfx('quiz_wrong');showToast('&#10060; 오답! '+q.explain)}
+if(isCorrect){quizState.correct++;playSfx('quiz_correct');showToast('✅ 정답!')}
+else{playSfx('quiz_wrong');showToast('❌ 오답! '+q.explain)}
 quizState.current++;
 lsSet('quiz_state',quizState);
 setTimeout(function(){showQuiz()},800);
@@ -823,18 +823,18 @@ showQuiz();
 
 // ===== ACHIEVEMENTS =====
 var ACHIEVEMENTS=[
-{id:'v8_first_handicap',name:'핸디캡 시작',desc:'첫 핸디캡 라운드 기록',icon:'&#128203;',check:function(){return lsGet('hcp_rounds',[]).length>=1}},
-{id:'v8_5_handicap_rounds',name:'핸디캡 추적자',desc:'핸디캡 라운드 5회 기록',icon:'&#128200;',check:function(){return lsGet('hcp_rounds',[]).length>=5}},
-{id:'v8_single_handicap',name:'싱글 핸디캡퍼',desc:'핸디캡 인덱스 9.9 이하 달성',icon:'&#127942;',check:function(){var r=lsGet('hcp_rounds',[]);if(r.length<3)return false;var diffs=[];for(var i=0;i<r.length;i++){diffs.push((113/r[i].slope)*(r[i].score-r[i].rating))}diffs.sort(function(a,b){return a-b});var n=Math.min(r.length<=5?1:r.length<=8?2:8,diffs.length);var sum=0;for(var j=0;j<n;j++)sum+=diffs[j];return sum/n<=9.9}},
-{id:'v8_dispersion_check',name:'샷 분석가',desc:'샷 분산 맵 첫 조회',icon:'&#128205;',check:function(){return lsGet('ach_dispersion_viewed',false)}},
-{id:'v8_caddie_used',name:'캐디 활용',desc:'버추얼 캐디에게 첫 질문',icon:'&#129302;',check:function(){return lsGet('ach_caddie_used',false)}},
-{id:'v8_tempo_50',name:'템포 마스터',desc:'스윙 템포 50회 연습',icon:'&#127926;',check:function(){var recs=lsGet('tempo_records',[]);var total=0;for(var i=0;i<recs.length;i++)total+=recs[i].swings;return total>=50}},
-{id:'v8_mental_reader',name:'멘탈 코치',desc:'멘탈 게임 코칭 조회',icon:'&#129504;',check:function(){return lsGet('ach_mental_viewed',false)}},
-{id:'v8_14_clubs',name:'풀백 골퍼',desc:'골프백에 14개 클럽 등록',icon:'&#127991;&#xFE0E;',check:function(){return lsGet('equipment_bag',[]).length>=14}},
-{id:'v8_grip_check',name:'장비 관리사',desc:'그립 교체 시기 확인',icon:'&#128295;',check:function(){var bag=lsGet('equipment_bag',[]);return bag.some(function(c){return c.rounds>=40})}},
-{id:'v8_predict_80',name:'80타 예측',desc:'스코어 예측 결과 80타 이하',icon:'&#128302;',check:function(){return lsGet('ach_predict_80',false)}},
-{id:'v8_quiz_perfect',name:'골프 박사',desc:'퀴즈 15문제 전부 정답',icon:'&#128218;',check:function(){var qs=lsGet('quiz_state',{});return qs.correct>=15&&(qs.answered||[]).length>=15}},
-{id:'v8_quiz_complete',name:'퀴즈 도전자',desc:'골프 퀴즈 전문항 완료',icon:'&#127919;',check:function(){var qs=lsGet('quiz_state',{});return(qs.answered||[]).length>=15}}
+{id:'v8_first_handicap',name:'핸디캡 시작',desc:'첫 핸디캡 라운드 기록',icon:'📋',check:function(){return lsGet('hcp_rounds',[]).length>=1}},
+{id:'v8_5_handicap_rounds',name:'핸디캡 추적자',desc:'핸디캡 라운드 5회 기록',icon:'📈',check:function(){return lsGet('hcp_rounds',[]).length>=5}},
+{id:'v8_single_handicap',name:'싱글 핸디캡퍼',desc:'핸디캡 인덱스 9.9 이하 달성',icon:'🏆',check:function(){var r=lsGet('hcp_rounds',[]);if(r.length<3)return false;var diffs=[];for(var i=0;i<r.length;i++){diffs.push((113/r[i].slope)*(r[i].score-r[i].rating))}diffs.sort(function(a,b){return a-b});var n=Math.min(r.length<=5?1:r.length<=8?2:8,diffs.length);var sum=0;for(var j=0;j<n;j++)sum+=diffs[j];return sum/n<=9.9}},
+{id:'v8_dispersion_check',name:'샷 분석가',desc:'샷 분산 맵 첫 조회',icon:'📍',check:function(){return lsGet('ach_dispersion_viewed',false)}},
+{id:'v8_caddie_used',name:'캐디 활용',desc:'버추얼 캐디에게 첫 질문',icon:'🤖',check:function(){return lsGet('ach_caddie_used',false)}},
+{id:'v8_tempo_50',name:'템포 마스터',desc:'스윙 템포 50회 연습',icon:'🎶',check:function(){var recs=lsGet('tempo_records',[]);var total=0;for(var i=0;i<recs.length;i++)total+=recs[i].swings;return total>=50}},
+{id:'v8_mental_reader',name:'멘탈 코치',desc:'멘탈 게임 코칭 조회',icon:'🧠',check:function(){return lsGet('ach_mental_viewed',false)}},
+{id:'v8_14_clubs',name:'풀백 골퍼',desc:'골프백에 14개 클럽 등록',icon:'🏷︎',check:function(){return lsGet('equipment_bag',[]).length>=14}},
+{id:'v8_grip_check',name:'장비 관리사',desc:'그립 교체 시기 확인',icon:'🔧',check:function(){var bag=lsGet('equipment_bag',[]);return bag.some(function(c){return c.rounds>=40})}},
+{id:'v8_predict_80',name:'80타 예측',desc:'스코어 예측 결과 80타 이하',icon:'🔮',check:function(){return lsGet('ach_predict_80',false)}},
+{id:'v8_quiz_perfect',name:'골프 박사',desc:'퀴즈 15문제 전부 정답',icon:'📚',check:function(){var qs=lsGet('quiz_state',{});return qs.correct>=15&&(qs.answered||[]).length>=15}},
+{id:'v8_quiz_complete',name:'퀴즈 도전자',desc:'골프 퀴즈 전문항 완료',icon:'🎯',check:function(){var qs=lsGet('quiz_state',{});return(qs.answered||[]).length>=15}}
 ];
 
 function checkAchievements(){
@@ -866,14 +866,14 @@ if(existing)return;
 var container=document.createElement('div');
 container.className='v8-quick-actions';
 var buttons=[
-  {icon:'&#128203;',title:'핸디캡 (Shift+H)',fn:'showHandicap'},
-  {icon:'&#128205;',title:'분산 맵 (Shift+D)',fn:'showDispersion'},
-  {icon:'&#129302;',title:'캐디 AI (Shift+C)',fn:'showVirtualCaddie'},
-  {icon:'&#127926;',title:'템포 (Shift+T)',fn:'showTempoTrainer'},
-  {icon:'&#129504;',title:'멘탈 (Shift+M)',fn:'showMentalGame'},
-  {icon:'&#127991;&#xFE0E;',title:'장비 (Shift+E)',fn:'showEquipment'},
-  {icon:'&#128302;',title:'예측 (Shift+P)',fn:'showScorePredictor'},
-  {icon:'&#128218;',title:'퀴즈 (Shift+Q)',fn:'showQuiz'}
+  {icon:'📋',title:'핸디캡 (Shift+H)',fn:'showHandicap'},
+  {icon:'📍',title:'분산 맵 (Shift+D)',fn:'showDispersion'},
+  {icon:'🤖',title:'캐디 AI (Shift+C)',fn:'showVirtualCaddie'},
+  {icon:'🎶',title:'템포 (Shift+T)',fn:'showTempoTrainer'},
+  {icon:'🧠',title:'멘탈 (Shift+M)',fn:'showMentalGame'},
+  {icon:'🏷︎',title:'장비 (Shift+E)',fn:'showEquipment'},
+  {icon:'🔮',title:'예측 (Shift+P)',fn:'showScorePredictor'},
+  {icon:'📚',title:'퀴즈 (Shift+Q)',fn:'showQuiz'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');

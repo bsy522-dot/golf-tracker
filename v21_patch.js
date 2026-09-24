@@ -23,23 +23,23 @@ var ZONES=['Very Slow','Slow','Moderate','Tour Avg','Fast','Very Fast','Pro Tour
 var ZONE_RANGES=[[0,55],[56,65],[66,75],[76,85],[86,95],[96,105],[106,115],[116,999]];
 var ZONE_COLORS=['#FF3366','#FF6B6B','#FFB800','#00FF88','#4ECDC4','#00B4D8','#A855F7','#FF00FF'];
 var html='<button class="v21-close" onclick="window._v21Close(\'rhythm\')">&times;</button>';
-html+='<div class="v21-title">&#x1F3B5; &#xC2A4;&#xC719; &#xB9AC;&#xB4EC; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v21-title">🎵 스윙 리듬 분석기</div>';
 html+='<canvas id="v21-rhythm-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xD15C;&#xD3EC; &#xCE21;&#xC815; (BPM &#xD0ED;)</h3>';
-html+='<p style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px">&#xBC31;&#xC2A4;&#xC719;~&#xB2E4;&#xC6B4;&#xC2A4;&#xC719; &#xB9AC;&#xB4EC;&#xC5D0; &#xB9DE;&#xCDB0; &#xD0ED;&#xD558;&#xC138;&#xC694;</p>';
+html+='<div class="v21-card"><h3>템포 측정 (BPM 탭)</h3>';
+html+='<p style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:8px">백스윙~다운스윙 리듬에 맞춰 탭하세요</p>';
 html+='<div style="text-align:center;margin:8px 0"><div id="v21-bpm-display" style="font-size:48px;font-weight:bold;color:#00FF88">--</div><div style="font-size:11px;color:rgba(255,255,255,0.5)">BPM</div></div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<button class="v21-btn v21-btn-primary" id="v21-tap-btn" style="padding:16px;font-size:16px" onclick="window._v21TapTempo()">&#x1F44F; TAP</button>';
-html+='<button class="v21-btn" onclick="window._v21SaveRhythm()">&#xC800;&#xC7A5;</button>';
+html+='<button class="v21-btn v21-btn-primary" id="v21-tap-btn" style="padding:16px;font-size:16px" onclick="window._v21TapTempo()">👏 TAP</button>';
+html+='<button class="v21-btn" onclick="window._v21SaveRhythm()">저장</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
 var avgBpm=0;if(data.length>0){var sum=0;for(var i=0;i<data.length;i++)sum+=data[i].bpm;avgBpm=Math.round(sum/data.length);}
 var ratio=data.length>0?data[data.length-1].ratio||'3:1':'3:1';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v21-stat-label">&#xCE21;&#xC815; &#xD68C;&#xC218;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+avgBpm+'</div><div class="v21-stat-label">&#xD3C9;&#xADE0; BPM</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00B4D8">'+ratio+'</div><div class="v21-stat-label">BS/DS &#xBE44;&#xC728;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v21-stat-label">측정 회수</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+avgBpm+'</div><div class="v21-stat-label">평균 BPM</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00B4D8">'+ratio+'</div><div class="v21-stat-label">BS/DS 비율</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v21-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v21ResetRhythm()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v21-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v21ResetRhythm()">초기화</button>';}
 pn.innerHTML=html;openPanel('rhythm');drawRhythmCanvas(data,ZONES,ZONE_RANGES,ZONE_COLORS);
 }
 var tapTimes=[];
@@ -59,7 +59,7 @@ window._v21CurrentBpm=bpm;
 };
 window._v21SaveRhythm=function(){
 var bpm=window._v21CurrentBpm||0;
-if(bpm<30||bpm>200){showToast('BPM&#xC744; &#xBA3C;&#xC800; &#xCE21;&#xC815;&#xD558;&#xC138;&#xC694;');return;}
+if(bpm<30||bpm>200){showToast('BPM을 먼저 측정하세요');return;}
 var ratios=['3:1','2.5:1','2:1','3.5:1'];
 var ratio=ratios[Math.min(Math.floor(bpm/30),3)];
 var data=lsGet('rhythm_log',[]);
@@ -111,18 +111,18 @@ function showClubDecision(){
 playSfx('decision_open');
 var pn=getPanel('decision');
 var html='<button class="v21-close" onclick="window._v21Close(\'decision\')">&times;</button>';
-html+='<div class="v21-title">&#x1F333; &#xD074;&#xB7FD; &#xCD94;&#xCC9C; &#xC758;&#xC0AC;&#xACB0;&#xC815; &#xD2B8;&#xB9AC;</div>';
+html+='<div class="v21-title">🌳 클럽 추천 의사결정 트리</div>';
 html+='<canvas id="v21-decision-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xC0F7; &#xC870;&#xAC74; &#xC785;&#xB825;</h3>';
+html+='<div class="v21-card"><h3>샷 조건 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">';
-html+='<div><label class="v21-label">&#xBAA9;&#xD45C; &#xAC70;&#xB9AC; (yd)</label><input type="number" class="v21-input" id="v21-dec-dist" value="150" min="30" max="300"></div>';
-html+='<div><label class="v21-label">&#xBC14;&#xB78C; (km/h)</label><input type="number" class="v21-input" id="v21-dec-wind" value="0" min="-40" max="40"><span style="font-size:9px;color:rgba(255,255,255,0.4)">&#xC5ED;&#xD48D;(+) &#xC21C;&#xD48D;(-)</span></div>';
-html+='<div><label class="v21-label">&#xACBD;&#xC0AC;&#xB3C4;</label><select class="v21-input" id="v21-dec-slope"><option value="flat">&#xD3C9;&#xC9C0;</option><option value="uphill">&#xC624;&#xB974;&#xB9C9;</option><option value="downhill">&#xB0B4;&#xB9AC;&#xB9C9;</option></select></div>';
-html+='<div><label class="v21-label">&#xB77C;&#xC774;</label><select class="v21-input" id="v21-dec-lie"><option value="fairway">&#xD398;&#xC5B4;&#xC6E8;&#xC774;</option><option value="rough">&#xB7EC;&#xD504;</option><option value="deep_rough">&#xB525; &#xB7EC;&#xD504;</option><option value="bunker">&#xBC99;&#xCEE4;</option><option value="uphill_lie">&#xC624;&#xB974;&#xB9C9; &#xB77C;&#xC774;</option></select></div>';
-html+='<div><label class="v21-label">&#xD540; &#xC704;&#xCE58;</label><select class="v21-input" id="v21-dec-pin"><option value="center">&#xC911;&#xC559;</option><option value="front">&#xC55E;&#xCABD;</option><option value="back">&#xB4A4;&#xCABD;</option><option value="tucked">&#xD138;&#xB4DC;(&#xC5B4;&#xB824;&#xC6B4;)</option></select></div>';
-html+='<div><label class="v21-label">&#xC704;&#xD5D8;&#xB3C4;</label><select class="v21-input" id="v21-dec-risk"><option value="safe">&#xC548;&#xC804;&#xD558;&#xAC8C;</option><option value="moderate">&#xBCF4;&#xD1B5;</option><option value="aggressive">&#xACF5;&#xACA9;&#xC801;</option></select></div>';
+html+='<div><label class="v21-label">목표 거리 (yd)</label><input type="number" class="v21-input" id="v21-dec-dist" value="150" min="30" max="300"></div>';
+html+='<div><label class="v21-label">바람 (km/h)</label><input type="number" class="v21-input" id="v21-dec-wind" value="0" min="-40" max="40"><span style="font-size:9px;color:rgba(255,255,255,0.4)">역풍(+) 순풍(-)</span></div>';
+html+='<div><label class="v21-label">경사도</label><select class="v21-input" id="v21-dec-slope"><option value="flat">평지</option><option value="uphill">오르막</option><option value="downhill">내리막</option></select></div>';
+html+='<div><label class="v21-label">라이</label><select class="v21-input" id="v21-dec-lie"><option value="fairway">페어웨이</option><option value="rough">러프</option><option value="deep_rough">딥 러프</option><option value="bunker">벙커</option><option value="uphill_lie">오르막 라이</option></select></div>';
+html+='<div><label class="v21-label">핀 위치</label><select class="v21-input" id="v21-dec-pin"><option value="center">중앙</option><option value="front">앞쪽</option><option value="back">뒤쪽</option><option value="tucked">털드(어려운)</option></select></div>';
+html+='<div><label class="v21-label">위험도</label><select class="v21-input" id="v21-dec-risk"><option value="safe">안전하게</option><option value="moderate">보통</option><option value="aggressive">공격적</option></select></div>';
 html+='</div>';
-html+='<button class="v21-btn v21-btn-primary" style="width:100%;margin-top:10px" onclick="window._v21CalcDecision()">&#x1F3CC; &#xD074;&#xB7FD; &#xCD94;&#xCC9C;</button>';
+html+='<button class="v21-btn v21-btn-primary" style="width:100%;margin-top:10px" onclick="window._v21CalcDecision()">🏌 클럽 추천</button>';
 html+='</div>';
 html+='<div id="v21-decision-result" style="margin-top:8px"></div>';
 pn.innerHTML=html;openPanel('decision');drawDecisionCanvas(null);
@@ -159,10 +159,10 @@ if(resEl){
 var rh='<div class="v21-card" style="border-color:rgba(0,255,136,0.3)">';
 rh+='<div style="text-align:center;margin-bottom:8px"><span style="font-size:32px;font-weight:bold;color:#00FF88">'+best.name+'</span></div>';
 rh+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+Math.round(adj)+'</div><div class="v21-stat-label">&#xBCF4;&#xC815; &#xAC70;&#xB9AC;</div></div>';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00B4D8">'+best.dist+'</div><div class="v21-stat-label">&#xD074;&#xB7FD; &#xBE44;&#xAC70;&#xB9AC;</div></div>';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#4ECDC4">'+confidence+'%</div><div class="v21-stat-label">&#xC2E0;&#xB8B0;&#xB3C4;</div></div>';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#A855F7">'+alt.name+'</div><div class="v21-stat-label">&#xB300;&#xC548; &#xD074;&#xB7FD;</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+Math.round(adj)+'</div><div class="v21-stat-label">보정 거리</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00B4D8">'+best.dist+'</div><div class="v21-stat-label">클럽 비거리</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#4ECDC4">'+confidence+'%</div><div class="v21-stat-label">신뢰도</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#A855F7">'+alt.name+'</div><div class="v21-stat-label">대안 클럽</div></div>';
 rh+='</div></div>';
 resEl.innerHTML=rh;
 }
@@ -216,9 +216,9 @@ playSfx('heatmap_open');
 var pn=getPanel('heatmap');
 var data=lsGet('sc_rounds',[]);
 var html='<button class="v21-close" onclick="window._v21Close(\'heatmap\')">&times;</button>';
-html+='<div class="v21-title">&#x1F525; &#xC2A4;&#xCF54;&#xC5B4;&#xCE74;&#xB4DC; &#xD788;&#xD2B8;&#xB9F5;</div>';
+html+='<div class="v21-title">🔥 스코어카드 히트맵</div>';
 html+='<canvas id="v21-heatmap-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xB77C;&#xC6B4;&#xB4DC; &#xC2A4;&#xCF54;&#xC5B4; &#xC785;&#xB825;</h3>';
+html+='<div class="v21-card"><h3>라운드 스코어 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;margin-bottom:4px">';
 for(var h=1;h<=18;h++){
 html+='<div><label class="v21-label" style="text-align:center">H'+h+'</label><input type="number" class="v21-input" style="text-align:center;padding:4px 2px;font-size:11px" id="v21-sc-h'+h+'" min="1" max="12" placeholder="-">';
@@ -227,15 +227,15 @@ if(h===9)html+='</div><div style="display:grid;grid-template-columns:repeat(9,1f
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:8px">';
-html+='<button class="v21-btn v21-btn-primary" onclick="window._v21SaveScorecard()">&#xC800;&#xC7A5;</button>';
-html+='<button class="v21-btn" onclick="window._v21ClearScorecard()">&#xC0C8; &#xB77C;&#xC6B4;&#xB4DC;</button>';
+html+='<button class="v21-btn v21-btn-primary" onclick="window._v21SaveScorecard()">저장</button>';
+html+='<button class="v21-btn" onclick="window._v21ClearScorecard()">새 라운드</button>';
 html+='</div></div>';
 var total=0,cnt=0;
 for(var r=0;r<data.length;r++){for(var h=0;h<18;h++){if(data[r][h]){total+=data[r][h];cnt++;}}}
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v21-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+(cnt>0?(total/cnt).toFixed(1):'-')+'</div><div class="v21-stat-label">&#xD3C9;&#xADE0; &#xD0C0;&#xC218;/&#xD640;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+(data.length>0?data[data.length-1].reduce(function(a,b){return a+b},0):'-')+'</div><div class="v21-stat-label">&#xCD5C;&#xADFC; &#xCD1D;&#xD0C0;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v21-stat-label">라운드</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+(cnt>0?(total/cnt).toFixed(1):'-')+'</div><div class="v21-stat-label">평균 타수/홀</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+(data.length>0?data[data.length-1].reduce(function(a,b){return a+b},0):'-')+'</div><div class="v21-stat-label">최근 총타</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('heatmap');drawScorecardHeatmap(data);
 }
@@ -289,16 +289,16 @@ playSfx('putt_break');
 var pn=getPanel('puttbreak');
 var data=lsGet('putt_break_log',[]);
 var html='<button class="v21-close" onclick="window._v21Close(\'puttbreak\')">&times;</button>';
-html+='<div class="v21-title">&#x26F3; &#xD37C;&#xD305; &#xBE0C;&#xB808;&#xC774;&#xD06C; &#xC2DC;&#xAC01;&#xD654;</div>';
+html+='<div class="v21-title">⛳ 퍼팅 브레이크 시각화</div>';
 html+='<canvas id="v21-putt-canvas" width="600" height="360" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xBE0C;&#xB808;&#xC774;&#xD06C; &#xC870;&#xAC74;</h3>';
+html+='<div class="v21-card"><h3>브레이크 조건</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">';
-html+='<div><label class="v21-label">&#xAC70;&#xB9AC; (ft)</label><input type="number" class="v21-input" id="v21-putt-dist" value="15" min="1" max="100"></div>';
-html+='<div><label class="v21-label">&#xACBD;&#xC0AC; &#xBC29;&#xD5A5;</label><select class="v21-input" id="v21-putt-slope"><option value="L2R">&#xC67C;&#xCABD;&#x2192;&#xC624;&#xB978;&#xCABD;</option><option value="R2L">&#xC624;&#xB978;&#xCABD;&#x2192;&#xC67C;&#xCABD;</option><option value="uphill">&#xC624;&#xB974;&#xB9C9;</option><option value="downhill">&#xB0B4;&#xB9AC;&#xB9C9;</option><option value="flat">&#xD3C9;&#xC9C0;</option></select></div>';
-html+='<div><label class="v21-label">&#xACBD;&#xC0AC;&#xB3C4; (%)</label><input type="range" class="v21-input" id="v21-putt-grade" value="3" min="0" max="8" step="0.5"><span id="v21-putt-grade-val" style="font-size:11px;color:#FFB800">3%</span></div>';
-html+='<div><label class="v21-label">&#xADF8;&#xB9B0;&#xC2A4;&#xD53C;&#xB4DC; (Stimp)</label><input type="number" class="v21-input" id="v21-putt-stimp" value="10" min="6" max="14" step="0.5"></div>';
+html+='<div><label class="v21-label">거리 (ft)</label><input type="number" class="v21-input" id="v21-putt-dist" value="15" min="1" max="100"></div>';
+html+='<div><label class="v21-label">경사 방향</label><select class="v21-input" id="v21-putt-slope"><option value="L2R">왼쪽→오른쪽</option><option value="R2L">오른쪽→왼쪽</option><option value="uphill">오르막</option><option value="downhill">내리막</option><option value="flat">평지</option></select></div>';
+html+='<div><label class="v21-label">경사도 (%)</label><input type="range" class="v21-input" id="v21-putt-grade" value="3" min="0" max="8" step="0.5"><span id="v21-putt-grade-val" style="font-size:11px;color:#FFB800">3%</span></div>';
+html+='<div><label class="v21-label">그린스피드 (Stimp)</label><input type="number" class="v21-input" id="v21-putt-stimp" value="10" min="6" max="14" step="0.5"></div>';
 html+='</div>';
-html+='<button class="v21-btn v21-btn-primary" style="width:100%;margin-top:8px" onclick="window._v21CalcBreak()">&#xBE0C;&#xB808;&#xC774;&#xD06C; &#xBD84;&#xC11D;</button>';
+html+='<button class="v21-btn v21-btn-primary" style="width:100%;margin-top:8px" onclick="window._v21CalcBreak()">브레이크 분석</button>';
 html+='</div>';
 html+='<div id="v21-putt-result" style="margin-top:6px"></div>';
 pn.innerHTML=html;openPanel('puttbreak');
@@ -325,9 +325,9 @@ var resEl=document.getElementById('v21-putt-result');
 if(resEl){
 var slopeNames={L2R:'왼→오른',R2L:'오른→왼',uphill:'오르막',downhill:'내리막',flat:'평지'};
 var rh='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+aimOffset+'"</div><div class="v21-stat-label">&#xBE0C;&#xB808;&#xC774;&#xD06C;</div></div>';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+speedAdj+'</div><div class="v21-stat-label">&#xC2A4;&#xD53C;&#xB4DC; &#xBCF4;&#xC815;</div></div>';
-rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00B4D8">'+slopeNames[slope]+'</div><div class="v21-stat-label">&#xACBD;&#xC0AC;</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+aimOffset+'"</div><div class="v21-stat-label">브레이크</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+speedAdj+'</div><div class="v21-stat-label">스피드 보정</div></div>';
+rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00B4D8">'+slopeNames[slope]+'</div><div class="v21-stat-label">경사</div></div>';
 rh+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#4ECDC4">'+stimp+'</div><div class="v21-stat-label">Stimp</div></div>';
 rh+='</div>';
 resEl.innerHTML=rh;
@@ -397,24 +397,24 @@ var SCENARIOS=[
 ];
 var solvedList=lsGet('scenarios_solved',[]);
 var html='<button class="v21-close" onclick="window._v21Close(\'scenarios\')">&times;</button>';
-html+='<div class="v21-title">&#x1F3AF; &#xCF54;&#xC2A4; &#xB9E4;&#xB2C8;&#xC9C0;&#xBA3C;&#xD2B8; &#xC2DC;&#xB098;&#xB9AC;&#xC624;</div>';
+html+='<div class="v21-title">🎯 코스 매니지먼트 시나리오</div>';
 html+='<canvas id="v21-scenario-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
 html+='<div style="display:grid;gap:6px;margin:8px 0">';
 for(var i=0;i<SCENARIOS.length;i++){
 var sc=SCENARIOS[i];var solved=solvedList.indexOf(i)>=0;
-html+='<div class="v21-card" style="'+(solved?'border-color:rgba(0,255,136,0.3)':'')+'"><div style="display:flex;justify-content:space-between;align-items:center"><h3>'+(i+1)+'. '+sc.title+(solved?' &#x2705;':'')+'</h3><span style="font-size:10px;color:#FF6B6B">Risk: '+sc.risk+'%</span></div>';
+html+='<div class="v21-card" style="'+(solved?'border-color:rgba(0,255,136,0.3)':'')+'"><div style="display:flex;justify-content:space-between;align-items:center"><h3>'+(i+1)+'. '+sc.title+(solved?' ✅':'')+'</h3><span style="font-size:10px;color:#FF6B6B">Risk: '+sc.risk+'%</span></div>';
 html+='<p style="font-size:11px;color:rgba(255,255,255,0.6);margin:4px 0">'+sc.situation+'</p>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px">';
-html+='<button class="v21-btn" style="font-size:10px" onclick="window._v21SolveScenario('+i+',\'safe\')">&#x1F6E1; '+sc.safe+'</button>';
-html+='<button class="v21-btn" style="font-size:10px;border-color:rgba(255,107,107,.3);color:#FF6B6B" onclick="window._v21SolveScenario('+i+',\'aggressive\')">&#x1F525; '+sc.aggressive+'</button>';
+html+='<button class="v21-btn" style="font-size:10px" onclick="window._v21SolveScenario('+i+',\'safe\')">🛡 '+sc.safe+'</button>';
+html+='<button class="v21-btn" style="font-size:10px;border-color:rgba(255,107,107,.3);color:#FF6B6B" onclick="window._v21SolveScenario('+i+',\'aggressive\')">🔥 '+sc.aggressive+'</button>';
 html+='</div></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+solvedList.length+'/12</div><div class="v21-stat-label">&#xD574;&#xACB0;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+Math.round(solvedList.length/12*100)+'%</div><div class="v21-stat-label">&#xC644;&#xB8CC;&#xB960;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+solvedList.length+'/12</div><div class="v21-stat-label">해결</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+Math.round(solvedList.length/12*100)+'%</div><div class="v21-stat-label">완료률</div></div>';
 var avgRisk=0;for(var i=0;i<SCENARIOS.length;i++)avgRisk+=SCENARIOS[i].risk;avgRisk=Math.round(avgRisk/SCENARIOS.length);
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+avgRisk+'%</div><div class="v21-stat-label">&#xD3C9;&#xADE0; &#xC704;&#xD5D8;&#xB3C4;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+avgRisk+'%</div><div class="v21-stat-label">평균 위험도</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('scenarios');drawScenarioCanvas(SCENARIOS,solvedList);
 }
@@ -464,25 +464,25 @@ var pn=getPanel('pace');
 var data=lsGet('pace_log',[]);
 var current=lsGet('pace_current',{hole:1,times:[],startTime:0,running:false});
 var html='<button class="v21-close" onclick="window._v21Close(\'pace\')">&times;</button>';
-html+='<div class="v21-title">&#x23F1; &#xB77C;&#xC6B4;&#xB4DC; &#xD398;&#xC774;&#xC2A4; &#xD0C0;&#xC774;&#xBA38;</div>';
+html+='<div class="v21-title">⏱ 라운드 페이스 타이머</div>';
 html+='<canvas id="v21-pace-canvas" width="580" height="360" style="width:100%;max-width:580px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xD604;&#xC7AC; &#xD640;: '+current.hole+' / 18</h3>';
+html+='<div class="v21-card"><h3>현재 홀: '+current.hole+' / 18</h3>';
 html+='<div style="text-align:center;margin:10px 0"><div id="v21-pace-display" style="font-size:42px;font-weight:bold;color:#00FF88">00:00</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">';
-html+='<button class="v21-btn v21-btn-primary" onclick="window._v21PaceStart()">&#x25B6; &#xC2DC;&#xC791;</button>';
-html+='<button class="v21-btn" onclick="window._v21PaceNextHole()">&#x23ED; &#xB2E4;&#xC74C; &#xD640;</button>';
-html+='<button class="v21-btn" style="border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="window._v21PaceReset()">&#x23F9; &#xB9AC;&#xC14B;</button>';
+html+='<button class="v21-btn v21-btn-primary" onclick="window._v21PaceStart()">▶ 시작</button>';
+html+='<button class="v21-btn" onclick="window._v21PaceNextHole()">⏭ 다음 홀</button>';
+html+='<button class="v21-btn" style="border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="window._v21PaceReset()">⏹ 리셋</button>';
 html+='</div></div>';
 var TARGET_MINS=[13,13,12,14,13,12,13,14,13,13,12,14,13,13,12,14,13,13];
 var totalTime=0;for(var i=0;i<current.times.length;i++)totalTime+=current.times[i];
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+(current.times.length)+'</div><div class="v21-stat-label">&#xC644;&#xB8CC; &#xD640;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+Math.floor(totalTime/60)+':'+('0'+Math.floor(totalTime%60)).slice(-2)+'</div><div class="v21-stat-label">&#xCD1D; &#xC2DC;&#xAC04;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+(current.times.length)+'</div><div class="v21-stat-label">완료 홀</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+Math.floor(totalTime/60)+':'+('0'+Math.floor(totalTime%60)).slice(-2)+'</div><div class="v21-stat-label">총 시간</div></div>';
 var avgPerHole=current.times.length>0?Math.round(totalTime/current.times.length/60*10)/10:0;
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:'+(avgPerHole>14?'#FF6B6B':avgPerHole>12?'#FFB800':'#00FF88')+'">'+avgPerHole+'m</div><div class="v21-stat-label">&#xD3C9;&#xADE0;/&#xD640;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:'+(avgPerHole>14?'#FF6B6B':avgPerHole>12?'#FFB800':'#00FF88')+'">'+avgPerHole+'m</div><div class="v21-stat-label">평균/홀</div></div>';
 html+='</div>';
 if(current.times.length>0){
-html+='<div class="v21-card"><h3>&#xD640;&#xBCC4; &#xC2DC;&#xAC04;</h3><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px">';
+html+='<div class="v21-card"><h3>홀별 시간</h3><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:3px">';
 for(var i=0;i<current.times.length;i++){
 var mins=Math.floor(current.times[i]/60);var secs=Math.floor(current.times[i]%60);
 var slow=current.times[i]/60>TARGET_MINS[i];
@@ -556,14 +556,14 @@ playSfx('roadmap_open');
 var pn=getPanel('roadmap');
 var data=lsGet('hcap_roadmap',{current:18,goal:10,history:[]});
 var html='<button class="v21-close" onclick="window._v21Close(\'roadmap\')">&times;</button>';
-html+='<div class="v21-title">&#x1F3C6; &#xD578;&#xB514;&#xCE61; &#xBAA9;&#xD45C; &#xB85C;&#xB4DC;&#xB9F5;</div>';
+html+='<div class="v21-title">🏆 핸디칡 목표 로드맵</div>';
 html+='<canvas id="v21-roadmap-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xBAA9;&#xD45C; &#xC124;&#xC815;</h3>';
+html+='<div class="v21-card"><h3>목표 설정</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">';
-html+='<div><label class="v21-label">&#xD604;&#xC7AC; &#xD578;&#xB514;&#xCE61;</label><input type="number" class="v21-input" id="v21-hcap-current" value="'+data.current+'" min="0" max="54" step="0.1"></div>';
-html+='<div><label class="v21-label">&#xBAA9;&#xD45C; &#xD578;&#xB514;&#xCE61;</label><input type="number" class="v21-input" id="v21-hcap-goal" value="'+data.goal+'" min="0" max="54" step="0.1"></div>';
+html+='<div><label class="v21-label">현재 핸디칡</label><input type="number" class="v21-input" id="v21-hcap-current" value="'+data.current+'" min="0" max="54" step="0.1"></div>';
+html+='<div><label class="v21-label">목표 핸디칡</label><input type="number" class="v21-input" id="v21-hcap-goal" value="'+data.goal+'" min="0" max="54" step="0.1"></div>';
 html+='</div>';
-html+='<button class="v21-btn v21-btn-primary" style="width:100%;margin-top:8px" onclick="window._v21SaveRoadmap()">&#xC800;&#xC7A5; &amp; &#xB85C;&#xB4DC;&#xB9F5; &#xC0DD;&#xC131;</button>';
+html+='<button class="v21-btn v21-btn-primary" style="width:100%;margin-top:8px" onclick="window._v21SaveRoadmap()">저장 &amp; 로드맵 생성</button>';
 html+='</div>';
 var milestones=[];
 var diff=data.current-data.goal;
@@ -575,12 +575,12 @@ milestones.push({hcap:hcap,label:hcap<=5?'Single':hcap<=10?'Low':hcap<=18?'Mid':
 }
 }
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+data.current+'</div><div class="v21-stat-label">&#xD604;&#xC7AC;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+data.goal+'</div><div class="v21-stat-label">&#xBAA9;&#xD45C;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+diff.toFixed(1)+'</div><div class="v21-stat-label">&#xAC1C;&#xC120; &#xD544;&#xC694;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+data.current+'</div><div class="v21-stat-label">현재</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+data.goal+'</div><div class="v21-stat-label">목표</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+diff.toFixed(1)+'</div><div class="v21-stat-label">개선 필요</div></div>';
 html+='</div>';
 if(data.history.length>0){
-html+='<div class="v21-card"><h3>&#xD578;&#xB514;&#xCE61; &#xAE30;&#xB85D;</h3><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px">';
+html+='<div class="v21-card"><h3>핸디칡 기록</h3><div style="display:grid;grid-template-columns:repeat(5,1fr);gap:3px">';
 for(var i=Math.max(0,data.history.length-10);i<data.history.length;i++){
 var h=data.history[i];
 html+='<div style="text-align:center;padding:4px;border-radius:6px;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.15)"><div style="font-size:8px;color:rgba(255,255,255,0.4)">'+h.date.slice(5)+'</div><div style="font-size:13px;font-weight:bold;color:#00FF88">'+h.hcap+'</div></div>';
@@ -651,9 +651,9 @@ var CLUBS=['DR','3W','5W','5I','7I','9I','PW','SW','PT'];
 var PRESSURES=[4,4,5,5,5,6,6,7,3];
 var NOTES=['부드러운 그립, 최대 스윗스피드','드라이버와 동일한 그립 압력','약간의 힘, 컨트롤 중점','중간 그립, 안정성 중시','고르게 잡고 릴렉스','약간 더 장악, 정확도 중시','피치샷용 컨트롤','손목 부드럽게, 터치 중시','가장 부드러운 그립'];
 var html='<button class="v21-close" onclick="window._v21Close(\'grip\')">&times;</button>';
-html+='<div class="v21-title">&#x270B; &#xADF8;&#xB9BD; &#xC555;&#xB825; &#xAC00;&#xC774;&#xB4DC;</div>';
+html+='<div class="v21-title">✋ 그립 압력 가이드</div>';
 html+='<canvas id="v21-grip-canvas" width="600" height="360" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v21-card"><h3>&#xD074;&#xB7FD;&#xBCC4; &#xADF8;&#xB9BD; &#xC555;&#xB825; (1~10)</h3>';
+html+='<div class="v21-card"><h3>클럽별 그립 압력 (1~10)</h3>';
 html+='<div style="display:grid;gap:4px">';
 for(var i=0;i<CLUBS.length;i++){
 var pct=PRESSURES[i]*10;
@@ -665,7 +665,7 @@ html+='</div>';
 html+='<div style="font-size:9px;color:rgba(255,255,255,0.4);padding-left:58px;margin-top:-2px;margin-bottom:4px">'+NOTES[i]+'</div>';
 }
 html+='</div></div>';
-html+='<div class="v21-card"><h3>&#xADF8;&#xB9BD; &#xD301;</h3>';
+html+='<div class="v21-card"><h3>그립 팁</h3>';
 html+='<ul style="font-size:11px;color:rgba(255,255,255,0.7);line-height:1.8;padding-left:16px">';
 html+='<li>1-3: 부드러운 그립 (퍼팅, 칩샷)</li>';
 html+='<li>4-5: 중간 그립 (드라이버, 우드)</li>';
@@ -738,7 +738,7 @@ var qIdx=lsGet('quiz_v21_idx',0);var score=lsGet('quiz_v21_score',0);var total=l
 if(qIdx>=QUIZ_V21.length)qIdx=0;
 var q=QUIZ_V21[qIdx];
 var html='<button class="v21-close" onclick="window._v21Close(\'quizv21\')">&times;</button>';
-html+='<div class="v21-title">&#x1F4DA; Golf Quiz v21 ('+(qIdx+1)+'/'+QUIZ_V21.length+')</div>';
+html+='<div class="v21-title">📚 Golf Quiz v21 ('+(qIdx+1)+'/'+QUIZ_V21.length+')</div>';
 html+='<div class="v21-card"><h3>'+q.q+'</h3>';
 html+='<div style="display:grid;gap:6px;margin-top:8px">';
 for(var a=0;a<q.a.length;a++){
@@ -746,9 +746,9 @@ html+='<button class="v21-btn" style="width:100%;text-align:left;padding:10px" o
 }
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+score+'</div><div class="v21-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+total+'</div><div class="v21-stat-label">&#xCD1D; &#xD480;&#xC774;</div></div>';
-html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+(total>0?Math.round(score/total*100):0)+'%</div><div class="v21-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#00FF88">'+score+'</div><div class="v21-stat-label">정답</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FF6B6B">'+total+'</div><div class="v21-stat-label">총 풀이</div></div>';
+html+='<div class="v21-stat-card"><div class="v21-stat-val" style="color:#FFB800">'+(total>0?Math.round(score/total*100):0)+'%</div><div class="v21-stat-label">정답률</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv21');
 }
@@ -813,15 +813,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Rhythm',fn:showSwingRhythm,icon:'&#x1F3B5;'},
-{label:'Club AI',fn:showClubDecision,icon:'&#x1F333;'},
-{label:'Heatmap',fn:showScorecardHeatmap,icon:'&#x1F525;'},
-{label:'Break',fn:showPuttingBreak,icon:'&#x26F3;'},
-{label:'Scenario',fn:showCourseScenarios,icon:'&#x1F3AF;'},
-{label:'Pace',fn:showPaceTimer,icon:'&#x23F1;'},
-{label:'Roadmap',fn:showHandicapRoadmap,icon:'&#x1F3C6;'},
-{label:'Grip',fn:showGripPressure,icon:'&#x270B;'},
-{label:'Quiz21',fn:showQuizV21,icon:'&#x1F4DA;'}
+{label:'Rhythm',fn:showSwingRhythm,icon:'🎵'},
+{label:'Club AI',fn:showClubDecision,icon:'🌳'},
+{label:'Heatmap',fn:showScorecardHeatmap,icon:'🔥'},
+{label:'Break',fn:showPuttingBreak,icon:'⛳'},
+{label:'Scenario',fn:showCourseScenarios,icon:'🎯'},
+{label:'Pace',fn:showPaceTimer,icon:'⏱'},
+{label:'Roadmap',fn:showHandicapRoadmap,icon:'🏆'},
+{label:'Grip',fn:showGripPressure,icon:'✋'},
+{label:'Quiz21',fn:showQuizV21,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

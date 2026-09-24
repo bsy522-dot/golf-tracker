@@ -20,33 +20,33 @@ playSfx('approach_open');
 var pn=getPanel('approach');
 var data=lsGet('approach_log',[]);
 var CLUBS=['3I','4I','5I','6I','7I','8I','9I','PW','AW','SW','LW'];
-var LIES=['&#xD398;&#xC5B4;&#xC6E8;&#xC774;','&#xB7EC;&#xD504;','&#xBC99;&#xCEE4;','&#xD504;&#xB9B0;&#xC9C0;','&#xB514;&#xBCC3;','&#xBCA0;&#xC5B4;'];
+var LIES=['페어웨이','러프','벙커','프린지','디볃','베어'];
 var html='<button class="v19-close" onclick="window._v19Close(\'approach\')">&times;</button>';
-html+='<div class="v19-title">&#x1F3AF; &#xC5B4;&#xD504;&#xB85C;&#xCE58; &#xC0F7; &#xC140;&#xB809;&#xD130;</div>';
-html+='<div class="v19-card"><h3>&#xC0F7; &#xC870;&#xAC74; &#xC785;&#xB825;</h3>';
+html+='<div class="v19-title">🎯 어프로치 샷 셀렉터</div>';
+html+='<div class="v19-card"><h3>샷 조건 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
-html+='<div><label class="v19-label">&#xAC70;&#xB9AC; (yd)</label><input type="number" id="v19-ap-dist" class="v19-input" value="150" min="30" max="280"></div>';
-html+='<div><label class="v19-label">&#xBC14;&#xB78C; (km/h)</label><input type="number" id="v19-ap-wind" class="v19-input" value="10" min="0" max="50"></div>';
-html+='<div><label class="v19-label">&#xD48D;&#xD5A5; (&deg;)</label><input type="number" id="v19-ap-wdir" class="v19-input" value="0" min="0" max="359"></div>';
+html+='<div><label class="v19-label">거리 (yd)</label><input type="number" id="v19-ap-dist" class="v19-input" value="150" min="30" max="280"></div>';
+html+='<div><label class="v19-label">바람 (km/h)</label><input type="number" id="v19-ap-wind" class="v19-input" value="10" min="0" max="50"></div>';
+html+='<div><label class="v19-label">풍향 (&deg;)</label><input type="number" id="v19-ap-wdir" class="v19-input" value="0" min="0" max="359"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px">';
-html+='<div><label class="v19-label">&#xACBD;&#xC0AC; (%)</label><input type="number" id="v19-ap-slope" class="v19-input" step="0.5" value="0" min="-10" max="10"></div>';
-html+='<div><label class="v19-label">&#xB77C;&#xC774;</label><select id="v19-ap-lie" class="v19-input">';
+html+='<div><label class="v19-label">경사 (%)</label><input type="number" id="v19-ap-slope" class="v19-input" step="0.5" value="0" min="-10" max="10"></div>';
+html+='<div><label class="v19-label">라이</label><select id="v19-ap-lie" class="v19-input">';
 for(var li=0;li<LIES.length;li++) html+='<option>'+LIES[li]+'</option>';
 html+='</select></div>';
-html+='<div><label class="v19-label">&#xD540;&#xC704;&#xCE58;</label><select id="v19-ap-pin" class="v19-input"><option>&#xC55E;</option><option>&#xC911;&#xC559;</option><option>&#xB4A4;</option><option>&#xC67C;</option><option>&#xC624;&#xB978;</option></select></div>';
+html+='<div><label class="v19-label">핀위치</label><select id="v19-ap-pin" class="v19-input"><option>앞</option><option>중앙</option><option>뒤</option><option>왼</option><option>오른</option></select></div>';
 html+='</div>';
-html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19CalcApproach()">&#xD074;&#xB7FD; &#xCD94;&#xCC9C;</button>';
+html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19CalcApproach()">클럽 추천</button>';
 html+='</div>';
 html+='<canvas id="v19-ap-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 html+='<div id="v19-ap-result"></div>';
 var totalShots=data.length;var gir=0;for(var si=0;si<data.length;si++)if(data[si].gir)gir++;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v19-stat-label">&#xCD1D; &#xC5B4;&#xD504;&#xB85C;&#xCE58;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+(totalShots>0?Math.round(gir/totalShots*100):0)+'%</div><div class="v19-stat-label">GIR &#xC131;&#xACF5;&#xB960;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8">'+gir+'</div><div class="v19-stat-label">GIR &#xC131;&#xACF5;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v19-stat-label">총 어프로치</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+(totalShots>0?Math.round(gir/totalShots*100):0)+'%</div><div class="v19-stat-label">GIR 성공률</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8">'+gir+'</div><div class="v19-stat-label">GIR 성공</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xC5B4;&#xD504;&#xB85C;&#xCE58; &#xB370;&#xC774;&#xD130; &#xCD08;&#xAE30;&#xD654;?\'))window._v19ResetApproach()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'어프로치 데이터 초기화?\'))window._v19ResetApproach()">초기화</button>';}
 pn.innerHTML=html;openPanel('approach');drawApproachCanvas([]);
 }
 window._v19CalcApproach=function(){
@@ -58,7 +58,7 @@ var lie=document.getElementById('v19-ap-lie').value;
 var pin=document.getElementById('v19-ap-pin').value;
 var windRad=wdir*Math.PI/180;var headwind=Math.cos(windRad)*wind;var crosswind=Math.sin(windRad)*wind;
 var adjDist=dist+slope*1.5+headwind*0.8;
-var lieMod={'&#xD398;&#xC5B4;&#xC6E8;&#xC774;':0,'&#xB7EC;&#xD504;':8,'&#xBC99;&#xCEE4;':15,'&#xD504;&#xB9B0;&#xC9C0;':5,'&#xB514;&#xBCC3;':-5,'&#xBCA0;&#xC5B4;':3};
+var lieMod={'페어웨이':0,'러프':8,'벙커':15,'프린지':5,'디볃':-5,'베어':3};
 adjDist+=(lieMod[lie]||0);
 var clubDists=[{c:'3I',d:205},{c:'4I',d:190},{c:'5I',d:178},{c:'6I',d:165},{c:'7I',d:153},{c:'8I',d:140},{c:'9I',d:128},{c:'PW',d:115},{c:'AW',d:100},{c:'SW',d:85},{c:'LW',d:65}];
 var recs=[];for(var i=0;i<clubDists.length;i++){var diff=Math.abs(clubDists[i].d-adjDist);recs.push({club:clubDists[i].c,nom:clubDists[i].d,diff:diff,pct:Math.max(0,100-diff*1.2)})}
@@ -67,18 +67,18 @@ var top3=recs.slice(0,3);
 playSfx('approach_calc');
 drawApproachCanvas(top3);
 var rd=document.getElementById('v19-ap-result');
-if(rd){var rh='<div class="v19-card"><h3>&#x1F3AF; &#xCD94;&#xCC9C; &#xD074;&#xB7FD; (&#xBCF4;&#xC815;&#xAC70;&#xB9AC;: '+Math.round(adjDist)+'yd)</h3>';
+if(rd){var rh='<div class="v19-card"><h3>🎯 추천 클럽 (보정거리: '+Math.round(adjDist)+'yd)</h3>';
 rh+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">';
 for(var ri=0;ri<top3.length;ri++){var col=ri===0?'#00FF88':ri===1?'#FFB800':'#00B4D8';
 rh+='<div class="v19-stat-card" style="border-color:'+col+'"><div class="v19-stat-val" style="color:'+col+'">'+top3[ri].club+'</div><div class="v19-stat-label">'+top3[ri].nom+'yd ('+Math.round(top3[ri].pct)+'%)</div></div>'}
 rh+='</div>';
-rh+='<div style="font-size:.8em;color:#aaa;margin-top:8px">&#xD48D;&#xD5A5;&#xBCF4;&#xC815;: '+(headwind>0?'+':'')+Math.round(headwind*0.8)+'yd | &#xACBD;&#xC0AC;: '+(slope>0?'+':'')+Math.round(slope*1.5)+'yd | &#xB77C;&#xC774;: '+(lieMod[lie]>0?'+':'')+lieMod[lie]+'yd | &#xD06C;&#xB85C;&#xC2A4;&#xC708;&#xB4DC;: '+Math.round(Math.abs(crosswind))+'km/h</div>';
-rh+='<button class="v19-btn" style="width:100%;margin-top:8px" onclick="window._v19LogApproach(\''+top3[0].club+'\','+Math.round(adjDist)+')">&#xC774; &#xC0F7; GIR &#xC131;&#xACF5;&#xC73C;&#xB85C; &#xAE30;&#xB85D;</button>';
-rh+='<button class="v19-btn" style="width:100%;margin-top:4px;border-color:rgba(255,107,107,.2);color:#ff6b6b" onclick="window._v19LogApproach(\''+top3[0].club+'\','+Math.round(adjDist)+',true)">GIR &#xC2E4;&#xD328;&#xB85C; &#xAE30;&#xB85D;</button>';
+rh+='<div style="font-size:.8em;color:#aaa;margin-top:8px">풍향보정: '+(headwind>0?'+':'')+Math.round(headwind*0.8)+'yd | 경사: '+(slope>0?'+':'')+Math.round(slope*1.5)+'yd | 라이: '+(lieMod[lie]>0?'+':'')+lieMod[lie]+'yd | 크로스윈드: '+Math.round(Math.abs(crosswind))+'km/h</div>';
+rh+='<button class="v19-btn" style="width:100%;margin-top:8px" onclick="window._v19LogApproach(\''+top3[0].club+'\','+Math.round(adjDist)+')">이 샷 GIR 성공으로 기록</button>';
+rh+='<button class="v19-btn" style="width:100%;margin-top:4px;border-color:rgba(255,107,107,.2);color:#ff6b6b" onclick="window._v19LogApproach(\''+top3[0].club+'\','+Math.round(adjDist)+',true)">GIR 실패로 기록</button>';
 rh+='</div>';
 rd.innerHTML=rh}
 };
-window._v19LogApproach=function(club,dist,miss){var data=lsGet('approach_log',[]);data.push({club:club,dist:dist,gir:!miss,date:todayStr()});if(data.length>500)data=data.slice(-500);lsSet('approach_log',data);showToast(club+' '+dist+'yd '+(miss?'GIR &#xC2E4;&#xD328;':'GIR &#xC131;&#xACF5;'));showApproachSelector()};
+window._v19LogApproach=function(club,dist,miss){var data=lsGet('approach_log',[]);data.push({club:club,dist:dist,gir:!miss,date:todayStr()});if(data.length>500)data=data.slice(-500);lsSet('approach_log',data);showToast(club+' '+dist+'yd '+(miss?'GIR 실패':'GIR 성공'));showApproachSelector()};
 window._v19ResetApproach=function(){lsSet('approach_log',[]);showApproachSelector()};
 function drawApproachCanvas(recs){
 var c=document.getElementById('v19-ap-canvas');if(!c)return;
@@ -106,18 +106,18 @@ var pn=getPanel('dispersion');
 var data=lsGet('dispersion_data',[]);
 var CLUBS=['DR','3W','5W','3H','4I','5I','6I','7I','8I','9I','PW','AW','SW','LW'];
 var html='<button class="v19-close" onclick="window._v19Close(\'dispersion\')">&times;</button>';
-html+='<div class="v19-title">&#x1F4CD; &#xC0F7; &#xBD84;&#xC0B0; &#xD328;&#xD134; &#xBD84;&#xC11D;&#xAE30;</div>';
-html+='<div class="v19-card"><h3>&#xC0F7; &#xB79D;&#xB529; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v19-title">📍 샷 분산 패턴 분석기</div>';
+html+='<div class="v19-card"><h3>샷 랝딩 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:8px">';
-html+='<div><label class="v19-label">&#xD074;&#xB7FD;</label><select id="v19-dp-club" class="v19-input">';
+html+='<div><label class="v19-label">클럽</label><select id="v19-dp-club" class="v19-input">';
 for(var ci=0;ci<CLUBS.length;ci++) html+='<option>'+CLUBS[ci]+'</option>';
 html+='</select></div>';
-html+='<div><label class="v19-label">&#xC88C;&#xC6B0; (yd)</label><input type="number" id="v19-dp-lr" class="v19-input" value="0" min="-40" max="40"></div>';
-html+='<div><label class="v19-label">&#xC7A5;&#xB2E8; (yd)</label><input type="number" id="v19-dp-fb" class="v19-input" value="0" min="-30" max="30"></div>';
-html+='<div style="display:flex;align-items:flex-end"><button class="v19-btn v19-btn-primary" style="width:100%" onclick="window._v19RecordDP()">&#xAE30;&#xB85D;</button></div>';
+html+='<div><label class="v19-label">좌우 (yd)</label><input type="number" id="v19-dp-lr" class="v19-input" value="0" min="-40" max="40"></div>';
+html+='<div><label class="v19-label">장단 (yd)</label><input type="number" id="v19-dp-fb" class="v19-input" value="0" min="-30" max="30"></div>';
+html+='<div style="display:flex;align-items:flex-end"><button class="v19-btn v19-btn-primary" style="width:100%" onclick="window._v19RecordDP()">기록</button></div>';
 html+='</div></div>';
-html+='<div style="margin-bottom:8px"><label class="v19-label">&#xD074;&#xB7FD; &#xD544;&#xD130;</label><select id="v19-dp-filter" class="v19-input" onchange="window._v19RedrawDP()">';
-html+='<option value="ALL">&#xC804;&#xCCB4;</option>';
+html+='<div style="margin-bottom:8px"><label class="v19-label">클럽 필터</label><select id="v19-dp-filter" class="v19-input" onchange="window._v19RedrawDP()">';
+html+='<option value="ALL">전체</option>';
 for(var fi=0;fi<CLUBS.length;fi++) html+='<option>'+CLUBS[fi]+'</option>';
 html+='</select></div>';
 html+='<canvas id="v19-dp-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
@@ -125,15 +125,15 @@ var totalShots=data.length;var avgLR=0,avgFB=0,spreadLR=0;
 if(totalShots>0){var sLR=0,sFB=0;for(var di=0;di<data.length;di++){sLR+=data[di].lr;sFB+=data[di].fb}avgLR=Math.round(sLR/totalShots*10)/10;avgFB=Math.round(sFB/totalShots*10)/10;var vLR=0;for(var dj=0;dj<data.length;dj++){vLR+=Math.pow(data[dj].lr-avgLR,2)}spreadLR=Math.round(Math.sqrt(vLR/totalShots)*10)/10}
 var tendLabel=avgLR<-3?'Left Tendency':avgLR>3?'Right Tendency':'Centered';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v19-stat-label">&#xCD1D; &#xC0F7;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+avgLR+'</div><div class="v19-stat-label">&#xD3C9;&#xADE0; &#xC88C;&#xC6B0;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8">&plusmn;'+spreadLR+'</div><div class="v19-stat-label">&#xBD84;&#xC0B0;&#xB3C4;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#A855F7;font-size:.9em">'+tendLabel+'</div><div class="v19-stat-label">&#xACBD;&#xD5A5;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v19-stat-label">총 샷</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+avgLR+'</div><div class="v19-stat-label">평균 좌우</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8">&plusmn;'+spreadLR+'</div><div class="v19-stat-label">분산도</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#A855F7;font-size:.9em">'+tendLabel+'</div><div class="v19-stat-label">경향</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xBD84;&#xC0B0; &#xB370;&#xC774;&#xD130; &#xCD08;&#xAE30;&#xD654;?\'))window._v19ResetDP()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'분산 데이터 초기화?\'))window._v19ResetDP()">초기화</button>';}
 pn.innerHTML=html;openPanel('dispersion');drawDPCanvas(data,'ALL');
 }
-window._v19RecordDP=function(){var club=document.getElementById('v19-dp-club').value;var lr=parseInt(document.getElementById('v19-dp-lr').value)||0;var fb=parseInt(document.getElementById('v19-dp-fb').value)||0;var data=lsGet('dispersion_data',[]);data.push({club:club,lr:lr,fb:fb,date:todayStr()});if(data.length>500)data=data.slice(-500);lsSet('dispersion_data',data);playSfx('approach_calc');showToast(club+' &#xC0F7; &#xAE30;&#xB85D; ('+lr+','+fb+')');showDispersionPattern()};
+window._v19RecordDP=function(){var club=document.getElementById('v19-dp-club').value;var lr=parseInt(document.getElementById('v19-dp-lr').value)||0;var fb=parseInt(document.getElementById('v19-dp-fb').value)||0;var data=lsGet('dispersion_data',[]);data.push({club:club,lr:lr,fb:fb,date:todayStr()});if(data.length>500)data=data.slice(-500);lsSet('dispersion_data',data);playSfx('approach_calc');showToast(club+' 샷 기록 ('+lr+','+fb+')');showDispersionPattern()};
 window._v19ResetDP=function(){lsSet('dispersion_data',[]);showDispersionPattern()};
 window._v19RedrawDP=function(){var filter=document.getElementById('v19-dp-filter').value;var data=lsGet('dispersion_data',[]);drawDPCanvas(data,filter)};
 function drawDPCanvas(data,filter){
@@ -159,15 +159,15 @@ function showFatigueMonitor(){
 playSfx('fatigue_open');
 var pn=getPanel('fatigue');
 var data=lsGet('fatigue_data',{});
-var METRICS=['&#xCCB4;&#xB825;','&#xC9D1;&#xC911;&#xB825;','&#xC790;&#xC2E0;&#xAC10;','&#xBA58;&#xD0C8; &#xC548;&#xC815;','&#xC2A4;&#xC719; &#xD15C;&#xD3EC;','&#xD310;&#xB2E8;&#xB825;'];
+var METRICS=['체력','집중력','자신감','멘탈 안정','스윙 템포','판단력'];
 var html='<button class="v19-close" onclick="window._v19Close(\'fatigue\')">&times;</button>';
-html+='<div class="v19-title">&#x1F6A8; &#xB77C;&#xC6B4;&#xB4DC; &#xD53C;&#xB85C;&#xB3C4; &#xBAA8;&#xB2C8;&#xD130;</div>';
-html+='<div class="v19-card"><h3>&#xD648;&#xBCC4; &#xD53C;&#xB85C;&#xB3C4; &#xCE21;&#xC815; (&#xD604;&#xC7AC;)</h3>';
+html+='<div class="v19-title">🚨 라운드 피로도 모니터</div>';
+html+='<div class="v19-card"><h3>홈별 피로도 측정 (현재)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<div><label class="v19-label">&#xD604;&#xC7AC; &#xD648;</label><select id="v19-fg-hole" class="v19-input">';
-for(var h=1;h<=18;h++) html+='<option value="'+h+'">'+h+'&#xBC88; &#xD648;</option>';
+html+='<div><label class="v19-label">현재 홈</label><select id="v19-fg-hole" class="v19-input">';
+for(var h=1;h<=18;h++) html+='<option value="'+h+'">'+h+'번 홈</option>';
 html+='</select></div>';
-html+='<div style="display:flex;align-items:flex-end"><button class="v19-btn v19-btn-primary" style="width:100%" onclick="window._v19SaveFatigue()">&#xCE21;&#xC815; &#xC800;&#xC7A5;</button></div>';
+html+='<div style="display:flex;align-items:flex-end"><button class="v19-btn v19-btn-primary" style="width:100%" onclick="window._v19SaveFatigue()">측정 저장</button></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
 for(var mi=0;mi<METRICS.length;mi++){var curHole=data.currentHole||1;var curVal=data['h'+curHole]?data['h'+curHole][mi]||5:5;html+='<div><label class="v19-label">'+METRICS[mi]+' (1~10)</label><input type="range" id="v19-fg-m'+mi+'" class="v19-input" min="1" max="10" value="'+curVal+'" style="padding:4px 0" oninput="document.getElementById(\'v19-fg-v'+mi+'\').textContent=this.value"><span id="v19-fg-v'+mi+'" style="color:#00FF88;font-size:.85em;font-weight:800">'+curVal+'</span></div>'}
@@ -176,23 +176,23 @@ html+='<canvas id="v19-fg-canvas" width="580" height="360" style="width:100%;max
 var filledHoles=0;var totalFatigue=0;var dangerHoles=0;
 for(var fh=1;fh<=18;fh++){if(data['h'+fh]){filledHoles++;var hAvg=0;for(var fm=0;fm<6;fm++)hAvg+=data['h'+fh][fm]||5;hAvg/=6;totalFatigue+=hAvg;if(hAvg<4)dangerHoles++}}
 var avgLevel=filledHoles>0?Math.round(totalFatigue/filledHoles*10)/10:0;
-var alertLevel=avgLevel>=7?'&#xC591;&#xD638;':avgLevel>=5?'&#xBCF4;&#xD1B5;':avgLevel>=3?'&#xC8FC;&#xC758;':'&#xC704;&#xD5D8;';
+var alertLevel=avgLevel>=7?'양호':avgLevel>=5?'보통':avgLevel>=3?'주의':'위험';
 var alertColor=avgLevel>=7?'#00FF88':avgLevel>=5?'#FFB800':avgLevel>=3?'#FF9F43':'#FF3366';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+filledHoles+'/18</div><div class="v19-stat-label">&#xCE21;&#xC815;&#xC644;&#xB8CC;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+avgLevel+'</div><div class="v19-stat-label">&#xD3C9;&#xADE0; &#xC0C1;&#xD0DC;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+alertColor+'">'+alertLevel+'</div><div class="v19-stat-label">&#xC885;&#xD569; &#xD310;&#xC815;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF3366">'+dangerHoles+'</div><div class="v19-stat-label">&#xC704;&#xD5D8; &#xD648;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+filledHoles+'/18</div><div class="v19-stat-label">측정완료</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+avgLevel+'</div><div class="v19-stat-label">평균 상태</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+alertColor+'">'+alertLevel+'</div><div class="v19-stat-label">종합 판정</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF3366">'+dangerHoles+'</div><div class="v19-stat-label">위험 홈</div></div>';
 html+='</div>';
-html+='<div class="v19-card"><h3>&#x1F4A1; &#xD53C;&#xB85C;&#xB3C4; &#xAD00;&#xB9AC; &#xD301;</h3><div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; 10~14&#xD648;&#xC5D0;&#xC11C; &#xC9D1;&#xC911;&#xB825;&#xC774; &#xAE09;&#xAC10;&#xD558;&#xBA74; &#xD734;&#xC2DD; &#xD544;&#xC694;</div>';
-html+='<div>&#x2022; &#xC218;&#xBD84; &#xBCF4;&#xCDA9;: 3&#xD648;&#xB9C8;&#xB2E4; &#xBB3C; &#xC12D;&#xCDE8;</div>';
-html+='<div>&#x2022; &#xBA58;&#xD0C8; &#xBD88;&#xC548;&#xC815;&#xC2DC; &#xD504;&#xB9AC;&#xC0F7; &#xB8E8;&#xD2F4; &#xAC15;&#xD654;</div>';
+html+='<div class="v19-card"><h3>💡 피로도 관리 팁</h3><div style="font-size:.82em;color:#aaa;line-height:1.7">';
+html+='<div>• 10~14홈에서 집중력이 급감하면 휴식 필요</div>';
+html+='<div>• 수분 보충: 3홈마다 물 섭취</div>';
+html+='<div>• 멘탈 불안정시 프리샷 루틴 강화</div>';
 html+='</div></div>';
-if(filledHoles>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xD53C;&#xB85C;&#xB3C4; &#xCD08;&#xAE30;&#xD654;?\'))window._v19ResetFatigue()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(filledHoles>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'피로도 초기화?\'))window._v19ResetFatigue()">초기화</button>';}
 pn.innerHTML=html;openPanel('fatigue');drawFatigueCanvas(data,METRICS);
 }
-window._v19SaveFatigue=function(){var hole=parseInt(document.getElementById('v19-fg-hole').value)||1;var data=lsGet('fatigue_data',{});var vals=[];for(var i=0;i<6;i++){vals.push(parseInt(document.getElementById('v19-fg-m'+i).value)||5)}data['h'+hole]=vals;data.currentHole=hole;lsSet('fatigue_data',data);var avg=0;for(var j=0;j<6;j++)avg+=vals[j];avg/=6;if(avg<4)playSfx('fatigue_warn');else playSfx('approach_calc');showToast(hole+'&#xBC88; &#xD648; &#xD53C;&#xB85C;&#xB3C4; &#xC800;&#xC7A5; (&#xD3C9;&#xADE0;:'+Math.round(avg*10)/10+')');showFatigueMonitor()};
+window._v19SaveFatigue=function(){var hole=parseInt(document.getElementById('v19-fg-hole').value)||1;var data=lsGet('fatigue_data',{});var vals=[];for(var i=0;i<6;i++){vals.push(parseInt(document.getElementById('v19-fg-m'+i).value)||5)}data['h'+hole]=vals;data.currentHole=hole;lsSet('fatigue_data',data);var avg=0;for(var j=0;j<6;j++)avg+=vals[j];avg/=6;if(avg<4)playSfx('fatigue_warn');else playSfx('approach_calc');showToast(hole+'번 홈 피로도 저장 (평균:'+Math.round(avg*10)/10+')');showFatigueMonitor()};
 window._v19ResetFatigue=function(){lsSet('fatigue_data',{});showFatigueMonitor()};
 function drawFatigueCanvas(data,METRICS){
 var c=document.getElementById('v19-fg-canvas');if(!c)return;
@@ -217,31 +217,31 @@ var pn=getPanel('sgbreak');
 var data=lsGet('sg_breakdown',{});
 var CATS=['Tee-to-Green','Approach','Around Green','Putting','Driving Distance','Driving Accuracy'];
 var html='<button class="v19-close" onclick="window._v19Close(\'sgbreak\')">&times;</button>';
-html+='<div class="v19-title">&#x1F4C8; Strokes Gained &#xC0C1;&#xC138; &#xBD84;&#xC11D;</div>';
-html+='<div class="v19-card"><h3>SG &#xAC12; &#xC785;&#xB825; (&#xB77C;&#xC6B4;&#xB4DC; &#xD3C9;&#xADE0;)</h3>';
+html+='<div class="v19-title">📈 Strokes Gained 상세 분석</div>';
+html+='<div class="v19-card"><h3>SG 값 입력 (라운드 평균)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
 for(var ci=0;ci<CATS.length;ci++){html+='<div><label class="v19-label">'+CATS[ci]+'</label><input type="number" id="v19-sg-'+ci+'" class="v19-input" step="0.1" value="'+(data['c'+ci]||0)+'" min="-5" max="5"></div>'}
 html+='</div>';
-html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19SaveSG()">&#xC800;&#xC7A5;</button>';
+html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19SaveSG()">저장</button>';
 html+='</div>';
 html+='<canvas id="v19-sg-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 var totalSG=0;var bestCat='',worstCat='';var bestVal=-999,worstVal=999;
 for(var si=0;si<CATS.length;si++){var v=data['c'+si]||0;totalSG+=v;if(v>bestVal){bestVal=v;bestCat=CATS[si]}if(v<worstVal){worstVal=v;worstCat=CATS[si]}}
 totalSG=Math.round(totalSG*10)/10;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+(totalSG>=0?'#00FF88':'#FF3366')+'">'+((totalSG>=0?'+':'')+totalSG)+'</div><div class="v19-stat-label">&#xCD1D; SG</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88;font-size:.75em">'+bestCat+'</div><div class="v19-stat-label">&#xAC15;&#xC810; (+'+bestVal+')</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF3366;font-size:.75em">'+worstCat+'</div><div class="v19-stat-label">&#xC57D;&#xC810; ('+worstVal+')</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+(totalSG>=0?'#00FF88':'#FF3366')+'">'+((totalSG>=0?'+':'')+totalSG)+'</div><div class="v19-stat-label">총 SG</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88;font-size:.75em">'+bestCat+'</div><div class="v19-stat-label">강점 (+'+bestVal+')</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF3366;font-size:.75em">'+worstCat+'</div><div class="v19-stat-label">약점 ('+worstVal+')</div></div>';
 html+='</div>';
-html+='<div class="v19-card"><h3>&#x1F4A1; SG &#xD574;&#xC11D; &#xAC00;&#xC774;&#xB4DC;</h3><div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; +&#xAC12;: PGA Tour &#xD3C9;&#xADE0; &#xB300;&#xBE44; &#xD574;&#xB2F9; &#xD0C0;&#xC218;&#xB9CC;&#xD07C; &#xC808;&#xC57D;</div>';
-html+='<div>&#x2022; -&#xAC12;: &#xD574;&#xB2F9; &#xD0C0;&#xC218;&#xB9CC;&#xD07C; &#xC190;&#xD574;</div>';
-html+='<div>&#x2022; &#xCD1D; SG = &#xBAA8;&#xB4E0; &#xCE74;&#xD14C;&#xACE0;&#xB9AC; &#xD569;&#xACC4;</div>';
-html+='<div>&#x2022; &#xC57D;&#xC810; &#xCE74;&#xD14C;&#xACE0;&#xB9AC;&#xC5D0; &#xC5F0;&#xC2B5; &#xC9D1;&#xC911; &#xCD94;&#xCC9C;</div>';
+html+='<div class="v19-card"><h3>💡 SG 해석 가이드</h3><div style="font-size:.82em;color:#aaa;line-height:1.7">';
+html+='<div>• +값: PGA Tour 평균 대비 해당 타수만큼 절약</div>';
+html+='<div>• -값: 해당 타수만큼 손해</div>';
+html+='<div>• 총 SG = 모든 카테고리 합계</div>';
+html+='<div>• 약점 카테고리에 연습 집중 추천</div>';
 html+='</div></div>';
 pn.innerHTML=html;openPanel('sgbreak');drawSGCanvas(data,CATS);
 }
-window._v19SaveSG=function(){var data={};for(var i=0;i<6;i++){data['c'+i]=parseFloat(document.getElementById('v19-sg-'+i).value)||0}data.date=todayStr();lsSet('sg_breakdown',data);playSfx('sg_open');showToast('SG &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;');showSGBreakdown()};
+window._v19SaveSG=function(){var data={};for(var i=0;i<6;i++){data['c'+i]=parseFloat(document.getElementById('v19-sg-'+i).value)||0}data.date=todayStr();lsSet('sg_breakdown',data);playSfx('sg_open');showToast('SG 데이터 저장');showSGBreakdown()};
 function drawSGCanvas(data,CATS){
 var c=document.getElementById('v19-sg-canvas');if(!c)return;
 var ctx=c.getContext('2d');var W=600,H=380;
@@ -274,32 +274,32 @@ function showPenaltyTracker(){
 playSfx('penalty_open');
 var pn=getPanel('penalty');
 var data=lsGet('penalty_data',[]);
-var TYPES=['OB','&#xC6CC;&#xD130;&#xD574;&#xC800;&#xB4DC;','&#xBC99;&#xCEE4;(&#xC5B8;&#xD50C;)','&#xBD88;&#xD50C;&#xB808;&#xC774;','&#xBD84;&#xC2E4;&#xBCFC;','&#xC5B8;&#xD50C;&#xB808;&#xC774;&#xC5B4;&#xBE14;','&#xBCBC;&#xCE59; &#xC704;&#xBC18;','&#xD504;&#xB85C;&#xBE44;&#xC800;&#xB110;'];
+var TYPES=['OB','워터해저드','벙커(언플)','불플레이','분실볼','언플레이어블','벼칙 위반','프로비저널'];
 var html='<button class="v19-close" onclick="window._v19Close(\'penalty\')">&times;</button>';
-html+='<div class="v19-title">&#x26A0;&#xFE0F; &#xD398;&#xB110;&#xD2F0; &#xC0F7; &#xD2B8;&#xB798;&#xCEE4;</div>';
-html+='<div class="v19-card"><h3>&#xD398;&#xB110;&#xD2F0; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v19-title">⚠️ 페널티 샷 트래커</div>';
+html+='<div class="v19-card"><h3>페널티 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
-html+='<div><label class="v19-label">&#xD648; &#xBC88;&#xD638;</label><select id="v19-pn-hole" class="v19-input">';
+html+='<div><label class="v19-label">홈 번호</label><select id="v19-pn-hole" class="v19-input">';
 for(var h=1;h<=18;h++) html+='<option>'+h+'</option>';
 html+='</select></div>';
-html+='<div><label class="v19-label">&#xD398;&#xB110;&#xD2F0; &#xC720;&#xD615;</label><select id="v19-pn-type" class="v19-input">';
+html+='<div><label class="v19-label">페널티 유형</label><select id="v19-pn-type" class="v19-input">';
 for(var ti=0;ti<TYPES.length;ti++) html+='<option>'+TYPES[ti]+'</option>';
 html+='</select></div>';
-html+='<div style="display:flex;align-items:flex-end"><button class="v19-btn v19-btn-primary" style="width:100%" onclick="window._v19AddPenalty()">&#xAE30;&#xB85D;</button></div>';
+html+='<div style="display:flex;align-items:flex-end"><button class="v19-btn v19-btn-primary" style="width:100%" onclick="window._v19AddPenalty()">기록</button></div>';
 html+='</div></div>';
 html+='<canvas id="v19-pn-canvas" width="580" height="360" style="width:100%;max-width:580px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 var totalPen=data.length;var penByType={};for(var pi=0;pi<data.length;pi++){penByType[data[pi].type]=(penByType[data[pi].type]||0)+1}
 var worstType='';var worstCount=0;for(var wk in penByType){if(penByType[wk]>worstCount){worstCount=penByType[wk];worstType=wk}}
 var totalStrokes=0;for(var ps=0;ps<data.length;ps++){totalStrokes+=data[ps].type==='OB'?2:1}
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF3366">'+totalPen+'</div><div class="v19-stat-label">&#xCD1D; &#xD398;&#xB110;&#xD2F0;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+totalStrokes+'&#xD0C0;</div><div class="v19-stat-label">&#xC190;&#xC2E4; &#xD0C0;&#xC218;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8;font-size:.75em">'+(worstType||'-')+'</div><div class="v19-stat-label">&#xCD5C;&#xB2E4; &#xC720;&#xD615;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF3366">'+totalPen+'</div><div class="v19-stat-label">총 페널티</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+totalStrokes+'타</div><div class="v19-stat-label">손실 타수</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8;font-size:.75em">'+(worstType||'-')+'</div><div class="v19-stat-label">최다 유형</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xD398;&#xB110;&#xD2F0; &#xCD08;&#xAE30;&#xD654;?\'))window._v19ResetPenalty()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'페널티 초기화?\'))window._v19ResetPenalty()">초기화</button>';}
 pn.innerHTML=html;openPanel('penalty');drawPenaltyCanvas(data,TYPES);
 }
-window._v19AddPenalty=function(){var hole=parseInt(document.getElementById('v19-pn-hole').value)||1;var type=document.getElementById('v19-pn-type').value;var data=lsGet('penalty_data',[]);data.push({hole:hole,type:type,date:todayStr()});if(data.length>500)data=data.slice(-500);lsSet('penalty_data',data);playSfx('penalty_open');showToast(hole+'&#xBC88; &#xD648; '+type+' &#xAE30;&#xB85D;');showPenaltyTracker()};
+window._v19AddPenalty=function(){var hole=parseInt(document.getElementById('v19-pn-hole').value)||1;var type=document.getElementById('v19-pn-type').value;var data=lsGet('penalty_data',[]);data.push({hole:hole,type:type,date:todayStr()});if(data.length>500)data=data.slice(-500);lsSet('penalty_data',data);playSfx('penalty_open');showToast(hole+'번 홈 '+type+' 기록');showPenaltyTracker()};
 window._v19ResetPenalty=function(){lsSet('penalty_data',[]);showPenaltyTracker()};
 function drawPenaltyCanvas(data,TYPES){
 var c=document.getElementById('v19-pn-canvas');if(!c)return;
@@ -328,12 +328,12 @@ var legY=padT+150;idx=0;for(var lk in typeCount){if(!typeCount.hasOwnProperty(lk
 function showLieAssessment(){
 playSfx('lie_open');
 var pn=getPanel('lieassess');
-var LIES=[{name:'&#xD398;&#xC5B4;&#xC6E8;&#xC774;',diff:0,tip:'&#xC790;&#xC720;&#xB86D;&#xAC8C; &#xD074;&#xB7FD; &#xC120;&#xD0DD;. &#xC815;&#xC0C1; &#xC2A4;&#xC719;.'},{name:'&#xB7EC;&#xD504; (&#xC5C7;&#xC740;)',diff:1,tip:'&#xD55C; &#xD074;&#xB7FD; &#xC704; &#xC120;&#xD0DD;. &#xBCFC;&#xC744; &#xAE68;&#xB057;&#xD788; &#xCF58;&#xD0DD;&#xD2B8;.'},{name:'&#xB7EC;&#xD504; (&#xAE4A;&#xC740;)',diff:2,tip:'&#xB450; &#xD074;&#xB7FD; &#xC704;. &#xC6E8;&#xC9C0;/9I &#xAD8C;&#xC7A5;. &#xBE60;&#xC838;&#xB098;&#xC624;&#xAE30;.'},{name:'&#xBC99;&#xCEE4; &#xD3C9;&#xD0C4;&#xD55C;',diff:1,tip:'&#xBCFC;&#xC744; &#xAE68;&#xB057;&#xD558;&#xAC8C; &#xCE58;&#xAE30;. SW/LW &#xAD8C;&#xC7A5;.'},{name:'&#xBC99;&#xCEE4; &#xD138;&#xC5B4;&#xC624;&#xB978;',diff:3,tip:'&#xC5B4;&#xB824;&#xC6B4; &#xC0F7;. &#xD3ED;&#xBC1C;&#xC0F7;&#xC73C;&#xB85C; &#xBC14;&#xB85C; &#xD0C8;&#xCD9C;.'},{name:'&#xD504;&#xB9B0;&#xC9C0;',diff:1,tip:'&#xBCFC;&#xC774; &#xACBD;&#xC0AC;&#xBA74;. &#xD55C; &#xBC1C; &#xB0AE;&#xAC8C; &#xC11C;&#xACE0; &#xC2A4;&#xC719;.'},{name:'&#xBCA0;&#xC5B4;&#xADF8;&#xB77C;&#xC6B4;&#xB4DC;',diff:1,tip:'&#xBCFC;&#xC774; &#xD2B0;&#xAE30; &#xC27D;&#xB2E4;. &#xD55C; &#xD074;&#xB7FD; &#xC704;.'},{name:'&#xD30C;&#xBB3C;&#xD600; &#xBC14;&#xC704;',diff:2,tip:'&#xCC28;&#xB294; &#xC0F7;&#xC73C;&#xB85C; &#xC548;&#xC804;&#xD558;&#xAC8C; &#xD0C8;&#xCD9C;.'},{name:'&#xC624;&#xB974;&#xB9C9;&#xC774;',diff:2,tip:'&#xD314;&#xB85C;&#xC2A4;&#xB8E8; &#xC9E7;&#xAC8C;. &#xC624;&#xD508; &#xD398;&#xC774;&#xC2A4; &#xD074;&#xB7FD;.'},{name:'&#xB514;&#xBCC3;',diff:0,tip:'&#xBCFC;&#xC774; &#xC6C0;&#xD478;&#xBBF8;. &#xB0AE;&#xC740; &#xD0C4;&#xB3C4; &#xC720;&#xB9AC;.'}];
+var LIES=[{name:'페어웨이',diff:0,tip:'자유롭게 클럽 선택. 정상 스윙.'},{name:'러프 (엇은)',diff:1,tip:'한 클럽 위 선택. 볼을 깨끗히 콘택트.'},{name:'러프 (깊은)',diff:2,tip:'두 클럽 위. 웨지/9I 권장. 빠져나오기.'},{name:'벙커 평탄한',diff:1,tip:'볼을 깨끗하게 치기. SW/LW 권장.'},{name:'벙커 털어오른',diff:3,tip:'어려운 샷. 폭발샷으로 바로 탈출.'},{name:'프린지',diff:1,tip:'볼이 경사면. 한 발 낮게 서고 스윙.'},{name:'베어그라운드',diff:1,tip:'볼이 튰기 쉽다. 한 클럽 위.'},{name:'파물혀 바위',diff:2,tip:'차는 샷으로 안전하게 탈출.'},{name:'오르막이',diff:2,tip:'팔로스루 짧게. 오픈 페이스 클럽.'},{name:'디볃',diff:0,tip:'볼이 움푸미. 낮은 탄도 유리.'}];
 var html='<button class="v19-close" onclick="window._v19Close(\'lieassess\')">&times;</button>';
-html+='<div class="v19-title">&#x1F33F; &#xB77C;&#xC774; &#xD310;&#xB2E8; &#xAC00;&#xC774;&#xB4DC;</div>';
+html+='<div class="v19-title">🌿 라이 판단 가이드</div>';
 html+='<canvas id="v19-la-canvas" width="580" height="360" style="width:100%;max-width:580px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
-for(var i=0;i<LIES.length;i++){var l=LIES[i];var diffColor=l.diff===0?'#00FF88':l.diff===1?'#FFB800':l.diff===2?'#FF9F43':'#FF3366';var stars='';for(var s=0;s<l.diff;s++)stars+='&#x2B50;';if(!stars)stars='&#x2705;';
-html+='<div class="v19-card" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">'+l.name+'</h3><span style="color:'+diffColor+';font-size:.85em">&#xB09C;&#xC774;&#xB3C4; '+stars+'</span></div><p style="margin:4px 0 0;font-size:.82em;color:#aaa">'+l.tip+'</p></div>'}
+for(var i=0;i<LIES.length;i++){var l=LIES[i];var diffColor=l.diff===0?'#00FF88':l.diff===1?'#FFB800':l.diff===2?'#FF9F43':'#FF3366';var stars='';for(var s=0;s<l.diff;s++)stars+='⭐';if(!stars)stars='✅';
+html+='<div class="v19-card" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">'+l.name+'</h3><span style="color:'+diffColor+';font-size:.85em">난이도 '+stars+'</span></div><p style="margin:4px 0 0;font-size:.82em;color:#aaa">'+l.tip+'</p></div>'}
 pn.innerHTML=html;openPanel('lieassess');drawLieCanvas(LIES);
 }
 function drawLieCanvas(LIES){
@@ -357,32 +357,32 @@ function showCourseCondition(){
 playSfx('course_open');
 var pn=getPanel('coursecond');
 var data=lsGet('course_cond',[]);
-var ASPECTS=['&#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xC0C1;&#xD0DC;','&#xADF8;&#xB9B0; &#xC2A4;&#xD53C;&#xB4DC;','&#xBC99;&#xCEE4; &#xC0C1;&#xD0DC;','&#xB7EC;&#xD504; &#xAE4A;&#xC774;','&#xCE74;&#xD2B8; &#xACBD;&#xB85C;','&#xC804;&#xBC18;&#xC801; &#xAD00;&#xB9AC;'];
+var ASPECTS=['페어웨이 상태','그린 스피드','벙커 상태','러프 깊이','카트 경로','전반적 관리'];
 var html='<button class="v19-close" onclick="window._v19Close(\'coursecond\')">&times;</button>';
-html+='<div class="v19-title">&#x1F3DF;&#xFE0F; &#xCF54;&#xC2A4; &#xCEE8;&#xB514;&#xC158; &#xB85C;&#xADF8;</div>';
-html+='<div class="v19-card"><h3>&#xCEE8;&#xB514;&#xC158; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v19-title">🏟️ 코스 컨디션 로그</div>';
+html+='<div class="v19-card"><h3>컨디션 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<div><label class="v19-label">&#xCF54;&#xC2A4;&#xBA85;</label><input type="text" id="v19-cc-name" class="v19-input" placeholder="&#xCF54;&#xC2A4;&#xBA85; &#xC785;&#xB825;" maxlength="30"></div>';
-html+='<div><label class="v19-label">&#xB0A0;&#xC528;</label><select id="v19-cc-weather" class="v19-input"><option>&#xB9D1;&#xC74C;</option><option>&#xD750;&#xB9BC;</option><option>&#xBE44;</option><option>&#xBC14;&#xB78C;</option><option>&#xC548;&#xAC1C;</option></select></div>';
+html+='<div><label class="v19-label">코스명</label><input type="text" id="v19-cc-name" class="v19-input" placeholder="코스명 입력" maxlength="30"></div>';
+html+='<div><label class="v19-label">날씨</label><select id="v19-cc-weather" class="v19-input"><option>맑음</option><option>흐림</option><option>비</option><option>바람</option><option>안개</option></select></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px">';
 for(var ai=0;ai<ASPECTS.length;ai++){html+='<div><label class="v19-label">'+ASPECTS[ai]+' (1~10)</label><input type="number" id="v19-cc-a'+ai+'" class="v19-input" min="1" max="10" value="7"></div>'}
 html+='</div>';
-html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19SaveCourse()">&#xC800;&#xC7A5;</button>';
+html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19SaveCourse()">저장</button>';
 html+='</div>';
 html+='<canvas id="v19-cc-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 var totalLogs=data.length;var avgRating=0;
 if(totalLogs>0){var rSum=0;for(var ri=0;ri<data.length;ri++){var rAvg=0;for(var ra=0;ra<6;ra++)rAvg+=data[ri].aspects[ra]||7;rSum+=rAvg/6}avgRating=Math.round(rSum/totalLogs*10)/10}
 var rateGrade=avgRating>=9?'S':avgRating>=7?'A':avgRating>=5?'B':avgRating>=3?'C':'D';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+totalLogs+'</div><div class="v19-stat-label">&#xCD1D; &#xAE30;&#xB85D;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+avgRating+'</div><div class="v19-stat-label">&#xD3C9;&#xADE0; &#xC0C1;&#xD0DC;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+(rateGrade==='S'||rateGrade==='A'?'#00FF88':'#FFB800')+'">'+rateGrade+'</div><div class="v19-stat-label">&#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+totalLogs+'</div><div class="v19-stat-label">총 기록</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+avgRating+'</div><div class="v19-stat-label">평균 상태</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+(rateGrade==='S'||rateGrade==='A'?'#00FF88':'#FFB800')+'">'+rateGrade+'</div><div class="v19-stat-label">등급</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCEE8;&#xB514;&#xC158; &#xB85C;&#xADF8; &#xCD08;&#xAE30;&#xD654;?\'))window._v19ResetCourse()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v19-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'컨디션 로그 초기화?\'))window._v19ResetCourse()">초기화</button>';}
 pn.innerHTML=html;openPanel('coursecond');drawCourseCanvas(data,ASPECTS);
 }
-window._v19SaveCourse=function(){var name=document.getElementById('v19-cc-name').value.slice(0,30)||'Unknown';var weather=document.getElementById('v19-cc-weather').value;var aspects=[];for(var i=0;i<6;i++){aspects.push(parseInt(document.getElementById('v19-cc-a'+i).value)||7)}var data=lsGet('course_cond',[]);data.push({name:name,weather:weather,aspects:aspects,date:todayStr()});if(data.length>100)data=data.slice(-100);lsSet('course_cond',data);playSfx('course_open');showToast(name+' &#xCEE8;&#xB514;&#xC158; &#xC800;&#xC7A5;');showCourseCondition()};
+window._v19SaveCourse=function(){var name=document.getElementById('v19-cc-name').value.slice(0,30)||'Unknown';var weather=document.getElementById('v19-cc-weather').value;var aspects=[];for(var i=0;i<6;i++){aspects.push(parseInt(document.getElementById('v19-cc-a'+i).value)||7)}var data=lsGet('course_cond',[]);data.push({name:name,weather:weather,aspects:aspects,date:todayStr()});if(data.length>100)data=data.slice(-100);lsSet('course_cond',data);playSfx('course_open');showToast(name+' 컨디션 저장');showCourseCondition()};
 window._v19ResetCourse=function(){lsSet('course_cond',[]);showCourseCondition()};
 function drawCourseCanvas(data,ASPECTS){
 var c=document.getElementById('v19-cc-canvas');if(!c)return;
@@ -404,15 +404,15 @@ function showMuscleMap(){
 playSfx('muscle_open');
 var pn=getPanel('musclemap');
 var data=lsGet('muscle_data',{});
-var MUSCLES=['&#xC5B4;&#xAE68;(&#xC0BC;&#xAC01;&#xADFC;)','&#xD314;(&#xC774;&#xB450;/&#xC0BC;&#xB450;)','&#xCF54;&#xC5B4;(&#xBCF5;&#xADFC;/&#xCE21;&#xADFC;)','&#xB4F1;(&#xAD11;&#xBC30;&#xADFC;)','&#xD558;&#xCCB4;(&#xB300;&#xD1F4;/&#xD588;&#xC2A4;&#xD2B8;&#xB9C1;)','&#xC5C9;&#xB369;&#xC774;(&#xB454;&#xADFC;)','&#xC804;&#xC644;(&#xC190;/&#xC190;&#xBAA9;)','&#xC885;&#xC544;&#xB9AC;(&#xBE44;&#xBCF5;&#xADFC;)'];
-var PHASES=['&#xBC31;&#xC2A4;&#xC717;','&#xB2E4;&#xC6B4;&#xC2A4;&#xC717;','&#xC784;&#xD329;&#xD2B8;','&#xD314;&#xB85C;&#xC2A4;&#xB8E8;'];
+var MUSCLES=['어깨(삼각근)','팔(이두/삼두)','코어(복근/측근)','등(광배근)','하체(대퇴/했스트링)','엉덩이(둔근)','전완(손/손목)','종아리(비복근)'];
+var PHASES=['백스윗','다운스윗','임팩트','팔로스루'];
 var html='<button class="v19-close" onclick="window._v19Close(\'musclemap\')">&times;</button>';
-html+='<div class="v19-title">&#x1F4AA; &#xACE8;&#xD504; &#xADFC;&#xC721; &#xD65C;&#xC131;&#xD654; &#xB9F5;</div>';
-html+='<div class="v19-card"><h3>&#xADFC;&#xC721;&#xBCC4; &#xD65C;&#xC131;&#xB3C4; (1~10)</h3>';
+html+='<div class="v19-title">💪 골프 근육 활성화 맵</div>';
+html+='<div class="v19-card"><h3>근육별 활성도 (1~10)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
 for(var mi=0;mi<MUSCLES.length;mi++){html+='<div><label class="v19-label">'+MUSCLES[mi]+'</label><input type="number" id="v19-mm-'+mi+'" class="v19-input" min="1" max="10" value="'+(data['m'+mi]||5)+'"></div>'}
 html+='</div>';
-html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19SaveMuscle()">&#xC800;&#xC7A5;</button>';
+html+='<button class="v19-btn v19-btn-primary" style="width:100%;margin-top:8px" onclick="window._v19SaveMuscle()">저장</button>';
 html+='</div>';
 html+='<canvas id="v19-mm-canvas" width="580" height="380" style="width:100%;max-width:580px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 var total=0,count=0;for(var si=0;si<MUSCLES.length;si++){var v=data['m'+si]||0;if(v>0){total+=v;count++}}
@@ -420,19 +420,19 @@ var avg=count>0?Math.round(total/count*10)/10:0;
 var grade=avg>=9?'S':avg>=7?'A':avg>=5?'B':avg>=3?'C':'D';
 var weakest='';var weakVal=11;for(var wi=0;wi<MUSCLES.length;wi++){var wv=data['m'+wi]||0;if(wv>0&&wv<weakVal){weakVal=wv;weakest=MUSCLES[wi]}}
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+avg+'</div><div class="v19-stat-label">&#xD3C9;&#xADE0; &#xD65C;&#xC131;&#xB3C4;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+(grade==='S'||grade==='A'?'#00FF88':grade==='B'?'#FFB800':'#FF3366')+'">'+grade+'</div><div class="v19-stat-label">&#xADFC;&#xC721; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF9F43;font-size:.7em">'+(weakest||'-')+'</div><div class="v19-stat-label">&#xC57D;&#xC810; &#xADFC;&#xC721;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+avg+'</div><div class="v19-stat-label">평균 활성도</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:'+(grade==='S'||grade==='A'?'#00FF88':grade==='B'?'#FFB800':'#FF3366')+'">'+grade+'</div><div class="v19-stat-label">근육 등급</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FF9F43;font-size:.7em">'+(weakest||'-')+'</div><div class="v19-stat-label">약점 근육</div></div>';
 html+='</div>';
-html+='<div class="v19-card"><h3>&#x1F4A1; &#xC2A4;&#xC719; &#xADFC;&#xC721; &#xD65C;&#xC6A9; &#xD301;</h3><div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; &#xBC31;&#xC2A4;&#xC717;: &#xC5B4;&#xAE68;+&#xB4F1; &#xD68C;&#xC804; (&#xC0BC;&#xAC01;&#xADFC;+&#xAD11;&#xBC30;&#xADFC;)</div>';
-html+='<div>&#x2022; &#xB2E4;&#xC6B4;&#xC2A4;&#xC717;: &#xD558;&#xCCB4;&#xC8FC;&#xB3C4; (&#xB300;&#xD1F4;+&#xB454;&#xADFC;+&#xCF54;&#xC5B4;)</div>';
-html+='<div>&#x2022; &#xC784;&#xD329;&#xD2B8;: &#xBAA8;&#xB4E0; &#xADFC;&#xC721; &#xB3D9;&#xC2DC; &#xD65C;&#xC131;&#xD654;</div>';
-html+='<div>&#x2022; &#xD314;&#xB85C;&#xC2A4;&#xB8E8;: &#xD314;+&#xC5B4;&#xAE68; &#xAC10;&#xC18D; &#xCEE8;&#xD2B8;&#xB864;</div>';
+html+='<div class="v19-card"><h3>💡 스윙 근육 활용 팁</h3><div style="font-size:.82em;color:#aaa;line-height:1.7">';
+html+='<div>• 백스윗: 어깨+등 회전 (삼각근+광배근)</div>';
+html+='<div>• 다운스윗: 하체주도 (대퇴+둔근+코어)</div>';
+html+='<div>• 임팩트: 모든 근육 동시 활성화</div>';
+html+='<div>• 팔로스루: 팔+어깨 감속 컨트롤</div>';
 html+='</div></div>';
 pn.innerHTML=html;openPanel('musclemap');drawMuscleCanvas(data,MUSCLES);
 }
-window._v19SaveMuscle=function(){var data={};for(var i=0;i<8;i++){data['m'+i]=parseInt(document.getElementById('v19-mm-'+i).value)||5}data.date=todayStr();lsSet('muscle_data',data);playSfx('muscle_open');showToast('&#xADFC;&#xC721; &#xD65C;&#xC131;&#xB3C4; &#xC800;&#xC7A5;');showMuscleMap()};
+window._v19SaveMuscle=function(){var data={};for(var i=0;i<8;i++){data['m'+i]=parseInt(document.getElementById('v19-mm-'+i).value)||5}data.date=todayStr();lsSet('muscle_data',data);playSfx('muscle_open');showToast('근육 활성도 저장');showMuscleMap()};
 function drawMuscleCanvas(data,MUSCLES){
 var c=document.getElementById('v19-mm-canvas');if(!c)return;
 var ctx=c.getContext('2d');var W=580,H=380;
@@ -454,21 +454,21 @@ for(var di=0;di<n;di++){var dr=r*(vals[di]/10);var dx=cx+Math.cos(angles[di])*dr
 
 // ===== QUIZ v19 (+15 questions: 165 -> 180) =====
 var V19_QUIZ=[
-{q:'&#xC5B4;&#xD504;&#xB85C;&#xCE58; &#xC0F7;&#xC5D0;&#xC11C; &#xBC14;&#xB78C;&#xC774; &#xC55E;&#xBC14;&#xB78C;(headwind)&#xC77C; &#xB54C; &#xBE44;&#xAC70;&#xB9AC;&#xB294;?',a:['&#xC99D;&#xAC00;','&#xAC10;&#xC18C;','&#xBCC0;&#xD654;&#xC5C6;&#xC74C;','&#xBC29;&#xD5A5;&#xB9CC; &#xBCC0;&#xD568;'],c:1},
-{q:'&#xBD84;&#xC0B0;&#xB3C4;(Dispersion)&#xAC00; &#xD070; &#xACE8;&#xD37C;&#xAC00; &#xAC1C;&#xC120;&#xD574;&#xC57C; &#xD560; &#xAC83;&#xC740;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xC77C;&#xAD00;&#xC131;','&#xCF54;&#xC2A4; &#xAD00;&#xB9AC;','&#xD37C;&#xD305;'],c:1},
-{q:'18&#xD648; &#xB77C;&#xC6B4;&#xB4DC;&#xC5D0;&#xC11C; &#xD53C;&#xB85C;&#xB3C4;&#xAC00; &#xAC00;&#xC7A5; &#xAE09;&#xC99D;&#xD558;&#xB294; &#xAD6C;&#xAC04;&#xC740;?',a:['1~3&#xD648;','7~9&#xD648;','10~14&#xD648;','16~18&#xD648;'],c:2},
-{q:'Strokes Gained: Putting &#xAC12;&#xC774; -1.5&#xC774;&#xBA74; &#xBB34;&#xC5C7;&#xC744; &#xC758;&#xBBF8;&#xD558;&#xB294;&#xAC00;?',a:['&#xD37C;&#xD305;&#xC774; &#xB6F0;&#xC5B4;&#xB0A8;','&#xD37C;&#xD305;&#xC73C;&#xB85C; 1.5&#xD0C0; &#xC190;&#xD574;','&#xD3C9;&#xADE0; &#xC218;&#xC900;','1.5&#xD0C0; &#xC808;&#xC57D;'],c:1},
-{q:'OB(Out of Bounds) &#xD398;&#xB110;&#xD2F0;&#xB294; &#xBA87; &#xD0C0;&#xC778;&#xAC00;?',a:['1&#xD0C0;','2&#xD0C0;(1&#xD0C0;+&#xAC70;&#xB9AC;&#xC190;&#xC2E4;)','3&#xD0C0;','&#xBC18;&#xD0C0;'],c:1},
-{q:'&#xBC99;&#xCEE4;&#xC5D0;&#xC11C; &#xD0C8;&#xCD9C;&#xD560; &#xB54C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xAC83;&#xC740;?',a:['&#xBE44;&#xAC70;&#xB9AC; &#xCD5C;&#xB300;&#xD654;','&#xADF8;&#xB9B0; &#xBC29;&#xD5A5;&#xC73C;&#xB85C; &#xD0C8;&#xCD9C;','&#xB9AC;&#xD504; &#xC0DD;&#xC131;','&#xACE0;&#xD0C4;&#xB3C4;'],c:1},
-{q:'&#xACE8;&#xD504; &#xC2A4;&#xC719;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xB9CE;&#xC774; &#xC0AC;&#xC6A9;&#xB418;&#xB294; &#xADFC;&#xC721;&#xAD70;&#xC740;?',a:['&#xC774;&#xB450;&#xADFC;','&#xCF54;&#xC5B4;(&#xBCF5;&#xADFC;/&#xCE21;&#xADFC;)','&#xC0BC;&#xAC01;&#xADFC;','&#xB300;&#xD1F4;&#xADFC;'],c:1},
-{q:'&#xCF54;&#xC2A4; &#xCEE8;&#xB514;&#xC158;&#xC5D0;&#xC11C; &#xADF8;&#xB9B0; &#xC2A4;&#xD53C;&#xB4DC;&#xAC00; &#xBE60;&#xB97C; &#xB54C; &#xD37C;&#xD305; &#xC804;&#xB7B5;&#xC740;?',a:['&#xAC15;&#xD558;&#xAC8C; &#xCE58;&#xAE30;','&#xBD80;&#xB4DC;&#xB7FD;&#xAC8C; &#xD130;&#xCE58;','&#xC555;&#xB825; &#xC99D;&#xAC00;','&#xBC14;&#xB85C; &#xD640;&#xC5D0; &#xACA8;&#xB0E5;'],c:1},
-{q:'&#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xCEE8;&#xB514;&#xC158;&#xC774; &#xC88B;&#xC744; &#xB54C;(&#xB2E8;&#xB2E8;&#xD55C; &#xD398;&#xC5B4;&#xC6E8;&#xC774;) &#xB7F0;&#xC740;?',a:['&#xC904;&#xC5B4;&#xB4E0;&#xB2E4;','&#xB298;&#xC5B4;&#xB09C;&#xB2E4;','&#xBCC0;&#xD654;&#xC5C6;&#xB2E4;','&#xBC29;&#xD5A5;&#xC774; &#xBCC0;&#xD55C;&#xB2E4;'],c:1},
-{q:'&#xB77C;&#xC774;&#xAC00; &#xC624;&#xB974;&#xB9C9;&#xC774;(uphill)&#xC77C; &#xB54C; &#xD074;&#xB7FD; &#xC120;&#xD0DD;&#xC740;?',a:['&#xD3C9;&#xC18C;&#xC640; &#xAC19;&#xC740; &#xD074;&#xB7FD;','&#xD55C; &#xD074;&#xB7FD; &#xC704;','&#xD55C; &#xD074;&#xB7FD; &#xC544;&#xB798;','&#xC6E8;&#xC9C0;&#xB85C; &#xD1B5;&#xC77C;'],c:1},
-{q:'&#xBB3C;(&#xC6CC;&#xD130;&#xD574;&#xC800;&#xB4DC;) &#xD398;&#xB110;&#xD2F0;&#xB294; &#xBA87; &#xD0C0;&#xC778;&#xAC00;?',a:['&#xBB34;&#xD398;&#xB110;&#xD2F0;','1&#xD0C0;','2&#xD0C0;','3&#xD0C0;'],c:1},
-{q:'&#xACE8;&#xD504;&#xC5D0;&#xC11C; &#xD558;&#xCCB4; &#xD68C;&#xC804;&#xC774; &#xC0C1;&#xCCB4;&#xBCF4;&#xB2E4; &#xBA3C;&#xC800; &#xC2DC;&#xC791;&#xB418;&#xB294; &#xC774;&#xC720;&#xB294;?',a:['&#xD30C;&#xC6CC; &#xC804;&#xB2EC; &#xADFC;&#xAC04; &#xC6B4;&#xB3D9;&#xC5F0;&#xC1C4;','&#xBC38;&#xB7F0;&#xC2A4;','&#xC815;&#xD655;&#xC131;','&#xD14C;&#xC774;&#xD06C;&#xBC31;'],c:0},
-{q:'&#xCF54;&#xC2A4; &#xB7EC;&#xD504;&#xAC00; &#xAE4A;&#xC744; &#xB54C; &#xCD94;&#xCC9C;&#xB418;&#xB294; &#xC804;&#xB7B5;&#xC740;?',a:['3&#xC6B0;&#xB4DC; &#xC0AC;&#xC6A9;','&#xC6E8;&#xC9C0;&#xB85C; &#xD398;&#xC5B4;&#xC6E8;&#xC774;&#xB85C; &#xBCF5;&#xADC0;','&#xB4DC;&#xB77C;&#xC774;&#xBC84;&#xB85C; &#xCE58;&#xAE30;','&#xB85C;&#xBE0C; &#xC0F7;'],c:1},
-{q:'&#xD37C;&#xD305; &#xBE0C;&#xB808;&#xC774;&#xD06C; &#xB9AC;&#xB529;&#xC5D0;&#xC11C; &#xC794;&#xB514;&#xC758; &#xACB0;(Grain)&#xC774;&#xB780;?',a:['&#xADF8;&#xB9B0; &#xC794;&#xB514;&#xC758; &#xC790;&#xB77C;&#xB294; &#xBC29;&#xD5A5;','&#xADF8;&#xB9B0; &#xACBD;&#xC0AC;','&#xADF8;&#xB9B0; &#xC2A4;&#xD53C;&#xB4DC;','&#xADF8;&#xB9B0; &#xC218;&#xBD84;&#xB7C9;'],c:0},
-{q:'&#xADFC;&#xC721; &#xD65C;&#xC131;&#xD654;&#xC5D0;&#xC11C; &#xBC31;&#xC2A4;&#xC717; &#xB2E8;&#xACC4;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xADFC;&#xC721;&#xC740;?',a:['&#xC774;&#xB450;&#xADFC;','&#xB4F1;(&#xAD11;&#xBC30;&#xADFC;)+&#xC5B4;&#xAE68;(&#xC0BC;&#xAC01;&#xADFC;)','&#xBCF5;&#xADFC;','&#xBE44;&#xBCF5;&#xADFC;'],c:1}
+{q:'어프로치 샷에서 바람이 앞바람(headwind)일 때 비거리는?',a:['증가','감소','변화없음','방향만 변함'],c:1},
+{q:'분산도(Dispersion)가 큰 골퍼가 개선해야 할 것은?',a:['비거리','일관성','코스 관리','퍼팅'],c:1},
+{q:'18홈 라운드에서 피로도가 가장 급증하는 구간은?',a:['1~3홈','7~9홈','10~14홈','16~18홈'],c:2},
+{q:'Strokes Gained: Putting 값이 -1.5이면 무엇을 의미하는가?',a:['퍼팅이 뛰어남','퍼팅으로 1.5타 손해','평균 수준','1.5타 절약'],c:1},
+{q:'OB(Out of Bounds) 페널티는 몇 타인가?',a:['1타','2타(1타+거리손실)','3타','반타'],c:1},
+{q:'벙커에서 탈출할 때 가장 중요한 것은?',a:['비거리 최대화','그린 방향으로 탈출','리프 생성','고탄도'],c:1},
+{q:'골프 스윙에서 가장 많이 사용되는 근육군은?',a:['이두근','코어(복근/측근)','삼각근','대퇴근'],c:1},
+{q:'코스 컨디션에서 그린 스피드가 빠를 때 퍼팅 전략은?',a:['강하게 치기','부드럽게 터치','압력 증가','바로 홀에 겨냥'],c:1},
+{q:'페어웨이 컨디션이 좋을 때(단단한 페어웨이) 런은?',a:['줄어든다','늘어난다','변화없다','방향이 변한다'],c:1},
+{q:'라이가 오르막이(uphill)일 때 클럽 선택은?',a:['평소와 같은 클럽','한 클럽 위','한 클럽 아래','웨지로 통일'],c:1},
+{q:'물(워터해저드) 페널티는 몇 타인가?',a:['무페널티','1타','2타','3타'],c:1},
+{q:'골프에서 하체 회전이 상체보다 먼저 시작되는 이유는?',a:['파워 전달 근간 운동연쇄','밸런스','정확성','테이크백'],c:0},
+{q:'코스 러프가 깊을 때 추천되는 전략은?',a:['3우드 사용','웨지로 페어웨이로 복귀','드라이버로 치기','로브 샷'],c:1},
+{q:'퍼팅 브레이크 리딩에서 잔디의 결(Grain)이란?',a:['그린 잔디의 자라는 방향','그린 경사','그린 스피드','그린 수분량'],c:0},
+{q:'근육 활성화에서 백스윗 단계에서 가장 중요한 근육은?',a:['이두근','등(광배근)+어깨(삼각근)','복근','비복근'],c:1}
 ];
 function showV19Quiz(){
 playSfx('quiz_correct');
@@ -476,35 +476,35 @@ var pn=getPanel('v19quiz');
 var qState=lsGet('quiz_state',{idx:0,correct:0,total:0});
 var qi=qState.idx%V19_QUIZ.length;var q=V19_QUIZ[qi];
 var html='<button class="v19-close" onclick="window._v19Close(\'v19quiz\')">&times;</button>';
-html+='<div class="v19-title">&#x2753; &#xACE8;&#xD504; &#xD034;&#xC988; v19 ('+qState.total+' &#xC751;&#xB2F5;, '+qState.correct+' &#xC815;&#xB2F5;)</div>';
+html+='<div class="v19-title">❓ 골프 퀴즈 v19 ('+qState.total+' 응답, '+qState.correct+' 정답)</div>';
 html+='<div class="v19-card"><h3>Q'+(qi+1)+'/'+V19_QUIZ.length+'</h3>';
 html+='<p style="font-size:1em;color:#fff;margin:12px 0;line-height:1.6">'+q.q+'</p>';
 for(var ai=0;ai<q.a.length;ai++){html+='<button class="v19-btn" style="width:100%;margin:4px 0;text-align:left;padding:10px 16px" onclick="window._v19Answer('+qi+','+ai+')">'+String.fromCharCode(9312+ai)+' '+q.a[ai]+'</button>'}
 html+='</div>';
 var rate=qState.total>0?Math.round(qState.correct/qState.total*100):0;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+qState.correct+'</div><div class="v19-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+rate+'%</div><div class="v19-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
-html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8">'+qState.total+'</div><div class="v19-stat-label">&#xCD1D; &#xC751;&#xB2F5;</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00FF88">'+qState.correct+'</div><div class="v19-stat-label">정답</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#FFB800">'+rate+'%</div><div class="v19-stat-label">정답률</div></div>';
+html+='<div class="v19-stat-card"><div class="v19-stat-val" style="color:#00B4D8">'+qState.total+'</div><div class="v19-stat-label">총 응답</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('v19quiz');
 }
-window._v19Answer=function(qi,ai){var q=V19_QUIZ[qi];var qState=lsGet('quiz_state',{idx:0,correct:0,total:0});qState.total++;if(ai===q.c){qState.correct++;playSfx('quiz_correct');showToast('&#xC815;&#xB2F5;! &#x1F389;')}else{playSfx('quiz_wrong');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+q.a[q.c])}qState.idx=qi+1;lsSet('quiz_state',qState);setTimeout(showV19Quiz,1200)};
+window._v19Answer=function(qi,ai){var q=V19_QUIZ[qi];var qState=lsGet('quiz_state',{idx:0,correct:0,total:0});qState.total++;if(ai===q.c){qState.correct++;playSfx('quiz_correct');showToast('정답! 🎉')}else{playSfx('quiz_wrong');showToast('오답! 정답: '+q.a[q.c])}qState.idx=qi+1;lsSet('quiz_state',qState);setTimeout(showV19Quiz,1200)};
 
 // ===== ACHIEVEMENTS v19 (+12: 132 -> 144) =====
 var V19_ACHS=[
-{id:'v19_approach_pro',name:'&#xC5B4;&#xD504;&#xB85C;&#xCE58; &#xD504;&#xB85C;',desc:'&#xC5B4;&#xD504;&#xB85C;&#xCE58; 10&#xD68C; &#xAE30;&#xB85D;',check:function(){return(lsGet('approach_log',[])).length>=10}},
-{id:'v19_dispersion_analyst',name:'&#xBD84;&#xC0B0; &#xBD84;&#xC11D;&#xAC00;',desc:'&#xBD84;&#xC0B0;&#xB3C4; 15&#xD68C; &#xC774;&#xC0C1; &#xAE30;&#xB85D;',check:function(){return(lsGet('dispersion_data',[])).length>=15}},
-{id:'v19_fatigue_manager',name:'&#xD53C;&#xB85C; &#xAD00;&#xB9AC;&#xC790;',desc:'&#xD53C;&#xB85C;&#xB3C4; 9&#xD648; &#xC774;&#xC0C1; &#xCE21;&#xC815;',check:function(){var d=lsGet('fatigue_data',{});var c=0;for(var h=1;h<=18;h++)if(d['h'+h])c++;return c>=9}},
-{id:'v19_sg_analyst',name:'SG &#xBD84;&#xC11D;&#xAC00;',desc:'SG &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5; &#xC644;&#xB8CC;',check:function(){return!!lsGet('sg_breakdown',{}).date}},
-{id:'v19_penalty_free',name:'&#xD398;&#xB110;&#xD2F0; &#xD504;&#xB9AC;',desc:'&#xC555;&#xB825;: &#xD398;&#xB110;&#xD2F0; 0&#xD68C; &#xB77C;&#xC6B4;&#xB4DC;',check:function(){return(lsGet('penalty_data',[])).length===0}},
-{id:'v19_lie_explorer',name:'&#xB77C;&#xC774; &#xD0D0;&#xD5D8;&#xAC00;',desc:'&#xB77C;&#xC774; &#xAC00;&#xC774;&#xB4DC; &#xD655;&#xC778;',check:function(){var o=lsGet('opens',{});return(o.lieassess||0)>=1}},
-{id:'v19_course_logger',name:'&#xCF54;&#xC2A4; &#xAE30;&#xB85D;&#xAC00;',desc:'&#xCF54;&#xC2A4; &#xCEE8;&#xB514;&#xC158; 3&#xD68C; &#xAE30;&#xB85D;',check:function(){return(lsGet('course_cond',[])).length>=3}},
-{id:'v19_muscle_master',name:'&#xADFC;&#xC721; &#xB9C8;&#xC2A4;&#xD130;',desc:'&#xADFC;&#xC721; &#xD65C;&#xC131;&#xB3C4; A&#xB4F1;&#xAE09;',check:function(){var d=lsGet('muscle_data',{});var t=0,c=0;for(var i=0;i<8;i++){var v=d['m'+i]||0;if(v>0){t+=v;c++}}return c>0&&t/c>=7}},
-{id:'v19_quiz_ace',name:'&#xD034;&#xC988; v19 &#xC5D0;&#xC774;&#xC2A4;',desc:'v19 &#xD034;&#xC988; &#xC804;&#xBB38; &#xC815;&#xB2F5;',check:function(){var s=lsGet('quiz_state',{});return s.total>=15&&s.correct>=15}},
-{id:'v19_gir_expert',name:'GIR &#xC804;&#xBB38;&#xAC00;',desc:'GIR &#xC131;&#xACF5;&#xB960; 60% &#xC774;&#xC0C1;',check:function(){var d=lsGet('approach_log',[]);if(d.length<5)return false;var g=0;for(var i=0;i<d.length;i++)if(d[i].gir)g++;return g/d.length>=0.6}},
-{id:'v19_centered',name:'&#xC13C;&#xD130;&#xB4DC; &#xC0F7;',desc:'&#xBD84;&#xC0B0;&#xB3C4; &#xD3C9;&#xADE0; &#xC88C;&#xC6B0; &plusmn;3yd &#xC774;&#xB0B4;',check:function(){var d=lsGet('dispersion_data',[]);if(d.length<5)return false;var s=0;for(var i=0;i<d.length;i++)s+=d[i].lr;return Math.abs(s/d.length)<=3}},
-{id:'v19_complete',name:'v19 &#xCEF4;&#xD50C;&#xB9AC;&#xD2B8;',desc:'v19 &#xBAA8;&#xB4E0; &#xAE30;&#xB2A5; &#xC0AC;&#xC6A9;',check:function(){var o=lsGet('opens',{});return(o.approach||0)>0&&(o.dispersion||0)>0&&(o.fatigue||0)>0&&(o.sgbreak||0)>0&&(o.penalty||0)>0&&(o.lieassess||0)>0&&(o.coursecond||0)>0&&(o.musclemap||0)>0&&lsGet('quiz_state',{}).total>0}}
+{id:'v19_approach_pro',name:'어프로치 프로',desc:'어프로치 10회 기록',check:function(){return(lsGet('approach_log',[])).length>=10}},
+{id:'v19_dispersion_analyst',name:'분산 분석가',desc:'분산도 15회 이상 기록',check:function(){return(lsGet('dispersion_data',[])).length>=15}},
+{id:'v19_fatigue_manager',name:'피로 관리자',desc:'피로도 9홈 이상 측정',check:function(){var d=lsGet('fatigue_data',{});var c=0;for(var h=1;h<=18;h++)if(d['h'+h])c++;return c>=9}},
+{id:'v19_sg_analyst',name:'SG 분석가',desc:'SG 데이터 저장 완료',check:function(){return!!lsGet('sg_breakdown',{}).date}},
+{id:'v19_penalty_free',name:'페널티 프리',desc:'압력: 페널티 0회 라운드',check:function(){return(lsGet('penalty_data',[])).length===0}},
+{id:'v19_lie_explorer',name:'라이 탐험가',desc:'라이 가이드 확인',check:function(){var o=lsGet('opens',{});return(o.lieassess||0)>=1}},
+{id:'v19_course_logger',name:'코스 기록가',desc:'코스 컨디션 3회 기록',check:function(){return(lsGet('course_cond',[])).length>=3}},
+{id:'v19_muscle_master',name:'근육 마스터',desc:'근육 활성도 A등급',check:function(){var d=lsGet('muscle_data',{});var t=0,c=0;for(var i=0;i<8;i++){var v=d['m'+i]||0;if(v>0){t+=v;c++}}return c>0&&t/c>=7}},
+{id:'v19_quiz_ace',name:'퀴즈 v19 에이스',desc:'v19 퀴즈 전문 정답',check:function(){var s=lsGet('quiz_state',{});return s.total>=15&&s.correct>=15}},
+{id:'v19_gir_expert',name:'GIR 전문가',desc:'GIR 성공률 60% 이상',check:function(){var d=lsGet('approach_log',[]);if(d.length<5)return false;var g=0;for(var i=0;i<d.length;i++)if(d[i].gir)g++;return g/d.length>=0.6}},
+{id:'v19_centered',name:'센터드 샷',desc:'분산도 평균 좌우 &plusmn;3yd 이내',check:function(){var d=lsGet('dispersion_data',[]);if(d.length<5)return false;var s=0;for(var i=0;i<d.length;i++)s+=d[i].lr;return Math.abs(s/d.length)<=3}},
+{id:'v19_complete',name:'v19 컴플리트',desc:'v19 모든 기능 사용',check:function(){var o=lsGet('opens',{});return(o.approach||0)>0&&(o.dispersion||0)>0&&(o.fatigue||0)>0&&(o.sgbreak||0)>0&&(o.penalty||0)>0&&(o.lieassess||0)>0&&(o.coursecond||0)>0&&(o.musclemap||0)>0&&lsGet('quiz_state',{}).total>0}}
 ];
 
 function v19CheckAch(){
@@ -515,7 +515,7 @@ for(var i=0;i<V19_ACHS.length;i++){
     unlocked.push(a.id);lsSet('achievements',unlocked);
     playSfx('v19_achieve');
     var popup=document.createElement('div');popup.className='v19-ach-popup';
-    popup.innerHTML='<div style="font-size:2em">&#x1F3C6;</div><div><div style="font-weight:800;color:#FFB800;font-size:.9em">&#xC5C5;&#xC801; &#xD574;&#xAE08;!</div><div style="font-size:.8em;color:#ccc">'+a.name+' - '+a.desc+'</div></div>';
+    popup.innerHTML='<div style="font-size:2em">🏆</div><div><div style="font-weight:800;color:#FFB800;font-size:.9em">업적 해금!</div><div style="font-size:.8em;color:#ccc">'+a.name+' - '+a.desc+'</div></div>';
     document.body.appendChild(popup);
     setTimeout(function(){popup.classList.add('show')},100);
     setTimeout(function(){popup.classList.remove('show');setTimeout(function(){popup.remove()},500)},4000);
@@ -561,15 +561,15 @@ function injectV19QuickActions(){
 var nav=document.querySelector('.v16-scroll-nav');
 if(!nav){setTimeout(injectV19QuickActions,2000);return}
 var buttons=[
-  {icon:'&#x1F3AF;',title:'&#xC5B4;&#xD504;&#xB85C;&#xCE58; (Shift+A)',fn:'showApproach'},
-  {icon:'&#x1F4CD;',title:'&#xBD84;&#xC0B0;&#xD328;&#xD134; (Shift+B)',fn:'showDispersion'},
-  {icon:'&#x1F6A8;',title:'&#xD53C;&#xB85C;&#xB3C4; (Shift+C)',fn:'showFatigue'},
-  {icon:'&#x1F4C8;',title:'SG&#xBD84;&#xC11D; (Shift+D)',fn:'showSGBreak'},
-  {icon:'&#x26A0;&#xFE0F;',title:'&#xD398;&#xB110;&#xD2F0; (Shift+E)',fn:'showPenalty'},
-  {icon:'&#x1F33F;',title:'&#xB77C;&#xC774;&#xD310;&#xB2E8; (Shift+F)',fn:'showLieAssess'},
-  {icon:'&#x1F3DF;&#xFE0F;',title:'&#xCF54;&#xC2A4;&#xCEE8;&#xB514;&#xC158; (Shift+G)',fn:'showCourseCond'},
-  {icon:'&#x1F4AA;',title:'&#xADFC;&#xC721;&#xB9F5; (Shift+H)',fn:'showMuscleMap'},
-  {icon:'&#x2753;',title:'&#xD034;&#xC988;v19',fn:'showV19Quiz'}
+  {icon:'🎯',title:'어프로치 (Shift+A)',fn:'showApproach'},
+  {icon:'📍',title:'분산패턴 (Shift+B)',fn:'showDispersion'},
+  {icon:'🚨',title:'피로도 (Shift+C)',fn:'showFatigue'},
+  {icon:'📈',title:'SG분석 (Shift+D)',fn:'showSGBreak'},
+  {icon:'⚠️',title:'페널티 (Shift+E)',fn:'showPenalty'},
+  {icon:'🌿',title:'라이판단 (Shift+F)',fn:'showLieAssess'},
+  {icon:'🏟️',title:'코스컨디션 (Shift+G)',fn:'showCourseCond'},
+  {icon:'💪',title:'근육맵 (Shift+H)',fn:'showMuscleMap'},
+  {icon:'❓',title:'퀴즈v19',fn:'showV19Quiz'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');btn.className='v16-nav-btn';

@@ -30,36 +30,36 @@ var selClub=lsGet('traj_club',0);
 var log=lsGet('traj_log',[]);
 var windSpd=lsGet('traj_wind',0);
 var html='<button class="v25-close" onclick="window._v25Close(\'traj\')">&times;</button>';
-html+='<div class="v25-title">&#x1F3CC; &#xC0F7;&#xADA4;&#xC801; &#xC2DC;&#xBBAC;&#xB808;&#xC774;&#xD130;</div>';
+html+='<div class="v25-title">🏌 샷궤적 시뮬레이터</div>';
 html+='<canvas id="v25-traj-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xD074;&#xB7FD; &amp; &#xC870;&#xAC74;</h3>';
+html+='<div class="v25-card"><h3>클럽 &amp; 조건</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:8px">';
 for(var i=0;i<TRAJ_CLUBS.length;i++){
 html+='<button class="v25-btn v25-btn-sm'+(i===selClub?' v25-btn-primary':'')+'" onclick="window._v25SelectTrajClub('+i+')" style="border-color:'+TRAJ_CLUBS[i].color+'40;color:'+TRAJ_CLUBS[i].color+'">'+TRAJ_CLUBS[i].name+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
-html+='<div><label class="v25-label">&#xD5E4;&#xB4DC;&#xC2A4;&#xD53C;&#xB4DC; (mph)</label><input class="v25-input" type="number" id="v25-traj-speed" value="'+TRAJ_CLUBS[selClub].speed+'" min="40" max="130"></div>';
-html+='<div><label class="v25-label">&#xBC14;&#xB78C; (mph, &#xB9DE;&#xBC14;&#xB78C;-)</label><input class="v25-input" type="number" id="v25-traj-wind" value="'+windSpd+'" min="-30" max="30"></div>';
-html+='<div><label class="v25-label">&#xBC1C;&#xC0AC;&#xAC01; (&deg;)</label><input class="v25-input" type="number" id="v25-traj-launch" value="'+Math.round(TRAJ_CLUBS[selClub].loft*0.75)+'" min="0" max="45" step="0.5"></div>';
+html+='<div><label class="v25-label">헤드스피드 (mph)</label><input class="v25-input" type="number" id="v25-traj-speed" value="'+TRAJ_CLUBS[selClub].speed+'" min="40" max="130"></div>';
+html+='<div><label class="v25-label">바람 (mph, 맞바람-)</label><input class="v25-input" type="number" id="v25-traj-wind" value="'+windSpd+'" min="-30" max="30"></div>';
+html+='<div><label class="v25-label">발사각 (&deg;)</label><input class="v25-input" type="number" id="v25-traj-launch" value="'+Math.round(TRAJ_CLUBS[selClub].loft*0.75)+'" min="0" max="45" step="0.5"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v25-btn v25-btn-primary" onclick="window._v25FireTraj()">&#x1F680; &#xBC1C;&#xC0AC;</button>';
-html+='<button class="v25-btn" onclick="window._v25SaveTraj()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v25-btn v25-btn-primary" onclick="window._v25FireTraj()">🚀 발사</button>';
+html+='<button class="v25-btn" onclick="window._v25SaveTraj()">💾 저장</button>';
 html+='</div></div>';
 var cl=TRAJ_CLUBS[selClub];
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+cl.color+'">'+cl.carry+'yd</div><div class="v25-stat-label">&#xCE90;&#xB9AC; &#xAE30;&#xC900;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FFB800">'+cl.apex+'yd</div><div class="v25-stat-label">&#xCD5C;&#xACE0;&#xC810;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#4ECDC4">'+(cl.carry+cl.roll)+'yd</div><div class="v25-stat-label">&#xCD1D;&#xAC70;&#xB9AC;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">&#xBC1C;&#xC0AC; &#xAE30;&#xB85D;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+cl.color+'">'+cl.carry+'yd</div><div class="v25-stat-label">캐리 기준</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FFB800">'+cl.apex+'yd</div><div class="v25-stat-label">최고점</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#4ECDC4">'+(cl.carry+cl.roll)+'yd</div><div class="v25-stat-label">총거리</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">발사 기록</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v25ResetTraj()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'초기화?\'))window._v25ResetTraj()">초기화</button>';
 pn.innerHTML=html;openPanel('traj');drawTrajCanvas(selClub,windSpd,log);
 }
 window._v25SelectTrajClub=function(i){lsSet('traj_club',i);showTrajectory();};
 window._v25FireTraj=function(){playSfx('traj_fire');var c=lsGet('traj_club',0);var spd=parseInt(document.getElementById('v25-traj-speed').value)||TRAJ_CLUBS[c].speed;var wind=parseInt(document.getElementById('v25-traj-wind').value)||0;var launch=parseFloat(document.getElementById('v25-traj-launch').value)||12;lsSet('traj_wind',wind);var cl=TRAJ_CLUBS[c];var spdRatio=spd/cl.speed;var carry=Math.round(cl.carry*spdRatio*spdRatio*(1-wind*0.004));var apex=Math.round(cl.apex*spdRatio*Math.sin(launch*Math.PI/180)/Math.sin(cl.loft*0.75*Math.PI/180));var roll=Math.round(cl.roll*(1+wind*0.01));if(roll<0)roll=0;var grade='D';if(carry>=cl.carry*0.95&&carry<=cl.carry*1.1)grade='S';else if(carry>=cl.carry*0.85)grade='A';else if(carry>=cl.carry*0.7)grade='B';else grade='C';showToast(cl.name+': '+carry+'yd carry + '+roll+'yd roll = '+(carry+roll)+'yd ('+grade+')');};
-window._v25SaveTraj=function(){playSfx('save_v25');var c=lsGet('traj_club',0);var spd=parseInt(document.getElementById('v25-traj-speed').value)||TRAJ_CLUBS[c].speed;var wind=parseInt(document.getElementById('v25-traj-wind').value)||0;var launch=parseFloat(document.getElementById('v25-traj-launch').value)||12;var cl=TRAJ_CLUBS[c];var spdRatio=spd/cl.speed;var carry=Math.round(cl.carry*spdRatio*spdRatio*(1-wind*0.004));var log=lsGet('traj_log',[]);log.push({date:todayStr(),club:c,carry:carry,speed:spd,wind:wind});if(log.length>100)log.shift();lsSet('traj_log',log);showToast('&#xADA4;&#xC801; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();showTrajectory();};
+window._v25SaveTraj=function(){playSfx('save_v25');var c=lsGet('traj_club',0);var spd=parseInt(document.getElementById('v25-traj-speed').value)||TRAJ_CLUBS[c].speed;var wind=parseInt(document.getElementById('v25-traj-wind').value)||0;var launch=parseFloat(document.getElementById('v25-traj-launch').value)||12;var cl=TRAJ_CLUBS[c];var spdRatio=spd/cl.speed;var carry=Math.round(cl.carry*spdRatio*spdRatio*(1-wind*0.004));var log=lsGet('traj_log',[]);log.push({date:todayStr(),club:c,carry:carry,speed:spd,wind:wind});if(log.length>100)log.shift();lsSet('traj_log',log);showToast('궤적 데이터 저장!');checkAchievements();showTrajectory();};
 window._v25ResetTraj=function(){lsSet('traj_log',[]);showTrajectory();};
 function drawTrajCanvas(selClub,windSpd,log){
 var c=document.getElementById('v25-traj-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -130,30 +130,30 @@ var pn=getPanel('wind');
 var windSpd=lsGet('wind_speed',10);
 var log=lsGet('wind_log',[]);
 var html='<button class="v25-close" onclick="window._v25Close(\'wind\')">&times;</button>';
-html+='<div class="v25-title">&#x1F32C; &#xBC14;&#xB78C; &#xC601;&#xD5A5; &#xB9E4;&#xD2B8;&#xB9AD;&#xC2A4;</div>';
+html+='<div class="v25-title">🌬 바람 영향 매트릭스</div>';
 html+='<canvas id="v25-wind-canvas" width="640" height="400" style="width:100%;max-width:640px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xBC14;&#xB78C; &#xC124;&#xC815;</h3>';
+html+='<div class="v25-card"><h3>바람 설정</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<div><label class="v25-label">&#xBC14;&#xB78C; &#xC18D;&#xB3C4; (mph)</label><input class="v25-input" type="range" min="0" max="30" value="'+windSpd+'" id="v25-wind-spd" oninput="window._v25UpdateWind(this.value)"><span id="v25-wind-val" style="font-size:12px;color:#FF7B54;margin-left:6px">'+windSpd+' mph</span></div>';
-html+='<div><label class="v25-label">&#xC0F7; &#xBC29;&#xD5A5;</label><select class="v25-input" id="v25-shot-dir"><option value="N">&#xBD81;&#xCABD; (N)</option><option value="NE">&#xBD81;&#xB3D9; (NE)</option><option value="E">&#xB3D9;&#xCABD; (E)</option><option value="SE">&#xB0A8;&#xB3D9; (SE)</option><option value="S" selected>&#xB0A8;&#xCABD; (S)</option><option value="SW">&#xB0A8;&#xC11C; (SW)</option><option value="W">&#xC11C;&#xCABD; (W)</option><option value="NW">&#xBD81;&#xC11C; (NW)</option></select></div>';
+html+='<div><label class="v25-label">바람 속도 (mph)</label><input class="v25-input" type="range" min="0" max="30" value="'+windSpd+'" id="v25-wind-spd" oninput="window._v25UpdateWind(this.value)"><span id="v25-wind-val" style="font-size:12px;color:#FF7B54;margin-left:6px">'+windSpd+' mph</span></div>';
+html+='<div><label class="v25-label">샷 방향</label><select class="v25-input" id="v25-shot-dir"><option value="N">북쪽 (N)</option><option value="NE">북동 (NE)</option><option value="E">동쪽 (E)</option><option value="SE">남동 (SE)</option><option value="S" selected>남쪽 (S)</option><option value="SW">남서 (SW)</option><option value="W">서쪽 (W)</option><option value="NW">북서 (NW)</option></select></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v25-btn v25-btn-primary" onclick="window._v25CalcWind()">&#x1F4CA; &#xBD84;&#xC11D;</button>';
-html+='<button class="v25-btn" onclick="window._v25SaveWind()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v25-btn v25-btn-primary" onclick="window._v25CalcWind()">📊 분석</button>';
+html+='<button class="v25-btn" onclick="window._v25SaveWind()">💾 저장</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+windSpd+'</div><div class="v25-stat-label">mph &#xBC14;&#xB78C;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+windSpd+'</div><div class="v25-stat-label">mph 바람</div></div>';
 var maxEffect=Math.round(windSpd*1.8);
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B">&pm;'+maxEffect+'yd</div><div class="v25-stat-label">&#xCD5C;&#xB300; &#xC601;&#xD5A5;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#4ECDC4">'+Math.round(windSpd*0.3)+'yd</div><div class="v25-stat-label">&#xD6A1;&#xBC14;&#xB78C; &#xD3B8;&#xCC28;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">&#xAE30;&#xB85D;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B">&pm;'+maxEffect+'yd</div><div class="v25-stat-label">최대 영향</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#4ECDC4">'+Math.round(windSpd*0.3)+'yd</div><div class="v25-stat-label">횡바람 편차</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">기록</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v25ResetWind()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'초기화?\'))window._v25ResetWind()">초기화</button>';
 pn.innerHTML=html;openPanel('wind');drawWindCanvas(windSpd);
 }
 window._v25UpdateWind=function(v){var el=document.getElementById('v25-wind-val');if(el)el.textContent=v+' mph';lsSet('wind_speed',parseInt(v));drawWindCanvas(parseInt(v));};
-window._v25CalcWind=function(){playSfx('traj_fire');var spd=parseInt(document.getElementById('v25-wind-spd').value)||10;showToast('&#xBC14;&#xB78C; '+spd+'mph: DR ±'+Math.round(spd*1.8)+'yd, PW ±'+Math.round(spd*0.8)+'yd');};
-window._v25SaveWind=function(){playSfx('save_v25');var spd=parseInt(document.getElementById('v25-wind-spd').value)||10;var dir=document.getElementById('v25-shot-dir').value;var log=lsGet('wind_log',[]);log.push({date:todayStr(),speed:spd,dir:dir});if(log.length>50)log.shift();lsSet('wind_log',log);showToast('&#xBC14;&#xB78C; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();};
+window._v25CalcWind=function(){playSfx('traj_fire');var spd=parseInt(document.getElementById('v25-wind-spd').value)||10;showToast('바람 '+spd+'mph: DR ±'+Math.round(spd*1.8)+'yd, PW ±'+Math.round(spd*0.8)+'yd');};
+window._v25SaveWind=function(){playSfx('save_v25');var spd=parseInt(document.getElementById('v25-wind-spd').value)||10;var dir=document.getElementById('v25-shot-dir').value;var log=lsGet('wind_log',[]);log.push({date:todayStr(),speed:spd,dir:dir});if(log.length>50)log.shift();lsSet('wind_log',log);showToast('바람 데이터 저장!');checkAchievements();};
 window._v25ResetWind=function(){lsSet('wind_log',[]);showWindMatrix();};
 function drawWindCanvas(windSpd){
 var c=document.getElementById('v25-wind-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -193,9 +193,9 @@ ctx.fillText('↔'+sideEffect+'yd',L+i*cellW+cellW/2,T+j*cellH+cellH/2+12);
 }
 }
 ctx.fillStyle='rgba(255,255,255,0.5)';ctx.font='10px sans-serif';ctx.textAlign='left';
-ctx.fillText('■ &#xB9DE;&#xBC14;&#xB78C;(-yd)',L,H-8);
-ctx.fillStyle='rgba(50,180,50,0.8)';ctx.fillText('■ &#xB4B7;&#xBC14;&#xB78C;(+yd)',L+110,H-8);
-ctx.fillStyle='rgba(255,180,50,0.8)';ctx.fillText('■ &#xD6A1;&#xBC14;&#xB78C;(↔yd)',L+230,H-8);
+ctx.fillText('■ 맞바람(-yd)',L,H-8);
+ctx.fillStyle='rgba(50,180,50,0.8)';ctx.fillText('■ 뒷바람(+yd)',L+110,H-8);
+ctx.fillStyle='rgba(255,180,50,0.8)';ctx.fillText('■ 횡바람(↔yd)',L+230,H-8);
 }
 
 // ===== 3. CLUB LIFECYCLE TRACKER Canvas 620x400 =====
@@ -205,38 +205,38 @@ playSfx('club_open');
 var pn=getPanel('lifecycle');
 var data=lsGet('lifecycle_data',{});
 var html='<button class="v25-close" onclick="window._v25Close(\'lifecycle\')">&times;</button>';
-html+='<div class="v25-title">&#x1F527; &#xD074;&#xB7FD; &#xC218;&#xBA85; &#xC0AC;&#xC774;&#xD074;</div>';
+html+='<div class="v25-title">🔧 클럽 수명 사이클</div>';
 html+='<canvas id="v25-life-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xD074;&#xB7FD; &#xC815;&#xBCF4; &#xC785;&#xB825;</h3>';
+html+='<div class="v25-card"><h3>클럽 정보 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<div><label class="v25-label">&#xD074;&#xB7FD; &#xC120;&#xD0DD;</label><select class="v25-input" id="v25-life-club">';
+html+='<div><label class="v25-label">클럽 선택</label><select class="v25-input" id="v25-life-club">';
 for(var i=0;i<LIFECYCLE_CLUBS.length;i++)html+='<option value="'+i+'">'+LIFECYCLE_CLUBS[i]+'</option>';
 html+='</select></div>';
-html+='<div><label class="v25-label">&#xAD6C;&#xB9E4;&#xC77C; (&#xAC1C;&#xC6D4;&#xC804;)</label><input class="v25-input" type="number" id="v25-life-months" value="12" min="0" max="120"></div>';
+html+='<div><label class="v25-label">구매일 (개월전)</label><input class="v25-input" type="number" id="v25-life-months" value="12" min="0" max="120"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px">';
-html+='<div><label class="v25-label">&#xCD1D; &#xB77C;&#xC6B4;&#xB4DC;</label><input class="v25-input" type="number" id="v25-life-rounds" value="'+(data[0]?data[0].rounds:50)+'" min="0" max="9999"></div>';
-html+='<div><label class="v25-label">&#xADF8;&#xB8E8;&#xBE0C; &#xC0C1;&#xD0DC; (1~10)</label><input class="v25-input" type="range" min="1" max="10" value="'+(data[0]?data[0].groove:7)+'" id="v25-life-groove"></div>';
-html+='<div><label class="v25-label">&#xC0E4;&#xD504;&#xD2B8; &#xC0C1;&#xD0DC; (1~10)</label><input class="v25-input" type="range" min="1" max="10" value="'+(data[0]?data[0].shaft:8)+'" id="v25-life-shaft"></div>';
+html+='<div><label class="v25-label">총 라운드</label><input class="v25-input" type="number" id="v25-life-rounds" value="'+(data[0]?data[0].rounds:50)+'" min="0" max="9999"></div>';
+html+='<div><label class="v25-label">그루브 상태 (1~10)</label><input class="v25-input" type="range" min="1" max="10" value="'+(data[0]?data[0].groove:7)+'" id="v25-life-groove"></div>';
+html+='<div><label class="v25-label">샤프트 상태 (1~10)</label><input class="v25-input" type="range" min="1" max="10" value="'+(data[0]?data[0].shaft:8)+'" id="v25-life-shaft"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v25-btn v25-btn-primary" onclick="window._v25SaveLifecycle()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v25-btn" onclick="window._v25AnalyzeLife()">&#x1F50D; &#xBD84;&#xC11D;</button>';
+html+='<button class="v25-btn v25-btn-primary" onclick="window._v25SaveLifecycle()">💾 저장</button>';
+html+='<button class="v25-btn" onclick="window._v25AnalyzeLife()">🔍 분석</button>';
 html+='</div></div>';
 var totalClubs=Object.keys(data).length;var avgHealth=0;
 for(var k in data){var d=data[k];avgHealth+=(d.groove+d.shaft)/2;}
 if(totalClubs>0)avgHealth=Math.round(avgHealth*10/totalClubs)/10;
 var needReplace=0;for(var k in data){if((data[k].groove+data[k].shaft)/2<4)needReplace++;}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+totalClubs+'</div><div class="v25-stat-label">&#xB4F1;&#xB85D; &#xD074;&#xB7FD;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#4ECDC4">'+avgHealth+'</div><div class="v25-stat-label">&#xD3C9;&#xADE0; &#xC0C1;&#xD0DC;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(needReplace>0?'#FF6B6B':'#00FF88')+'">'+needReplace+'</div><div class="v25-stat-label">&#xAD50;&#xCCB4; &#xD544;&#xC694;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">14</div><div class="v25-stat-label">&#xCD1D; &#xD074;&#xB7FD;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+totalClubs+'</div><div class="v25-stat-label">등록 클럽</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#4ECDC4">'+avgHealth+'</div><div class="v25-stat-label">평균 상태</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(needReplace>0?'#FF6B6B':'#00FF88')+'">'+needReplace+'</div><div class="v25-stat-label">교체 필요</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">14</div><div class="v25-stat-label">총 클럽</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('lifecycle');drawLifecycleCanvas(data);
 }
-window._v25SaveLifecycle=function(){playSfx('save_v25');var idx=parseInt(document.getElementById('v25-life-club').value);var months=parseInt(document.getElementById('v25-life-months').value)||12;var rounds=parseInt(document.getElementById('v25-life-rounds').value)||0;var groove=parseInt(document.getElementById('v25-life-groove').value)||5;var shaft=parseInt(document.getElementById('v25-life-shaft').value)||5;var data=lsGet('lifecycle_data',{});data[idx]={months:months,rounds:rounds,groove:groove,shaft:shaft,date:todayStr()};lsSet('lifecycle_data',data);showToast(LIFECYCLE_CLUBS[idx]+' &#xC800;&#xC7A5;!');checkAchievements();showClubLifecycle();};
-window._v25AnalyzeLife=function(){playSfx('traj_fire');var data=lsGet('lifecycle_data',{});var tips=[];for(var k in data){var d=data[k];if(d.groove<4)tips.push(LIFECYCLE_CLUBS[k]+' &#xADF8;&#xB8E8;&#xBE0C; &#xB9C8;&#xBAA8; - &#xAD50;&#xCCB4; &#xAD8C;&#xC7A5;');if(d.shaft<4)tips.push(LIFECYCLE_CLUBS[k]+' &#xC0E4;&#xD504;&#xD2B8; &#xB178;&#xD6C4; - &#xC810;&#xAC80; &#xD544;&#xC694;');if(d.rounds>200)tips.push(LIFECYCLE_CLUBS[k]+' '+d.rounds+'R &#xC0AC;&#xC6A9; - &#xC131;&#xB2A5; &#xC810;&#xAC80;');}if(tips.length===0)tips.push('&#xBAA8;&#xB4E0; &#xD074;&#xB7FD; &#xC0C1;&#xD0DC; &#xC591;&#xD638;!');showToast(tips[0]);};
+window._v25SaveLifecycle=function(){playSfx('save_v25');var idx=parseInt(document.getElementById('v25-life-club').value);var months=parseInt(document.getElementById('v25-life-months').value)||12;var rounds=parseInt(document.getElementById('v25-life-rounds').value)||0;var groove=parseInt(document.getElementById('v25-life-groove').value)||5;var shaft=parseInt(document.getElementById('v25-life-shaft').value)||5;var data=lsGet('lifecycle_data',{});data[idx]={months:months,rounds:rounds,groove:groove,shaft:shaft,date:todayStr()};lsSet('lifecycle_data',data);showToast(LIFECYCLE_CLUBS[idx]+' 저장!');checkAchievements();showClubLifecycle();};
+window._v25AnalyzeLife=function(){playSfx('traj_fire');var data=lsGet('lifecycle_data',{});var tips=[];for(var k in data){var d=data[k];if(d.groove<4)tips.push(LIFECYCLE_CLUBS[k]+' 그루브 마모 - 교체 권장');if(d.shaft<4)tips.push(LIFECYCLE_CLUBS[k]+' 샤프트 노후 - 점검 필요');if(d.rounds>200)tips.push(LIFECYCLE_CLUBS[k]+' '+d.rounds+'R 사용 - 성능 점검');}if(tips.length===0)tips.push('모든 클럽 상태 양호!');showToast(tips[0]);};
 function drawLifecycleCanvas(data){
 var c=document.getElementById('v25-life-canvas');if(!c)return;var ctx=c.getContext('2d');
 var W=620,H=400;ctx.clearRect(0,0,W,H);
@@ -255,7 +255,7 @@ ctx.fillText(LIFECYCLE_CLUBS[i],L-6,y+barH/2+3);
 if(!d){
 ctx.fillStyle='rgba(255,255,255,0.05)';ctx.fillRect(L,y+2,R-L,barH-4);
 ctx.fillStyle='rgba(255,255,255,0.2)';ctx.font='9px sans-serif';ctx.textAlign='center';
-ctx.fillText('&#xBBF8;&#xB4F1;&#xB85D;',L+(R-L)/2,y+barH/2+3);
+ctx.fillText('미등록',L+(R-L)/2,y+barH/2+3);
 continue;
 }
 ctx.fillStyle='rgba(255,255,255,0.05)';ctx.fillRect(L,y+2,R-L,barH-4);
@@ -281,14 +281,14 @@ ctx.fillStyle='rgba(255,255,255,0.4)';ctx.fillText('S=8+ A=6+ B=4+ C=<4',L+140,H
 // ===== 4. COURSE STRATEGY MINI-MAP Canvas 620x380 =====
 var HOLE_TYPES=['Par 3 Short','Par 3 Long','Par 4 Short','Par 4 Mid','Par 4 Long','Par 5 Short','Par 5 Mid','Par 5 Long'];
 var HOLE_STRATS=[
-{safe:'7I center',danger:'Water/Bunker',tip:'&#xD074;&#xB7FD; &#xD558;&#xB098; &#xC62C;&#xB9AC;&#xAE30;'},
-{safe:'5I/Hybrid',danger:'Deep bunker',tip:'&#xADF8;&#xB9B0; &#xC55E;&#xCABD; &#xB178;&#xB9AC;&#xAE30;'},
-{safe:'3W fairway',danger:'OB left',tip:'&#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xC6B0;&#xCE21; &#xACF5;&#xB7B5;'},
-{safe:'DR center',danger:'Cross bunker',tip:'&#xC548;&#xC804;&#xD558;&#xAC8C; &#xD398;&#xC5B4;&#xC6E8;&#xC774;'},
-{safe:'DR left-center',danger:'Water right',tip:'&#xB808;&#xC774;&#xC5C5; &#xAD8C;&#xC7A5;'},
-{safe:'DR+3W',danger:'Bunker complex',tip:'&#xB450; &#xBC88;&#xC5D0; &#xADF8;&#xB9B0; &#xC55E;'},
-{safe:'DR+5I+PW',danger:'Dogleg',tip:'&#xC138; &#xBC88;&#xC5D0; &#xADF8;&#xB9B0; &#xACF5;&#xB7B5;'},
-{safe:'DR+3W+8I',danger:'Creek crossing',tip:'&#xBB3C; &#xAC74;&#xB108;&#xAE30; &#xACC4;&#xC0B0;'}
+{safe:'7I center',danger:'Water/Bunker',tip:'클럽 하나 올리기'},
+{safe:'5I/Hybrid',danger:'Deep bunker',tip:'그린 앞쪽 노리기'},
+{safe:'3W fairway',danger:'OB left',tip:'페어웨이 우측 공략'},
+{safe:'DR center',danger:'Cross bunker',tip:'안전하게 페어웨이'},
+{safe:'DR left-center',danger:'Water right',tip:'레이업 권장'},
+{safe:'DR+3W',danger:'Bunker complex',tip:'두 번에 그린 앞'},
+{safe:'DR+5I+PW',danger:'Dogleg',tip:'세 번에 그린 공략'},
+{safe:'DR+3W+8I',danger:'Creek crossing',tip:'물 건너기 계산'}
 ];
 function showCourseStrategy(){
 playSfx('strat_open');
@@ -296,9 +296,9 @@ var pn=getPanel('strat');
 var selHole=lsGet('strat_hole',0);
 var log=lsGet('strat_log',[]);
 var html='<button class="v25-close" onclick="window._v25Close(\'strat\')">&times;</button>';
-html+='<div class="v25-title">&#x1F5FA; &#xCF54;&#xC2A4; &#xC804;&#xB7B5; &#xBBF8;&#xB2C8;&#xB9F5;</div>';
+html+='<div class="v25-title">🗺 코스 전략 미니맵</div>';
 html+='<canvas id="v25-strat-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xD640; &#xD0C0;&#xC785; &#xC120;&#xD0DD;</h3>';
+html+='<div class="v25-card"><h3>홀 타입 선택</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var i=0;i<HOLE_TYPES.length;i++){
 html+='<button class="v25-btn v25-btn-sm'+(i===selHole?' v25-btn-primary':'')+'" onclick="window._v25SelectHole('+i+')">'+HOLE_TYPES[i]+'</button>';
@@ -306,22 +306,22 @@ html+='<button class="v25-btn v25-btn-sm'+(i===selHole?' v25-btn-primary':'')+'"
 html+='</div>';
 var st=HOLE_STRATS[selHole];
 html+='<div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<div class="v25-stat-card" style="border-color:rgba(0,255,136,.2)"><div class="v25-stat-val" style="color:#00FF88;font-size:12px">'+st.safe+'</div><div class="v25-stat-label">&#xC548;&#xC804; &#xC804;&#xB7B5;</div></div>';
-html+='<div class="v25-stat-card" style="border-color:rgba(255,51,102,.2)"><div class="v25-stat-val" style="color:#FF3366;font-size:12px">'+st.danger+'</div><div class="v25-stat-label">&#xC704;&#xD5D8; &#xC694;&#xC18C;</div></div>';
+html+='<div class="v25-stat-card" style="border-color:rgba(0,255,136,.2)"><div class="v25-stat-val" style="color:#00FF88;font-size:12px">'+st.safe+'</div><div class="v25-stat-label">안전 전략</div></div>';
+html+='<div class="v25-stat-card" style="border-color:rgba(255,51,102,.2)"><div class="v25-stat-val" style="color:#FF3366;font-size:12px">'+st.danger+'</div><div class="v25-stat-label">위험 요소</div></div>';
 html+='</div>';
-html+='<div style="text-align:center;margin-top:6px;color:rgba(255,255,255,0.7);font-size:12px">&#x1F4A1; '+st.tip+'</div>';
-html+='<button class="v25-btn v25-btn-primary" style="width:100%;margin-top:8px" onclick="window._v25SaveStrat()">&#x1F4BE; &#xC804;&#xB7B5; &#xBA54;&#xBAA8;</button>';
+html+='<div style="text-align:center;margin-top:6px;color:rgba(255,255,255,0.7);font-size:12px">💡 '+st.tip+'</div>';
+html+='<button class="v25-btn v25-btn-primary" style="width:100%;margin-top:8px" onclick="window._v25SaveStrat()">💾 전략 메모</button>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+HOLE_TYPES.length+'</div><div class="v25-stat-label">&#xD640; &#xD0C0;&#xC785;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88">'+st.safe.split(' ')[0]+'</div><div class="v25-stat-label">&#xCD94;&#xCC9C; &#xD074;&#xB7FD;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF3366">&#x26A0;</div><div class="v25-stat-label">'+st.danger.split(' ')[0]+'</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">&#xBA54;&#xBAA8; &#xC218;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+HOLE_TYPES.length+'</div><div class="v25-stat-label">홀 타입</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88">'+st.safe.split(' ')[0]+'</div><div class="v25-stat-label">추천 클럽</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF3366">⚠</div><div class="v25-stat-label">'+st.danger.split(' ')[0]+'</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">메모 수</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('strat');drawStratCanvas(selHole);
 }
 window._v25SelectHole=function(i){lsSet('strat_hole',i);showCourseStrategy();};
-window._v25SaveStrat=function(){playSfx('save_v25');var h=lsGet('strat_hole',0);var log=lsGet('strat_log',[]);log.push({date:todayStr(),hole:h,type:HOLE_TYPES[h]});if(log.length>50)log.shift();lsSet('strat_log',log);showToast(HOLE_TYPES[h]+' &#xC804;&#xB7B5; &#xC800;&#xC7A5;!');checkAchievements();};
+window._v25SaveStrat=function(){playSfx('save_v25');var h=lsGet('strat_hole',0);var log=lsGet('strat_log',[]);log.push({date:todayStr(),hole:h,type:HOLE_TYPES[h]});if(log.length>50)log.shift();lsSet('strat_log',log);showToast(HOLE_TYPES[h]+' 전략 저장!');checkAchievements();};
 function drawStratCanvas(selHole){
 var c=document.getElementById('v25-strat-canvas');if(!c)return;var ctx=c.getContext('2d');
 var W=620,H=380;ctx.clearRect(0,0,W,H);
@@ -391,32 +391,32 @@ var pn=getPanel('nutr');
 var intake=lsGet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
 var log=lsGet('nutr_log',[]);
 var html='<button class="v25-close" onclick="window._v25Close(\'nutr\')">&times;</button>';
-html+='<div class="v25-title">&#x1F34F; &#xB77C;&#xC6B4;&#xB4DC; &#xC601;&#xC591; &#xAD00;&#xB9AC;</div>';
+html+='<div class="v25-title">🍏 라운드 영양 관리</div>';
 html+='<canvas id="v25-nutr-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xD640;&#xBCC4; &#xC12D;&#xCDE8; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v25-card"><h3>홀별 섭취 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:6px">';
 for(var i=0;i<NUTR_ITEMS.length;i++){
 html+='<button class="v25-btn v25-btn-sm" style="border-color:'+NUTR_COLORS[i]+'40;color:'+NUTR_COLORS[i]+'" onclick="window._v25AddNutr('+i+')">+'+NUTR_ITEMS[i]+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<div><label class="v25-label">&#xD604;&#xC7AC; &#xD640; (1~18)</label><input class="v25-input" type="number" id="v25-nutr-hole" value="1" min="1" max="18"></div>';
-html+='<button class="v25-btn v25-btn-primary" style="align-self:end" onclick="window._v25SaveNutr()">&#x1F4BE; &#xB77C;&#xC6B4;&#xB4DC; &#xC800;&#xC7A5;</button>';
+html+='<div><label class="v25-label">현재 홀 (1~18)</label><input class="v25-input" type="number" id="v25-nutr-hole" value="1" min="1" max="18"></div>';
+html+='<button class="v25-btn v25-btn-primary" style="align-self:end" onclick="window._v25SaveNutr()">💾 라운드 저장</button>';
 html+='</div></div>';
 var totalCal=0;for(var i=0;i<18;i++)totalCal+=intake[i];
 var waterCount=0;for(var i=0;i<18;i++)if(intake[i]===0||NUTR_ITEMS[intake[i]]==='Water')waterCount++;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+totalCal+'</div><div class="v25-stat-label">kcal &#xCD1D;&#xC12D;&#xCDE8;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#48DBFB">'+(totalCal>0?Math.round(totalCal/18):0)+'</div><div class="v25-stat-label">kcal/&#xD640;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+totalCal+'</div><div class="v25-stat-label">kcal 총섭취</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#48DBFB">'+(totalCal>0?Math.round(totalCal/18):0)+'</div><div class="v25-stat-label">kcal/홀</div></div>';
 var energyGrade=totalCal>=400&&totalCal<=800?'S':totalCal>=300?'A':totalCal>=200?'B':'C';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(energyGrade==='S'?'#00FF88':'#FFB800')+'">'+energyGrade+'</div><div class="v25-stat-label">&#xC601;&#xC591; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(energyGrade==='S'?'#00FF88':'#FFB800')+'">'+energyGrade+'</div><div class="v25-stat-label">영양 등급</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">라운드</div></div>';
 html+='</div>';
-html+='<button class="v25-btn" style="width:100%;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="window._v25ResetNutr()">&#xCD08;&#xAE30;&#xD654;</button>';
+html+='<button class="v25-btn" style="width:100%;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="window._v25ResetNutr()">초기화</button>';
 pn.innerHTML=html;openPanel('nutr');drawNutrCanvas(intake);
 }
 window._v25AddNutr=function(itemIdx){playSfx('hover_v25');var hole=parseInt(document.getElementById('v25-nutr-hole').value)||1;var intake=lsGet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);intake[hole-1]=NUTR_CALS[itemIdx];lsSet('nutr_intake',intake);showToast('Hole '+hole+': +'+NUTR_ITEMS[itemIdx]+' ('+NUTR_CALS[itemIdx]+'kcal)');drawNutrCanvas(intake);};
-window._v25SaveNutr=function(){playSfx('save_v25');var intake=lsGet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);var log=lsGet('nutr_log',[]);var total=0;for(var i=0;i<18;i++)total+=intake[i];log.push({date:todayStr(),total:total,intake:intake.slice()});if(log.length>30)log.shift();lsSet('nutr_log',log);lsSet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);showToast('&#xB77C;&#xC6B4;&#xB4DC; &#xC601;&#xC591; &#xC800;&#xC7A5;!');checkAchievements();showNutrition();};
+window._v25SaveNutr=function(){playSfx('save_v25');var intake=lsGet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);var log=lsGet('nutr_log',[]);var total=0;for(var i=0;i<18;i++)total+=intake[i];log.push({date:todayStr(),total:total,intake:intake.slice()});if(log.length>30)log.shift();lsSet('nutr_log',log);lsSet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);showToast('라운드 영양 저장!');checkAchievements();showNutrition();};
 window._v25ResetNutr=function(){lsSet('nutr_intake',[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);showNutrition();};
 function drawNutrCanvas(intake){
 var c=document.getElementById('v25-nutr-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -466,9 +466,9 @@ var pn=getPanel('plane');
 var vals=lsGet('plane_vals',[0,-1,0,0,4,45,90,90]);
 var log=lsGet('plane_log',[]);
 var html='<button class="v25-close" onclick="window._v25Close(\'plane\')">&times;</button>';
-html+='<div class="v25-title">&#x1F3CC; &#xC2A4;&#xC719; &#xD3C9;&#xBA74; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v25-title">🏌 스윙 평면 분석기</div>';
 html+='<canvas id="v25-plane-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xC2A4;&#xC719; &#xD30C;&#xB77C;&#xBBF8;&#xD130; (&deg;)</h3>';
+html+='<div class="v25-card"><h3>스윙 파라미터 (&deg;)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 var ranges=[[-8,4],[-6,6],[-5,5],[-3,3],[0,10],[30,60],[70,110],[60,120]];
 for(var i=0;i<PLANE_PARAMS.length;i++){
@@ -476,24 +476,24 @@ html+='<div><label class="v25-label">'+PLANE_PARAMS[i]+' ('+ranges[i][0]+'~'+ran
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v25-btn v25-btn-primary" onclick="window._v25AnalyzePlane()">&#x1F4CA; &#xBD84;&#xC11D;</button>';
-html+='<button class="v25-btn" onclick="window._v25SavePlane()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v25-btn v25-btn-primary" onclick="window._v25AnalyzePlane()">📊 분석</button>';
+html+='<button class="v25-btn" onclick="window._v25SavePlane()">💾 저장</button>';
 html+='</div></div>';
 var grade=calcPlaneGrade(vals);
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v25-stat-label">&#xC2A4;&#xC719; &#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v25-stat-label">스윙 등급</div></div>';
 var shotShape=vals[2]>1?'Fade':vals[2]<-1?'Draw':'Straight';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FFB800;font-size:13px">'+shotShape+'</div><div class="v25-stat-label">&#xC0F7; &#xC170;&#xC774;&#xD504;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FFB800;font-size:13px">'+shotShape+'</div><div class="v25-stat-label">샷 셰이프</div></div>';
 var attackType=vals[0]>0?'Up':vals[0]<-3?'Steep':'Shallow';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#48DBFB;font-size:13px">'+attackType+'</div><div class="v25-stat-label">&#xC5B4;&#xD0DD;&#xAC01; &#xD0C0;&#xC785;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">&#xBD84;&#xC11D; &#xAE30;&#xB85D;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#48DBFB;font-size:13px">'+attackType+'</div><div class="v25-stat-label">어택각 타입</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v25-stat-label">분석 기록</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v25ResetPlane()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'초기화?\'))window._v25ResetPlane()">초기화</button>';
 pn.innerHTML=html;openPanel('plane');drawPlaneCanvas(vals,log);
 }
 function calcPlaneGrade(v){var score=0;if(Math.abs(v[0])<=3)score+=2;if(Math.abs(v[1])<=2)score+=2;if(Math.abs(v[2])<=2)score+=2;if(v[6]>=80&&v[6]<=100)score++;if(v[7]>=80&&v[7]<=100)score++;return score>=7?'S':score>=5?'A':score>=3?'B':'C';}
-window._v25AnalyzePlane=function(){playSfx('traj_fire');var vals=[];for(var i=0;i<8;i++){vals.push(parseFloat(document.getElementById('v25-plane-'+i).value)||0);}lsSet('plane_vals',vals);var tips=[];if(vals[0]<-5)tips.push('&#xC5B4;&#xD0DD;&#xAC01; &#xB108;&#xBB34; &#xAC00;&#xD30C;&#xB984; - &#xACF5;&#xC774; &#xB192;&#xC774; &#xB730;');if(vals[1]>3)tips.push('&#xC2A4;&#xC719;&#xD328;&#xC2A4; &#xC678;&#xBD80; - &#xD400; &#xBC1C;&#xC0DD;');if(Math.abs(vals[2])>3)tips.push('&#xD398;&#xC774;&#xC2A4;&#xAC01; &#xC870;&#xC815; &#xD544;&#xC694;');if(tips.length===0)tips.push('&#xC2A4;&#xC719; &#xD3C9;&#xBA74; &#xC591;&#xD638;!');showToast(tips[0]);drawPlaneCanvas(vals,lsGet('plane_log',[]));};
-window._v25SavePlane=function(){playSfx('save_v25');var vals=[];for(var i=0;i<8;i++){vals.push(parseFloat(document.getElementById('v25-plane-'+i).value)||0);}lsSet('plane_vals',vals);var log=lsGet('plane_log',[]);log.push({date:todayStr(),vals:vals.slice()});if(log.length>30)log.shift();lsSet('plane_log',log);showToast('&#xC2A4;&#xC719; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();showSwingPlane();};
+window._v25AnalyzePlane=function(){playSfx('traj_fire');var vals=[];for(var i=0;i<8;i++){vals.push(parseFloat(document.getElementById('v25-plane-'+i).value)||0);}lsSet('plane_vals',vals);var tips=[];if(vals[0]<-5)tips.push('어택각 너무 가파름 - 공이 높이 뜰');if(vals[1]>3)tips.push('스윙패스 외부 - 퐀 발생');if(Math.abs(vals[2])>3)tips.push('페이스각 조정 필요');if(tips.length===0)tips.push('스윙 평면 양호!');showToast(tips[0]);drawPlaneCanvas(vals,lsGet('plane_log',[]));};
+window._v25SavePlane=function(){playSfx('save_v25');var vals=[];for(var i=0;i<8;i++){vals.push(parseFloat(document.getElementById('v25-plane-'+i).value)||0);}lsSet('plane_vals',vals);var log=lsGet('plane_log',[]);log.push({date:todayStr(),vals:vals.slice()});if(log.length>30)log.shift();lsSet('plane_log',log);showToast('스윙 데이터 저장!');checkAchievements();showSwingPlane();};
 window._v25ResetPlane=function(){lsSet('plane_log',[]);lsSet('plane_vals',[0,-1,0,0,4,45,90,90]);showSwingPlane();};
 function drawPlaneCanvas(vals,log){
 var c=document.getElementById('v25-plane-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -570,41 +570,41 @@ var pn=getPanel('peer');
 var myStats=lsGet('peer_stats',[230,55,45,32,35,40]);
 var selPeer=lsGet('peer_sel',1);
 var html='<button class="v25-close" onclick="window._v25Close(\'peer\')">&times;</button>';
-html+='<div class="v25-title">&#x1F465; &#xD53C;&#xC5B4; &#xADF8;&#xB8F9; &#xBE44;&#xAD50;</div>';
+html+='<div class="v25-title">👥 피어 그룹 비교</div>';
 html+='<canvas id="v25-peer-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>&#xB0B4; &#xC2A4;&#xD0EF; &#xC785;&#xB825;</h3>';
+html+='<div class="v25-card"><h3>내 스탯 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
 for(var i=0;i<PEER_AXES.length;i++){
 var units=['yd','%','%','putts','%','%'];
 html+='<div><label class="v25-label">'+PEER_AXES[i]+'</label><input class="v25-input" type="number" id="v25-peer-'+i+'" value="'+myStats[i]+'" step="1"></div>';
 }
 html+='</div>';
-html+='<div style="margin-top:8px"><label class="v25-label">&#xBE44;&#xAD50; &#xADF8;&#xB8F9;</label>';
+html+='<div style="margin-top:8px"><label class="v25-label">비교 그룹</label>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">';
 for(var i=0;i<PEER_GROUPS.length;i++){
 html+='<button class="v25-btn v25-btn-sm'+(i===selPeer?' v25-btn-primary':'')+'" onclick="window._v25SelectPeer('+i+')">'+PEER_GROUPS[i]+'</button>';
 }
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v25-btn v25-btn-primary" onclick="window._v25CalcPeer()">&#x1F4CA; &#xBD84;&#xC11D;</button>';
-html+='<button class="v25-btn" onclick="window._v25SavePeer()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v25-btn v25-btn-primary" onclick="window._v25CalcPeer()">📊 분석</button>';
+html+='<button class="v25-btn" onclick="window._v25SavePeer()">💾 저장</button>';
 html+='</div></div>';
 var gaps=[];for(var i=0;i<6;i++){var diff=myStats[i]-PEER_DATA[selPeer][i];if(i===3)diff=-diff;gaps.push(diff);}
 var bestIdx=0,worstIdx=0;
 for(var i=1;i<6;i++){if(gaps[i]>gaps[bestIdx])bestIdx=i;if(gaps[i]<gaps[worstIdx])worstIdx=i;}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88;font-size:12px">'+PEER_AXES[bestIdx]+'</div><div class="v25-stat-label">&#xC6B0;&#xC704; &#xD56D;&#xBAA9;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B;font-size:12px">'+PEER_AXES[worstIdx]+'</div><div class="v25-stat-label">&#xC5F4;&#xC704; &#xD56D;&#xBAA9;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88;font-size:12px">'+PEER_AXES[bestIdx]+'</div><div class="v25-stat-label">우위 항목</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B;font-size:12px">'+PEER_AXES[worstIdx]+'</div><div class="v25-stat-label">열위 항목</div></div>';
 var peerGrade='C';var posCount=0;for(var i=0;i<6;i++)if(gaps[i]>=0)posCount++;
 peerGrade=posCount>=5?'S':posCount>=4?'A':posCount>=2?'B':'C';
 html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(peerGrade==='S'?'#00FF88':'#FFB800')+'">'+peerGrade+'</div><div class="v25-stat-label">vs '+PEER_GROUPS[selPeer]+'</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+PEER_GROUPS.length+'</div><div class="v25-stat-label">&#xBE44;&#xAD50; &#xADF8;&#xB8F9;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+PEER_GROUPS.length+'</div><div class="v25-stat-label">비교 그룹</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('peer');drawPeerCanvas(myStats,selPeer);
 }
 window._v25SelectPeer=function(i){lsSet('peer_sel',i);showPeerComparison();};
 window._v25CalcPeer=function(){playSfx('traj_fire');var stats=[];for(var i=0;i<6;i++)stats.push(parseFloat(document.getElementById('v25-peer-'+i).value)||0);lsSet('peer_stats',stats);showPeerComparison();};
-window._v25SavePeer=function(){playSfx('save_v25');var stats=[];for(var i=0;i<6;i++)stats.push(parseFloat(document.getElementById('v25-peer-'+i).value)||0);lsSet('peer_stats',stats);var log=lsGet('peer_log',[]);log.push({date:todayStr(),stats:stats.slice()});if(log.length>30)log.shift();lsSet('peer_log',log);showToast('&#xD53C;&#xC5B4; &#xBE44;&#xAD50; &#xC800;&#xC7A5;!');checkAchievements();showPeerComparison();};
+window._v25SavePeer=function(){playSfx('save_v25');var stats=[];for(var i=0;i<6;i++)stats.push(parseFloat(document.getElementById('v25-peer-'+i).value)||0);lsSet('peer_stats',stats);var log=lsGet('peer_log',[]);log.push({date:todayStr(),stats:stats.slice()});if(log.length>30)log.shift();lsSet('peer_log',log);showToast('피어 비교 저장!');checkAchievements();showPeerComparison();};
 function drawPeerCanvas(myStats,selPeer){
 var c=document.getElementById('v25-peer-canvas');if(!c)return;var ctx=c.getContext('2d');
 var W=620,H=380;ctx.clearRect(0,0,W,H);
@@ -650,34 +650,34 @@ var pn=getPanel('intel');
 var scores=lsGet('intel_scores',[65,60,55,70,50,60]);
 var log=lsGet('intel_log',[]);
 var html='<button class="v25-close" onclick="window._v25Close(\'intel\')">&times;</button>';
-html+='<div class="v25-title">&#x1F4CA; &#xC885;&#xD569; &#xB77C;&#xC6B4;&#xB4DC; &#xC778;&#xD154;&#xB9AC;&#xC804;&#xC2A4;</div>';
+html+='<div class="v25-title">📊 종합 라운드 인텔리전스</div>';
 html+='<canvas id="v25-intel-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v25-card"><h3>KPI &#xC810;&#xC218; &#xC785;&#xB825; (0~100)</h3>';
+html+='<div class="v25-card"><h3>KPI 점수 입력 (0~100)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
 for(var i=0;i<INTEL_KPIS.length;i++){
 html+='<div><label class="v25-label">'+INTEL_KPIS[i]+'</label><input class="v25-input" type="range" min="0" max="100" value="'+scores[i]+'" id="v25-intel-'+i+'" oninput="window._v25UpdateIntel('+i+',this.value)"><span id="v25-intv-'+i+'" style="font-size:11px;color:#FF7B54;margin-left:4px">'+scores[i]+'</span></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v25-btn v25-btn-primary" onclick="window._v25SaveIntel()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v25-btn" onclick="window._v25AnalyzeIntel()">&#x1F50D; &#xBD84;&#xC11D;</button>';
+html+='<button class="v25-btn v25-btn-primary" onclick="window._v25SaveIntel()">💾 저장</button>';
+html+='<button class="v25-btn" onclick="window._v25AnalyzeIntel()">🔍 분석</button>';
 html+='</div></div>';
 var avg=0;for(var i=0;i<scores.length;i++)avg+=scores[i];avg=Math.round(avg/scores.length);
 var grade=avg>=85?'S':avg>=70?'A':avg>=55?'B':avg>=40?'C':'D';
 var minIdx=0;for(var i=1;i<scores.length;i++)if(scores[i]<scores[minIdx])minIdx=i;
 var maxIdx=0;for(var i=1;i<scores.length;i++)if(scores[i]>scores[maxIdx])maxIdx=i;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v25-stat-label">&#xC885;&#xD569; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+avg+'</div><div class="v25-stat-label">&#xD3C9;&#xADE0; &#xC810;&#xC218;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88;font-size:12px">'+INTEL_KPIS[maxIdx]+'</div><div class="v25-stat-label">&#xAC15;&#xC810;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B;font-size:12px">'+INTEL_KPIS[minIdx]+'</div><div class="v25-stat-label">&#xAC1C;&#xC120;&#xC810;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v25-stat-label">종합 등급</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF7B54">'+avg+'</div><div class="v25-stat-label">평균 점수</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88;font-size:12px">'+INTEL_KPIS[maxIdx]+'</div><div class="v25-stat-label">강점</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B;font-size:12px">'+INTEL_KPIS[minIdx]+'</div><div class="v25-stat-label">개선점</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v25ResetIntel()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v25-btn" style="width:100%;margin-top:6px;border-color:rgba(255,123,84,.3);color:#FF7B54" onclick="if(confirm(\'초기화?\'))window._v25ResetIntel()">초기화</button>';
 pn.innerHTML=html;openPanel('intel');drawIntelCanvas(scores,log);
 }
 window._v25UpdateIntel=function(i,v){var s=lsGet('intel_scores',[65,60,55,70,50,60]);s[i]=parseInt(v);lsSet('intel_scores',s);var el=document.getElementById('v25-intv-'+i);if(el)el.textContent=v;drawIntelCanvas(s,lsGet('intel_log',[]));};
-window._v25SaveIntel=function(){playSfx('save_v25');var s=lsGet('intel_scores',[65,60,55,70,50,60]);var log=lsGet('intel_log',[]);log.push({date:todayStr(),scores:s.slice()});if(log.length>30)log.shift();lsSet('intel_log',log);showToast('&#xC778;&#xD154;&#xB9AC;&#xC804;&#xC2A4; &#xC800;&#xC7A5;!');checkAchievements();showRoundIntel();};
-window._v25AnalyzeIntel=function(){playSfx('traj_fire');var s=lsGet('intel_scores',[65,60,55,70,50,60]);var minIdx=0;for(var i=1;i<s.length;i++)if(s[i]<s[minIdx])minIdx=i;var tips=[INTEL_KPIS[minIdx]+' &#xAC1C;&#xC120; &#xD544;&#xC694; ('+s[minIdx]+'/100)'];showToast(tips[0]);};
+window._v25SaveIntel=function(){playSfx('save_v25');var s=lsGet('intel_scores',[65,60,55,70,50,60]);var log=lsGet('intel_log',[]);log.push({date:todayStr(),scores:s.slice()});if(log.length>30)log.shift();lsSet('intel_log',log);showToast('인텔리전스 저장!');checkAchievements();showRoundIntel();};
+window._v25AnalyzeIntel=function(){playSfx('traj_fire');var s=lsGet('intel_scores',[65,60,55,70,50,60]);var minIdx=0;for(var i=1;i<s.length;i++)if(s[i]<s[minIdx])minIdx=i;var tips=[INTEL_KPIS[minIdx]+' 개선 필요 ('+s[minIdx]+'/100)'];showToast(tips[0]);};
 window._v25ResetIntel=function(){lsSet('intel_log',[]);lsSet('intel_scores',[65,60,55,70,50,60]);showRoundIntel();};
 function drawIntelCanvas(scores,log){
 var c=document.getElementById('v25-intel-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -726,21 +726,21 @@ ctx.fillText('vs Last: '+(diff>=0?'+':'')+diff,W-20,H-10);
 
 // ===== QUIZ V25 =====
 var QUIZ_V25=[
-{q:'&#xBC14;&#xB78C;&#xC774; &#xB4DC;&#xB77C;&#xC774;&#xBC84; &#xC0F7;&#xC5D0; &#xBBF8;&#xCE58;&#xB294; &#xC601;&#xD5A5;&#xC73C;&#xB85C; &#xAC00;&#xC7A5; &#xD070; &#xAC83;&#xC740;?',a:['&#xCE90;&#xB9AC; &#xAC70;&#xB9AC; &#xBCC0;&#xD654;','&#xBC31;&#xC2A4;&#xD540; &#xBCC0;&#xD654;','&#xADF8;&#xB9BD; &#xC555;&#xB825; &#xBCC0;&#xD654;','&#xB85C;&#xD504;&#xD2B8; &#xAC01;&#xB3C4; &#xBCC0;&#xD654;'],c:0},
-{q:'&#xC0F7; &#xADA4;&#xC801;&#xC5D0;&#xC11C; Apex&#xB780;?',a:['&#xACF5;&#xC758; &#xCD5C;&#xACE0;&#xC810;','&#xACF5;&#xC758; &#xCC29;&#xC9C0;&#xC810;','&#xACF5;&#xC758; &#xBC1C;&#xC0AC;&#xC810;','&#xACF5;&#xC758; &#xB864; &#xAC70;&#xB9AC;'],c:0},
-{q:'&#xD5E4;&#xB4DC;&#xC2A4;&#xD53C;&#xB4DC; 100mph &#xB4DC;&#xB77C;&#xC774;&#xBC84;&#xC758; &#xC608;&#xC0C1; &#xCE90;&#xB9AC; &#xAC70;&#xB9AC;&#xB294;?',a:['180-200yd','210-230yd','230-250yd','260-280yd'],c:2},
-{q:'&#xD074;&#xB7FD; &#xADF8;&#xB8E8;&#xBE0C;&#xAC00; &#xB9C8;&#xBAA8;&#xB418;&#xBA74; &#xC5B4;&#xB5A4; &#xC601;&#xD5A5;&#xC774; &#xC788;&#xB098;?',a:['&#xBE44;&#xAC70;&#xB9AC; &#xC99D;&#xAC00;','&#xC2A4;&#xD540;&#xB7C9; &#xAC10;&#xC18C;','&#xC0F7; &#xC815;&#xD655;&#xB3C4; &#xC99D;&#xAC00;','&#xBCFC; &#xC2A4;&#xD53C;&#xB4DC; &#xC99D;&#xAC00;'],c:1},
-{q:'&#xB9DE;&#xBC14;&#xB78C; 10mph&#xC77C; &#xB54C; &#xB4DC;&#xB77C;&#xC774;&#xBC84; &#xBE44;&#xAC70;&#xB9AC; &#xAC10;&#xC18C;&#xB294; &#xC57D;?',a:['5-8yd','10-15yd','15-20yd','20-30yd'],c:1},
-{q:'Attack Angle&#xC774; &#xB108;&#xBB34; &#xAC00;&#xD30C;&#xB974;&#xBA74; (steep) &#xBC1C;&#xC0DD;&#xD558;&#xB294; &#xBB38;&#xC81C;&#xB294;?',a:['&#xACF5;&#xC774; &#xB108;&#xBB34; &#xB0AE;&#xAC8C; &#xB0A0;&#xC544;&#xAC10;','&#xACF5;&#xC774; &#xB108;&#xBB34; &#xB192;&#xAC8C; &#xB730;','&#xACF5;&#xC774; &#xC624;&#xB978;&#xCABD;&#xC73C;&#xB85C; &#xD718;&#xC5B4;&#xC9D0;','&#xACF5;&#xC774; &#xB9CE;&#xC774; &#xAD6C;&#xB984;'],c:1},
-{q:'Scramble%&#xB780; &#xBB34;&#xC5C7;&#xC744; &#xCE21;&#xC815;&#xD558;&#xB294; &#xC9C0;&#xD45C;&#xC778;&#xAC00;?',a:['GIR &#xC131;&#xACF5;&#xB960;','&#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xC548;&#xCC29;&#xB960;','GIR &#xC2E4;&#xD328; &#xD6C4; &#xD30C; &#xC138;&#xC774;&#xBE0C; &#xBE44;&#xC728;','&#xD37C;&#xD305; &#xC131;&#xACF5;&#xB960;'],c:2},
-{q:'&#xB77C;&#xC6B4;&#xB4DC; &#xC911; &#xC601;&#xC591; &#xC12D;&#xCDE8; &#xAD8C;&#xC7A5; &#xCE7C;&#xB85C;&#xB9AC;&#xB294;?',a:['200-300kcal','400-600kcal','800-1000kcal','1200-1500kcal'],c:1},
-{q:'Swing Path&#xAC00; Inside-Out&#xC774;&#xBA74; &#xC5B4;&#xB5A4; &#xC0F7;&#xC774; &#xB098;&#xC624;&#xB098;?',a:['&#xD398;&#xC774;&#xB4DC;','&#xB4DC;&#xB85C;&#xC6B0;','&#xC2A4;&#xD2B8;&#xB808;&#xC774;&#xD2B8;','&#xD480;'],c:1},
-{q:'Par 5&#xC5D0;&#xC11C; &#xB808;&#xC774;&#xC5C5; &#xC804;&#xB7B5;&#xC774;&#xB780;?',a:['&#xD55C; &#xBC88;&#xC5D0; &#xADF8;&#xB9B0;&#xC744; &#xACF5;&#xB7B5;&#xD558;&#xB294; &#xAC83;','&#xADF8;&#xB9B0; &#xC55E;&#xC5D0; &#xB193;&#xACE0; &#xC5B4;&#xD504;&#xB85C;&#xCE58;&#xD558;&#xB294; &#xAC83;','&#xC548;&#xC804;&#xD55C; &#xD074;&#xB7FD;&#xB9CC; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xAC83;','&#xB4DC;&#xB77C;&#xC774;&#xBC84;&#xB85C;&#xB9CC; &#xCE58;&#xB294; &#xAC83;'],c:1},
-{q:'Single &#xD578;&#xB514;&#xCE95;(1-9) &#xACE8;&#xD37C;&#xC758; &#xD3C9;&#xADE0; &#xB4DC;&#xB77C;&#xC774;&#xBE59; &#xAC70;&#xB9AC;&#xB294;?',a:['200-220yd','225-245yd','245-265yd','265-285yd'],c:1},
-{q:'Face Angle&#xC774; &#xC5F4;&#xB9B0; (open) &#xC0C1;&#xD0DC;&#xC5D0;&#xC11C; &#xC784;&#xD329;&#xD2B8;&#xD558;&#xBA74;?',a:['&#xD6C5;&#xC774; &#xBC1C;&#xC0DD;','&#xC2AC;&#xB77C;&#xC774;&#xC2A4;&#xAC00; &#xBC1C;&#xC0DD;','&#xD1B1;&#xC0F7;&#xC774; &#xBC1C;&#xC0DD;','&#xC2A4;&#xCFFC;&#xC5B4; &#xC0F7;&#xC774; &#xBC1C;&#xC0DD;'],c:1},
-{q:'&#xD6A1;&#xBC14;&#xB78C;(crosswind) 10mph&#xC77C; &#xB54C; &#xBCFC;&#xC774; &#xD718;&#xC5B4;&#xC9C0;&#xB294; &#xAC70;&#xB9AC;&#xB294; &#xC57D;?',a:['2-3yd','5-8yd','10-15yd','20-25yd'],c:1},
-{q:'&#xD074;&#xB7FD; &#xC0E4;&#xD504;&#xD2B8;&#xC758; &#xAD8C;&#xC7A5; &#xAD50;&#xCCB4; &#xC8FC;&#xAE30;&#xB294;?',a:['6&#xAC1C;&#xC6D4;','1-2&#xB144;','3-5&#xB144;','10&#xB144; &#xC774;&#xC0C1;'],c:2},
-{q:'&#xB77C;&#xC6B4;&#xB4DC; &#xC778;&#xD154;&#xB9AC;&#xC804;&#xC2A4;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xC694;&#xC18C;&#xB294;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xCF54;&#xC2A4; &#xB9E4;&#xB2C8;&#xC9C0;&#xBA3C;&#xD2B8;','&#xD37C;&#xD305; &#xC2A4;&#xD53C;&#xB4DC;','&#xC7A5;&#xBE44; &#xBE0C;&#xB79C;&#xB4DC;'],c:1}
+{q:'바람이 드라이버 샷에 미치는 영향으로 가장 큰 것은?',a:['캐리 거리 변화','백스핀 변화','그립 압력 변화','로프트 각도 변화'],c:0},
+{q:'샷 궤적에서 Apex란?',a:['공의 최고점','공의 착지점','공의 발사점','공의 롤 거리'],c:0},
+{q:'헤드스피드 100mph 드라이버의 예상 캐리 거리는?',a:['180-200yd','210-230yd','230-250yd','260-280yd'],c:2},
+{q:'클럽 그루브가 마모되면 어떤 영향이 있나?',a:['비거리 증가','스핀량 감소','샷 정확도 증가','볼 스피드 증가'],c:1},
+{q:'맞바람 10mph일 때 드라이버 비거리 감소는 약?',a:['5-8yd','10-15yd','15-20yd','20-30yd'],c:1},
+{q:'Attack Angle이 너무 가파르면 (steep) 발생하는 문제는?',a:['공이 너무 낮게 날아감','공이 너무 높게 뜰','공이 오른쪽으로 휘어짐','공이 많이 구름'],c:1},
+{q:'Scramble%란 무엇을 측정하는 지표인가?',a:['GIR 성공률','페어웨이 안착률','GIR 실패 후 파 세이브 비율','퍼팅 성공률'],c:2},
+{q:'라운드 중 영양 섭취 권장 칼로리는?',a:['200-300kcal','400-600kcal','800-1000kcal','1200-1500kcal'],c:1},
+{q:'Swing Path가 Inside-Out이면 어떤 샷이 나오나?',a:['페이드','드로우','스트레이트','풀'],c:1},
+{q:'Par 5에서 레이업 전략이란?',a:['한 번에 그린을 공략하는 것','그린 앞에 놓고 어프로치하는 것','안전한 클럽만 사용하는 것','드라이버로만 치는 것'],c:1},
+{q:'Single 핸디캕(1-9) 골퍼의 평균 드라이빙 거리는?',a:['200-220yd','225-245yd','245-265yd','265-285yd'],c:1},
+{q:'Face Angle이 열린 (open) 상태에서 임팩트하면?',a:['훅이 발생','슬라이스가 발생','톱샷이 발생','스쿼어 샷이 발생'],c:1},
+{q:'횡바람(crosswind) 10mph일 때 볼이 휘어지는 거리는 약?',a:['2-3yd','5-8yd','10-15yd','20-25yd'],c:1},
+{q:'클럽 샤프트의 권장 교체 주기는?',a:['6개월','1-2년','3-5년','10년 이상'],c:2},
+{q:'라운드 인텔리전스에서 가장 중요한 요소는?',a:['비거리','코스 매니지먼트','퍼팅 스피드','장비 브랜드'],c:1}
 ];
 var quizState={idx:0,score:0,total:0,answered:false};
 function showQuizV25(){
@@ -749,43 +749,43 @@ var pn=getPanel('quizv25');
 var idx=quizState.idx;
 var q=QUIZ_V25[idx%QUIZ_V25.length];
 var html='<button class="v25-close" onclick="window._v25Close(\'quizv25\')">&times;</button>';
-html+='<div class="v25-title">&#x1F4DA; Golf Quiz v25 (Q'+(idx+1)+'/'+QUIZ_V25.length+')</div>';
+html+='<div class="v25-title">📚 Golf Quiz v25 (Q'+(idx+1)+'/'+QUIZ_V25.length+')</div>';
 html+='<div class="v25-card"><h3>'+q.q+'</h3>';
 for(var i=0;i<q.a.length;i++){
 html+='<button class="v25-btn" style="width:100%;margin:3px 0;text-align:left" onclick="window._v25AnswerQuiz('+i+','+q.c+')">'+String.fromCharCode(65+i)+'. '+q.a[i]+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88">'+quizState.score+'</div><div class="v25-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B">'+(quizState.total-quizState.score)+'</div><div class="v25-stat-label">&#xC624;&#xB2F5;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#00FF88">'+quizState.score+'</div><div class="v25-stat-label">정답</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FF6B6B">'+(quizState.total-quizState.score)+'</div><div class="v25-stat-label">오답</div></div>';
 var pct=quizState.total>0?Math.round(quizState.score*100/quizState.total):0;
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v25-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
-html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+(idx+1)+'/'+QUIZ_V25.length+'</div><div class="v25-stat-label">&#xC9C4;&#xD589;</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v25-stat-label">정답률</div></div>';
+html+='<div class="v25-stat-card"><div class="v25-stat-val" style="color:#A855F7">'+(idx+1)+'/'+QUIZ_V25.length+'</div><div class="v25-stat-label">진행</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv25');
 }
 window._v25AnswerQuiz=function(sel,correct){
 if(quizState.answered)return;quizState.answered=true;quizState.total++;
-if(sel===correct){quizState.score++;playSfx('quiz_correct_v25');showToast('&#xC815;&#xB2F5;!');}
-else{playSfx('quiz_wrong_v25');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+String.fromCharCode(65+correct));}
+if(sel===correct){quizState.score++;playSfx('quiz_correct_v25');showToast('정답!');}
+else{playSfx('quiz_wrong_v25');showToast('오답! 정답: '+String.fromCharCode(65+correct));}
 lsSet('quiz_v25_score',quizState.score);lsSet('quiz_v25_total',quizState.total);
 setTimeout(function(){quizState.answered=false;quizState.idx++;if(quizState.idx>=QUIZ_V25.length)quizState.idx=0;checkAchievements();showQuizV25();},1200);
 };
 
 // ===== ACHIEVEMENTS =====
 var ACHIEVEMENTS_V25=[
-{id:'traj_explorer',name:'Trajectory Explorer',desc:'&#xADA4;&#xC801; 10&#xD68C; &#xBC1C;&#xC0AC;',check:function(){return lsGet('traj_log',[]).length>=10}},
-{id:'wind_master',name:'Wind Master',desc:'&#xBC14;&#xB78C; 10&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('wind_log',[]).length>=10}},
-{id:'lifecycle_mgr',name:'Lifecycle Manager',desc:'&#xD074;&#xB7FD; 5&#xAC1C; &#xB4F1;&#xB85D;',check:function(){return Object.keys(lsGet('lifecycle_data',{})).length>=5}},
-{id:'strategist',name:'Course Strategist',desc:'&#xC804;&#xB7B5; 8&#xD640; &#xBA54;&#xBAA8;',check:function(){return lsGet('strat_log',[]).length>=8}},
-{id:'nutrition_pro',name:'Nutrition Pro',desc:'&#xC601;&#xC591; 5&#xB77C;&#xC6B4;&#xB4DC; &#xAE30;&#xB85D;',check:function(){return lsGet('nutr_log',[]).length>=5}},
-{id:'plane_analyst',name:'Swing Plane Analyst',desc:'&#xC2A4;&#xC719; 5&#xD68C; &#xBD84;&#xC11D;',check:function(){return lsGet('plane_log',[]).length>=5}},
-{id:'peer_tracker',name:'Peer Tracker',desc:'&#xD53C;&#xC5B4; &#xBE44;&#xAD50; 3&#xD68C;',check:function(){return lsGet('peer_log',[]).length>=3}},
-{id:'intel_evaluator',name:'Intel Evaluator',desc:'&#xC778;&#xD154;&#xB9AC;&#xC804;&#xC2A4; 5&#xD68C;',check:function(){return lsGet('intel_log',[]).length>=5}},
-{id:'quiz_v25_master',name:'Quiz v25 Master',desc:'v25 &#xD038;&#xC988; &#xC804;&#xBB38; &#xC815;&#xB2F5;',check:function(){return lsGet('quiz_v25_score',0)>=15}},
-{id:'quiz_v25_clear',name:'Quiz v25 Clear',desc:'v25 &#xD038;&#xC988; &#xC644;&#xC8FC;',check:function(){return lsGet('quiz_v25_total',0)>=15}},
-{id:'traj_s_grade',name:'Trajectory S Grade',desc:'&#xADA4;&#xC801; S&#xB4F1;&#xAE09; &#xD68D;&#xB4DD;',check:function(){var log=lsGet('traj_log',[]);for(var i=0;i<log.length;i++){var cl=TRAJ_CLUBS[log[i].club];if(log[i].carry>=cl.carry*0.95&&log[i].carry<=cl.carry*1.1)return true;}return false}},
-{id:'v25_complete',name:'v25 Complete',desc:'v25 &#xC804;&#xCCB4; &#xAE30;&#xB2A5; &#xD0D0;&#xC0C9;',check:function(){return lsGet('v25_explored',0)>=8}}
+{id:'traj_explorer',name:'Trajectory Explorer',desc:'궤적 10회 발사',check:function(){return lsGet('traj_log',[]).length>=10}},
+{id:'wind_master',name:'Wind Master',desc:'바람 10회 기록',check:function(){return lsGet('wind_log',[]).length>=10}},
+{id:'lifecycle_mgr',name:'Lifecycle Manager',desc:'클럽 5개 등록',check:function(){return Object.keys(lsGet('lifecycle_data',{})).length>=5}},
+{id:'strategist',name:'Course Strategist',desc:'전략 8홀 메모',check:function(){return lsGet('strat_log',[]).length>=8}},
+{id:'nutrition_pro',name:'Nutrition Pro',desc:'영양 5라운드 기록',check:function(){return lsGet('nutr_log',[]).length>=5}},
+{id:'plane_analyst',name:'Swing Plane Analyst',desc:'스윙 5회 분석',check:function(){return lsGet('plane_log',[]).length>=5}},
+{id:'peer_tracker',name:'Peer Tracker',desc:'피어 비교 3회',check:function(){return lsGet('peer_log',[]).length>=3}},
+{id:'intel_evaluator',name:'Intel Evaluator',desc:'인텔리전스 5회',check:function(){return lsGet('intel_log',[]).length>=5}},
+{id:'quiz_v25_master',name:'Quiz v25 Master',desc:'v25 퀸즈 전문 정답',check:function(){return lsGet('quiz_v25_score',0)>=15}},
+{id:'quiz_v25_clear',name:'Quiz v25 Clear',desc:'v25 퀸즈 완주',check:function(){return lsGet('quiz_v25_total',0)>=15}},
+{id:'traj_s_grade',name:'Trajectory S Grade',desc:'궤적 S등급 획득',check:function(){var log=lsGet('traj_log',[]);for(var i=0;i<log.length;i++){var cl=TRAJ_CLUBS[log[i].club];if(log[i].carry>=cl.carry*0.95&&log[i].carry<=cl.carry*1.1)return true;}return false}},
+{id:'v25_complete',name:'v25 Complete',desc:'v25 전체 기능 탐색',check:function(){return lsGet('v25_explored',0)>=8}}
 ];
 function checkAchievements(){
 var unlocked=lsGet('achievements_v25',[]);
@@ -823,15 +823,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Trajectory',fn:showTrajectory,icon:'&#x1F3CC;'},
-{label:'WindMtx',fn:showWindMatrix,icon:'&#x1F32C;'},
-{label:'ClubLife',fn:showClubLifecycle,icon:'&#x1F527;'},
-{label:'Strategy',fn:showCourseStrategy,icon:'&#x1F5FA;'},
-{label:'Nutrition',fn:showNutrition,icon:'&#x1F34F;'},
-{label:'SwingPlane',fn:showSwingPlane,icon:'&#x1F3AF;'},
-{label:'PeerComp',fn:showPeerComparison,icon:'&#x1F465;'},
-{label:'RoundIQ',fn:showRoundIntel,icon:'&#x1F4CA;'},
-{label:'Quiz25',fn:showQuizV25,icon:'&#x1F4DA;'}
+{label:'Trajectory',fn:showTrajectory,icon:'🏌'},
+{label:'WindMtx',fn:showWindMatrix,icon:'🌬'},
+{label:'ClubLife',fn:showClubLifecycle,icon:'🔧'},
+{label:'Strategy',fn:showCourseStrategy,icon:'🗺'},
+{label:'Nutrition',fn:showNutrition,icon:'🍏'},
+{label:'SwingPlane',fn:showSwingPlane,icon:'🎯'},
+{label:'PeerComp',fn:showPeerComparison,icon:'👥'},
+{label:'RoundIQ',fn:showRoundIntel,icon:'📊'},
+{label:'Quiz25',fn:showQuizV25,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

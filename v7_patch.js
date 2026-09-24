@@ -27,17 +27,17 @@ function showStrokesGained(){
   var pn=getPanel('sg');
   var shots=getShotHistory();
   var rounds=lsGet('sg_rounds',[]);
-  var html='<div class="v7-title">&#128200; Strokes Gained &#xFE0E;분석</div>';
+  var html='<div class="v7-title">📈 Strokes Gained ︎분석</div>';
 
-  html+='<div class="v7-card"><h3>Strokes Gained &#xFE0E;개요</h3>';
+  html+='<div class="v7-card"><h3>Strokes Gained ︎개요</h3>';
   html+='<p style="margin-bottom:12px">PGA Tour 평균 대비 각 영역별 스트로크 이득/손실을 분석합니다.</p>';
 
   var sgData=calculateStrokesGained(shots,rounds);
   var categories=[
-    {key:'driving',name:'드라이빙',icon:'&#128663;',color:'#00FF88'},
-    {key:'approach',name:'어프로치',icon:'&#127919;',color:'#00B4D8'},
-    {key:'short_game',name:'숏게임',icon:'&#9971;&#xFE0E;',color:'#FFC107'},
-    {key:'putting',name:'퍼팅',icon:'&#128995;',color:'#E040FB'}
+    {key:'driving',name:'드라이빙',icon:'🚗',color:'#00FF88'},
+    {key:'approach',name:'어프로치',icon:'🎯',color:'#00B4D8'},
+    {key:'short_game',name:'숏게임',icon:'⛳︎',color:'#FFC107'},
+    {key:'putting',name:'퍼팅',icon:'🟣',color:'#E040FB'}
   ];
 
   html+='<div style="margin:16px 0">';
@@ -67,14 +67,14 @@ function showStrokesGained(){
   html+='<div style="font-size:2em;font-weight:800;color:'+(totalSG>=0?'#00FF88':'#ff6b6b')+'">'+(totalSG>=0?'+':'')+totalSG.toFixed(2)+'</div>';
   html+='</div></div>';
 
-  html+='<div class="v7-card"><h3>&#128161; AI &#xFE0E;개선 추천</h3>';
+  html+='<div class="v7-card"><h3>💡 AI ︎개선 추천</h3>';
   var weakest=categories[0],weakVal=sgData[categories[0].key]||0;
   for(var w=1;w<categories.length;w++){var wv=sgData[categories[w].key]||0;if(wv<weakVal){weakVal=wv;weakest=categories[w]}}
   var tips={driving:'드라이버 정확성에 집중하세요. 페어웨이 안착률을 높이는 것이 첫걸음입니다.',approach:'그린적중률(GIR)을 높이려면 거리보다 방향성을 우선하세요. 클럽 선택이 핵심입니다.',short_game:'업앤다운 연습에 시간을 투자하세요. 그린 주변 50yd 이내 칩샷 드릴이 효과적입니다.',putting:'퍼팅 거리감 연습을 하세요. 3퍼트를 줄이는 것이 가장 빠른 점수 향상법입니다.'};
   html+='<p style="color:#ff6b6b;font-weight:600;margin-bottom:6px">가장 약한 영역: '+weakest.name+'</p>';
   html+='<p>'+tips[weakest.key]+'</p></div>';
 
-  html+='<div class="v7-card"><h3>&#128202; &#xFE0E;라운드 데이터 입력</h3>';
+  html+='<div class="v7-card"><h3>📊 ︎라운드 데이터 입력</h3>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
   html+='<div><label class="v7-label">페어웨이 안착</label><input id="v7-sg-fw" class="v7-input" type="number" min="0" max="14" value="7" placeholder="/14"></div>';
   html+='<div><label class="v7-label">GIR</label><input id="v7-sg-gir" class="v7-input" type="number" min="0" max="18" value="9" placeholder="/18"></div>';
@@ -143,7 +143,7 @@ var WEATHER_EFFECTS={
 
 function showWeatherAnalyzer(){
   var pn=getPanel('weather');
-  var html='<div class="v7-title">&#127780;&#xFE0E; 날씨 영향 분석기</div>';
+  var html='<div class="v7-title">🌤︎ 날씨 영향 분석기</div>';
 
   html+='<div class="v7-card"><h3>현재 조건 설정</h3>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
@@ -159,7 +159,7 @@ function showWeatherAnalyzer(){
 
   html+='<div id="v7-weather-result"></div>';
 
-  html+='<div class="v7-card"><h3>&#128218; &#xFE0E;날씨별 클럽 보정표</h3>';
+  html+='<div class="v7-card"><h3>📚 ︎날씨별 클럽 보정표</h3>';
   html+='<table class="v7-table"><tr><th>조건</th><th>영향</th><th>보정</th></tr>';
   var wkeys=Object.keys(WEATHER_EFFECTS);
   for(var i=0;i<wkeys.length;i++){
@@ -204,7 +204,7 @@ window._v7CalcWeather=function(){
     {name:'PW',base:120},{name:'SW',base:90}
   ];
 
-  var html='<div class="v7-card"><h3>&#127919; &#xFE0E;보정 결과</h3>';
+  var html='<div class="v7-card"><h3>🎯 ︎보정 결과</h3>';
   if(effects.length===0){html+='<p style="color:#00FF88">이상적인 조건입니다! 보정 없이 플레이하세요.</p>'}
   else{
     html+='<div style="margin-bottom:12px">';
@@ -233,7 +233,7 @@ window._v7CalcWeather=function(){
 // ===== 3. DISTANCE CALCULATOR =====
 function showDistanceCalc(){
   var pn=getPanel('distance');
-  var html='<div class="v7-title">&#128207; &#xFE0E;거리 계산기</div>';
+  var html='<div class="v7-title">📏 ︎거리 계산기</div>';
 
   html+='<div class="v7-card"><h3>스윙 속도 &rarr; 비거리 변환</h3>';
   html+='<p style="margin-bottom:12px">클럽헤드 속도를 기반으로 캐리/토탈 비거리를 계산합니다.</p>';
@@ -247,7 +247,7 @@ function showDistanceCalc(){
 
   html+='<div id="v7-dist-result"></div>';
 
-  html+='<div class="v7-card"><h3>&#128200; &#xFE0E;속도별 비거리 참고표</h3>';
+  html+='<div class="v7-card"><h3>📈 ︎속도별 비거리 참고표</h3>';
   html+='<table class="v7-table"><tr><th>클럽헤드 속도</th><th>볼 속도</th><th>캐리</th><th>토탈</th><th>수준</th></tr>';
   var refs=[
     {speed:80,ball:118,carry:175,total:195,level:'입문'},
@@ -288,11 +288,11 @@ window._v7CalcDistance=function(){
   var total=Math.round(carry*(1+runFactor));
 
   var level='';
-  if(speed>=120)level='&#127942; 프로 장타자';
-  else if(speed>=110)level='&#11088; 투어 수준';
-  else if(speed>=100)level='&#128170; 상급';
-  else if(speed>=90)level='&#128077; 중급';
-  else level='&#127793; 입문/초급';
+  if(speed>=120)level='🏆 프로 장타자';
+  else if(speed>=110)level='⭐ 투어 수준';
+  else if(speed>=100)level='💪 상급';
+  else if(speed>=90)level='👍 중급';
+  else level='🌱 입문/초급';
 
   var html='<div class="v7-card" style="text-align:center">';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px">';
@@ -328,7 +328,7 @@ window._v7CalcDistance=function(){
 function showClubGapping(){
   var pn=getPanel('gapping');
   var shots=getShotHistory();
-  var html='<div class="v7-title">&#128202; &#xFE0E;클럽 갭 분석</div>';
+  var html='<div class="v7-title">📊 ︎클럽 갭 분석</div>';
 
   html+='<div class="v7-card"><h3>클럽 간 거리 간격</h3>';
   html+='<p>이상적인 클럽 갭은 10~15yd입니다. 갭이 너무 크면 거리 조절이 어렵습니다.</p></div>';
@@ -362,7 +362,7 @@ function showClubGapping(){
   }
   html+='</div>';
 
-  html+='<div class="v7-card"><h3>&#128295; &#xFE0E;내 클럽 거리 설정</h3>';
+  html+='<div class="v7-card"><h3>🔧 ︎내 클럽 거리 설정</h3>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
   for(var j=0;j<clubOrder.length;j++){
     var c=clubOrder[j];
@@ -377,13 +377,13 @@ function showClubGapping(){
     if(d1>0&&d2>0){var g=d1-d2;gaps.push({from:clubOrder[k-1],to:clubOrder[k],gap:g});if(g>20||g<5)hasIssue=true}
   }
   if(gaps.length>0){
-    html+='<div class="v7-card"><h3>&#128161; &#xFE0E;갭 분석 결과</h3>';
+    html+='<div class="v7-card"><h3>💡 ︎갭 분석 결과</h3>';
     if(!hasIssue){html+='<p style="color:#00FF88">모든 클럽 간격이 이상적입니다 (10~15yd)!</p>'}
     else{
       for(var g2=0;g2<gaps.length;g2++){
         var gp=gaps[g2];
-        if(gp.gap>20){html+='<p style="color:#ff6b6b;margin-bottom:4px">&#9888;&#xFE0E; '+gp.from+'&rarr;'+gp.to+': '+gp.gap+'yd 갭 &mdash; 하이브리드/유틸 추가 고려</p>'}
-        else if(gp.gap<5){html+='<p style="color:#FFC107;margin-bottom:4px">&#9888;&#xFE0E; '+gp.from+'&rarr;'+gp.to+': '+gp.gap+'yd 갭 &mdash; 중복 클럽, 하나를 교체하세요</p>'}
+        if(gp.gap>20){html+='<p style="color:#ff6b6b;margin-bottom:4px">⚠︎ '+gp.from+'&rarr;'+gp.to+': '+gp.gap+'yd 갭 &mdash; 하이브리드/유틸 추가 고려</p>'}
+        else if(gp.gap<5){html+='<p style="color:#FFC107;margin-bottom:4px">⚠︎ '+gp.from+'&rarr;'+gp.to+': '+gp.gap+'yd 갭 &mdash; 중복 클럽, 하나를 교체하세요</p>'}
       }
     }
     html+='</div>';
@@ -412,7 +412,7 @@ var WARMUP_ROUTINES=[
 
 function showWarmupRoutine(){
   var pn=getPanel('warmup');
-  var html='<div class="v7-title">&#127939;&#xFE0E; 워밍업 루틴</div>';
+  var html='<div class="v7-title">🏃︎ 워밍업 루틴</div>';
 
   var totalMin=0;
   for(var i=0;i<WARMUP_ROUTINES.length;i++)totalMin+=WARMUP_ROUTINES[i].duration;
@@ -429,7 +429,7 @@ function showWarmupRoutine(){
     html+='<div class="v7-card" style="border-left:3px solid '+(isDone?'#00FF88':'rgba(0,180,216,0.5)');
     html+=';opacity:'+(isDone?'0.7':'1')+'">';
     html+='<div style="display:flex;justify-content:space-between;align-items:center">';
-    html+='<h3>'+(isDone?'&#10003; ':'')+'Phase '+(p+1)+': '+phase.phase+'</h3>';
+    html+='<h3>'+(isDone?'✓ ':'')+'Phase '+(p+1)+': '+phase.phase+'</h3>';
     html+='<span class="v7-badge v7-badge-b">'+phase.duration+'분</span>';
     html+='</div>';
     html+='<ul style="margin:8px 0 0 16px;color:#aaa;font-size:0.85em;line-height:1.8">';
@@ -446,7 +446,7 @@ function showWarmupRoutine(){
   var completedToday=todayProgress.length;
   if(completedToday===WARMUP_ROUTINES.length){
     html+='<div class="v7-card" style="text-align:center;background:rgba(0,255,136,0.08)">';
-    html+='<div style="font-size:2em">&#127942;</div>';
+    html+='<div style="font-size:2em">🏆</div>';
     html+='<h3 style="color:#00FF88">워밍업 완료!</h3>';
     html+='<p>준비 완벽. 좋은 라운드 되세요!</p></div>';
   } else {
@@ -485,20 +485,20 @@ function showProfile(){
   var accuracy=shots.length>0?Math.round(straightCount/shots.length*100):0;
 
   var level='';var xp=shots.length*10+totalDays*20+totalMinutes;
-  if(xp>=10000)level='&#127942; 마스터 골퍼';
-  else if(xp>=5000)level='&#11088; 상급 골퍼';
-  else if(xp>=2000)level='&#128170; 중급 골퍼';
-  else if(xp>=500)level='&#127793; 초급 골퍼';
-  else level='&#9971;&#xFE0E; 입문 골퍼';
+  if(xp>=10000)level='🏆 마스터 골퍼';
+  else if(xp>=5000)level='⭐ 상급 골퍼';
+  else if(xp>=2000)level='💪 중급 골퍼';
+  else if(xp>=500)level='🌱 초급 골퍼';
+  else level='⛳︎ 입문 골퍼';
 
   var streak=0;
   var d=new Date();
   while(true){var ds=d.toISOString().slice(0,10);if(practiced[ds]){streak++;d.setDate(d.getDate()-1)}else break}
 
-  var html='<div class="v7-title">&#128100; &#xFE0E;골퍼 프로필</div>';
+  var html='<div class="v7-title">👤 ︎골퍼 프로필</div>';
 
   html+='<div class="v7-card" style="text-align:center;background:linear-gradient(135deg,rgba(0,180,216,0.08),rgba(0,255,136,0.08))">';
-  html+='<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#00B4D8,#00FF88);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2em">&#9971;&#xFE0E;</div>';
+  html+='<div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#00B4D8,#00FF88);margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2em">⛳︎</div>';
   html+='<div style="font-size:1.5em;font-weight:800;color:#fff">Golf Tracker Pro</div>';
   html+='<div style="font-size:1em;margin-top:4px">'+level+'</div>';
   html+='<div style="font-size:0.8em;color:#888;margin-top:4px">XP: '+xp.toLocaleString()+'</div>';
@@ -511,7 +511,7 @@ function showProfile(){
   html+='<div class="v7-card v7-stat"><div class="v7-stat-num">'+streak+'</div><div class="v7-stat-label">연속 일수</div></div>';
   html+='</div>';
 
-  html+='<div class="v7-card"><h3>&#128200; &#xFE0E;활동 요약</h3>';
+  html+='<div class="v7-card"><h3>📈 ︎활동 요약</h3>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
   html+='<div style="text-align:center"><div style="font-size:1.3em;font-weight:700;color:#00B4D8">'+Math.round(totalMinutes/60*10)/10+'h</div><div style="font-size:0.75em;color:#888">총 연습 시간</div></div>';
   html+='<div style="text-align:center"><div style="font-size:1.3em;font-weight:700;color:#FFC107">'+journal.length+'</div><div style="font-size:0.75em;color:#888">일지 기록</div></div>';
@@ -519,7 +519,7 @@ function showProfile(){
   html+='<div style="text-align:center"><div style="font-size:1.3em;font-weight:700;color:#00FF88">'+(shots.length>0?Math.round(shots[shots.length-1].maxSpeed||shots[shots.length-1].speed||0):0)+'</div><div style="font-size:0.75em;color:#888">최근 속도</div></div>';
   html+='</div></div>';
 
-  html+='<button class="v7-btn v7-btn-primary" style="width:100%;margin-top:8px" onclick="window._v7ShareProfile()">&#128247; 프로필 카드 생성 &amp; 다운로드</button>';
+  html+='<button class="v7-btn v7-btn-primary" style="width:100%;margin-top:8px" onclick="window._v7ShareProfile()">📷 프로필 카드 생성 &amp; 다운로드</button>';
 
   pn.innerHTML='<button class="v7-close" onclick="window._v7Close(\'profile\')">&times;</button>'+html;
   openPanel('profile');playSfx('profile');
@@ -591,13 +591,13 @@ window._v7ShareProfile=function(){
 function showTrends(){
   var pn=getPanel('trends');
   var rounds=lsGet('sg_rounds',[]);
-  var html='<div class="v7-title">&#128200; &#xFE0E;라운드 트렌드</div>';
+  var html='<div class="v7-title">📈 ︎라운드 트렌드</div>';
 
   if(rounds.length<2){
     html+='<div class="v7-card"><p>최소 2개 이상의 라운드 데이터가 필요합니다. Strokes Gained 메뉴에서 라운드를 기록하세요.</p>';
     html+='<button class="v7-btn" style="margin-top:8px" onclick="window._v7Close(\'trends\');window._v7_showStrokesGained()">라운드 기록하기</button></div>';
   } else {
-    html+='<div class="v7-card"><h3>&#128197; &#xFE0E;라운드 히스토리 ('+rounds.length+'라운드)</h3>';
+    html+='<div class="v7-card"><h3>📅 ︎라운드 히스토리 ('+rounds.length+'라운드)</h3>';
     html+='<svg width="100%" height="180" viewBox="0 0 500 180" style="margin-top:12px">';
     html+='<rect x="0" y="0" width="500" height="180" fill="rgba(0,0,0,0.2)" rx="8"/>';
 
@@ -647,7 +647,7 @@ function showTrends(){
         var lastAvgPutts=(last3[0].putts+last3[1].putts+last3[2].putts)/3;
         var prevAvgPutts=(prev3[0].putts+prev3[1].putts+prev3[2].putts)/3;
         var puttTrend=lastAvgPutts-prevAvgPutts;
-        html+='<div class="v7-card"><h3>&#128161; &#xFE0E;트렌드 인사이트</h3>';
+        html+='<div class="v7-card"><h3>💡 ︎트렌드 인사이트</h3>';
         if(puttTrend<-1){html+='<p style="color:#00FF88">퍼팅이 최근 3라운드에서 크게 개선되고 있습니다! ('+(puttTrend>0?'+':'')+puttTrend.toFixed(1)+')</p>'}
         else if(puttTrend>1){html+='<p style="color:#ff6b6b">퍼팅 수가 증가 추세입니다. 거리감 연습에 집중하세요. (+'+(puttTrend).toFixed(1)+')</p>'}
         else{html+='<p style="color:#00B4D8">안정적인 퍼포먼스를 유지하고 있습니다.</p>'}
@@ -662,18 +662,18 @@ function showTrends(){
 
 // ===== 8. SMART GOALS =====
 var GOAL_TEMPLATES=[
-  {id:'shots_week',name:'주간 샷 연습',target:50,unit:'샷',period:'week',icon:'&#127919;'},
-  {id:'practice_days',name:'주간 연습일',target:4,unit:'일',period:'week',icon:'&#128197;'},
-  {id:'accuracy_70',name:'정확도 70% 달성',target:70,unit:'%',period:'ongoing',icon:'&#127919;'},
-  {id:'streak_7',name:'7일 연속 연습',target:7,unit:'일',period:'ongoing',icon:'&#128293;'},
-  {id:'rounds_month',name:'월간 라운드',target:4,unit:'라운드',period:'month',icon:'&#9971;&#xFE0E;'},
-  {id:'putts_30',name:'퍼팅 30 이하',target:30,unit:'퍼트',period:'round',icon:'&#128995;'}
+  {id:'shots_week',name:'주간 샷 연습',target:50,unit:'샷',period:'week',icon:'🎯'},
+  {id:'practice_days',name:'주간 연습일',target:4,unit:'일',period:'week',icon:'📅'},
+  {id:'accuracy_70',name:'정확도 70% 달성',target:70,unit:'%',period:'ongoing',icon:'🎯'},
+  {id:'streak_7',name:'7일 연속 연습',target:7,unit:'일',period:'ongoing',icon:'🔥'},
+  {id:'rounds_month',name:'월간 라운드',target:4,unit:'라운드',period:'month',icon:'⛳︎'},
+  {id:'putts_30',name:'퍼팅 30 이하',target:30,unit:'퍼트',period:'round',icon:'🟣'}
 ];
 
 function showSmartGoals(){
   var pn=getPanel('goals');
   var goals=lsGet('smart_goals',[]);
-  var html='<div class="v7-title">&#127919; &#xFE0E;스마트 목표</div>';
+  var html='<div class="v7-title">🎯 ︎스마트 목표</div>';
 
   if(goals.length>0){
     html+='<div style="margin-bottom:16px">';
@@ -684,8 +684,8 @@ function showSmartGoals(){
       var isDone=pct>=100;
       html+='<div class="v7-card" style="'+(isDone?'border-color:rgba(0,255,136,0.3)':'')+'">';
       html+='<div style="display:flex;justify-content:space-between;align-items:center">';
-      html+='<h3>'+(isDone?'&#10003; ':'')+g.icon+' '+g.name+'</h3>';
-      html+='<button class="v7-btn" style="font-size:0.7em;padding:3px 8px" onclick="window._v7RemoveGoal('+i+')">&#10005;</button>';
+      html+='<h3>'+(isDone?'✓ ':'')+g.icon+' '+g.name+'</h3>';
+      html+='<button class="v7-btn" style="font-size:0.7em;padding:3px 8px" onclick="window._v7RemoveGoal('+i+')">✕</button>';
       html+='</div>';
       html+='<div style="margin-top:8px;display:flex;align-items:center;gap:8px">';
       html+='<div style="flex:1;height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden">';
@@ -697,7 +697,7 @@ function showSmartGoals(){
     html+='</div>';
   }
 
-  html+='<div class="v7-card"><h3>&#10133; &#xFE0E;목표 추가</h3>';
+  html+='<div class="v7-card"><h3>➕ ︎목표 추가</h3>';
   html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
   for(var t=0;t<GOAL_TEMPLATES.length;t++){
     var tpl=GOAL_TEMPLATES[t];
@@ -747,14 +747,14 @@ function injectQuickActions(){
   var container=document.createElement('div');
   container.className='v7-quick-actions';
   var buttons=[
-    {icon:'&#128200;',title:'Strokes Gained (1)',fn:'showStrokesGained'},
-    {icon:'&#127780;&#xFE0E;',title:'날씨 보정 (2)',fn:'showWeatherAnalyzer'},
-    {icon:'&#128207;',title:'거리 계산 (3)',fn:'showDistanceCalc'},
-    {icon:'&#128202;',title:'클럽 갭 (4)',fn:'showClubGapping'},
-    {icon:'&#127939;&#xFE0E;',title:'워밍업 (5)',fn:'showWarmupRoutine'},
-    {icon:'&#128100;',title:'프로필 (6)',fn:'showProfile'},
-    {icon:'&#128200;',title:'트렌드 (7)',fn:'showTrends'},
-    {icon:'&#127919;',title:'스마트 목표 (8)',fn:'showSmartGoals'}
+    {icon:'📈',title:'Strokes Gained (1)',fn:'showStrokesGained'},
+    {icon:'🌤︎',title:'날씨 보정 (2)',fn:'showWeatherAnalyzer'},
+    {icon:'📏',title:'거리 계산 (3)',fn:'showDistanceCalc'},
+    {icon:'📊',title:'클럽 갭 (4)',fn:'showClubGapping'},
+    {icon:'🏃︎',title:'워밍업 (5)',fn:'showWarmupRoutine'},
+    {icon:'👤',title:'프로필 (6)',fn:'showProfile'},
+    {icon:'📈',title:'트렌드 (7)',fn:'showTrends'},
+    {icon:'🎯',title:'스마트 목표 (8)',fn:'showSmartGoals'}
   ];
   for(var i=0;i<buttons.length;i++){
     var btn=document.createElement('button');

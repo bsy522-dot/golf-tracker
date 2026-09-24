@@ -18,7 +18,7 @@ function getPanel(id){var ov=document.getElementById('v13-'+id);if(!ov){var pn=c
 function showScoreHeatmap(){
 var pn=getPanel('heatmap');
 var rounds=lsGet('heatmap_rounds',[]);
-var html='<div class="v13-title">&#x1F525; 라운드 스코어카드 히트맵</div>';
+var html='<div class="v13-title">🔥 라운드 스코어카드 히트맵</div>';
 
 html+='<div class="v13-card"><h3>18홀 스코어 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(9,1fr);gap:4px;margin-top:8px">';
@@ -55,18 +55,18 @@ if(rounds.length>0){
   html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:#ff6b6b">'+doubles+'</div><div class="v13-stat-label">더블보기+</div></div>';
   html+='</div>';
 
-  html+='<div class="v13-card"><h3>&#x1F3F7;&#xFE0F; 색상 범례</h3>';
+  html+='<div class="v13-card"><h3>🏷️ 색상 범례</h3>';
   html+='<div style="display:flex;gap:12px;flex-wrap:wrap;font-size:.8em;margin-top:6px">';
-  html+='<span style="color:#FFD700">&#x25A0; 이글(-2)</span>';
-  html+='<span style="color:#00FF88">&#x25A0; 버디(-1)</span>';
-  html+='<span style="color:#00B4D8">&#x25A0; 파(0)</span>';
-  html+='<span style="color:#FFB800">&#x25A0; 보기(+1)</span>';
-  html+='<span style="color:#ff6b6b">&#x25A0; 더블(+2)</span>';
-  html+='<span style="color:#cc3333">&#x25A0; 트리플+(+3)</span>';
+  html+='<span style="color:#FFD700">■ 이글(-2)</span>';
+  html+='<span style="color:#00FF88">■ 버디(-1)</span>';
+  html+='<span style="color:#00B4D8">■ 파(0)</span>';
+  html+='<span style="color:#FFB800">■ 보기(+1)</span>';
+  html+='<span style="color:#ff6b6b">■ 더블(+2)</span>';
+  html+='<span style="color:#cc3333">■ 트리플+(+3)</span>';
   html+='</div></div>';
 }
 
-html+='<div class="v13-card"><h3>&#x1F4CB; 라운드 이력 ('+rounds.length+'회)</h3>';
+html+='<div class="v13-card"><h3>📋 라운드 이력 ('+rounds.length+'회)</h3>';
 if(rounds.length>0){
   html+='<table class="v13-table"><tr><th>날짜</th><th>코스</th><th>OUT</th><th>IN</th><th>합계</th></tr>';
   var recent=rounds.slice(-5).reverse();
@@ -170,7 +170,7 @@ if(last.course)ctx.fillText(last.course+' ('+last.date+')',W/2,H-6);
 function showHandicapTracker(){
 var pn=getPanel('handicap');
 var hcLog=lsGet('hc_log',[]);
-var html='<div class="v13-title">&#x1F3C6; 핸디캡 추적기 (WHS)</div>';
+var html='<div class="v13-title">🏆 핸디캡 추적기 (WHS)</div>';
 
 html+='<div class="v13-card"><h3>스코어 디퍼런셜 입력</h3>';
 html+='<p style="color:#888;font-size:.78em;margin-bottom:8px">디퍼런셜 = (조정 총타수 - 코스 레이팅) &times; 113 / 슬로프 레이팅</p>';
@@ -203,14 +203,14 @@ html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:#00FF88
 html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:#00B4D8">'+hcLog.length+'</div><div class="v13-stat-label">기록 라운드</div></div>';
 var bestDiff=hcLog.length>0?Math.min.apply(null,hcLog.map(function(x){return x.diff})).toFixed(1):'--';
 html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:#FFB800">'+bestDiff+'</div><div class="v13-stat-label">최저 디퍼런셜</div></div>';
-var trendIcon=trend==='improving'?'&#x2B07;&#xFE0F; 개선':trend==='declining'?'&#x2B06;&#xFE0F; 상승':'--';
+var trendIcon=trend==='improving'?'⬇️ 개선':trend==='declining'?'⬆️ 상승':'--';
 var trendColor=trend==='improving'?'#00FF88':trend==='declining'?'#ff6b6b':'#888';
 html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:'+trendColor+';font-size:.85em">'+trendIcon+'</div><div class="v13-stat-label">추이</div></div>';
 html+='</div>';
 
 html+='<canvas id="v13-hc-canvas" width="560" height="280" style="width:100%;max-width:560px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
-html+='<div class="v13-card"><h3>&#x1F4D6; WHS 핸디캡 계산법</h3>';
+html+='<div class="v13-card"><h3>📖 WHS 핸디캡 계산법</h3>';
 html+='<table class="v13-table"><tr><th>기록 수</th><th>사용 디퍼런셜</th></tr>';
 html+='<tr><td>3~4회</td><td>최저 1개</td></tr>';
 html+='<tr><td>5~6회</td><td>최저 2개</td></tr>';
@@ -303,7 +303,7 @@ ctx.fillText('Handicap Differential Trend ('+log.length+' rounds)',12,22);
 function showFairwayAnalyzer(){
 var pn=getPanel('fairway');
 var fwLog=lsGet('fw_log',[]);
-var html='<div class="v13-title">&#x1F3CC;&#xFE0F; FIR/GIR 심화 분석기</div>';
+var html='<div class="v13-title">🏌️ FIR/GIR 심화 분석기</div>';
 
 html+='<div class="v13-card"><h3>라운드 FIR/GIR 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px;margin-top:8px">';
@@ -334,12 +334,12 @@ if(fwLog.length>0){
   html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:#ff6b6b">'+avgPUTT+'</div><div class="v13-stat-label">평균 퍼트</div></div>';
   html+='</div>';
 
-  html+='<div class="v13-card"><h3>&#x1F4D6; PGA Tour 평균 대비</h3>';
+  html+='<div class="v13-card"><h3>📖 PGA Tour 평균 대비</h3>';
   html+='<table class="v13-table"><tr><th>항목</th><th>내 평균</th><th>PGA Tour</th><th>판정</th></tr>';
   var pgaFIR=60,pgaGIR=66,pgaPUTT=29;
-  var firGrade=parseInt(avgFIR)>=pgaFIR?'&#x2705;':'&#x274C;';
-  var girGrade=parseInt(avgGIR)>=pgaGIR?'&#x2705;':'&#x274C;';
-  var puttGrade=parseFloat(avgPUTT)<=pgaPUTT?'&#x2705;':'&#x274C;';
+  var firGrade=parseInt(avgFIR)>=pgaFIR?'✅':'❌';
+  var girGrade=parseInt(avgGIR)>=pgaGIR?'✅':'❌';
+  var puttGrade=parseFloat(avgPUTT)<=pgaPUTT?'✅':'❌';
   html+='<tr><td>FIR</td><td style="color:#00FF88">'+avgFIR+'%</td><td>~'+pgaFIR+'%</td><td>'+firGrade+'</td></tr>';
   html+='<tr><td>GIR</td><td style="color:#00B4D8">'+avgGIR+'%</td><td>~'+pgaGIR+'%</td><td>'+girGrade+'</td></tr>';
   html+='<tr><td>평균 퍼트</td><td style="color:#ff6b6b">'+avgPUTT+'</td><td>~'+pgaPUTT+'</td><td>'+puttGrade+'</td></tr>';
@@ -429,23 +429,23 @@ ctx.fillText('FIR/GIR Radar Analysis ('+log.length+' rounds)',12,22);
 function showSwingNotes(){
 var pn=getPanel('swingnote');
 var notes=lsGet('swing_notes',[]);
-var html='<div class="v13-title">&#x1F4DD; 스윙 분석 노트북</div>';
+var html='<div class="v13-title">📝 스윙 분석 노트북</div>';
 
 html+='<div class="v13-card"><h3>새 스윙 노트</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v13-label">카테고리</label><select id="v13-sn-cat" class="v13-input"><option>드라이버</option><option>아이언</option><option>웨지</option><option>퍼터</option><option>멘탈</option><option>기타</option></select></div>';
-html+='<div><label class="v13-label">기분</label><select id="v13-sn-mood" class="v13-input"><option value="great">&#x1F60D; 최고</option><option value="good">&#x1F60A; 좋음</option><option value="ok" selected>&#x1F610; 보통</option><option value="bad">&#x1F614; 나쁨</option><option value="awful">&#x1F621; 최악</option></select></div>';
+html+='<div><label class="v13-label">기분</label><select id="v13-sn-mood" class="v13-input"><option value="great">😍 최고</option><option value="good">😊 좋음</option><option value="ok" selected>😐 보통</option><option value="bad">😔 나쁨</option><option value="awful">😡 최악</option></select></div>';
 html+='</div>';
 html+='<div style="margin-top:8px"><label class="v13-label">메모</label><textarea id="v13-sn-text" class="v13-input" rows="3" placeholder="스윙 피드백, 감각, 교정 포인트 등..." style="resize:vertical"></textarea></div>';
 html+='<div style="margin-top:8px"><label class="v13-label">태그 (쉼표 구분)</label><input id="v13-sn-tags" class="v13-input" placeholder="예: 그립,백스윙,팔로우스루"></div>';
 html+='<button class="v13-btn v13-btn-primary" style="width:100%;margin-top:10px" onclick="window._v13SaveNote()">노트 저장</button></div>';
 
-html+='<div class="v13-card"><h3>&#x1F4DA; 노트 목록 ('+notes.length+'건)</h3>';
+html+='<div class="v13-card"><h3>📚 노트 목록 ('+notes.length+'건)</h3>';
 if(notes.length>0){
   var recent=notes.slice(-10).reverse();
   for(var i=0;i<recent.length;i++){
     var n=recent[i];
-    var moodMap={great:'&#x1F60D;',good:'&#x1F60A;',ok:'&#x1F610;',bad:'&#x1F614;',awful:'&#x1F621;'};
+    var moodMap={great:'😍',good:'😊',ok:'😐',bad:'😔',awful:'😡'};
     html+='<div style="border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:10px;margin-bottom:8px;background:rgba(255,255,255,.02)">';
     html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">';
     html+='<span style="color:#00FF88;font-size:.8em;font-weight:600">['+n.category+'] '+(moodMap[n.mood]||'')+'</span>';
@@ -487,7 +487,7 @@ closePanel('swingnote');setTimeout(showSwingNotes,200);
 function showEquipManager(){
 var pn=getPanel('equip');
 var equip=lsGet('equipment',{clubs:[],ball:'',glove:''});
-var html='<div class="v13-title">&#x1F3CC;&#xFE0F; 장비 관리 시스템</div>';
+var html='<div class="v13-title">🏌️ 장비 관리 시스템</div>';
 
 var defaultClubs=[
   {name:'Driver',brand:'',model:'',purchaseDate:'',roundsUsed:0},
@@ -507,7 +507,7 @@ var defaultClubs=[
 ];
 if(!equip.clubs||equip.clubs.length===0)equip.clubs=defaultClubs;
 
-html+='<div class="v13-card"><h3>&#x1F3CC;&#xFE0F; 클럽 세팅 ('+equip.clubs.length+'개)</h3>';
+html+='<div class="v13-card"><h3>🏌️ 클럽 세팅 ('+equip.clubs.length+'개)</h3>';
 html+='<div style="display:grid;gap:6px;margin-top:8px">';
 for(var i=0;i<equip.clubs.length;i++){
   var c=equip.clubs[i];
@@ -523,13 +523,13 @@ for(var i=0;i<equip.clubs.length;i++){
 html+='</div>';
 html+='<button class="v13-btn v13-btn-primary" style="width:100%;margin-top:10px" onclick="window._v13SaveEquip()">장비 저장</button></div>';
 
-html+='<div class="v13-card"><h3>&#x26BE; 볼 &amp; &#x1F9E4; 글러브</h3>';
+html+='<div class="v13-card"><h3>⚾ 볼 &amp; 🧤 글러브</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v13-label">사용 볼</label><input id="v13-eq-ball" class="v13-input" value="'+(equip.ball||'')+'" placeholder="예: Pro V1"></div>';
 html+='<div><label class="v13-label">글러브</label><input id="v13-eq-glove" class="v13-input" value="'+(equip.glove||'')+'" placeholder="예: FJ WeatherSof"></div>';
 html+='</div></div>';
 
-html+='<div class="v13-card"><h3>&#x1F4D6; 장비 교체 가이드</h3>';
+html+='<div class="v13-card"><h3>📖 장비 교체 가이드</h3>';
 html+='<table class="v13-table"><tr><th>장비</th><th>교체 주기</th><th>교체 신호</th></tr>';
 html+='<tr><td>드라이버</td><td>3~5년</td><td>비거리 감소, 페이스 마모</td></tr>';
 html+='<tr><td>아이언 세트</td><td>5~7년</td><td>그루브 마모, 탄도 변화</td></tr>';
@@ -577,12 +577,12 @@ var DRILLS=[
   {id:'d12',cat:'퍼터',name:'클록 퍼팅 드릴',desc:'홀컵 주위 4방향에서 3ft 퍼팅 연속 성공.',reps:12}
 ];
 
-var html='<div class="v13-title">&#x1F3AF; 연습장 드릴 라이브러리</div>';
+var html='<div class="v13-title">🎯 연습장 드릴 라이브러리</div>';
 var cats=['드라이버','아이언','웨지','퍼터'];
 
 for(var ci=0;ci<cats.length;ci++){
   var cat=cats[ci];
-  html+='<div class="v13-card"><h3>&#x1F3CC;&#xFE0F; '+cat+' 드릴</h3>';
+  html+='<div class="v13-card"><h3>🏌️ '+cat+' 드릴</h3>';
   var catDrills=DRILLS.filter(function(d){return d.cat===cat});
   for(var di=0;di<catDrills.length;di++){
     var d=catDrills[di];
@@ -591,7 +591,7 @@ for(var ci=0;ci<cats.length;ci++){
     var pct=Math.min(100,Math.round(done/d.reps*100));
     html+='<div style="border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:10px;margin-bottom:6px;background:rgba(255,255,255,.02)'+(completed?';border-color:rgba(0,255,136,.2)':'')+'">';
     html+='<div style="display:flex;justify-content:space-between;align-items:center">';
-    html+='<span style="font-weight:600;font-size:.88em;color:'+(completed?'#00FF88':'#ccc')+'">'+d.name+(completed?' &#x2705;':'')+'</span>';
+    html+='<span style="font-weight:600;font-size:.88em;color:'+(completed?'#00FF88':'#ccc')+'">'+d.name+(completed?' ✅':'')+'</span>';
     html+='<span style="font-size:.72em;color:#888">'+done+'/'+d.reps+'</span></div>';
     html+='<p style="color:#888;font-size:.78em;margin:4px 0">'+d.desc+'</p>';
     html+='<div style="display:flex;align-items:center;gap:8px;margin-top:6px">';
@@ -626,7 +626,7 @@ window._v13ResetDrills=function(){lsSet('drill_progress',{});closePanel('drills'
 function showStaminaTracker(){
 var pn=getPanel('stamina');
 var stLog=lsGet('stamina_log',[]);
-var html='<div class="v13-title">&#x1F4AA; 체력/피로도 트래커</div>';
+var html='<div class="v13-title">💪 체력/피로도 트래커</div>';
 
 html+='<div class="v13-card"><h3>라운드 컨디션 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
@@ -654,12 +654,12 @@ if(stLog.length>0){
   html+='<div class="v13-stat-card"><div class="v13-stat-val" style="color:#A855F7">'+stLog.length+'</div><div class="v13-stat-label">기록 수</div></div>';
   html+='</div>';
 
-  html+='<div class="v13-card"><h3>&#x1F4A1; 컨디션 관리 팁</h3>';
+  html+='<div class="v13-card"><h3>💡 컨디션 관리 팁</h3>';
   html+='<div style="font-size:.85em;color:#aaa;line-height:1.7">';
-  if(parseFloat(avgE)<5)html+='<p style="color:#ff6b6b">&#x26A0;&#xFE0F; 체력이 부족합니다. 라운드 전 충분한 수면과 스트레칭을 하세요.</p>';
-  if(parseFloat(avgF)<5)html+='<p style="color:#FFB800">&#x26A0;&#xFE0F; 집중력 저하 경향. 프리샷 루틴을 일정하게 유지하세요.</p>';
-  if(parseFloat(avgW)<4)html+='<p style="color:#00B4D8">&#x1F4A7; 수분 섭취가 부족합니다. 3홀마다 물 한 잔을 목표로 하세요.</p>';
-  if(parseFloat(avgE)>=7&&parseFloat(avgF)>=7)html+='<p style="color:#00FF88">&#x2705; 전반적인 컨디션이 좋습니다. 현재 패턴을 유지하세요!</p>';
+  if(parseFloat(avgE)<5)html+='<p style="color:#ff6b6b">⚠️ 체력이 부족합니다. 라운드 전 충분한 수면과 스트레칭을 하세요.</p>';
+  if(parseFloat(avgF)<5)html+='<p style="color:#FFB800">⚠️ 집중력 저하 경향. 프리샷 루틴을 일정하게 유지하세요.</p>';
+  if(parseFloat(avgW)<4)html+='<p style="color:#00B4D8">💧 수분 섭취가 부족합니다. 3홀마다 물 한 잔을 목표로 하세요.</p>';
+  if(parseFloat(avgE)>=7&&parseFloat(avgF)>=7)html+='<p style="color:#00FF88">✅ 전반적인 컨디션이 좋습니다. 현재 패턴을 유지하세요!</p>';
   html+='</div></div>';
 }
 
@@ -739,7 +739,7 @@ ctx.fillText('Stamina & Focus Trend ('+log.length+' records)',12,22);
 function showProComparison(){
 var pn=getPanel('procomp');
 var myStats=lsGet('my_stats',{drive:220,fir:50,gir:35,putts:34,scramble:30,sg:0});
-var html='<div class="v13-title">&#x1F31F; 프로선수 비교 분석기</div>';
+var html='<div class="v13-title">🌟 프로선수 비교 분석기</div>';
 
 html+='<div class="v13-card"><h3>내 스탯 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">';
@@ -755,7 +755,7 @@ html+='<button class="v13-btn v13-btn-primary" style="width:100%;margin-top:10px
 html+='<canvas id="v13-pro-canvas" width="450" height="450" style="width:100%;max-width:450px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 html+='<div id="v13-pro-result"></div>';
 
-html+='<div class="v13-card"><h3>&#x1F4CA; PGA Tour 2024 평균 기준</h3>';
+html+='<div class="v13-card"><h3>📊 PGA Tour 2024 평균 기준</h3>';
 html+='<table class="v13-table"><tr><th>항목</th><th>PGA Tour 평균</th><th>Top 10 평균</th></tr>';
 html+='<tr><td>드라이버 비거리</td><td>296 yd</td><td>315 yd</td></tr>';
 html+='<tr><td>FIR</td><td>60%</td><td>68%</td></tr>';
@@ -784,7 +784,7 @@ lsSet('my_stats',myStats);
 
 var pgaAvg={drive:296,fir:60,gir:66,putts:29,scramble:58,sg:0};
 
-var rhtml='<div class="v13-card"><h3>&#x1F50D; 비교 결과</h3>';
+var rhtml='<div class="v13-card"><h3>🔍 비교 결과</h3>';
 var items=[
   {name:'드라이버',my:drive,pga:pgaAvg.drive,unit:'yd',higher:true},
   {name:'FIR',my:fir,pga:pgaAvg.fir,unit:'%',higher:true},
@@ -911,7 +911,7 @@ var qs=lsGet('v13quiz_state',{answered:[],correct:0,currentIdx:0});
 var idx=qs.currentIdx;
 if(idx>=V13_QUIZ.length)idx=0;
 
-var html='<div class="v13-title">&#x1F4DD; 골프 퀴즈 v6 ('+V13_QUIZ.length+'문)</div>';
+var html='<div class="v13-title">📝 골프 퀴즈 v6 ('+V13_QUIZ.length+'문)</div>';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
 html+='<span style="color:#888;font-size:.85em">진행: '+(qs.answered||[]).length+'/'+V13_QUIZ.length+'</span>';
 html+='<span style="color:#00FF88;font-size:.85em">정답: '+qs.correct+'/'+((qs.answered||[]).length||0)+'</span>';
@@ -943,7 +943,7 @@ var qs=lsGet('v13quiz_state',{answered:[],correct:0,currentIdx:0});
 if(!qs.answered)qs.answered=[];
 if(qs.answered.indexOf(idx)>-1)return;
 qs.answered.push(idx);
-if(ans===V13_QUIZ[idx].c){qs.correct++;playSfx('quiz_correct13');showToast('정답! &#x2705;')}
+if(ans===V13_QUIZ[idx].c){qs.correct++;playSfx('quiz_correct13');showToast('정답! ✅')}
 else{showToast('오답! 정답: '+String.fromCharCode(65+V13_QUIZ[idx].c)+'. '+V13_QUIZ[idx].a[V13_QUIZ[idx].c])}
 lsSet('v13quiz_state',qs);
 closePanel('v13quiz');setTimeout(showV13Quiz,200);
@@ -958,18 +958,18 @@ window._v13QuizReset=function(){lsSet('v13quiz_state',{answered:[],correct:0,cur
 
 // ===== ACHIEVEMENTS (+12 = 72 total) =====
 var V13_ACH=[
-{id:'v13_heatmap',name:'히트맵 분석가',desc:'라운드 스코어카드 히트맵 사용',icon:'&#x1F525;',check:function(){return lsGet('ach_heatmap_viewed',false)}},
-{id:'v13_heatmap_3',name:'라운드 기록가',desc:'스코어카드 3라운드 기록',icon:'&#x1F4CB;',check:function(){return lsGet('heatmap_rounds',[]).length>=3}},
-{id:'v13_handicap',name:'핸디캡 추적자',desc:'핸디캡 추적기 사용',icon:'&#x1F3C6;',check:function(){return lsGet('ach_hc_viewed',false)}},
-{id:'v13_hc_5',name:'핸디캡 전문가',desc:'핸디캡 디퍼런셜 5회 기록',icon:'&#x1F4C9;',check:function(){return lsGet('hc_log',[]).length>=5}},
-{id:'v13_fairway',name:'FIR/GIR 분석가',desc:'FIR/GIR 심화 분석기 사용',icon:'&#x1F3CC;&#xFE0F;',check:function(){return lsGet('ach_fw_viewed',false)}},
-{id:'v13_notes',name:'스윙 분석가',desc:'스윙 분석 노트 사용',icon:'&#x1F4DD;',check:function(){return lsGet('ach_note_used',false)}},
-{id:'v13_notes_10',name:'노트 마스터',desc:'스윙 노트 10개 작성',icon:'&#x1F4D6;',check:function(){return lsGet('swing_notes',[]).length>=10}},
-{id:'v13_equip',name:'장비 관리자',desc:'장비 관리 시스템 사용',icon:'&#x1F6E0;&#xFE0F;',check:function(){return lsGet('ach_equip_used',false)}},
-{id:'v13_drill',name:'연습 전사',desc:'연습 드릴 라이브러리 사용',icon:'&#x1F3AF;',check:function(){return lsGet('ach_drill_used',false)}},
-{id:'v13_stamina',name:'체력 관리자',desc:'체력/피로도 트래커 사용',icon:'&#x1F4AA;',check:function(){return lsGet('ach_stamina_used',false)}},
-{id:'v13_pro',name:'프로 도전자',desc:'프로선수 비교 분석 사용',icon:'&#x1F31F;',check:function(){return lsGet('ach_pro_viewed',false)}},
-{id:'v13_all',name:'v13 탐험가',desc:'v13 전체 기능 탐색',icon:'&#x1F30D;',check:function(){return lsGet('ach_heatmap_viewed',false)&&lsGet('ach_hc_viewed',false)&&lsGet('ach_fw_viewed',false)&&lsGet('ach_note_used',false)&&lsGet('ach_equip_used',false)&&lsGet('ach_drill_used',false)&&lsGet('ach_stamina_used',false)&&lsGet('ach_pro_viewed',false)}}
+{id:'v13_heatmap',name:'히트맵 분석가',desc:'라운드 스코어카드 히트맵 사용',icon:'🔥',check:function(){return lsGet('ach_heatmap_viewed',false)}},
+{id:'v13_heatmap_3',name:'라운드 기록가',desc:'스코어카드 3라운드 기록',icon:'📋',check:function(){return lsGet('heatmap_rounds',[]).length>=3}},
+{id:'v13_handicap',name:'핸디캡 추적자',desc:'핸디캡 추적기 사용',icon:'🏆',check:function(){return lsGet('ach_hc_viewed',false)}},
+{id:'v13_hc_5',name:'핸디캡 전문가',desc:'핸디캡 디퍼런셜 5회 기록',icon:'📉',check:function(){return lsGet('hc_log',[]).length>=5}},
+{id:'v13_fairway',name:'FIR/GIR 분석가',desc:'FIR/GIR 심화 분석기 사용',icon:'🏌️',check:function(){return lsGet('ach_fw_viewed',false)}},
+{id:'v13_notes',name:'스윙 분석가',desc:'스윙 분석 노트 사용',icon:'📝',check:function(){return lsGet('ach_note_used',false)}},
+{id:'v13_notes_10',name:'노트 마스터',desc:'스윙 노트 10개 작성',icon:'📖',check:function(){return lsGet('swing_notes',[]).length>=10}},
+{id:'v13_equip',name:'장비 관리자',desc:'장비 관리 시스템 사용',icon:'🛠️',check:function(){return lsGet('ach_equip_used',false)}},
+{id:'v13_drill',name:'연습 전사',desc:'연습 드릴 라이브러리 사용',icon:'🎯',check:function(){return lsGet('ach_drill_used',false)}},
+{id:'v13_stamina',name:'체력 관리자',desc:'체력/피로도 트래커 사용',icon:'💪',check:function(){return lsGet('ach_stamina_used',false)}},
+{id:'v13_pro',name:'프로 도전자',desc:'프로선수 비교 분석 사용',icon:'🌟',check:function(){return lsGet('ach_pro_viewed',false)}},
+{id:'v13_all',name:'v13 탐험가',desc:'v13 전체 기능 탐색',icon:'🌍',check:function(){return lsGet('ach_heatmap_viewed',false)&&lsGet('ach_hc_viewed',false)&&lsGet('ach_fw_viewed',false)&&lsGet('ach_note_used',false)&&lsGet('ach_equip_used',false)&&lsGet('ach_drill_used',false)&&lsGet('ach_stamina_used',false)&&lsGet('ach_pro_viewed',false)}}
 ];
 
 function v13CheckAch(){
@@ -996,14 +996,14 @@ function injectV13QuickActions(){
 var existing=document.querySelector('.v13-scroll-nav');if(existing)return;
 var nav=document.createElement('div');nav.className='v13-scroll-nav';
 var buttons=[
-  {icon:'&#x1F525;',title:'히트맵 (Shift+H)',fn:'showScoreHeatmap'},
-  {icon:'&#x1F3C6;',title:'핸디캡 (Shift+I)',fn:'showHandicapTracker'},
-  {icon:'&#x1F3CC;&#xFE0F;',title:'FIR/GIR (Shift+F)',fn:'showFairwayAnalyzer'},
-  {icon:'&#x1F4DD;',title:'스윙노트 (Shift+O)',fn:'showSwingNotes'},
-  {icon:'&#x1F6E0;&#xFE0F;',title:'장비 (Shift+E)',fn:'showEquipManager'},
-  {icon:'&#x1F3AF;',title:'드릴 (Shift+D)',fn:'showDrillLibrary'},
-  {icon:'&#x1F4AA;',title:'체력 (Shift+A)',fn:'showStaminaTracker'},
-  {icon:'&#x1F31F;',title:'프로비교 (Shift+X)',fn:'showProComparison'}
+  {icon:'🔥',title:'히트맵 (Shift+H)',fn:'showScoreHeatmap'},
+  {icon:'🏆',title:'핸디캡 (Shift+I)',fn:'showHandicapTracker'},
+  {icon:'🏌️',title:'FIR/GIR (Shift+F)',fn:'showFairwayAnalyzer'},
+  {icon:'📝',title:'스윙노트 (Shift+O)',fn:'showSwingNotes'},
+  {icon:'🛠️',title:'장비 (Shift+E)',fn:'showEquipManager'},
+  {icon:'🎯',title:'드릴 (Shift+D)',fn:'showDrillLibrary'},
+  {icon:'💪',title:'체력 (Shift+A)',fn:'showStaminaTracker'},
+  {icon:'🌟',title:'프로비교 (Shift+X)',fn:'showProComparison'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');btn.className='v13-nav-btn';

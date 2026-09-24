@@ -31,7 +31,7 @@ var SHOT_SHAPES=[
 function showShotShapeAnalyzer(){
 var pn=getPanel('shotshape');
 var records=lsGet('shotshape_records',[]);
-var html='<div class="v14-title">&#x1F3CC;&#xFE0F; 샷 셰이프 분석기</div>';
+var html='<div class="v14-title">🏌️ 샷 셰이프 분석기</div>';
 
 html+='<div class="v14-card"><h3>샷 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
@@ -66,7 +66,7 @@ if(records.length>0){
 } else { html+='<p style="color:#888;font-size:.85em">아직 기록이 없습니다.</p>'; }
 html+='</div>';
 
-html+='<div class="v14-card"><h3>&#x1F4D6; 샷 셰이프 가이드</h3>';
+html+='<div class="v14-card"><h3>📖 샷 셰이프 가이드</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 for(var k=0;k<SHOT_SHAPES.length;k++){
   html+='<div style="padding:6px;border-left:3px solid '+SHOT_SHAPES[k].color+';background:rgba(255,255,255,.02);border-radius:0 6px 6px 0"><div style="font-weight:700;font-size:.85em;color:'+SHOT_SHAPES[k].color+'">'+SHOT_SHAPES[k].name+'</div><div style="font-size:.72em;color:#888">'+SHOT_SHAPES[k].desc+'</div></div>';
@@ -167,7 +167,7 @@ function showSmartCaddie(){
 var pn=getPanel('caddie2');
 var holeIdx=lsGet('caddie_hole',0);
 var hole=HOLE_TEMPLATES[holeIdx%HOLE_TEMPLATES.length];
-var html='<div class="v14-title">&#x26F3; 스마트 캐디 GPS</div>';
+var html='<div class="v14-title">⛳ 스마트 캐디 GPS</div>';
 
 html+='<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">';
 for(var h=0;h<HOLE_TEMPLATES.length;h++){
@@ -186,7 +186,7 @@ html+='<div class="v14-stat-card"><div class="v14-stat-val" style="color:#FFB800
 html+='<div class="v14-stat-card"><div class="v14-stat-val" style="color:#ff6b6b;font-size:1em">B'+backDist+'</div><div class="v14-stat-label">그린 뒤</div></div>';
 html+='</div>';
 
-html+='<div class="v14-card"><h3>&#x1F4A1; AI 캐디 추천</h3>';
+html+='<div class="v14-card"><h3>💡 AI 캐디 추천</h3>';
 var clubRec=getClubRecommendation(hole);
 html+='<div style="display:grid;gap:6px">';
 for(var c=0;c<clubRec.length;c++){
@@ -197,14 +197,14 @@ for(var c=0;c<clubRec.length;c++){
 html+='</div>';
 html+='<p style="color:#666;font-size:.72em;margin-top:8px">* 해저드 회피 + 평균 비거리 기반 추천</p></div>';
 
-html+='<div class="v14-card"><h3>&#x26A0;&#xFE0F; 해저드 정보</h3>';
+html+='<div class="v14-card"><h3>⚠️ 해저드 정보</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 for(var hz=0;hz<hole.hazards.length;hz++){
   var haz=hole.hazards[hz];
   var hazDist=Math.round(hole.dist*(1-haz.y));
   var side=haz.x<0.45?'좌측':haz.x>0.55?'우측':'중앙';
   var hazColor=haz.type==='워터'?'#00B4D8':'#FFB800';
-  html+='<div style="padding:8px;border:1px solid '+hazColor+'33;border-radius:8px;background:'+hazColor+'08"><span style="color:'+hazColor+';font-weight:700">'+(haz.type==='워터'?'&#x1F4A7;':'&#x1F3D6;&#xFE0F;')+' '+haz.type+'</span><span style="color:#888;font-size:.8em;margin-left:6px">'+side+' '+hazDist+'yd</span></div>';
+  html+='<div style="padding:8px;border:1px solid '+hazColor+'33;border-radius:8px;background:'+hazColor+'08"><span style="color:'+hazColor+';font-weight:700">'+(haz.type==='워터'?'💧':'🏖️')+' '+haz.type+'</span><span style="color:#888;font-size:.8em;margin-left:6px">'+side+' '+hazDist+'yd</span></div>';
 }
 html+='</div></div>';
 
@@ -297,7 +297,7 @@ function showTournamentMode(){
 var pn=getPanel('tournament');
 var tourneys=lsGet('tournaments',[]);
 var active=lsGet('active_tourney',null);
-var html='<div class="v14-title">&#x1F3C6; 토너먼트 모드</div>';
+var html='<div class="v14-title">🏆 토너먼트 모드</div>';
 
 if(!active){
   html+='<div class="v14-card"><h3>새 토너먼트 생성</h3>';
@@ -342,7 +342,7 @@ if(!active){
 }
 
 if(tourneys.length>0){
-  html+='<div class="v14-card"><h3>&#x1F4CB; 토너먼트 이력 ('+tourneys.length+'회)</h3>';
+  html+='<div class="v14-card"><h3>📋 토너먼트 이력 ('+tourneys.length+'회)</h3>';
   html+='<table class="v14-table"><tr><th>날짜</th><th>대회명</th><th>우승자</th><th>스코어</th></tr>';
   var recent=tourneys.slice(-5).reverse();
   for(var t=0;t<recent.length;t++){
@@ -401,16 +401,16 @@ if(confirm('토너먼트를 취소하시겠습니까?')){lsSet('active_tourney',
 // ===== 4. POST-ROUND REPORT GENERATOR Canvas PNG =====
 function showReportGenerator(){
 var pn=getPanel('report');
-var html='<div class="v14-title">&#x1F4CA; 포스트라운드 리포트</div>';
+var html='<div class="v14-title">📊 포스트라운드 리포트</div>';
 
 html+='<canvas id="v14-report-canvas" width="600" height="440" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px;cursor:pointer"></canvas>';
 
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">';
-html+='<button class="v14-btn v14-btn-primary" onclick="window._v14DownloadReport()">&#x1F4E5; PNG 다운로드</button>';
-html+='<button class="v14-btn" onclick="window._v14CopyReport()">&#x1F4CB; 클립보드 복사</button>';
+html+='<button class="v14-btn v14-btn-primary" onclick="window._v14DownloadReport()">📥 PNG 다운로드</button>';
+html+='<button class="v14-btn" onclick="window._v14CopyReport()">📋 클립보드 복사</button>';
 html+='</div>';
 
-html+='<div class="v14-card" style="margin-top:12px"><h3>&#x1F4D6; 리포트 요약</h3>';
+html+='<div class="v14-card" style="margin-top:12px"><h3>📖 리포트 요약</h3>';
 html+='<p style="color:#888;font-size:.85em">모든 기록 데이터를 종합한 라운드 성적표입니다. PNG로 저장하여 공유하세요.</p></div>';
 
 pn.innerHTML='<button class="v14-close" onclick="window._v14Close(\'report\')">&times;</button>'+html;
@@ -527,7 +527,7 @@ canvas.toBlob(function(blob){
 // ===== 5. SHOT PATTERN TREND ANALYSIS Canvas =====
 function showTrendAnalysis(){
 var pn=getPanel('trend');
-var html='<div class="v14-title">&#x1F4C8; 스코어 트렌드 분석</div>';
+var html='<div class="v14-title">📈 스코어 트렌드 분석</div>';
 
 html+='<canvas id="v14-trend-canvas" width="600" height="360" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
@@ -558,7 +558,7 @@ if(hmRounds.length>=2){
   html+='<div class="v14-stat-card"><div class="v14-stat-val" style="color:#00B4D8">'+avg+'</div><div class="v14-stat-label">평균</div></div>';
   html+='</div>';
 
-  html+='<div class="v14-card"><h3>&#x1F4D6; 트렌드 해석</h3>';
+  html+='<div class="v14-card"><h3>📖 트렌드 해석</h3>';
   if(improvement<=-3) html+='<p style="color:#00FF88;font-size:.88em">스코어가 '+Math.abs(improvement)+'타 감소! 꾸준한 실력 향상 중입니다.</p>';
   else if(improvement>=3) html+='<p style="color:#ff6b6b;font-size:.88em">스코어가 '+improvement+'타 증가. 약점 분석과 연습이 필요합니다.</p>';
   else html+='<p style="color:#888;font-size:.88em">스코어가 안정적으로 유지되고 있습니다.</p>';
@@ -656,7 +656,7 @@ ctx.fillText('최근 '+recent.length+'라운드',12,H-6);
 function showPracticeTracker(){
 var pn=getPanel('practice2');
 var sessions=lsGet('practice_sessions',[]);
-var html='<div class="v14-title">&#x1F3AF; 연습 임팩트 트래커</div>';
+var html='<div class="v14-title">🎯 연습 임팩트 트래커</div>';
 
 html+='<div class="v14-card"><h3>연습 세션 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
@@ -685,7 +685,7 @@ html+='</div>';
 html+='<canvas id="v14-practice-canvas" width="560" height="260" style="width:100%;max-width:560px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
 if(sessions.length>0){
-  html+='<div class="v14-card"><h3>&#x1F4CB; 최근 세션</h3>';
+  html+='<div class="v14-card"><h3>📋 최근 세션</h3>';
   html+='<table class="v14-table"><tr><th>날짜</th><th>종류</th><th>시간</th><th>볼</th><th>집중</th></tr>';
   var recent=sessions.slice(-5).reverse();
   for(var r=0;r<recent.length;r++){
@@ -775,7 +775,7 @@ function showCourseFlyover(){
 var pn=getPanel('flyover');
 var holeIdx=lsGet('flyover_hole',0);
 var hole=HOLE_TEMPLATES[holeIdx%HOLE_TEMPLATES.length];
-var html='<div class="v14-title">&#x1F6A9; 코스 플라이오버</div>';
+var html='<div class="v14-title">🚩 코스 플라이오버</div>';
 
 html+='<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px">';
 for(var h=0;h<HOLE_TEMPLATES.length;h++){
@@ -786,7 +786,7 @@ html+='</div>';
 
 html+='<canvas id="v14-flyover-canvas" width="560" height="380" style="width:100%;max-width:560px;height:auto;display:block;margin:0 auto 12px;border-radius:12px"></canvas>';
 
-html+='<div class="v14-card"><h3>&#x1F4D6; 홀 공략 가이드</h3>';
+html+='<div class="v14-card"><h3>📖 홀 공략 가이드</h3>';
 html+='<table class="v14-table"><tr><th>항목</th><th>정보</th></tr>';
 html+='<tr><td>홀</td><td style="color:#00FF88;font-weight:700">'+hole.name+'</td></tr>';
 html+='<tr><td>파</td><td>Par '+hole.par+'</td></tr>';
@@ -901,7 +901,7 @@ var FITNESS_TIPS=[
 function showFitnessAssessment(){
 var pn=getPanel('fitness');
 var scores=lsGet('fitness_scores',{flexibility:5,core:5,balance:5,rotation:5,endurance:5,grip:5});
-var html='<div class="v14-title">&#x1F3CB;&#xFE0F; 골프 피트니스 평가</div>';
+var html='<div class="v14-title">🏋️ 골프 피트니스 평가</div>';
 
 html+='<div class="v14-card"><h3>체력 평가 (1~10)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
@@ -932,10 +932,10 @@ html+='</div>';
 
 var weakIdx=0;var weakVal=11;
 for(var w=0;w<keys.length;w++){if(scores[keys[w]]<weakVal){weakVal=scores[keys[w]];weakIdx=w}}
-html+='<div class="v14-card" style="border-color:rgba(255,184,0,.3)"><h3 style="color:#FFB800">&#x26A0;&#xFE0F; 약점 분석: '+FITNESS_AXES[weakIdx]+'</h3>';
+html+='<div class="v14-card" style="border-color:rgba(255,184,0,.3)"><h3 style="color:#FFB800">⚠️ 약점 분석: '+FITNESS_AXES[weakIdx]+'</h3>';
 html+='<p style="color:#ccc;font-size:.85em;line-height:1.6">'+FITNESS_TIPS[weakIdx]+'</p></div>';
 
-html+='<div class="v14-card"><h3>&#x1F4D6; 전체 개선 팁</h3>';
+html+='<div class="v14-card"><h3>📖 전체 개선 팁</h3>';
 html+='<div style="display:grid;gap:4px">';
 for(var tp=0;tp<FITNESS_TIPS.length;tp++){
   var tipColor=scores[keys[tp]]<5?'#ff6b6b':scores[keys[tp]]<7?'#FFB800':'#00FF88';
@@ -1042,7 +1042,7 @@ var qs=lsGet('v14quiz_state',{answered:[],correct:0,currentIdx:0});
 var idx=qs.currentIdx;
 if(idx>=V14_QUIZ.length)idx=0;
 
-var html='<div class="v14-title">&#x1F4DD; 골프 퀴즈 v7 ('+V14_QUIZ.length+'문)</div>';
+var html='<div class="v14-title">📝 골프 퀴즈 v7 ('+V14_QUIZ.length+'문)</div>';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
 html+='<span style="color:#888;font-size:.85em">진행: '+(qs.answered||[]).length+'/'+V14_QUIZ.length+'</span>';
 html+='<span style="color:#00FF88;font-size:.85em">정답: '+qs.correct+'/'+((qs.answered||[]).length||0)+'</span>';
@@ -1089,18 +1089,18 @@ window._v14QuizReset=function(){lsSet('v14quiz_state',{answered:[],correct:0,cur
 
 // ===== ACHIEVEMENTS (+12 = 84 total) =====
 var V14_ACH=[
-{id:'v14_shotshape',name:'샷 분석가',desc:'샷 셰이프 분석기 사용',icon:'&#x1F3CC;&#xFE0F;',check:function(){return lsGet('ach_shotshape_viewed',false)}},
-{id:'v14_shotshape_10',name:'샷 마스터',desc:'샷 셰이프 10회 기록',icon:'&#x1F3AF;',check:function(){return lsGet('shotshape_records',[]).length>=10}},
-{id:'v14_caddie2',name:'AI 캐디 유저',desc:'스마트 캐디 GPS 사용',icon:'&#x26F3;',check:function(){return lsGet('ach_caddie2_viewed',false)}},
-{id:'v14_tourney',name:'토너먼트 참가자',desc:'토너먼트 모드 사용',icon:'&#x1F3C6;',check:function(){return lsGet('ach_tourney_viewed',false)}},
-{id:'v14_tourney_3',name:'토너먼트 마스터',desc:'토너먼트 3회 완료',icon:'&#x1F947;',check:function(){return lsGet('tournaments',[]).length>=3}},
-{id:'v14_report',name:'리포트 분석가',desc:'포스트라운드 리포트 생성',icon:'&#x1F4CA;',check:function(){return lsGet('ach_report_gen',false)}},
-{id:'v14_trend',name:'트렌드 관찰자',desc:'스코어 트렌드 분석 사용',icon:'&#x1F4C8;',check:function(){return lsGet('ach_trend_viewed',false)}},
-{id:'v14_practice',name:'연습왕',desc:'연습 임팩트 트래커 사용',icon:'&#x1F3AF;',check:function(){return lsGet('ach_practice_viewed',false)}},
-{id:'v14_practice_5',name:'연습 중독',desc:'연습 세션 5회 기록',icon:'&#x1F4AA;',check:function(){return lsGet('practice_sessions',[]).length>=5}},
-{id:'v14_flyover',name:'코스 탐험가',desc:'코스 플라이오버 사용',icon:'&#x1F6A9;',check:function(){return lsGet('ach_flyover_viewed',false)}},
-{id:'v14_fitness',name:'피트니스 평가자',desc:'골프 피트니스 평가 사용',icon:'&#x1F3CB;&#xFE0F;',check:function(){return lsGet('ach_fitness_viewed',false)}},
-{id:'v14_all',name:'v14 탐험가',desc:'v14 전체 기능 탐색',icon:'&#x1F30D;',check:function(){return lsGet('ach_shotshape_viewed',false)&&lsGet('ach_caddie2_viewed',false)&&lsGet('ach_tourney_viewed',false)&&lsGet('ach_report_gen',false)&&lsGet('ach_trend_viewed',false)&&lsGet('ach_practice_viewed',false)&&lsGet('ach_flyover_viewed',false)&&lsGet('ach_fitness_viewed',false)}}
+{id:'v14_shotshape',name:'샷 분석가',desc:'샷 셰이프 분석기 사용',icon:'🏌️',check:function(){return lsGet('ach_shotshape_viewed',false)}},
+{id:'v14_shotshape_10',name:'샷 마스터',desc:'샷 셰이프 10회 기록',icon:'🎯',check:function(){return lsGet('shotshape_records',[]).length>=10}},
+{id:'v14_caddie2',name:'AI 캐디 유저',desc:'스마트 캐디 GPS 사용',icon:'⛳',check:function(){return lsGet('ach_caddie2_viewed',false)}},
+{id:'v14_tourney',name:'토너먼트 참가자',desc:'토너먼트 모드 사용',icon:'🏆',check:function(){return lsGet('ach_tourney_viewed',false)}},
+{id:'v14_tourney_3',name:'토너먼트 마스터',desc:'토너먼트 3회 완료',icon:'🥇',check:function(){return lsGet('tournaments',[]).length>=3}},
+{id:'v14_report',name:'리포트 분석가',desc:'포스트라운드 리포트 생성',icon:'📊',check:function(){return lsGet('ach_report_gen',false)}},
+{id:'v14_trend',name:'트렌드 관찰자',desc:'스코어 트렌드 분석 사용',icon:'📈',check:function(){return lsGet('ach_trend_viewed',false)}},
+{id:'v14_practice',name:'연습왕',desc:'연습 임팩트 트래커 사용',icon:'🎯',check:function(){return lsGet('ach_practice_viewed',false)}},
+{id:'v14_practice_5',name:'연습 중독',desc:'연습 세션 5회 기록',icon:'💪',check:function(){return lsGet('practice_sessions',[]).length>=5}},
+{id:'v14_flyover',name:'코스 탐험가',desc:'코스 플라이오버 사용',icon:'🚩',check:function(){return lsGet('ach_flyover_viewed',false)}},
+{id:'v14_fitness',name:'피트니스 평가자',desc:'골프 피트니스 평가 사용',icon:'🏋️',check:function(){return lsGet('ach_fitness_viewed',false)}},
+{id:'v14_all',name:'v14 탐험가',desc:'v14 전체 기능 탐색',icon:'🌍',check:function(){return lsGet('ach_shotshape_viewed',false)&&lsGet('ach_caddie2_viewed',false)&&lsGet('ach_tourney_viewed',false)&&lsGet('ach_report_gen',false)&&lsGet('ach_trend_viewed',false)&&lsGet('ach_practice_viewed',false)&&lsGet('ach_flyover_viewed',false)&&lsGet('ach_fitness_viewed',false)}}
 ];
 
 function v14CheckAch(){
@@ -1127,14 +1127,14 @@ function injectV14QuickActions(){
 var existing=document.querySelector('.v14-scroll-nav');if(existing)return;
 var nav=document.createElement('div');nav.className='v14-scroll-nav';
 var buttons=[
-  {icon:'&#x1F3CC;&#xFE0F;',title:'샷분석 (Shift+S)',fn:'showShotShapeAnalyzer'},
-  {icon:'&#x26F3;',title:'캐디 (Shift+G)',fn:'showSmartCaddie'},
-  {icon:'&#x1F3C6;',title:'토너먼트 (Shift+T)',fn:'showTournamentMode'},
-  {icon:'&#x1F4CA;',title:'리포트 (Shift+R)',fn:'showReportGenerator'},
-  {icon:'&#x1F4C8;',title:'트렌드 (Shift+N)',fn:'showTrendAnalysis'},
-  {icon:'&#x1F3AF;',title:'연습 (Shift+P)',fn:'showPracticeTracker'},
-  {icon:'&#x1F6A9;',title:'플라이오버 (Shift+V)',fn:'showCourseFlyover'},
-  {icon:'&#x1F3CB;&#xFE0F;',title:'피트니스 (Shift+B)',fn:'showFitnessAssessment'}
+  {icon:'🏌️',title:'샷분석 (Shift+S)',fn:'showShotShapeAnalyzer'},
+  {icon:'⛳',title:'캐디 (Shift+G)',fn:'showSmartCaddie'},
+  {icon:'🏆',title:'토너먼트 (Shift+T)',fn:'showTournamentMode'},
+  {icon:'📊',title:'리포트 (Shift+R)',fn:'showReportGenerator'},
+  {icon:'📈',title:'트렌드 (Shift+N)',fn:'showTrendAnalysis'},
+  {icon:'🎯',title:'연습 (Shift+P)',fn:'showPracticeTracker'},
+  {icon:'🚩',title:'플라이오버 (Shift+V)',fn:'showCourseFlyover'},
+  {icon:'🏋️',title:'피트니스 (Shift+B)',fn:'showFitnessAssessment'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');btn.className='v14-nav-btn';

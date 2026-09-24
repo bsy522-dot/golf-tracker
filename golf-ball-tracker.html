@@ -682,6 +682,58 @@ input[type="number"]:focus { border-color: var(--primary); }
 .bgm-btn.active { background:rgba(78,205,196,0.15); border-color:rgba(78,205,196,0.4); color:var(--accent); }
 
 </style>
+<style id="gtMobile0924">
+/* ===== 폰 화면 수선 (2026-09-24) — 760px 이하에서만 바뀐다. PC 화면은 그대로 ===== */
+#gtMoreBtn,#gtMoreSheet{display:none}
+@media (max-width:760px){
+  body{word-break:keep-all;overflow-wrap:anywhere}
+  /* 0) 업적 알림·토스트: 가운데 정렬 때문에 폭이 화면 절반으로 묶여 글자가 세로로 쪼개지던 것 → 글자만큼 넓게(화면 안) */
+  html body [class*="-ach-popup"],html body [class*="-toast"],html body .achievement-popup,html body .toast{width:max-content;max-width:calc(100vw - 24px);box-sizing:border-box;white-space:normal}
+  html body [class*="-ach-popup"] > *,html body .achievement-popup > *{min-width:0}
+  /* 1) 양옆 아이콘 기둥 6묶음 + 바닥 기능줄 → 오른쪽 위 '⋯' 하나(누르면 이름 붙은 격자 서랍) */
+  .v6-quick-actions,.v7-quick-actions,.v8-quick-actions,.v9-quick-actions,.v10-quick-actions,.v11-quick-actions,
+  .v12-scroll-nav,.v13-scroll-nav,.v14-scroll-nav,.v15-scroll-nav,.v16-scroll-nav{display:none !important}
+  #gtMoreBtn{display:flex;position:fixed;top:var(--safe-top);right:10px;z-index:1001;width:44px;height:44px;padding:0;border-radius:22px;border:1px solid rgba(0,255,136,.35);background:rgba(8,14,24,.88);color:#00FF88;font-size:22px;line-height:1;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.45);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:pointer;font-family:inherit}
+  body:not(:has(#camera-view.active)) #gtMoreBtn, body:has(#permission-screen.hidden):has(#tutorial-overlay.active) #gtMoreBtn{display:none}
+  #gtMoreSheet.show{display:flex;position:fixed;inset:0;z-index:10050;background:rgba(0,0,0,.6);align-items:flex-end;justify-content:center}
+  #gtMoreSheet .gtm-card{width:100%;max-height:88vh;display:flex;flex-direction:column;background:linear-gradient(145deg,rgba(8,14,24,.99),rgba(4,6,14,.99));border-top:1px solid rgba(0,255,136,.3);border-radius:18px 18px 0 0;box-shadow:0 -8px 32px rgba(0,0,0,.6)}
+  #gtMoreSheet .gtm-head{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 16px;border-bottom:1px solid rgba(255,255,255,.07)}
+  #gtMoreSheet .gtm-title{flex:1;min-width:0;font-size:16px;font-weight:800;color:#00FF88}
+  #gtMoreSheet .gtm-close{flex:0 0 auto;width:44px;height:44px;padding:0;border-radius:22px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#ccc;font-size:20px;cursor:pointer;font-family:inherit}
+  #gtMoreSheet .gtm-find{flex:0 0 auto;margin:8px 12px 2px;padding:9px 12px;min-width:0;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#fff;font-size:15px;font-family:inherit;user-select:text;-webkit-user-select:text}
+  #gtMoreSheet .gtm-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:2px 12px calc(16px + env(safe-area-inset-bottom))}
+  #gtMoreSheet .gtm-sec{margin:12px 2px 6px;font-size:12px;font-weight:700;color:#4ECDC4;letter-spacing:.5px}
+  #gtMoreSheet .gtm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,7.5em),1fr));gap:6px;font-size:13px}
+  #gtMoreSheet .gtm-item{display:flex;align-items:center;gap:8px;min-width:0;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid rgba(0,255,136,.12);background:rgba(0,255,136,.04);color:#e8e8e8;font-size:13px;font-family:inherit;text-align:left;cursor:pointer}
+  #gtMoreSheet .gtm-ic{flex:0 0 auto;font-size:1.25em;line-height:1}
+  #gtMoreSheet .gtm-tx{flex:1;min-width:0;line-height:1.25}
+  #gtMoreSheet .gtm-empty{padding:24px 4px;color:#888;font-size:13px;text-align:center}
+  html.light-mode #gtMoreSheet .gtm-card{background:linear-gradient(145deg,#f5f5f0,#ecece6)}
+  html.light-mode #gtMoreSheet .gtm-item{color:#222}
+  html.light-mode #gtMoreSheet .gtm-find{color:#222}
+  /* 2) 첫 화면: 가운데 정렬로 위(깃발 아이콘)가 잘리고 START 가 바닥에 깔리던 것 → 넘치면 위에서부터·안에서 스크롤 */
+  #permission-screen{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:calc(var(--safe-top) + 44px) 20px calc(var(--safe-bottom) + 16px)}
+  .perm-logo{margin-top:auto;flex-shrink:0;width:76px;height:76px;border-radius:22px;font-size:38px;margin-bottom:16px}
+  .perm-title{margin-bottom:6px}
+  .perm-subtitle{margin-bottom:14px}
+  .perm-desc{opacity:.75;margin-bottom:22px;max-width:340px}
+  .perm-features{margin-bottom:22px;gap:10px;flex-shrink:0}
+  .perm-feat{min-width:0;padding:12px 10px}
+  .perm-feat-text{opacity:.7}
+  #perm-btn{flex-shrink:0;margin-bottom:auto;min-height:52px;width:100%;max-width:380px;padding:14px 16px;letter-spacing:1px}
+  /* 3) 카메라 화면: 오른쪽 위 버튼 줄을 '⋯' 자리만큼 왼쪽으로, 안내 문장은 화면 폭으로 */
+  #hud-top{padding-right:62px}
+  #hud-top .btn-row{gap:6px}
+  .hud-label{letter-spacing:1px;white-space:nowrap}
+  #center-guide{left:16px;right:16px;transform:translateY(-50%)}
+  .guide-hint{opacity:.5}
+  /* 4) 시작 단추: 큰 글자에서 'TRACKING' 이 동그라미 밖으로 넘치던 것 → 글자만큼 늘어나는 알약 */
+  #track-btn{width:auto;min-width:72px;padding:0 14px;letter-spacing:.5px}
+  #track-btn span{letter-spacing:.5px !important;white-space:nowrap}
+  /* 5) 튜토리얼 '건너뛰기': 글자 링크(높이 25px) → 누름 영역 44px */
+  .tut-skip{min-height:44px;padding:10px 14px}
+}
+</style>
 </head>
 <body>
 <div id="app">
@@ -4070,5 +4122,114 @@ if ("serviceWorker" in navigator) {
 <script src="v27_patch.js"></script>
 <script src="v28_patch.js"></script>
 <script src="v29_patch.js"></script>
+<script>
+/* ===== 폰 화면 수선 (2026-09-24): 양옆 아이콘 기둥·바닥 기능줄 → '⋯' 서랍 하나 =====
+   '⋯' 버튼과 서랍은 760px 이하에서만 보인다(CSS #gtMobile0924). PC 는 원래 아이콘 줄 그대로.
+   서랍은 열 때마다 원래 버튼들을 모아 이름 붙은 격자로 보여 주고(같은 기능은 한 번만),
+   누르면 서랍을 닫고 '원래 버튼'을 그대로 누른다 → 기능·효과음·저장은 원래 코드 그대로.
+   서랍은 body 바로 아래 전체화면 + show 클래스라 hub-back 배선이 ◁ 로 닫는다. */
+(function(){
+  var GROUPS = [
+    {name:'빠른 메뉴', sel:'.v6-quick-actions,.v7-quick-actions,.v8-quick-actions,.v9-quick-actions,.v10-quick-actions,.v11-quick-actions'},
+    {name:'분석 도구', sel:'.v12-scroll-nav,.v13-scroll-nav,.v14-scroll-nav,.v15-scroll-nav,.v16-scroll-nav'}
+  ];
+  var SPLIT = null;
+  try { SPLIT = new RegExp('^([^\\p{L}\\p{N}]*)([\\s\\S]*)$', 'u'); } catch (e) { SPLIT = /^([^A-Za-z0-9ㄱ-힣]*)([\s\S]*)$/; }
+  var each = function(list, fn){ Array.prototype.forEach.call(list, fn); };
+  var dec = document.createElement('textarea');
+  var btn, sheet, body, find;
+
+  function clean(s){
+    dec.innerHTML = String(s || '').replace(/</g, '&lt;'); /* 혹시 남은 &#x…; 는 글자로 */
+    return dec.value.replace(/\s*\((?:(?:Shift|Ctrl|Alt)\+)*[A-Za-z0-9\/?.,;=-]{1,3}\)\s*$/, '').replace(/\s+/g, ' ').trim();
+  }
+  function parts(b){
+    var ic = b.querySelector('[class*="-nav-icon"]'), lb = b.querySelector('[class*="-nav-label"]');
+    var title = clean(b.getAttribute('title') || b.getAttribute('aria-label'));
+    var icon, label;
+    if (ic || lb) { icon = ic ? ic.textContent.trim() : ''; label = lb ? clean(lb.textContent) : ''; }
+    else { var m = (b.textContent || '').trim().match(SPLIT); icon = m ? m[1].trim() : ''; label = m ? clean(m[2]) : ''; }
+    if (title && title.length > label.length) label = title; /* 기둥 버튼은 그림뿐 → 풍선 도움말이 이름 */
+    if (!label) return null;
+    return {icon: icon || '•', label: label};
+  }
+  function collect(){
+    var seen = {}, out = [];
+    GROUPS.forEach(function(g){
+      var items = [];
+      each(document.querySelectorAll(g.sel), function(c){
+        if (c.style.display === 'none') return;
+        each(c.querySelectorAll('button'), function(b){
+          if (b.style.display === 'none') return;
+          var k = b.getAttribute('data-fn') || (b.getAttribute('onclick') || '') || b.textContent;
+          if (seen[k]) return; seen[k] = 1; items.push(b);
+        });
+      });
+      out.push({name:g.name, items:items});
+    });
+    return out;
+  }
+  function filter(){
+    var q = (find.value || '').replace(/\s+/g, '').toLowerCase(), shown = 0;
+    each(body.querySelectorAll('.gtm-group'), function(g){
+      var n = 0;
+      each(g.querySelectorAll('.gtm-item'), function(it){
+        var hit = !q || it.getAttribute('data-k').indexOf(q) >= 0;
+        it.style.display = hit ? '' : 'none'; if (hit) n++;
+      });
+      g.style.display = n ? '' : 'none'; shown += n;
+      var sec = g.querySelector('.gtm-sec'); if (sec) sec.textContent = sec.getAttribute('data-name') + ' · ' + n;
+    });
+    var empty = body.querySelector('.gtm-empty');
+    if (empty) empty.style.display = shown ? 'none' : '';
+  }
+  function render(){
+    body.innerHTML = '';
+    collect().forEach(function(g){
+      var grp = document.createElement('div'); grp.className = 'gtm-group';
+      var sec = document.createElement('div'); sec.className = 'gtm-sec';
+      var grid = document.createElement('div'); grid.className = 'gtm-grid';
+      var n = 0;
+      g.items.forEach(function(orig){
+        var p = parts(orig); if (!p) return;
+        var it = document.createElement('button');
+        it.type = 'button'; it.className = 'gtm-item';
+        it.setAttribute('data-k', (p.icon + p.label).replace(/\s+/g, '').toLowerCase());
+        var ic = document.createElement('span'); ic.className = 'gtm-ic'; ic.textContent = p.icon;
+        var tx = document.createElement('span'); tx.className = 'gtm-tx'; tx.textContent = p.label;
+        it.appendChild(ic); it.appendChild(tx);
+        it.addEventListener('click', function(){ close(); try { orig.click(); } catch (e) {} });
+        grid.appendChild(it); n++;
+      });
+      if (!n) return;
+      sec.setAttribute('data-name', g.name); sec.textContent = g.name + ' · ' + n;
+      grp.appendChild(sec); grp.appendChild(grid); body.appendChild(grp);
+    });
+    var empty = document.createElement('div'); empty.className = 'gtm-empty'; empty.textContent = '찾는 기능이 없어요'; empty.style.display = 'none';
+    body.appendChild(empty);
+  }
+  function open(){ render(); find.value = ''; filter(); sheet.classList.add('show'); body.scrollTop = 0; }
+  function close(){ if (sheet) sheet.classList.remove('show'); }
+
+  btn = document.createElement('button');
+  btn.id = 'gtMoreBtn'; btn.type = 'button'; btn.textContent = '⋯';
+  btn.title = '기능 모음'; btn.setAttribute('aria-label', '기능 모음 열기');
+  btn.addEventListener('click', open);
+  sheet = document.createElement('div');
+  sheet.id = 'gtMoreSheet'; sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-label', '기능 모음');
+  sheet.innerHTML = '<div class="gtm-card"><div class="gtm-head"><div class="gtm-title">기능 모음</div>' +
+    '<button type="button" class="gtm-close" aria-label="닫기">✕</button></div>' +
+    '<input class="gtm-find" type="search" placeholder="기능 찾기 (예: 퍼팅)" aria-label="기능 찾기">' +
+    '<div class="gtm-body"></div></div>';
+  body = sheet.querySelector('.gtm-body'); find = sheet.querySelector('.gtm-find');
+  sheet.querySelector('.gtm-close').addEventListener('click', close);
+  sheet.addEventListener('click', function(e){ if (e.target === sheet) close(); });
+  find.addEventListener('input', filter);
+  /* 찾기 칸에 치는 글자가 앱 단축키(Shift+…)로 새지 않게 */
+  ['keydown', 'keyup', 'keypress'].forEach(function(t){ find.addEventListener(t, function(e){ e.stopPropagation(); }); });
+  document.body.appendChild(btn);
+  document.body.appendChild(sheet);
+})();
+</script>
 </body>
 </html>

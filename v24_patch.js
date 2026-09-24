@@ -29,39 +29,39 @@ var pn=getPanel('spin');
 var log=lsGet('spin_log',[]);
 var selClub=lsGet('spin_club',0);
 var html='<button class="v24-close" onclick="window._v24Close(\'spin\')">&times;</button>';
-html+='<div class="v24-title">&#x1F300; &#xC2A4;&#xD540;&#xC728; &#xCD94;&#xC815;&#xAE30;</div>';
+html+='<div class="v24-title">🌀 스핀율 추정기</div>';
 html+='<canvas id="v24-spin-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>&#xD074;&#xB7FD; &#xC120;&#xD0DD; &amp; &#xC785;&#xB825;</h3>';
+html+='<div class="v24-card"><h3>클럽 선택 &amp; 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:8px">';
 for(var i=0;i<CLUBS_SPIN.length;i++){
 html+='<button class="v24-btn v24-btn-sm'+(i===selClub?' v24-btn-primary':'')+'" onclick="window._v24SelectSpinClub('+i+')" style="border-color:'+CLUBS_SPIN[i].color+'40;color:'+CLUBS_SPIN[i].color+'">'+CLUBS_SPIN[i].name+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
-html+='<div><label class="v24-label">&#xBC31;&#xC2A4;&#xD540; (rpm)</label><input class="v24-input" type="number" id="v24-backspin" value="'+Math.round((CLUBS_SPIN[selClub].backMin+CLUBS_SPIN[selClub].backMax)/2)+'" min="1000" max="15000"></div>';
-html+='<div><label class="v24-label">&#xC0AC;&#xC774;&#xB4DC;&#xC2A4;&#xD540; (rpm)</label><input class="v24-input" type="number" id="v24-sidespin" value="0" min="-2000" max="2000"></div>';
-html+='<div><label class="v24-label">&#xBC1C;&#xC0AC;&#xAC01; (&deg;)</label><input class="v24-input" type="number" id="v24-launch" value="12" min="0" max="45" step="0.5"></div>';
+html+='<div><label class="v24-label">백스핀 (rpm)</label><input class="v24-input" type="number" id="v24-backspin" value="'+Math.round((CLUBS_SPIN[selClub].backMin+CLUBS_SPIN[selClub].backMax)/2)+'" min="1000" max="15000"></div>';
+html+='<div><label class="v24-label">사이드스핀 (rpm)</label><input class="v24-input" type="number" id="v24-sidespin" value="0" min="-2000" max="2000"></div>';
+html+='<div><label class="v24-label">발사각 (&deg;)</label><input class="v24-input" type="number" id="v24-launch" value="12" min="0" max="45" step="0.5"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v24-btn v24-btn-primary" onclick="window._v24CalcSpin()">&#x1F4CA; &#xBD84;&#xC11D;</button>';
-html+='<button class="v24-btn" onclick="window._v24SaveSpin()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v24-btn v24-btn-primary" onclick="window._v24CalcSpin()">📊 분석</button>';
+html+='<button class="v24-btn" onclick="window._v24SaveSpin()">💾 저장</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
 var c=CLUBS_SPIN[selClub];
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+c.color+'">'+c.backMin+'~'+c.backMax+'</div><div class="v24-stat-label">&#xC774;&#xC0C1; &#xBC31;&#xC2A4;&#xD540; &#xBC94;&#xC704;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">&pm;'+c.sideRange+'</div><div class="v24-stat-label">&#xC0AC;&#xC774;&#xB4DC; &#xD5C8;&#xC6A9;&#xCE58;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+c.color+'">'+c.backMin+'~'+c.backMax+'</div><div class="v24-stat-label">이상 백스핀 범위</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">&pm;'+c.sideRange+'</div><div class="v24-stat-label">사이드 허용치</div></div>';
 var avgBack=0,avgSide=0,cnt=0;
 for(var j=0;j<log.length;j++){if(log[j].club===selClub){avgBack+=log[j].back;avgSide+=Math.abs(log[j].side);cnt++;}}
 if(cnt>0){avgBack=Math.round(avgBack/cnt);avgSide=Math.round(avgSide/cnt);}
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+avgBack+'</div><div class="v24-stat-label">&#xD3C9;&#xADE0; &#xBC31;&#xC2A4;&#xD540;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">&#xCD1D; &#xAE30;&#xB85D;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+avgBack+'</div><div class="v24-stat-label">평균 백스핀</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">총 기록</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetSpin()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetSpin()">초기화</button>';
 pn.innerHTML=html;openPanel('spin');drawSpinCanvas(log,selClub);
 }
 window._v24SelectSpinClub=function(i){lsSet('spin_club',i);showSpinRate();};
 window._v24CalcSpin=function(){playSfx('spin_calc');var c=lsGet('spin_club',0);var cl=CLUBS_SPIN[c];var b=parseInt(document.getElementById('v24-backspin').value)||0;var s=parseInt(document.getElementById('v24-sidespin').value)||0;var grade='D';if(b>=cl.backMin&&b<=cl.backMax&&Math.abs(s)<=cl.sideRange*0.5)grade='S';else if(b>=cl.backMin&&b<=cl.backMax&&Math.abs(s)<=cl.sideRange)grade='A';else if(Math.abs(b-(cl.backMin+cl.backMax)/2)<2000)grade='B';else grade='C';showToast(cl.name+' Spin Grade: '+grade);};
-window._v24SaveSpin=function(){playSfx('save_v24');var c=lsGet('spin_club',0);var b=parseInt(document.getElementById('v24-backspin').value)||0;var s=parseInt(document.getElementById('v24-sidespin').value)||0;var l=parseFloat(document.getElementById('v24-launch').value)||12;var log=lsGet('spin_log',[]);log.push({date:todayStr(),club:c,back:b,side:s,launch:l});if(log.length>100)log.shift();lsSet('spin_log',log);showToast('&#xC2A4;&#xD540; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();showSpinRate();};
+window._v24SaveSpin=function(){playSfx('save_v24');var c=lsGet('spin_club',0);var b=parseInt(document.getElementById('v24-backspin').value)||0;var s=parseInt(document.getElementById('v24-sidespin').value)||0;var l=parseFloat(document.getElementById('v24-launch').value)||12;var log=lsGet('spin_log',[]);log.push({date:todayStr(),club:c,back:b,side:s,launch:l});if(log.length>100)log.shift();lsSet('spin_log',log);showToast('스핀 데이터 저장!');checkAchievements();showSpinRate();};
 window._v24ResetSpin=function(){lsSet('spin_log',[]);showSpinRate();};
 function drawSpinCanvas(log,selClub){
 var c=document.getElementById('v24-spin-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -100,8 +100,8 @@ ctx.fillStyle=sColor+'80';ctx.beginPath();ctx.arc(x,y,sideAbs/cl.sideRange*8+2,0
 ctx.font='10px sans-serif';ctx.textAlign='center';ctx.fillStyle='rgba(255,255,255,0.4)';
 for(var i=0;i<last20.length;i+=Math.max(1,Math.floor(last20.length/8))){ctx.fillText(last20[i].date.slice(5),L+i*segW,B+14);}
 ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='10px sans-serif';ctx.textAlign='left';
-ctx.fillText('&#x25CF; backspin trend    &#x25CB; sidespin magnitude (circle size)',L,H-8);
-ctx.fillStyle='#00FF88';ctx.fillText('&#x25A0; Ideal zone',R-120,H-8);
+ctx.fillText('● backspin trend    ○ sidespin magnitude (circle size)',L,H-8);
+ctx.fillStyle='#00FF88';ctx.fillText('■ Ideal zone',R-120,H-8);
 }
 
 // ===== 2. CLUB FITTING PROFILE Canvas 600x380 =====
@@ -113,34 +113,34 @@ var pn=getPanel('fitting');
 var profile=lsGet('fit_profile',FIT_DEFAULTS.slice());
 var log=lsGet('fit_log',[]);
 var html='<button class="v24-close" onclick="window._v24Close(\'fitting\')">&times;</button>';
-html+='<div class="v24-title">&#x1F3CC; &#xD074;&#xB7FD; &#xD53C;&#xD305; &#xD504;&#xB85C;&#xD30C;&#xC77C;</div>';
+html+='<div class="v24-title">🏌 클럽 피팅 프로파일</div>';
 html+='<canvas id="v24-fit-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>&#xD53C;&#xD305; &#xD30C;&#xB77C;&#xBBF8;&#xD130; (1~10)</h3>';
+html+='<div class="v24-card"><h3>피팅 파라미터 (1~10)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 for(var i=0;i<FIT_AXES.length;i++){
 html+='<div><label class="v24-label">'+FIT_AXES[i]+'</label><input class="v24-input" type="range" min="1" max="10" value="'+profile[i]+'" id="v24-fit-'+i+'" oninput="window._v24UpdateFit('+i+',this.value)"><span id="v24-fitv-'+i+'" style="font-size:11px;color:#00FF88;margin-left:4px">'+profile[i]+'</span></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v24-btn v24-btn-primary" onclick="window._v24SaveFit()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v24-btn" onclick="window._v24AnalyzeFit()">&#x1F50D; &#xBD84;&#xC11D;</button>';
+html+='<button class="v24-btn v24-btn-primary" onclick="window._v24SaveFit()">💾 저장</button>';
+html+='<button class="v24-btn" onclick="window._v24AnalyzeFit()">🔍 분석</button>';
 html+='</div></div>';
 var grade=calcFitGrade(profile);
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v24-stat-label">&#xD53C;&#xD305; &#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v24-stat-label">피팅 등급</div></div>';
 var avg=0;for(var i=0;i<profile.length;i++)avg+=profile[i];avg=Math.round(avg*10/profile.length)/10;
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+avg+'</div><div class="v24-stat-label">&#xD3C9;&#xADE0; &#xC810;&#xC218;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+avg+'</div><div class="v24-stat-label">평균 점수</div></div>';
 var minIdx=0;for(var i=1;i<profile.length;i++)if(profile[i]<profile[minIdx])minIdx=i;
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B;font-size:12px">'+FIT_AXES[minIdx]+'</div><div class="v24-stat-label">&#xAC1C;&#xC120; &#xD544;&#xC694;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">&#xD53C;&#xD305; &#xAE30;&#xB85D;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B;font-size:12px">'+FIT_AXES[minIdx]+'</div><div class="v24-stat-label">개선 필요</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">피팅 기록</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetFit()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetFit()">초기화</button>';
 pn.innerHTML=html;openPanel('fitting');drawFitCanvas(profile,log);
 }
 function calcFitGrade(p){var a=0;for(var i=0;i<p.length;i++)a+=p[i];a/=p.length;var mn=10;for(var i=0;i<p.length;i++)if(p[i]<mn)mn=p[i];if(a>=8&&mn>=6)return'S';if(a>=6.5&&mn>=4)return'A';if(a>=5)return'B';return'C';}
 window._v24UpdateFit=function(i,v){var p=lsGet('fit_profile',FIT_DEFAULTS.slice());p[i]=parseInt(v);lsSet('fit_profile',p);var el=document.getElementById('v24-fitv-'+i);if(el)el.textContent=v;drawFitCanvas(p,lsGet('fit_log',[]));};
-window._v24SaveFit=function(){playSfx('save_v24');var p=lsGet('fit_profile',FIT_DEFAULTS.slice());var log=lsGet('fit_log',[]);log.push({date:todayStr(),profile:p.slice()});if(log.length>30)log.shift();lsSet('fit_log',log);showToast('&#xD53C;&#xD305; &#xD504;&#xB85C;&#xD30C;&#xC77C; &#xC800;&#xC7A5;!');checkAchievements();showClubFitting();};
-window._v24AnalyzeFit=function(){playSfx('spin_calc');var p=lsGet('fit_profile',FIT_DEFAULTS.slice());var tips=[];if(p[0]<5)tips.push('Shaft flex &#xB108;&#xBB34; &#xBF51;&#xBF51;&#xD568; - Regular&#xB85C; &#xAD50;&#xCCB4; &#xACE0;&#xB824;');if(p[1]<5)tips.push('Lie angle &#xC870;&#xC815; &#xD544;&#xC694; - &#xC0F7;&#xC774; &#xBC29;&#xD5A5; &#xD2C0;&#xC5B4;&#xC9D0;');if(p[4]<5)tips.push('Grip size &#xC870;&#xC815; - &#xC190; &#xD06C;&#xAE30;&#xC5D0; &#xB9DE;&#xB294; &#xADF8;&#xB9BD;&#xC73C;&#xB85C;');if(tips.length===0)tips.push('&#xC804;&#xCCB4;&#xC801;&#xC73C;&#xB85C; &#xC591;&#xD638;&#xD55C; &#xD53C;&#xD305;&#xC785;&#xB2C8;&#xB2E4;!');showToast(tips[0]);};
+window._v24SaveFit=function(){playSfx('save_v24');var p=lsGet('fit_profile',FIT_DEFAULTS.slice());var log=lsGet('fit_log',[]);log.push({date:todayStr(),profile:p.slice()});if(log.length>30)log.shift();lsSet('fit_log',log);showToast('피팅 프로파일 저장!');checkAchievements();showClubFitting();};
+window._v24AnalyzeFit=function(){playSfx('spin_calc');var p=lsGet('fit_profile',FIT_DEFAULTS.slice());var tips=[];if(p[0]<5)tips.push('Shaft flex 너무 뽑뽑함 - Regular로 교체 고려');if(p[1]<5)tips.push('Lie angle 조정 필요 - 샷이 방향 틀어짐');if(p[4]<5)tips.push('Grip size 조정 - 손 크기에 맞는 그립으로');if(tips.length===0)tips.push('전체적으로 양호한 피팅입니다!');showToast(tips[0]);};
 window._v24ResetFit=function(){lsSet('fit_log',[]);lsSet('fit_profile',FIT_DEFAULTS.slice());showClubFitting();};
 function drawFitCanvas(profile,log){
 var c=document.getElementById('v24-fit-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -164,7 +164,7 @@ for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;var r=R*profile[i]/10;ctx.fi
 ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.fillText(profile[i]+'',cx+r*Math.cos(a),cy+r*Math.sin(a)-10);
 }
 ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='10px sans-serif';ctx.textAlign='left';
-ctx.fillText('&#x25CF; Current    &#x25CB; Previous',10,H-8);
+ctx.fillText('● Current    ○ Previous',10,H-8);
 var grade=calcFitGrade(profile);ctx.textAlign='right';ctx.fillStyle=grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B';
 ctx.font='bold 18px sans-serif';ctx.fillText('Grade '+grade,W-10,H-8);
 }
@@ -177,35 +177,35 @@ playSfx('zone_open');
 var pn=getPanel('zone');
 var data=lsGet('zone_data',{});
 var html='<button class="v24-close" onclick="window._v24Close(\'zone\')">&times;</button>';
-html+='<div class="v24-title">&#x1F3AF; &#xC2A4;&#xCF54;&#xC5B4;&#xB9C1; &#xC874; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v24-title">🎯 스코어링 존 분석기</div>';
 html+='<canvas id="v24-zone-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>&#xAC70;&#xB9AC; &#xC874;&#xBCC4; &#xC0F7; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v24-card"><h3>거리 존별 샷 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">';
 for(var i=0;i<ZONES.length;i++){
 var zd=data[i]||{shots:0,good:0};
 html+='<div class="v24-card" style="border-color:'+ZONE_COLORS[i]+'30">';
 html+='<div style="font-size:11px;color:'+ZONE_COLORS[i]+';font-weight:bold;margin-bottom:4px">'+ZONES[i]+'</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">';
-html+='<div><label class="v24-label">&#xCD1D;&#xC0F7;</label><input class="v24-input" type="number" id="v24-zs-'+i+'" value="'+zd.shots+'" min="0"></div>';
+html+='<div><label class="v24-label">총샷</label><input class="v24-input" type="number" id="v24-zs-'+i+'" value="'+zd.shots+'" min="0"></div>';
 html+='<div><label class="v24-label">Good</label><input class="v24-input" type="number" id="v24-zg-'+i+'" value="'+zd.good+'" min="0"></div>';
 html+='</div></div>';
 }
 html+='</div>';
-html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveZone()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveZone()">💾 저장</button>';
 html+='</div>';
 var totalShots=0,totalGood=0;for(var i=0;i<ZONES.length;i++){var zd=data[i]||{shots:0,good:0};totalShots+=zd.shots;totalGood+=zd.good;}
 var pct=totalShots>0?Math.round(totalGood*100/totalShots):0;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v24-stat-label">&#xCD1D; &#xC0F7;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+totalGood+'</div><div class="v24-stat-label">Good &#xC0F7;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v24-stat-label">&#xC131;&#xACF5;&#xB960;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v24-stat-label">총 샷</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+totalGood+'</div><div class="v24-stat-label">Good 샷</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v24-stat-label">성공률</div></div>';
 var bestZone='-';var bestPct=0;for(var i=0;i<ZONES.length;i++){var zd=data[i]||{shots:0,good:0};if(zd.shots>=5){var p=zd.good*100/zd.shots;if(p>bestPct){bestPct=p;bestZone=ZONES[i];}}}
 html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7;font-size:12px">'+bestZone+'</div><div class="v24-stat-label">Best Zone</div></div>';
 html+='</div>';
-if(totalShots>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetZone()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(totalShots>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetZone()">초기화</button>';
 pn.innerHTML=html;openPanel('zone');drawZoneCanvas(data);
 }
-window._v24SaveZone=function(){playSfx('save_v24');var data={};for(var i=0;i<ZONES.length;i++){data[i]={shots:parseInt(document.getElementById('v24-zs-'+i).value)||0,good:parseInt(document.getElementById('v24-zg-'+i).value)||0};}lsSet('zone_data',data);showToast('&#xC874;&#xBCC4; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();showScoringZone();};
+window._v24SaveZone=function(){playSfx('save_v24');var data={};for(var i=0;i<ZONES.length;i++){data[i]={shots:parseInt(document.getElementById('v24-zs-'+i).value)||0,good:parseInt(document.getElementById('v24-zg-'+i).value)||0};}lsSet('zone_data',data);showToast('존별 데이터 저장!');checkAchievements();showScoringZone();};
 window._v24ResetZone=function(){lsSet('zone_data',{});showScoringZone();};
 function drawZoneCanvas(data){
 var c=document.getElementById('v24-zone-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -243,9 +243,9 @@ playSfx('recovery_open');
 var pn=getPanel('recovery');
 var log=lsGet('recovery_log',[]);
 var html='<button class="v24-close" onclick="window._v24Close(\'recovery\')">&times;</button>';
-html+='<div class="v24-title">&#x1F504; &#xB77C;&#xC6B4;&#xB4DC; &#xBCF5;&#xAD6C;&#xB825; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v24-title">🔄 라운드 복구력 분석기</div>';
 html+='<canvas id="v24-recovery-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>18&#xD640; &#xC2A4;&#xCF54;&#xC5B4; &#xC785;&#xB825;</h3>';
+html+='<div class="v24-card"><h3>18홀 스코어 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(9,1fr);gap:3px">';
 for(var i=1;i<=18;i++){
 var val=lsGet('rcv_h'+i,0);
@@ -253,23 +253,23 @@ html+='<div><label class="v24-label" style="text-align:center">H'+i+'</label><in
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v24-btn v24-btn-primary" onclick="window._v24SaveRecovery()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v24-btn" onclick="window._v24AnalyzeRecovery()">&#x1F4CA; &#xBD84;&#xC11D;</button>';
+html+='<button class="v24-btn v24-btn-primary" onclick="window._v24SaveRecovery()">💾 저장</button>';
+html+='<button class="v24-btn" onclick="window._v24AnalyzeRecovery()">📊 분석</button>';
 html+='</div></div>';
 var bouncebacks=0,bounceTries=0;
 for(var j=0;j<log.length;j++){var r=log[j].holes;for(var h=1;h<18;h++){if(r[h-1]>0){bounceTries++;if(r[h]<=0)bouncebacks++;}}}
 var recRate=bounceTries>0?Math.round(bouncebacks*100/bounceTries):0;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+recRate+'%</div><div class="v24-stat-label">&#xBCF5;&#xAD6C;&#xC728;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+bouncebacks+'</div><div class="v24-stat-label">&#xBC14;&#xC6B4;&#xC2A4;&#xBC31;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+bounceTries+'</div><div class="v24-stat-label">&#xAE30;&#xD68C;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+recRate+'%</div><div class="v24-stat-label">복구율</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+bouncebacks+'</div><div class="v24-stat-label">바운스백</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+bounceTries+'</div><div class="v24-stat-label">기회</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">라운드</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetRecovery()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetRecovery()">초기화</button>';
 pn.innerHTML=html;openPanel('recovery');drawRecoveryCanvas(log);
 }
-window._v24SaveRecovery=function(){playSfx('save_v24');var holes=[];for(var i=1;i<=18;i++){holes.push(parseInt(document.getElementById('v24-rcvh-'+i).value)||0);lsSet('rcv_h'+i,holes[i-1]);}var log=lsGet('recovery_log',[]);log.push({date:todayStr(),holes:holes});if(log.length>30)log.shift();lsSet('recovery_log',log);showToast('&#xBCF5;&#xAD6C;&#xB825; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();showRecovery();};
-window._v24AnalyzeRecovery=function(){playSfx('spin_calc');var log=lsGet('recovery_log',[]);if(log.length===0){showToast('&#xB370;&#xC774;&#xD130;&#xAC00; &#xD544;&#xC694;&#xD569;&#xB2C8;&#xB2E4;');return;}var last=log[log.length-1].holes;var worst=0,worstH=1;for(var i=0;i<18;i++)if(last[i]>worst){worst=last[i];worstH=i+1;}showToast('H'+worstH+' worst (+'+worst+') - &#xC9D1;&#xC911; &#xC5F0;&#xC2B5; &#xD544;&#xC694;');};
+window._v24SaveRecovery=function(){playSfx('save_v24');var holes=[];for(var i=1;i<=18;i++){holes.push(parseInt(document.getElementById('v24-rcvh-'+i).value)||0);lsSet('rcv_h'+i,holes[i-1]);}var log=lsGet('recovery_log',[]);log.push({date:todayStr(),holes:holes});if(log.length>30)log.shift();lsSet('recovery_log',log);showToast('복구력 데이터 저장!');checkAchievements();showRecovery();};
+window._v24AnalyzeRecovery=function(){playSfx('spin_calc');var log=lsGet('recovery_log',[]);if(log.length===0){showToast('데이터가 필요합니다');return;}var last=log[log.length-1].holes;var worst=0,worstH=1;for(var i=0;i<18;i++)if(last[i]>worst){worst=last[i];worstH=i+1;}showToast('H'+worstH+' worst (+'+worst+') - 집중 연습 필요');};
 window._v24ResetRecovery=function(){lsSet('recovery_log',[]);for(var i=1;i<=18;i++)lsSet('rcv_h'+i,0);showRecovery();};
 function drawRecoveryCanvas(log){
 var c=document.getElementById('v24-recovery-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -307,20 +307,20 @@ ctx.fillStyle='rgba(255,255,255,0.6)';ctx.font='9px sans-serif';
 ctx.fillText('H'+(i+1),x+barW/2,B+14);
 }
 ctx.fillStyle='rgba(0,255,136,0.5)';ctx.font='10px sans-serif';ctx.textAlign='left';
-ctx.fillText('&#x25A0; Bounce-back holes highlighted',L,H-8);
+ctx.fillText('■ Bounce-back holes highlighted',L,H-8);
 }
 
 // ===== 5. SHOT CONSISTENCY MATRIX Canvas 620x400 =====
 var CONS_CLUBS=['DR','3W','3I','4I','5I','6I','7I','8I','9I','PW','GW','SW','PT'];
-var CONS_METRICS=['&#xC815;&#xD655;&#xB3C4;','&#xAC70;&#xB9AC;','&#xBC29;&#xD5A5;','&#xD0C4;&#xB3C4;','&#xC77C;&#xAD00;&#xC131;'];
+var CONS_METRICS=['정확도','거리','방향','탄도','일관성'];
 function showConsistency(){
 playSfx('consist_open');
 var pn=getPanel('consist');
 var data=lsGet('consist_data',{});
 var html='<button class="v24-close" onclick="window._v24Close(\'consist\')">&times;</button>';
-html+='<div class="v24-title">&#x1F4CA; &#xC0F7; &#xC77C;&#xAD00;&#xC131; &#xB9E4;&#xD2B8;&#xB9AD;&#xC2A4;</div>';
+html+='<div class="v24-title">📊 샷 일관성 매트릭스</div>';
 html+='<canvas id="v24-consist-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>&#xD074;&#xB7FD;&#xBCC4; &#xC77C;&#xAD00;&#xC131; &#xD3C9;&#xAC00; (1~10)</h3>';
+html+='<div class="v24-card"><h3>클럽별 일관성 평가 (1~10)</h3>';
 html+='<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:10px">';
 html+='<tr><th style="padding:3px;color:rgba(255,255,255,0.5)">Club</th>';
 for(var m=0;m<CONS_METRICS.length;m++)html+='<th style="padding:3px;color:rgba(255,255,255,0.5)">'+CONS_METRICS[m]+'</th>';
@@ -334,12 +334,12 @@ html+='<td style="padding:2px"><input class="v24-input" type="number" min="1" ma
 html+='</tr>';
 }
 html+='</table></div>';
-html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveConsist()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveConsist()">💾 저장</button>';
 html+='</div>';
 var totalScore=0,cnt=0;for(var k in data){totalScore+=data[k];cnt++;}
 var avg=cnt>0?Math.round(totalScore*10/cnt)/10:0;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+avg+'</div><div class="v24-stat-label">&#xD3C9;&#xADE0; &#xC77C;&#xAD00;&#xC131;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+avg+'</div><div class="v24-stat-label">평균 일관성</div></div>';
 var bestClub='-',bestVal=0;for(var i=0;i<CONS_CLUBS.length;i++){var sum=0;for(var m=0;m<CONS_METRICS.length;m++){sum+=(data[i+'_'+m]||5);}var a=sum/CONS_METRICS.length;if(a>bestVal){bestVal=a;bestClub=CONS_CLUBS[i];}}
 html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+bestClub+'</div><div class="v24-stat-label">Best Club</div></div>';
 var worstClub='-',worstVal=11;for(var i=0;i<CONS_CLUBS.length;i++){var sum=0;for(var m=0;m<CONS_METRICS.length;m++){sum+=(data[i+'_'+m]||5);}var a=sum/CONS_METRICS.length;if(a<worstVal){worstVal=a;worstClub=CONS_CLUBS[i];}}
@@ -347,7 +347,7 @@ html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B
 html+='</div>';
 pn.innerHTML=html;openPanel('consist');drawConsistCanvas(data);
 }
-window._v24SaveConsist=function(){playSfx('save_v24');var data={};for(var i=0;i<CONS_CLUBS.length;i++){for(var m=0;m<CONS_METRICS.length;m++){var key=i+'_'+m;data[key]=parseInt(document.getElementById('v24-cm-'+key).value)||5;}}lsSet('consist_data',data);showToast('&#xC77C;&#xAD00;&#xC131; &#xB370;&#xC774;&#xD130; &#xC800;&#xC7A5;!');checkAchievements();showConsistency();};
+window._v24SaveConsist=function(){playSfx('save_v24');var data={};for(var i=0;i<CONS_CLUBS.length;i++){for(var m=0;m<CONS_METRICS.length;m++){var key=i+'_'+m;data[key]=parseInt(document.getElementById('v24-cm-'+key).value)||5;}}lsSet('consist_data',data);showToast('일관성 데이터 저장!');checkAchievements();showConsistency();};
 function drawConsistCanvas(data){
 var c=document.getElementById('v24-consist-canvas');if(!c)return;var ctx=c.getContext('2d');
 var W=620,H=400;ctx.clearRect(0,0,W,H);
@@ -377,7 +377,7 @@ ctx.fillText(val+'',x+cellW/2,y+cellH/2+4);
 }
 }
 ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='10px sans-serif';ctx.textAlign='left';
-ctx.fillText('&#x1F7E2; 8+ Excellent  &#x1F535; 6-7 Good  &#x1F7E1; 4-5 Fair  &#x1F534; 1-3 Weak',L,H-8);
+ctx.fillText('🟢 8+ Excellent  🔵 6-7 Good  🟡 4-5 Fair  🔴 1-3 Weak',L,H-8);
 }
 
 // ===== 6. GOLF IQ SEASON TREND Canvas 620x380 =====
@@ -386,33 +386,33 @@ playSfx('iqtrend_open');
 var pn=getPanel('iqtrend');
 var log=lsGet('iq_trend_log',[]);
 var html='<button class="v24-close" onclick="window._v24Close(\'iqtrend\')">&times;</button>';
-html+='<div class="v24-title">&#x1F9E0; Golf IQ &#xC2DC;&#xC98C; &#xD2B8;&#xB80C;&#xB4DC;</div>';
+html+='<div class="v24-title">🧠 Golf IQ 시즌 트렌드</div>';
 html+='<canvas id="v24-iqtrend-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>IQ &#xC810;&#xC218; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v24-card"><h3>IQ 점수 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
-html+='<div><label class="v24-label">&#xCF54;&#xC2A4;&#xB9E4;&#xB2C8;&#xC9C0;&#xBA3C;&#xD2B8;</label><input class="v24-input" type="number" id="v24-iq1" value="70" min="0" max="100"></div>';
-html+='<div><label class="v24-label">&#xC0F7;&#xC140;&#xB809;&#xC158;</label><input class="v24-input" type="number" id="v24-iq2" value="65" min="0" max="100"></div>';
-html+='<div><label class="v24-label">&#xB9AC;&#xC2A4;&#xD06C;&#xAD00;&#xB9AC;</label><input class="v24-input" type="number" id="v24-iq3" value="60" min="0" max="100"></div>';
-html+='<div><label class="v24-label">&#xBA58;&#xD0C8;&#xAC8C;&#xC784;</label><input class="v24-input" type="number" id="v24-iq4" value="55" min="0" max="100"></div>';
-html+='<div><label class="v24-label">&#xC804;&#xB7B5;&#xC0AC;&#xACE0;</label><input class="v24-input" type="number" id="v24-iq5" value="60" min="0" max="100"></div>';
-html+='<div><label class="v24-label">&#xC0C1;&#xD669;&#xD310;&#xB2E8;</label><input class="v24-input" type="number" id="v24-iq6" value="65" min="0" max="100"></div>';
+html+='<div><label class="v24-label">코스매니지먼트</label><input class="v24-input" type="number" id="v24-iq1" value="70" min="0" max="100"></div>';
+html+='<div><label class="v24-label">샷셀렉션</label><input class="v24-input" type="number" id="v24-iq2" value="65" min="0" max="100"></div>';
+html+='<div><label class="v24-label">리스크관리</label><input class="v24-input" type="number" id="v24-iq3" value="60" min="0" max="100"></div>';
+html+='<div><label class="v24-label">멘탈게임</label><input class="v24-input" type="number" id="v24-iq4" value="55" min="0" max="100"></div>';
+html+='<div><label class="v24-label">전략사고</label><input class="v24-input" type="number" id="v24-iq5" value="60" min="0" max="100"></div>';
+html+='<div><label class="v24-label">상황판단</label><input class="v24-input" type="number" id="v24-iq6" value="65" min="0" max="100"></div>';
 html+='</div>';
-html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveIQTrend()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveIQTrend()">💾 저장</button>';
 html+='</div>';
 var latest=log.length>0?log[log.length-1]:null;
 var avgIQ=0;if(latest){for(var i=0;i<6;i++)avgIQ+=latest.scores[i];avgIQ=Math.round(avgIQ/6);}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+avgIQ+'</div><div class="v24-stat-label">&#xCD5C;&#xADFC; IQ</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+avgIQ+'</div><div class="v24-stat-label">최근 IQ</div></div>';
 var trend=0;if(log.length>=2){var p=log[log.length-2];var c2=log[log.length-1];var ps=0,cs=0;for(var i=0;i<6;i++){ps+=p.scores[i];cs+=c2.scores[i];}trend=Math.round((cs-ps)/6);}
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+(trend>=0?'#4ECDC4':'#FF6B6B')+'">'+(trend>=0?'+':'')+trend+'</div><div class="v24-stat-label">&#xC804;&#xD68C;&#xB300;&#xBE44;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+(trend>=0?'#4ECDC4':'#FF6B6B')+'">'+(trend>=0?'+':'')+trend+'</div><div class="v24-stat-label">전회대비</div></div>';
 var peak=0;for(var j=0;j<log.length;j++){var s=0;for(var i=0;i<6;i++)s+=log[j].scores[i];s=Math.round(s/6);if(s>peak)peak=s;}
 html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+peak+'</div><div class="v24-stat-label">Peak IQ</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">&#xCE21;&#xC815;&#xD69F;&#xC218;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v24-stat-label">측정횟수</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetIQTrend()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetIQTrend()">초기화</button>';
 pn.innerHTML=html;openPanel('iqtrend');drawIQTrendCanvas(log);
 }
-window._v24SaveIQTrend=function(){playSfx('save_v24');var scores=[];for(var i=1;i<=6;i++){scores.push(parseInt(document.getElementById('v24-iq'+i).value)||50);}var log=lsGet('iq_trend_log',[]);log.push({date:todayStr(),scores:scores});if(log.length>24)log.shift();lsSet('iq_trend_log',log);showToast('Golf IQ &#xAE30;&#xB85D; &#xC800;&#xC7A5;!');checkAchievements();showIQTrend();};
+window._v24SaveIQTrend=function(){playSfx('save_v24');var scores=[];for(var i=1;i<=6;i++){scores.push(parseInt(document.getElementById('v24-iq'+i).value)||50);}var log=lsGet('iq_trend_log',[]);log.push({date:todayStr(),scores:scores});if(log.length>24)log.shift();lsSet('iq_trend_log',log);showToast('Golf IQ 기록 저장!');checkAchievements();showIQTrend();};
 window._v24ResetIQTrend=function(){lsSet('iq_trend_log',[]);showIQTrend();};
 function drawIQTrendCanvas(log){
 var c=document.getElementById('v24-iqtrend-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -442,7 +442,7 @@ ctx.stroke();
 ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px sans-serif';ctx.textAlign='center';
 for(var j=0;j<log.length;j+=Math.max(1,Math.floor(log.length/8))){ctx.fillText(log[j].date.slice(5),L+j*segW,B+14);}
 ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.textAlign='left';
-ctx.fillText('&#x2501; Overall IQ',L,H-8);
+ctx.fillText('━ Overall IQ',L,H-8);
 }
 
 // ===== 7. GIR PROXIMITY MAP Canvas 620x400 =====
@@ -453,9 +453,9 @@ playSfx('prox_open');
 var pn=getPanel('proximity');
 var data=lsGet('prox_data',{});
 var html='<button class="v24-close" onclick="window._v24Close(\'proximity\')">&times;</button>';
-html+='<div class="v24-title">&#x26F3; GIR &#xADFC;&#xC811;&#xB3C4; &#xB9F5;</div>';
+html+='<div class="v24-title">⛳ GIR 근접도 맵</div>';
 html+='<canvas id="v24-prox-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>&#xD540; &#xADFC;&#xC811;&#xB3C4;&#xBCC4; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v24-card"><h3>핀 근접도별 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">';
 for(var i=0;i<PROX_RANGES.length;i++){
 var cnt=data[i]||0;
@@ -465,22 +465,22 @@ html+='<input class="v24-input" type="number" id="v24-prox-'+i+'" value="'+cnt+'
 html+='</div>';
 }
 html+='</div>';
-html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveProx()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v24-btn v24-btn-primary" style="width:100%;margin-top:8px" onclick="window._v24SaveProx()">💾 저장</button>';
 html+='</div>';
 var total=0;for(var i=0;i<PROX_RANGES.length;i++)total+=(data[i]||0);
 var closeShots=(data[0]||0)+(data[1]||0);
 var closePct=total>0?Math.round(closeShots*100/total):0;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+total+'</div><div class="v24-stat-label">&#xCD1D; GIR</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+closePct+'%</div><div class="v24-stat-label">6m &#xC774;&#xB0B4;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+closeShots+'</div><div class="v24-stat-label">&#xBC84;&#xB514; &#xAE30;&#xD68C;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+total+'</div><div class="v24-stat-label">총 GIR</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+closePct+'%</div><div class="v24-stat-label">6m 이내</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+closeShots+'</div><div class="v24-stat-label">버디 기회</div></div>';
 var dominantRange='-';var maxC=0;for(var i=0;i<PROX_RANGES.length;i++){if((data[i]||0)>maxC){maxC=data[i]||0;dominantRange=PROX_RANGES[i];}}
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7;font-size:12px">'+dominantRange+'</div><div class="v24-stat-label">&#xC8FC;&#xC694; &#xBC94;&#xC704;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7;font-size:12px">'+dominantRange+'</div><div class="v24-stat-label">주요 범위</div></div>';
 html+='</div>';
-if(total>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetProx()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(total>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetProx()">초기화</button>';
 pn.innerHTML=html;openPanel('proximity');drawProxCanvas(data);
 }
-window._v24SaveProx=function(){playSfx('save_v24');var data={};for(var i=0;i<PROX_RANGES.length;i++){data[i]=parseInt(document.getElementById('v24-prox-'+i).value)||0;}lsSet('prox_data',data);showToast('GIR &#xADFC;&#xC811;&#xB3C4; &#xC800;&#xC7A5;!');checkAchievements();showProximity();};
+window._v24SaveProx=function(){playSfx('save_v24');var data={};for(var i=0;i<PROX_RANGES.length;i++){data[i]=parseInt(document.getElementById('v24-prox-'+i).value)||0;}lsSet('prox_data',data);showToast('GIR 근접도 저장!');checkAchievements();showProximity();};
 window._v24ResetProx=function(){lsSet('prox_data',{});showProximity();};
 function drawProxCanvas(data){
 var c=document.getElementById('v24-prox-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -525,34 +525,34 @@ var pn=getPanel('overallperf');
 var profile=lsGet('perf_profile',[6,6,6,6,6,6,6,6]);
 var log=lsGet('perf_log',[]);
 var html='<button class="v24-close" onclick="window._v24Close(\'overallperf\')">&times;</button>';
-html+='<div class="v24-title">&#x1F3C6; &#xC885;&#xD569; &#xD37C;&#xD3EC;&#xBA3C;&#xC2A4; &#xB808;&#xC774;&#xB354;</div>';
+html+='<div class="v24-title">🏆 종합 퍼포먼스 레이더</div>';
 html+='<canvas id="v24-perf-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v24-card"><h3>8&#xCD95; &#xD37C;&#xD3EC;&#xBA3C;&#xC2A4; &#xD3C9;&#xAC00; (1~10)</h3>';
+html+='<div class="v24-card"><h3>8축 퍼포먼스 평가 (1~10)</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 for(var i=0;i<PERF_AXES.length;i++){
 html+='<div><label class="v24-label">'+PERF_AXES[i]+'</label><input class="v24-input" type="range" min="1" max="10" value="'+profile[i]+'" id="v24-perf-'+i+'" oninput="window._v24UpdatePerf('+i+',this.value)"><span id="v24-perfv-'+i+'" style="font-size:11px;color:#00FF88;margin-left:4px">'+profile[i]+'</span></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v24-btn v24-btn-primary" onclick="window._v24SavePerf()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v24-btn" onclick="window._v24ComparePerf()">&#x1F50D; PGA &#xBE44;&#xAD50;</button>';
+html+='<button class="v24-btn v24-btn-primary" onclick="window._v24SavePerf()">💾 저장</button>';
+html+='<button class="v24-btn" onclick="window._v24ComparePerf()">🔍 PGA 비교</button>';
 html+='</div></div>';
 var avg=0;for(var i=0;i<profile.length;i++)avg+=profile[i];avg=Math.round(avg*10/profile.length)/10;
 var grade;if(avg>=8.5)grade='S';else if(avg>=7)grade='A';else if(avg>=5.5)grade='B';else if(avg>=4)grade='C';else grade='D';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v24-stat-label">&#xC885;&#xD569; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+avg+'</div><div class="v24-stat-label">&#xD3C9;&#xADE0; &#xC810;&#xC218;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:'+(grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B')+'">'+grade+'</div><div class="v24-stat-label">종합 등급</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#4ECDC4">'+avg+'</div><div class="v24-stat-label">평균 점수</div></div>';
 var maxIdx=0;for(var i=1;i<profile.length;i++)if(profile[i]>profile[maxIdx])maxIdx=i;
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88;font-size:11px">'+PERF_AXES[maxIdx]+'</div><div class="v24-stat-label">&#xAC15;&#xC810;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88;font-size:11px">'+PERF_AXES[maxIdx]+'</div><div class="v24-stat-label">강점</div></div>';
 var minIdx=0;for(var i=1;i<profile.length;i++)if(profile[i]<profile[minIdx])minIdx=i;
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B;font-size:11px">'+PERF_AXES[minIdx]+'</div><div class="v24-stat-label">&#xAC1C;&#xC120;&#xC810;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B;font-size:11px">'+PERF_AXES[minIdx]+'</div><div class="v24-stat-label">개선점</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v24ResetPerf()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v24-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v24ResetPerf()">초기화</button>';
 pn.innerHTML=html;openPanel('overallperf');drawPerfCanvas(profile,log);
 }
 window._v24UpdatePerf=function(i,v){var p=lsGet('perf_profile',[6,6,6,6,6,6,6,6]);p[i]=parseInt(v);lsSet('perf_profile',p);var el=document.getElementById('v24-perfv-'+i);if(el)el.textContent=v;drawPerfCanvas(p,lsGet('perf_log',[]));};
-window._v24SavePerf=function(){playSfx('save_v24');var p=lsGet('perf_profile',[6,6,6,6,6,6,6,6]);var log=lsGet('perf_log',[]);log.push({date:todayStr(),profile:p.slice()});if(log.length>24)log.shift();lsSet('perf_log',log);showToast('&#xD37C;&#xD3EC;&#xBA3C;&#xC2A4; &#xC800;&#xC7A5;!');checkAchievements();showOverallPerf();};
-window._v24ComparePerf=function(){playSfx('spin_calc');var p=lsGet('perf_profile',[6,6,6,6,6,6,6,6]);var pga=[8.5,8,8.2,8.5,8.8,9,8,7.5];var gaps=[];for(var i=0;i<8;i++){var gap=pga[i]-p[i];if(gap>1)gaps.push(PERF_AXES[i]+' (-'+gap.toFixed(1)+')');}if(gaps.length===0)showToast('PGA Tour &#xD3C9;&#xADE0; &#xC218;&#xC900;!');else showToast('Gap: '+gaps.slice(0,2).join(', '));};
+window._v24SavePerf=function(){playSfx('save_v24');var p=lsGet('perf_profile',[6,6,6,6,6,6,6,6]);var log=lsGet('perf_log',[]);log.push({date:todayStr(),profile:p.slice()});if(log.length>24)log.shift();lsSet('perf_log',log);showToast('퍼포먼스 저장!');checkAchievements();showOverallPerf();};
+window._v24ComparePerf=function(){playSfx('spin_calc');var p=lsGet('perf_profile',[6,6,6,6,6,6,6,6]);var pga=[8.5,8,8.2,8.5,8.8,9,8,7.5];var gaps=[];for(var i=0;i<8;i++){var gap=pga[i]-p[i];if(gap>1)gaps.push(PERF_AXES[i]+' (-'+gap.toFixed(1)+')');}if(gaps.length===0)showToast('PGA Tour 평균 수준!');else showToast('Gap: '+gaps.slice(0,2).join(', '));};
 window._v24ResetPerf=function(){lsSet('perf_log',[]);lsSet('perf_profile',[6,6,6,6,6,6,6,6]);showOverallPerf();};
 function drawPerfCanvas(profile,log){
 var c=document.getElementById('v24-perf-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -575,28 +575,28 @@ for(var i=0;i<=n;i++){var a=-Math.PI/2+(i%n)*2*Math.PI/n;var r=R*profile[i%n]/10
 ctx.closePath();ctx.fill();ctx.stroke();
 for(var i=0;i<n;i++){var a=-Math.PI/2+i*2*Math.PI/n;var r=R*profile[i]/10;ctx.fillStyle='#00FF88';ctx.beginPath();ctx.arc(cx+r*Math.cos(a),cy+r*Math.sin(a),4,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.fillText(profile[i]+'',cx+r*Math.cos(a),cy+r*Math.sin(a)-10);}
 ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='10px sans-serif';ctx.textAlign='left';
-ctx.fillText('&#x25CF; Current    &#x25CB; Previous    &#x25A1; PGA Avg',10,H-8);
+ctx.fillText('● Current    ○ Previous    □ PGA Avg',10,H-8);
 var avg=0;for(var i=0;i<profile.length;i++)avg+=profile[i];avg=Math.round(avg*10/profile.length)/10;var grade;if(avg>=8.5)grade='S';else if(avg>=7)grade='A';else if(avg>=5.5)grade='B';else if(avg>=4)grade='C';else grade='D';
 ctx.textAlign='right';ctx.fillStyle=grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FFB800':'#FF6B6B';ctx.font='bold 18px sans-serif';ctx.fillText('Grade '+grade,W-10,H-8);
 }
 
 // ===== QUIZ v24: 15 QUESTIONS =====
 var QUIZ_V24=[
-{q:'&#xC2A4;&#xD540;&#xB808;&#xC774;&#xD2B8;&#xAC00; &#xB108;&#xBB34; &#xB192;&#xC73C;&#xBA74; &#xACF5;&#xC740; &#xC5B4;&#xB5BB;&#xAC8C; &#xB420;&#xAE4C;?',a:['&#xB192;&#xC774; &#xB728;&#xACE0; &#xBE44;&#xAC70;&#xB9AC; &#xAC10;&#xC18C;','&#xB0AE;&#xAC8C; &#xB0A0;&#xC544;&#xAC00;&#xBA70; &#xAD6C;&#xB974;&#xAE30;','&#xBE44;&#xAC70;&#xB9AC; &#xC99D;&#xAC00;','&#xBC29;&#xD5A5; &#xBCC0;&#xD654; &#xC5C6;&#xC74C;'],c:0},
-{q:'Club fitting&#xC5D0;&#xC11C; Lie Angle&#xC774; &#xD3C9;&#xD3C9;&#xBCF4;&#xB2E4; upright&#xD558;&#xBA74;?',a:['&#xBCFC;&#xC774; &#xC67C;&#xCABD;&#xC73C;&#xB85C; &#xAC08; &#xAC00;&#xB2A5;&#xC131;','&#xBCFC;&#xC774; &#xC624;&#xB978;&#xCABD;&#xC73C;&#xB85C; &#xAC08; &#xAC00;&#xB2A5;&#xC131;','&#xBE44;&#xAC70;&#xB9AC; &#xC99D;&#xAC00;','&#xB192;&#xC774; &#xB728;&#xAE30;'],c:0},
-{q:'Scoring Zone 0-50yd&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xAE30;&#xC220;&#xC740;?',a:['&#xCE69;&#xC0F7;&#xACFC; &#xD53C;&#xCE58;&#xC0F7;','&#xD480;&#xC2A4;&#xC719;','&#xB4DC;&#xB77C;&#xC774;&#xBC84; &#xC0F7;','&#xD398;&#xC774;&#xB4DC; &#xC0F7;'],c:0},
-{q:'Bounce-back&#xC774;&#xB780;?',a:['&#xBCF4;&#xAE30; &#xD6C4; &#xD30C; &#xC774;&#xD558; &#xAE30;&#xB85D;','&#xB354;&#xBE14;&#xBCF4;&#xAE30; &#xD6C4; &#xBC84;&#xB514;','OB &#xD6C4; &#xD648;&#xC778;&#xC6D0;','&#xD2B8;&#xB9AC;&#xD50C;&#xBCF4;&#xAE30; &#xD6C4; &#xD30C;'],c:0},
-{q:'&#xC0F7; &#xC77C;&#xAD00;&#xC131;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xC694;&#xC18C;&#xB294;?',a:['&#xBC29;&#xD5A5; &#xC77C;&#xAD00;&#xC131;','&#xBE44;&#xAC70;&#xB9AC;','&#xD0C4;&#xB3C4;','&#xC815;&#xD655;&#xB3C4;'],c:0},
-{q:'Golf IQ&#xC5D0;&#xC11C; &#xCF54;&#xC2A4;&#xB9E4;&#xB2C8;&#xC9C0;&#xBA3C;&#xD2B8; &#xC810;&#xC218;&#xAC00; &#xB192;&#xC73C;&#xBA74;?',a:['&#xC804;&#xB7B5;&#xC801; &#xD655;&#xB960; &#xD310;&#xB2E8; &#xB2A5;&#xB825; &#xC6B0;&#xC218;','&#xBE44;&#xAC70;&#xB9AC;&#xAC00; &#xAE40;','&#xD37C;&#xD305;&#xC774; &#xC815;&#xD655;','&#xCCB4;&#xB825;&#xC774; &#xC88B;&#xC74C;'],c:0},
-{q:'GIR &#xADFC;&#xC811;&#xB3C4; 0-3m&#xB294; &#xBB34;&#xC5C7;&#xC744; &#xC758;&#xBBF8;?',a:['&#xD540;&#xC5D0;&#xC11C; 3m &#xC774;&#xB0B4;&#xC5D0; &#xACF5;&#xC774; &#xC815;&#xC9C0;','3m &#xD37C;&#xD305; &#xC131;&#xACF5;','&#xC5B4;&#xD504;&#xB85C;&#xCE58; 3m','&#xADF8;&#xB9B0; &#xC5D0;&#xC9C0;&#xC5D0;&#xC11C; 3m'],c:0},
-{q:'&#xC885;&#xD569; &#xD37C;&#xD3EC;&#xBA3C;&#xC2A4;&#xC5D0;&#xC11C; PGA Tour &#xD3C9;&#xADE0; Putting &#xC810;&#xC218;&#xB294;?',a:['8.8','7.5','6.0','9.5'],c:0},
-{q:'Driver&#xC758; &#xC774;&#xC0C1;&#xC801;&#xC778; &#xBC31;&#xC2A4;&#xD540;&#xC728;&#xC740;?',a:['2200~3200rpm','4000~5000rpm','1000~1500rpm','6000~8000rpm'],c:0},
-{q:'Club fitting&#xC5D0;&#xC11C; Swing Weight&#xB780;?',a:['&#xD074;&#xB7FD;&#xD5E4;&#xB4DC;&#xC640; &#xADF8;&#xB9BD; &#xBB34;&#xAC8C; &#xBC38;&#xB7F0;&#xC2A4;','&#xC2A4;&#xC719; &#xC18D;&#xB3C4;','&#xC0E4;&#xD504;&#xD2B8; &#xACBD;&#xB3C4;','&#xD074;&#xB7FD; &#xCD1D; &#xBB34;&#xAC8C;'],c:0},
-{q:'&#xBCF5;&#xAD6C;&#xB825;&#xC774; &#xB192;&#xC740; &#xACE8;&#xD37C;&#xC758; &#xD2B9;&#xC9D5;&#xC740;?',a:['&#xBA58;&#xD0C8; &#xAC15;&#xC778;&#xD568;&#xACFC; &#xC9D1;&#xC911;&#xB825;','&#xBE44;&#xAC70;&#xB9AC;&#xAC00; &#xAE40;','&#xD37C;&#xD305;&#xC774; &#xC815;&#xD655;','&#xC7A5;&#xBE44;&#xAC00; &#xC88B;&#xC74C;'],c:0},
-{q:'&#xC2A4;&#xCF54;&#xC5B4;&#xB9C1; &#xC874; 100-150yd&#xC5D0;&#xC11C; &#xC8FC;&#xB85C; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xD074;&#xB7FD;&#xC740;?',a:['8I~PW','Driver','3W','Putter'],c:0},
-{q:'Sidespin&#xC774; &#xC591;&#xC218;&#xC774;&#xBA74; &#xBCFC;&#xC740; &#xC5B4;&#xB290; &#xBC29;&#xD5A5;&#xC73C;&#xB85C; &#xD718;&#xB294;&#xAC00;?',a:['&#xC624;&#xB978;&#xCABD; (slice/fade)','&#xC67C;&#xCABD; (draw/hook)','&#xC9C1;&#xC9C4;','&#xC704;&#xCABD;'],c:0},
-{q:'&#xD37C;&#xD3EC;&#xBA3C;&#xC2A4; &#xB808;&#xC774;&#xB354;&#xC5D0;&#xC11C; &#xADE0;&#xD615;&#xC7A1;&#xD78C; &#xD504;&#xB85C;&#xD30C;&#xC77C;&#xC758; &#xC7A5;&#xC810;&#xC740;?',a:['&#xBAA8;&#xB4E0; &#xC601;&#xC5ED;&#xC774; &#xACE8;&#xACE0;&#xB8E8; &#xC548;&#xC815;&#xC801;','&#xD55C; &#xBD84;&#xC57C;&#xAC00; &#xC555;&#xB3C4;&#xC801;','&#xBE44;&#xAC70;&#xB9AC;&#xB9CC; &#xAE40;','&#xD37C;&#xD305;&#xB9CC; &#xC815;&#xD655;'],c:0},
-{q:'Golf IQ &#xC2DC;&#xC98C; &#xD2B8;&#xB80C;&#xB4DC;&#xC5D0;&#xC11C; &#xC0C1;&#xC2B9;&#xC138;&#xB97C; &#xC720;&#xC9C0;&#xD558;&#xB824;&#xBA74;?',a:['&#xAFB8;&#xC900;&#xD55C; &#xC790;&#xAE30;&#xD3C9;&#xAC00;&#xC640; &#xB9E9;&#xC810; &#xAC1C;&#xC120;','&#xB354; &#xB9CE;&#xC740; &#xB77C;&#xC6B4;&#xB4DC;&#xB9CC;','&#xC7A5;&#xBE44; &#xAD50;&#xCCB4;','&#xCF54;&#xCE58; &#xACE0;&#xC6A9;'],c:0}
+{q:'스핀레이트가 너무 높으면 공은 어떻게 될까?',a:['높이 뜨고 비거리 감소','낮게 날아가며 구르기','비거리 증가','방향 변화 없음'],c:0},
+{q:'Club fitting에서 Lie Angle이 평평보다 upright하면?',a:['볼이 왼쪽으로 갈 가능성','볼이 오른쪽으로 갈 가능성','비거리 증가','높이 뜨기'],c:0},
+{q:'Scoring Zone 0-50yd에서 가장 중요한 기술은?',a:['칩샷과 피치샷','풀스윙','드라이버 샷','페이드 샷'],c:0},
+{q:'Bounce-back이란?',a:['보기 후 파 이하 기록','더블보기 후 버디','OB 후 홈인원','트리플보기 후 파'],c:0},
+{q:'샷 일관성에서 가장 중요한 요소는?',a:['방향 일관성','비거리','탄도','정확도'],c:0},
+{q:'Golf IQ에서 코스매니지먼트 점수가 높으면?',a:['전략적 확률 판단 능력 우수','비거리가 김','퍼팅이 정확','체력이 좋음'],c:0},
+{q:'GIR 근접도 0-3m는 무엇을 의미?',a:['핀에서 3m 이내에 공이 정지','3m 퍼팅 성공','어프로치 3m','그린 에지에서 3m'],c:0},
+{q:'종합 퍼포먼스에서 PGA Tour 평균 Putting 점수는?',a:['8.8','7.5','6.0','9.5'],c:0},
+{q:'Driver의 이상적인 백스핀율은?',a:['2200~3200rpm','4000~5000rpm','1000~1500rpm','6000~8000rpm'],c:0},
+{q:'Club fitting에서 Swing Weight란?',a:['클럽헤드와 그립 무게 밸런스','스윙 속도','샤프트 경도','클럽 총 무게'],c:0},
+{q:'복구력이 높은 골퍼의 특징은?',a:['멘탈 강인함과 집중력','비거리가 김','퍼팅이 정확','장비가 좋음'],c:0},
+{q:'스코어링 존 100-150yd에서 주로 사용하는 클럽은?',a:['8I~PW','Driver','3W','Putter'],c:0},
+{q:'Sidespin이 양수이면 볼은 어느 방향으로 휘는가?',a:['오른쪽 (slice/fade)','왼쪽 (draw/hook)','직진','위쪽'],c:0},
+{q:'퍼포먼스 레이더에서 균형잡힌 프로파일의 장점은?',a:['모든 영역이 골고루 안정적','한 분야가 압도적','비거리만 김','퍼팅만 정확'],c:0},
+{q:'Golf IQ 시즌 트렌드에서 상승세를 유지하려면?',a:['꾸준한 자기평가와 맩점 개선','더 많은 라운드만','장비 교체','코치 고용'],c:0}
 ];
 var quizState={idx:0,score:0,total:0,answered:false};
 function showQuizV24(){
@@ -605,43 +605,43 @@ var pn=getPanel('quizv24');
 var idx=quizState.idx;
 var q=QUIZ_V24[idx%QUIZ_V24.length];
 var html='<button class="v24-close" onclick="window._v24Close(\'quizv24\')">&times;</button>';
-html+='<div class="v24-title">&#x1F4DA; Golf Quiz v24 (Q'+(idx+1)+'/'+QUIZ_V24.length+')</div>';
+html+='<div class="v24-title">📚 Golf Quiz v24 (Q'+(idx+1)+'/'+QUIZ_V24.length+')</div>';
 html+='<div class="v24-card"><h3>'+q.q+'</h3>';
 for(var i=0;i<q.a.length;i++){
 html+='<button class="v24-btn" style="width:100%;margin:3px 0;text-align:left" onclick="window._v24AnswerQuiz('+i+','+q.c+')">'+String.fromCharCode(65+i)+'. '+q.a[i]+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+quizState.score+'</div><div class="v24-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B">'+(quizState.total-quizState.score)+'</div><div class="v24-stat-label">&#xC624;&#xB2F5;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#00FF88">'+quizState.score+'</div><div class="v24-stat-label">정답</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FF6B6B">'+(quizState.total-quizState.score)+'</div><div class="v24-stat-label">오답</div></div>';
 var pct=quizState.total>0?Math.round(quizState.score*100/quizState.total):0;
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v24-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
-html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+(idx+1)+'/'+QUIZ_V24.length+'</div><div class="v24-stat-label">&#xC9C4;&#xD589;</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v24-stat-label">정답률</div></div>';
+html+='<div class="v24-stat-card"><div class="v24-stat-val" style="color:#A855F7">'+(idx+1)+'/'+QUIZ_V24.length+'</div><div class="v24-stat-label">진행</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv24');
 }
 window._v24AnswerQuiz=function(sel,correct){
 if(quizState.answered)return;quizState.answered=true;quizState.total++;
-if(sel===correct){quizState.score++;playSfx('quiz_correct_v24');showToast('&#xC815;&#xB2F5;!');}
-else{playSfx('quiz_wrong_v24');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+String.fromCharCode(65+correct));}
+if(sel===correct){quizState.score++;playSfx('quiz_correct_v24');showToast('정답!');}
+else{playSfx('quiz_wrong_v24');showToast('오답! 정답: '+String.fromCharCode(65+correct));}
 lsSet('quiz_v24_score',quizState.score);lsSet('quiz_v24_total',quizState.total);
 setTimeout(function(){quizState.answered=false;quizState.idx++;if(quizState.idx>=QUIZ_V24.length)quizState.idx=0;checkAchievements();showQuizV24();},1200);
 };
 
 // ===== ACHIEVEMENTS =====
 var ACHIEVEMENTS_V24=[
-{id:'spin_analyst',name:'Spin Analyst',desc:'&#xC2A4;&#xD540; 10&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('spin_log',[]).length>=10}},
-{id:'fit_expert',name:'Fitting Expert',desc:'&#xD53C;&#xD305; 5&#xD68C; &#xC800;&#xC7A5;',check:function(){return lsGet('fit_log',[]).length>=5}},
-{id:'zone_master',name:'Zone Master',desc:'&#xC874;&#xBCC4; 50&#xC0F7; &#xAE30;&#xB85D;',check:function(){var d=lsGet('zone_data',{});var t=0;for(var i=0;i<6;i++)t+=(d[i]?d[i].shots:0);return t>=50}},
-{id:'recovery_king',name:'Recovery King',desc:'&#xBCF5;&#xAD6C; 5&#xB77C;&#xC6B4;&#xB4DC;',check:function(){return lsGet('recovery_log',[]).length>=5}},
-{id:'consist_tracker',name:'Consistency Tracker',desc:'&#xC77C;&#xAD00;&#xC131; &#xB9E4;&#xD2B8;&#xB9AD;&#xC2A4; &#xC800;&#xC7A5;',check:function(){var d=lsGet('consist_data',{});return Object.keys(d).length>=13}},
-{id:'iq_tracker',name:'IQ Tracker',desc:'Golf IQ 5&#xD68C; &#xCE21;&#xC815;',check:function(){return lsGet('iq_trend_log',[]).length>=5}},
-{id:'prox_analyst',name:'Proximity Analyst',desc:'GIR &#xADFC;&#xC811;&#xB3C4; 30&#xC0F7;',check:function(){var d=lsGet('prox_data',{});var t=0;for(var i=0;i<6;i++)t+=(d[i]||0);return t>=30}},
-{id:'perf_evaluator',name:'Performance Evaluator',desc:'&#xC885;&#xD569; &#xD3C9;&#xAC00; 5&#xD68C;',check:function(){return lsGet('perf_log',[]).length>=5}},
-{id:'quiz_v24_master',name:'Quiz v24 Master',desc:'v24 &#xD038;&#xC988; &#xC804;&#xBB38; &#xC815;&#xB2F5;',check:function(){return lsGet('quiz_v24_score',0)>=15}},
-{id:'quiz_v24_clear',name:'Quiz v24 Clear',desc:'v24 &#xD038;&#xC988; &#xC644;&#xC8FC;',check:function(){return lsGet('quiz_v24_total',0)>=15}},
-{id:'spin_s_grade',name:'Spin S Grade',desc:'&#xC2A4;&#xD540; S&#xB4F1;&#xAE09; &#xD68D;&#xB4DD;',check:function(){var log=lsGet('spin_log',[]);for(var i=0;i<log.length;i++){var cl=CLUBS_SPIN[log[i].club];if(log[i].back>=cl.backMin&&log[i].back<=cl.backMax&&Math.abs(log[i].side)<=cl.sideRange*0.5)return true;}return false}},
-{id:'v24_complete',name:'v24 Complete',desc:'v24 &#xC804;&#xCCB4; &#xAE30;&#xB2A5; &#xD0D0;&#xC0C9;',check:function(){return lsGet('v24_explored',0)>=8}}
+{id:'spin_analyst',name:'Spin Analyst',desc:'스핀 10회 기록',check:function(){return lsGet('spin_log',[]).length>=10}},
+{id:'fit_expert',name:'Fitting Expert',desc:'피팅 5회 저장',check:function(){return lsGet('fit_log',[]).length>=5}},
+{id:'zone_master',name:'Zone Master',desc:'존별 50샷 기록',check:function(){var d=lsGet('zone_data',{});var t=0;for(var i=0;i<6;i++)t+=(d[i]?d[i].shots:0);return t>=50}},
+{id:'recovery_king',name:'Recovery King',desc:'복구 5라운드',check:function(){return lsGet('recovery_log',[]).length>=5}},
+{id:'consist_tracker',name:'Consistency Tracker',desc:'일관성 매트릭스 저장',check:function(){var d=lsGet('consist_data',{});return Object.keys(d).length>=13}},
+{id:'iq_tracker',name:'IQ Tracker',desc:'Golf IQ 5회 측정',check:function(){return lsGet('iq_trend_log',[]).length>=5}},
+{id:'prox_analyst',name:'Proximity Analyst',desc:'GIR 근접도 30샷',check:function(){var d=lsGet('prox_data',{});var t=0;for(var i=0;i<6;i++)t+=(d[i]||0);return t>=30}},
+{id:'perf_evaluator',name:'Performance Evaluator',desc:'종합 평가 5회',check:function(){return lsGet('perf_log',[]).length>=5}},
+{id:'quiz_v24_master',name:'Quiz v24 Master',desc:'v24 퀸즈 전문 정답',check:function(){return lsGet('quiz_v24_score',0)>=15}},
+{id:'quiz_v24_clear',name:'Quiz v24 Clear',desc:'v24 퀸즈 완주',check:function(){return lsGet('quiz_v24_total',0)>=15}},
+{id:'spin_s_grade',name:'Spin S Grade',desc:'스핀 S등급 획득',check:function(){var log=lsGet('spin_log',[]);for(var i=0;i<log.length;i++){var cl=CLUBS_SPIN[log[i].club];if(log[i].back>=cl.backMin&&log[i].back<=cl.backMax&&Math.abs(log[i].side)<=cl.sideRange*0.5)return true;}return false}},
+{id:'v24_complete',name:'v24 Complete',desc:'v24 전체 기능 탐색',check:function(){return lsGet('v24_explored',0)>=8}}
 ];
 function checkAchievements(){
 var unlocked=lsGet('achievements_v24',[]);
@@ -679,15 +679,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Spin',fn:showSpinRate,icon:'&#x1F300;'},
-{label:'Fitting',fn:showClubFitting,icon:'&#x1F3CC;'},
-{label:'Zone',fn:showScoringZone,icon:'&#x1F3AF;'},
-{label:'Recovery',fn:showRecovery,icon:'&#x1F504;'},
-{label:'Consist',fn:showConsistency,icon:'&#x1F4CA;'},
-{label:'IQ Trend',fn:showIQTrend,icon:'&#x1F9E0;'},
-{label:'Proximity',fn:showProximity,icon:'&#x26F3;'},
-{label:'PerfRadar',fn:showOverallPerf,icon:'&#x1F3C6;'},
-{label:'Quiz24',fn:showQuizV24,icon:'&#x1F4DA;'}
+{label:'Spin',fn:showSpinRate,icon:'🌀'},
+{label:'Fitting',fn:showClubFitting,icon:'🏌'},
+{label:'Zone',fn:showScoringZone,icon:'🎯'},
+{label:'Recovery',fn:showRecovery,icon:'🔄'},
+{label:'Consist',fn:showConsistency,icon:'📊'},
+{label:'IQ Trend',fn:showIQTrend,icon:'🧠'},
+{label:'Proximity',fn:showProximity,icon:'⛳'},
+{label:'PerfRadar',fn:showOverallPerf,icon:'🏆'},
+{label:'Quiz24',fn:showQuizV24,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

@@ -23,7 +23,7 @@ var SHAPES=['Straight','Fade','Draw','Slice','Hook','Push','Pull'];
 var counts=[0,0,0,0,0,0,0];
 for(var i=0;i<data.length;i++){var idx=SHAPES.indexOf(data[i].shape);if(idx>=0)counts[idx]++;}
 var html='<button class="v20-close" onclick="window._v20Close(\'shotshape\')">&times;</button>';
-html+='<div class="v20-title">&#x1F3AF; &#xC0F7; &#xC250;&#xC774;&#xD504; &#xACBD;&#xD5A5; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v20-title">🎯 샷 쉐이프 경향 분석기</div>';
 html+='<canvas id="v20-shape-canvas" width="600" height="360" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:8px 0">';
 for(var s=0;s<SHAPES.length;s++){
@@ -33,11 +33,11 @@ html+='</div>';
 var total=data.length;
 var dominant=SHAPES[counts.indexOf(Math.max.apply(null,counts))];
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+total+'</div><div class="v20-stat-label">&#xCD1D; &#xC0F7;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+dominant+'</div><div class="v20-stat-label">&#xC8FC; &#xACBD;&#xD5A5;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(total>0?Math.round(counts[0]/total*100):0)+'%</div><div class="v20-stat-label">Straight&#xB960;</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+total+'</div><div class="v20-stat-label">총 샷</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+dominant+'</div><div class="v20-stat-label">주 경향</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(total>0?Math.round(counts[0]/total*100):0)+'%</div><div class="v20-stat-label">Straight률</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v20-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v20ResetShape()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v20-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v20ResetShape()">초기화</button>';}
 pn.innerHTML=html;openPanel('shotshape');drawShapeCanvas(counts,SHAPES);
 }
 function drawShapeCanvas(counts,labels){
@@ -45,7 +45,7 @@ var c=document.getElementById('v20-shape-canvas');if(!c)return;var ctx=c.getCont
 ctx.fillStyle='#0d1117';ctx.fillRect(0,0,600,360);
 var colors=['#00FF88','#4ECDC4','#00B4D8','#FF6B6B','#FF3366','#FFB800','#A855F7'];
 var total=0;for(var i=0;i<counts.length;i++)total+=counts[i];
-if(total===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('&#xC0F7;&#xC744; &#xAE30;&#xB85D;&#xD558;&#xBA74; &#xD30C;&#xC774;&#xCC28;&#xD2B8;&#xAC00; &#xD45C;&#xC2DC;&#xB429;&#xB2C8;&#xB2E4;',300,180);return;}
+if(total===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('샷을 기록하면 파이차트가 표시됩니다',300,180);return;}
 var cx=180,cy=180,r=120;
 var startAngle=-Math.PI/2;
 for(var i=0;i<counts.length;i++){
@@ -83,16 +83,16 @@ var CLUBS=['DR','3W','5W','4I','5I','6I','7I','8I','9I','PW','AW','SW','LW','PT'
 var data=lsGet('gap_data',{DR:250,three_w:230,five_w:215,four_i:200,five_i:185,six_i:170,seven_i:160,eight_i:148,nine_i:136,PW:125,AW:110,SW:95,LW:80,PT:0});
 var dists=[data.DR,data.three_w,data.five_w,data.four_i,data.five_i,data.six_i,data.seven_i,data.eight_i,data.nine_i,data.PW,data.AW,data.SW,data.LW,data.PT];
 var html='<button class="v20-close" onclick="window._v20Close(\'clubgap\')">&times;</button>';
-html+='<div class="v20-title">&#x1F4CA; &#xD074;&#xB7FD; &#xAC38;&#xD551; &#xC2DC;&#xAC01;&#xD654;</div>';
+html+='<div class="v20-title">📊 클럽 갸핑 시각화</div>';
 html+='<canvas id="v20-gap-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>&#xBE44;&#xAC70;&#xB9AC; &#xC124;&#xC815; (yd)</h3>';
+html+='<div class="v20-card"><h3>비거리 설정 (yd)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px">';
 var keys=['DR','three_w','five_w','four_i','five_i','six_i','seven_i','eight_i','nine_i','PW','AW','SW','LW','PT'];
 for(var i=0;i<CLUBS.length;i++){
 html+='<div><label class="v20-label">'+CLUBS[i]+'</label><input type="number" class="v20-input" id="v20-gap-'+keys[i]+'" value="'+dists[i]+'" min="0" max="350"></div>';
 }
 html+='</div>';
-html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20SaveGap()">&#xC800;&#xC7A5; &amp; &#xBD84;&#xC11D;</button>';
+html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20SaveGap()">저장 &amp; 분석</button>';
 html+='</div>';
 html+='<div id="v20-gap-warnings" style="margin-top:6px"></div>';
 pn.innerHTML=html;openPanel('clubgap');drawGapCanvas(dists,CLUBS);analyzeGaps(dists,CLUBS);
@@ -126,10 +126,10 @@ var warnings=[];
 for(var i=1;i<dists.length;i++){
 if(dists[i]===0||dists[i-1]===0)continue;
 var gap=dists[i-1]-dists[i];
-if(gap>20)warnings.push('<span style="color:#FF6B6B">&#x26A0; '+clubs[i-1]+' &#x2192; '+clubs[i]+': '+gap+'yd &#xAC78; (&#xB108;&#xBB34; &#xB118;&#xC74C;)</span>');
-if(gap<5)warnings.push('<span style="color:#FFB800">&#x26A0; '+clubs[i-1]+' &#x2192; '+clubs[i]+': '+gap+'yd &#xAC78; (&#xC911;&#xBCF5; &#xC758;&#xC2EC;)</span>');
+if(gap>20)warnings.push('<span style="color:#FF6B6B">⚠ '+clubs[i-1]+' → '+clubs[i]+': '+gap+'yd 걸 (너무 넘음)</span>');
+if(gap<5)warnings.push('<span style="color:#FFB800">⚠ '+clubs[i-1]+' → '+clubs[i]+': '+gap+'yd 걸 (중복 의심)</span>');
 }
-if(warnings.length===0)el.innerHTML='<div class="v20-stat-card" style="text-align:center;color:#00FF88">&#x2705; &#xD074;&#xB7FD; &#xAC38;&#xD551; &#xC815;&#xC0C1; (10-15yd &#xADE0;&#xC77C;)</div>';
+if(warnings.length===0)el.innerHTML='<div class="v20-stat-card" style="text-align:center;color:#00FF88">✅ 클럽 갸핑 정상 (10-15yd 균일)</div>';
 else el.innerHTML='<div class="v20-card">'+warnings.join('<br>')+'</div>';
 }
 window._v20SaveGap=function(){
@@ -145,25 +145,25 @@ playSfx('compare_open');
 var pn=getPanel('roundcompare');
 var rounds=lsGet('compare_rounds',[]);
 var html='<button class="v20-close" onclick="window._v20Close(\'roundcompare\')">&times;</button>';
-html+='<div class="v20-title">&#x1F4C8; &#xB77C;&#xC6B4;&#xB4DC; &#xBE44;&#xAD50; &#xC624;&#xBC84;&#xB808;&#xC774;</div>';
+html+='<div class="v20-title">📈 라운드 비교 오버레이</div>';
 html+='<canvas id="v20-compare-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>&#xB77C;&#xC6B4;&#xB4DC; &#xC785;&#xB825; (18&#xD640; &#xC2A4;&#xCF54;&#xC5B4;)</h3>';
-html+='<div style="margin:6px 0"><label class="v20-label">Round A &#xB0A0;&#xC9DC;</label><input type="date" id="v20-cmp-dateA" class="v20-input" value="'+todayStr()+'"></div>';
+html+='<div class="v20-card"><h3>라운드 입력 (18홀 스코어)</h3>';
+html+='<div style="margin:6px 0"><label class="v20-label">Round A 날짜</label><input type="date" id="v20-cmp-dateA" class="v20-input" value="'+todayStr()+'"></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px">';
 for(var h=1;h<=18;h++){html+='<input type="number" class="v20-input" id="v20-cmpA-'+h+'" value="4" min="1" max="12" style="font-size:11px;padding:4px 2px;text-align:center">';}
 html+='</div>';
-html+='<div style="margin:6px 0"><label class="v20-label">Round B &#xB0A0;&#xC9DC;</label><input type="date" id="v20-cmp-dateB" class="v20-input"></div>';
+html+='<div style="margin:6px 0"><label class="v20-label">Round B 날짜</label><input type="date" id="v20-cmp-dateB" class="v20-input"></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px">';
 for(var h=1;h<=18;h++){html+='<input type="number" class="v20-input" id="v20-cmpB-'+h+'" value="4" min="1" max="12" style="font-size:11px;padding:4px 2px;text-align:center">';}
 html+='</div>';
-html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20CompareRounds()">&#xBE44;&#xAD50; &#xBD84;&#xC11D;</button>';
+html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20CompareRounds()">비교 분석</button>';
 html+='</div>';
 pn.innerHTML=html;openPanel('roundcompare');drawCompareCanvas([],[]);
 }
 function drawCompareCanvas(a,b){
 var c=document.getElementById('v20-compare-canvas');if(!c)return;var ctx=c.getContext('2d');
 ctx.fillStyle='#0d1117';ctx.fillRect(0,0,620,380);
-if(a.length===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('18&#xD640; &#xC2A4;&#xCF54;&#xC5B4;&#xB97C; &#xC785;&#xB825;&#xD558;&#xBA74; &#xBE44;&#xAD50; &#xCC28;&#xD2B8;&#xAC00; &#xD45C;&#xC2DC;&#xB429;&#xB2C8;&#xB2E4;',310,190);return;}
+if(a.length===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('18홀 스코어를 입력하면 비교 차트가 표시됩니다',310,190);return;}
 var maxS=Math.max(Math.max.apply(null,a),Math.max.apply(null,b))+1;
 var minS=Math.min(Math.min.apply(null,a),Math.min.apply(null,b))-1;
 var range=maxS-minS;var chartH=260,startX=50,startY=40;
@@ -199,22 +199,22 @@ lsSet('compare_rounds',data);showToast('Round comparison saved');checkAchievemen
 function showPracticePlan(){
 playSfx('practice_gen');
 var pn=getPanel('practiceplan');
-var AREAS=['&#xB4DC;&#xB77C;&#xC774;&#xBC84;','&#xC544;&#xC774;&#xC5B8;','&#xC5B4;&#xD504;&#xB85C;&#xCE58;','&#xCE58;&#xD551;','&#xD37C;&#xD305;','&#xBC99;&#xCEE4;'];
-var LEVELS=['&#xCD08;&#xAE09;','&#xC911;&#xAE09;','&#xC0C1;&#xAE09;'];
+var AREAS=['드라이버','아이언','어프로치','치핑','퍼팅','벙커'];
+var LEVELS=['초급','중급','상급'];
 var plan=lsGet('practice_plan',null);
 var html='<button class="v20-close" onclick="window._v20Close(\'practiceplan\')">&times;</button>';
-html+='<div class="v20-title">&#x1F4DD; &#xC2A4;&#xB9C8;&#xD2B8; &#xC5F0;&#xC2B5; &#xD50C;&#xB79C; &#xC0DD;&#xC131;&#xAE30;</div>';
+html+='<div class="v20-title">📝 스마트 연습 플랜 생성기</div>';
 html+='<canvas id="v20-plan-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>&#xC57D;&#xC810; &#xC120;&#xD0DD; (1-10)</h3>';
+html+='<div class="v20-card"><h3>약점 선택 (1-10)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:6px 0">';
 for(var a=0;a<AREAS.length;a++){
 html+='<div><label class="v20-label">'+AREAS[a]+'</label><input type="range" id="v20-plan-'+a+'" min="1" max="10" value="5" class="v20-range"><span id="v20-plan-val-'+a+'">5</span></div>';
 }
 html+='</div>';
-html+='<div style="margin:6px 0"><label class="v20-label">&#xB808;&#xBCA8;</label><select id="v20-plan-level" class="v20-input">';
+html+='<div style="margin:6px 0"><label class="v20-label">레벨</label><select id="v20-plan-level" class="v20-input">';
 for(var l=0;l<LEVELS.length;l++)html+='<option>'+LEVELS[l]+'</option>';
 html+='</select></div>';
-html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:6px" onclick="window._v20GenPlan()">4&#xC8FC; &#xD50C;&#xB79C; &#xC0DD;&#xC131;</button>';
+html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:6px" onclick="window._v20GenPlan()">4주 플랜 생성</button>';
 html+='</div>';
 html+='<div id="v20-plan-result"></div>';
 pn.innerHTML=html;openPanel('practiceplan');
@@ -224,7 +224,7 @@ drawPlanCanvas(null);
 function drawPlanCanvas(plan){
 var c=document.getElementById('v20-plan-canvas');if(!c)return;var ctx=c.getContext('2d');
 ctx.fillStyle='#0d1117';ctx.fillRect(0,0,600,380);
-if(!plan){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('&#xC57D;&#xC810;&#xC744; &#xC120;&#xD0DD;&#xD558;&#xACE0; &#xD50C;&#xB79C;&#xC744; &#xC0DD;&#xC131;&#xD558;&#xC138;&#xC694;',300,190);return;}
+if(!plan){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('약점을 선택하고 플랜을 생성하세요',300,190);return;}
 var weeks=['Week 1','Week 2','Week 3','Week 4'];
 var colors=['#00FF88','#4ECDC4','#00B4D8','#FFB800','#FF6B6B','#A855F7'];
 var barH=18,startY=40,startX=80;
@@ -267,27 +267,27 @@ playSfx('gir_open');
 var pn=getPanel('girprox');
 var data=lsGet('gir_prox',[]);
 var html='<button class="v20-close" onclick="window._v20Close(\'girprox\')">&times;</button>';
-html+='<div class="v20-title">&#x1F3CC; GIR &#xADFC;&#xC811;&#xB3C4; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v20-title">🏌 GIR 근접도 분석기</div>';
 html+='<canvas id="v20-gir-canvas" width="600" height="360" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>GIR &#xD540;&#xAE4C;&#xC9C0; &#xAC70;&#xB9AC; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v20-card"><h3>GIR 핀까지 거리 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
-html+='<div><label class="v20-label">&#xD640; &#xBC88;&#xD638;</label><input type="number" id="v20-gir-hole" class="v20-input" value="1" min="1" max="18"></div>';
-html+='<div><label class="v20-label">&#xD540;&#xAE4C;&#xC9C0; (ft)</label><input type="number" id="v20-gir-dist" class="v20-input" value="20" min="1" max="100"></div>';
-html+='<div style="display:flex;align-items:flex-end"><button class="v20-btn v20-btn-primary" style="width:100%" onclick="window._v20LogGIR()">&#xAE30;&#xB85D;</button></div>';
+html+='<div><label class="v20-label">홀 번호</label><input type="number" id="v20-gir-hole" class="v20-input" value="1" min="1" max="18"></div>';
+html+='<div><label class="v20-label">핀까지 (ft)</label><input type="number" id="v20-gir-dist" class="v20-input" value="20" min="1" max="100"></div>';
+html+='<div style="display:flex;align-items:flex-end"><button class="v20-btn v20-btn-primary" style="width:100%" onclick="window._v20LogGIR()">기록</button></div>';
 html+='</div></div>';
 var avgDist=0;if(data.length>0){var sum=0;for(var i=0;i<data.length;i++)sum+=data[i].dist;avgDist=(sum/data.length).toFixed(1);}
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v20-stat-label">&#xCD1D; GIR</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+avgDist+'ft</div><div class="v20-stat-label">&#xD3C9;&#xADE0; &#xAC70;&#xB9AC;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(data.length>0?Math.min.apply(null,data.map(function(d){return d.dist})):0)+'ft</div><div class="v20-stat-label">&#xCD5C;&#xC18C; &#xAC70;&#xB9AC;</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v20-stat-label">총 GIR</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+avgDist+'ft</div><div class="v20-stat-label">평균 거리</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(data.length>0?Math.min.apply(null,data.map(function(d){return d.dist})):0)+'ft</div><div class="v20-stat-label">최소 거리</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v20-btn" style="width:100%;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v20ResetGIR()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v20-btn" style="width:100%;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v20ResetGIR()">초기화</button>';}
 pn.innerHTML=html;openPanel('girprox');drawGIRCanvas(data);
 }
 function drawGIRCanvas(data){
 var c=document.getElementById('v20-gir-canvas');if(!c)return;var ctx=c.getContext('2d');
 ctx.fillStyle='#0d1117';ctx.fillRect(0,0,600,360);
-if(data.length===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('GIR &#xB370;&#xC774;&#xD130;&#xB97C; &#xAE30;&#xB85D;&#xD558;&#xBA74; &#xC0B0;&#xC810;&#xB3C4;&#xAC00; &#xD45C;&#xC2DC;&#xB429;&#xB2C8;&#xB2E4;',300,180);return;}
+if(data.length===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('GIR 데이터를 기록하면 산점도가 표시됩니다',300,180);return;}
 var maxDist=Math.max.apply(null,data.map(function(d){return d.dist}))+10;
 var chartH=280,chartW=520,startX=60,startY=30;
 ctx.strokeStyle='rgba(255,255,255,0.1)';ctx.lineWidth=1;
@@ -322,17 +322,17 @@ var pn=getPanel('windcalc');
 var CLUBS=['DR','3W','5W','5I','6I','7I','8I','9I','PW','SW'];
 var BASE=[250,230,215,185,170,160,148,136,125,95];
 var html='<button class="v20-close" onclick="window._v20Close(\'windcalc\')">&times;</button>';
-html+='<div class="v20-title">&#x1F32C;&#xFE0F; &#xBC14;&#xB78C; &#xBB3C;&#xB9AC; &#xACC4;&#xC0B0;&#xAE30;</div>';
+html+='<div class="v20-title">🌬️ 바람 물리 계산기</div>';
 html+='<canvas id="v20-wind-canvas" width="580" height="360" style="width:100%;max-width:580px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>&#xBC14;&#xB78C; &#xC870;&#xAC74;</h3>';
+html+='<div class="v20-card"><h3>바람 조건</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
-html+='<div><label class="v20-label">&#xD48D;&#xC18D; (km/h)</label><input type="number" id="v20-wind-speed" class="v20-input" value="15" min="0" max="60"></div>';
-html+='<div><label class="v20-label">&#xD48D;&#xD5A5; (&deg;)</label><input type="number" id="v20-wind-dir" class="v20-input" value="0" min="0" max="359"><div class="v20-label" style="font-size:9px">0=&#xC815;&#xBA74;&#xC5ED;&#xD48D; 180=&#xC21C;&#xD48D;</div></div>';
-html+='<div><label class="v20-label">&#xD074;&#xB7FD;</label><select id="v20-wind-club" class="v20-input">';
+html+='<div><label class="v20-label">풍속 (km/h)</label><input type="number" id="v20-wind-speed" class="v20-input" value="15" min="0" max="60"></div>';
+html+='<div><label class="v20-label">풍향 (&deg;)</label><input type="number" id="v20-wind-dir" class="v20-input" value="0" min="0" max="359"><div class="v20-label" style="font-size:9px">0=정면역풍 180=순풍</div></div>';
+html+='<div><label class="v20-label">클럽</label><select id="v20-wind-club" class="v20-input">';
 for(var i=0;i<CLUBS.length;i++)html+='<option value="'+i+'">'+CLUBS[i]+' ('+BASE[i]+'yd)</option>';
 html+='</select></div>';
 html+='</div>';
-html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20CalcWind()">&#xBCF4;&#xC815; &#xACC4;&#xC0B0;</button>';
+html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20CalcWind()">보정 계산</button>';
 html+='</div>';
 html+='<div id="v20-wind-result" style="margin-top:6px"></div>';
 pn.innerHTML=html;openPanel('windcalc');drawWindCanvas(0,0,0,0);
@@ -346,7 +346,7 @@ ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);ctx.stroke();
 ctx.beginPath();ctx.arc(cx,cy,r*0.66,0,Math.PI*2);ctx.stroke();
 ctx.beginPath();ctx.arc(cx,cy,r*0.33,0,Math.PI*2);ctx.stroke();
 ctx.fillStyle='rgba(255,255,255,0.4)';ctx.font='9px sans-serif';ctx.textAlign='center';
-ctx.fillText('N(&#xC5ED;&#xD48D;)',cx,cy-r-8);ctx.fillText('S(&#xC21C;&#xD48D;)',cx,cy+r+14);ctx.fillText('E',cx+r+10,cy+3);ctx.fillText('W',cx-r-10,cy+3);
+ctx.fillText('N(역풍)',cx,cy-r-8);ctx.fillText('S(순풍)',cx,cy+r+14);ctx.fillText('E',cx+r+10,cy+3);ctx.fillText('W',cx-r-10,cy+3);
 if(speed>0){
 var rad=(dir-90)*Math.PI/180;
 var arrowLen=Math.min(speed*2,r*0.8);
@@ -365,7 +365,7 @@ ctx.fillText('Base: '+baseDist+'yd → Adjusted: '+adjDist+'yd',cx,340);
 var diff=adjDist-baseDist;ctx.fillStyle=diff>=0?'#00FF88':'#FF6B6B';
 ctx.fillText((diff>=0?'+':'')+diff+'yd',cx,320);
 }
-}else{ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('&#xD48D;&#xC18D;/&#xD48D;&#xD5A5;&#xC744; &#xC785;&#xB825;&#xD558;&#xC138;&#xC694;',cx,cy);}
+}else{ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('풍속/풍향을 입력하세요',cx,cy);}
 }
 window._v20CalcWind=function(){
 var speed=parseInt(document.getElementById('v20-wind-speed').value)||0;
@@ -382,7 +382,7 @@ drawWindCanvas(speed,dir,baseDist,adjDist);playSfx('wind_calc');
 var el=document.getElementById('v20-wind-result');
 if(el){
 var diff=adjDist-baseDist;
-el.innerHTML='<div class="v20-card"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"><div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+baseDist+'yd</div><div class="v20-stat-label">&#xAE30;&#xBCF8; &#xBE44;&#xAC70;&#xB9AC;</div></div><div class="v20-stat-card"><div class="v20-stat-val" style="color:'+(diff>=0?'#00FF88':'#FF6B6B')+'">'+adjDist+'yd</div><div class="v20-stat-label">&#xBCF4;&#xC815; &#xBE44;&#xAC70;&#xB9AC;</div></div><div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(diff>=0?'+':'')+diff+'yd</div><div class="v20-stat-label">&#xBC14;&#xB78C; &#xC601;&#xD5A5;</div></div></div></div>';
+el.innerHTML='<div class="v20-card"><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"><div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+baseDist+'yd</div><div class="v20-stat-label">기본 비거리</div></div><div class="v20-stat-card"><div class="v20-stat-val" style="color:'+(diff>=0?'#00FF88':'#FF6B6B')+'">'+adjDist+'yd</div><div class="v20-stat-label">보정 비거리</div></div><div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(diff>=0?'+':'')+diff+'yd</div><div class="v20-stat-label">바람 영향</div></div></div></div>';
 }
 checkAchievements();
 };
@@ -393,21 +393,21 @@ playSfx('par_open');
 var pn=getPanel('parperf');
 var data=lsGet('par_perf',{par3:[],par4:[],par5:[]});
 var html='<button class="v20-close" onclick="window._v20Close(\'parperf\')">&times;</button>';
-html+='<div class="v20-title">&#x26F3; Par&#xBCC4; &#xD37C;&#xD3EC;&#xBA3C;&#xC2A4; &#xBD84;&#xC11D;</div>';
+html+='<div class="v20-title">⛳ Par별 퍼포먼스 분석</div>';
 html+='<canvas id="v20-par-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>&#xC2A4;&#xCF54;&#xC5B4; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v20-card"><h3>스코어 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
 html+='<div><label class="v20-label">Par</label><select id="v20-par-type" class="v20-input"><option value="par3">Par 3</option><option value="par4">Par 4</option><option value="par5">Par 5</option></select></div>';
-html+='<div><label class="v20-label">&#xC2A4;&#xCF54;&#xC5B4;</label><input type="number" id="v20-par-score" class="v20-input" value="4" min="1" max="12"></div>';
-html+='<div style="display:flex;align-items:flex-end"><button class="v20-btn v20-btn-primary" style="width:100%" onclick="window._v20LogPar()">&#xAE30;&#xB85D;</button></div>';
+html+='<div><label class="v20-label">스코어</label><input type="number" id="v20-par-score" class="v20-input" value="4" min="1" max="12"></div>';
+html+='<div style="display:flex;align-items:flex-end"><button class="v20-btn v20-btn-primary" style="width:100%" onclick="window._v20LogPar()">기록</button></div>';
 html+='</div></div>';
 var stats=calcParStats(data);
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+stats.par3Avg+'</div><div class="v20-stat-label">Par3 &#xD3C9;&#xADE0;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+stats.par4Avg+'</div><div class="v20-stat-label">Par4 &#xD3C9;&#xADE0;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+stats.par5Avg+'</div><div class="v20-stat-label">Par5 &#xD3C9;&#xADE0;</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+stats.par3Avg+'</div><div class="v20-stat-label">Par3 평균</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+stats.par4Avg+'</div><div class="v20-stat-label">Par4 평균</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+stats.par5Avg+'</div><div class="v20-stat-label">Par5 평균</div></div>';
 html+='</div>';
-if(data.par3.length+data.par4.length+data.par5.length>0){html+='<button class="v20-btn" style="width:100%;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v20ResetPar()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.par3.length+data.par4.length+data.par5.length>0){html+='<button class="v20-btn" style="width:100%;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v20ResetPar()">초기화</button>';}
 pn.innerHTML=html;openPanel('parperf');drawParCanvas(data);
 }
 function calcParStats(data){
@@ -458,27 +458,27 @@ function showMentalGame(){
 playSfx('mental_open');
 var pn=getPanel('mentalgame');
 var data=lsGet('mental_log',[]);
-var AXES=['&#xC790;&#xC2E0;&#xAC10;','&#xC9D1;&#xC911;&#xB825;','&#xD3C9;&#xC815;&#xC2EC;','&#xC778;&#xB0B4;&#xB825;','&#xD68C;&#xBCF5;&#xB825;'];
+var AXES=['자신감','집중력','평정심','인내력','회복력'];
 var html='<button class="v20-close" onclick="window._v20Close(\'mentalgame\')">&times;</button>';
-html+='<div class="v20-title">&#x1F9E0; &#xBA58;&#xD138; &#xAC8C;&#xC784; &#xB85C;&#xADF8;</div>';
+html+='<div class="v20-title">🧠 멘털 게임 로그</div>';
 html+='<canvas id="v20-mental-canvas" width="580" height="380" style="width:100%;max-width:580px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v20-card"><h3>&#xBA58;&#xD138; &#xC0C1;&#xD0DC; &#xAE30;&#xB85D; (1-10)</h3>';
+html+='<div class="v20-card"><h3>멘털 상태 기록 (1-10)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px">';
 for(var a=0;a<AXES.length;a++){
 var lastVal=data.length>0?data[data.length-1].scores[a]:5;
 html+='<div><label class="v20-label" style="font-size:9px">'+AXES[a]+'</label><input type="number" id="v20-mental-'+a+'" class="v20-input" value="'+lastVal+'" min="1" max="10" style="text-align:center"></div>';
 }
 html+='</div>';
-html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20LogMental()">&#xBA58;&#xD138; &#xAE30;&#xB85D;</button>';
+html+='<button class="v20-btn v20-btn-primary" style="width:100%;margin-top:8px" onclick="window._v20LogMental()">멘털 기록</button>';
 html+='</div>';
 var lastEntry=data.length>0?data[data.length-1]:null;
 var grade='-';if(lastEntry){var sum=0;for(var a=0;a<5;a++)sum+=lastEntry.scores[a];var avg=sum/5;grade=avg>=9?'S':avg>=7?'A':avg>=5?'B':avg>=3?'C':'D';}
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v20-stat-label">&#xCD1D; &#xAE30;&#xB85D;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+grade+'</div><div class="v20-stat-label">&#xC885;&#xD569; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(lastEntry?lastEntry.date:'-')+'</div><div class="v20-stat-label">&#xCD5C;&#xADFC; &#xAE30;&#xB85D;</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v20-stat-label">총 기록</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+grade+'</div><div class="v20-stat-label">종합 등급</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00B4D8">'+(lastEntry?lastEntry.date:'-')+'</div><div class="v20-stat-label">최근 기록</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v20-btn" style="width:100%;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v20ResetMental()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v20-btn" style="width:100%;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v20ResetMental()">초기화</button>';}
 pn.innerHTML=html;openPanel('mentalgame');drawMentalCanvas(data);
 }
 function drawMentalCanvas(data){
@@ -486,7 +486,7 @@ var c=document.getElementById('v20-mental-canvas');if(!c)return;var ctx=c.getCon
 ctx.fillStyle='#0d1117';ctx.fillRect(0,0,580,380);
 var AXES=['Confidence','Focus','Calm','Patience','Recovery'];
 var colors=['#00FF88','#4ECDC4','#00B4D8','#FFB800','#A855F7'];
-if(data.length===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('&#xBA58;&#xD138; &#xC0C1;&#xD0DC;&#xB97C; &#xAE30;&#xB85D;&#xD558;&#xBA74; Radar&#xAC00; &#xD45C;&#xC2DC;&#xB429;&#xB2C8;&#xB2E4;',290,190);return;}
+if(data.length===0){ctx.fillStyle='rgba(255,255,255,0.3)';ctx.font='14px sans-serif';ctx.textAlign='center';ctx.fillText('멘털 상태를 기록하면 Radar가 표시됩니다',290,190);return;}
 var last=data[data.length-1].scores;
 var cx=170,cy=190,r=120;
 for(var ring=1;ring<=5;ring++){
@@ -536,21 +536,21 @@ window._v20ResetMental=function(){lsSet('mental_log',[]);showMentalGame();};
 
 // ===== QUIZ v20 (+15 = 180->195) =====
 var QUIZ_V20=[
-{q:'&#xC0F7; &#xC250;&#xC774;&#xD551;&#xC5D0;&#xC11C; &#xD398;&#xC774;&#xB4DC;&#xB294; &#xC5B4;&#xB290; &#xBC29;&#xD5A5;&#xC73C;&#xB85C; &#xD718;&#xB294;&#xAC00;?',a:['&#xC67C;&#xCABD;&#xC73C;&#xB85C;','&#xC624;&#xB978;&#xCABD;&#xC73C;&#xB85C;','&#xC9C1;&#xC120;','&#xC704;&#xCABD;&#xC73C;&#xB85C;'],c:1},
-{q:'&#xD074;&#xB7FD; &#xAC38;&#xD551;&#xC5D0;&#xC11C; &#xC774;&#xC0C1;&#xC801;&#xC778; &#xD074;&#xB7FD;&#xAC04; &#xBE44;&#xAC70;&#xB9AC; &#xCC28;&#xC774;&#xB294;?',a:['5-8yd','10-15yd','20-25yd','30yd &#xC774;&#xC0C1;'],c:1},
-{q:'GIR(Green in Regulation)&#xC758; &#xC758;&#xBBF8;&#xB294;?',a:['&#xADDC;&#xC815; &#xD0C0;&#xC218; &#xC774;&#xB0B4;&#xB85C; &#xADF8;&#xB9B0; &#xC801;&#xC911;','2&#xD37C;&#xD2B8; &#xC131;&#xACF5;','&#xBC84;&#xB514; &#xD68D;&#xB4DD;','&#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xC548;&#xCC29;'],c:0},
-{q:'&#xBC14;&#xB78C;&#xC774; &#xC815;&#xBA74;(&#xC5ED;&#xD48D;)&#xC77C; &#xB54C; &#xBE44;&#xAC70;&#xB9AC;&#xC5D0; &#xBBF8;&#xCE58;&#xB294; &#xC601;&#xD5A5;&#xC740;?',a:['&#xAC10;&#xC18C;','&#xC99D;&#xAC00;','&#xBCC0;&#xD654; &#xC5C6;&#xC74C;','&#xC67C;&#xCABD;&#xC73C;&#xB85C; &#xD718;&#xC5B4;&#xC9D0;'],c:0},
-{q:'Par 3 &#xD640;&#xC758; &#xD3C9;&#xADE0; &#xAC70;&#xB9AC;&#xB294; &#xC57D; &#xBA87; &#xC57C;&#xB4DC;?',a:['80-120','130-200','220-280','300+'],c:1},
-{q:'&#xBA58;&#xD138; &#xAC8C;&#xC784;&#xC5D0;&#xC11C; &#xD3C9;&#xC815;&#xC2EC;&#xC774; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xC0C1;&#xD669;&#xC740;?',a:['&#xD2F0;&#xC0F7;','&#xD37C;&#xD305;','&#xBC99;&#xCEE4; &#xD0C8;&#xCD9C;','&#xBAA8;&#xB450; &#xC911;&#xC694;'],c:3},
-{q:'&#xC0F7; &#xBD84;&#xC0B0; &#xD328;&#xD134;&#xC5D0;&#xC11C; &#xC2AC;&#xB77C;&#xC774;&#xC2A4;&#xC758; &#xC6D0;&#xC778;&#xC740;?',a:['&#xC624;&#xD508; &#xD398;&#xC774;&#xC2A4;','&#xD074;&#xB85C;&#xC988;&#xB4DC; &#xD398;&#xC774;&#xC2A4;','&#xC544;&#xC6C3;&#xC0AC;&#xC774;&#xB4DC;&#xC778; &#xC2A4;&#xC717;&#xD328;&#xC2A4;','&#xC778;&#xC0AC;&#xC774;&#xB4DC;&#xC544;&#xC6C3; &#xC2A4;&#xC717;&#xD328;&#xC2A4;'],c:0},
-{q:'&#xB77C;&#xC6B4;&#xB4DC; &#xBE44;&#xAD50; &#xC2DC; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xC9C0;&#xD45C;&#xB294;?',a:['&#xCD1D;&#xD0C0;&#xC218;','&#xD3C9;&#xADE0; &#xD37C;&#xD305;&#xC218;','&#xC2A4;&#xD2B8;&#xB85C;&#xD06C; &#xAC8C;&#xC778;','GIR%'],c:2},
-{q:'&#xBC14;&#xB78C; 20km/h &#xC5ED;&#xD48D;&#xC2DC; DR(250yd) &#xBE44;&#xAC70;&#xB9AC; &#xAC10;&#xC18C;&#xB7C9;&#xC740; &#xC57D;?',a:['5yd','10yd','15-20yd','30yd'],c:1},
-{q:'&#xC2A4;&#xB9C8;&#xD2B8; &#xC5F0;&#xC2B5; &#xD50C;&#xB79C;&#xC5D0;&#xC11C; &#xC57D;&#xC810; &#xBD80;&#xBD84;&#xC5D0; &#xD22C;&#xC790;&#xD558;&#xB294; &#xC2DC;&#xAC04; &#xBE44;&#xC728;&#xC740;?',a:['20%','40-50%','70%','90%'],c:1},
-{q:'PGA &#xD22C;&#xC5B4; &#xD3C9;&#xADE0; GIR &#xADFC;&#xC811;&#xB3C4;(&#xD540;&#xAE4C;&#xC9C0; &#xAC70;&#xB9AC;)&#xB294;?',a:['10ft','20-25ft','35ft','50ft'],c:1},
-{q:'Par 5&#xD640;&#xC5D0;&#xC11C; &#xC774;&#xAE00;&#xC744; &#xC704;&#xD574; &#xD544;&#xC694;&#xD55C; &#xD0C0;&#xC218;&#xB294;?',a:['2&#xD0C0;','3&#xD0C0;','4&#xD0C0;','1&#xD0C0;'],c:1},
-{q:'&#xD074;&#xB7FD; &#xAC38;&#xD551;&#xC5D0;&#xC11C; &#xD558;&#xC774;&#xBE0C;&#xB9AC;&#xB4DC; &#xD074;&#xB7FD;&#xC758; &#xC7A5;&#xC810;&#xC740;?',a:['&#xBB34;&#xAC8C;&#xAC00; &#xAC00;&#xBCBC;&#xC6C0;','&#xAC00;&#xACA9;&#xC774; &#xC800;&#xB834;','&#xAD00;&#xC6A9;&#xC131;&#xACFC; &#xBE44;&#xAC70;&#xB9AC; &#xADE0;&#xD615;','&#xC2A4;&#xD540;&#xB7C9;&#xC774; &#xB9CE;&#xC74C;'],c:2},
-{q:'&#xBA58;&#xD138; &#xAC8C;&#xC784;&#xC5D0;&#xC11C; &#xD504;&#xB9AC;&#xC0F7; &#xB8E8;&#xD2F4;&#xC758; &#xBAA9;&#xC801;&#xC740;?',a:['&#xC2DC;&#xAC04; &#xC808;&#xC57D;','&#xC77C;&#xAD00;&#xC131; &#xD655;&#xBCF4;','&#xB3D9;&#xBC18;&#xC790; &#xBC30;&#xB824;','&#xCCB4;&#xB825; &#xC808;&#xC57D;'],c:1},
-{q:'&#xC21C;&#xD48D;(Tailwind) &#xC2DC; &#xC0F7;&#xC758; &#xD2B9;&#xC131; &#xBCC0;&#xD654;&#xB294;?',a:['&#xC2A4;&#xD540; &#xAC10;&#xC18C;+&#xBE44;&#xAC70;&#xB9AC; &#xC99D;&#xAC00;','&#xBE44;&#xAC70;&#xB9AC; &#xAC10;&#xC18C;','&#xC0AC;&#xC774;&#xB4DC;&#xC2A4;&#xD540; &#xC99D;&#xAC00;','&#xD0C4;&#xB3C4; &#xB0AE;&#xC544;&#xC9D0;+&#xBE44;&#xAC70;&#xB9AC; &#xC99D;&#xAC00;'],c:3}
+{q:'샷 쉐이핑에서 페이드는 어느 방향으로 휘는가?',a:['왼쪽으로','오른쪽으로','직선','위쪽으로'],c:1},
+{q:'클럽 갸핑에서 이상적인 클럽간 비거리 차이는?',a:['5-8yd','10-15yd','20-25yd','30yd 이상'],c:1},
+{q:'GIR(Green in Regulation)의 의미는?',a:['규정 타수 이내로 그린 적중','2퍼트 성공','버디 획득','페어웨이 안착'],c:0},
+{q:'바람이 정면(역풍)일 때 비거리에 미치는 영향은?',a:['감소','증가','변화 없음','왼쪽으로 휘어짐'],c:0},
+{q:'Par 3 홀의 평균 거리는 약 몇 야드?',a:['80-120','130-200','220-280','300+'],c:1},
+{q:'멘털 게임에서 평정심이 가장 중요한 상황은?',a:['티샷','퍼팅','벙커 탈출','모두 중요'],c:3},
+{q:'샷 분산 패턴에서 슬라이스의 원인은?',a:['오픈 페이스','클로즈드 페이스','아웃사이드인 스윗패스','인사이드아웃 스윗패스'],c:0},
+{q:'라운드 비교 시 가장 중요한 지표는?',a:['총타수','평균 퍼팅수','스트로크 게인','GIR%'],c:2},
+{q:'바람 20km/h 역풍시 DR(250yd) 비거리 감소량은 약?',a:['5yd','10yd','15-20yd','30yd'],c:1},
+{q:'스마트 연습 플랜에서 약점 부분에 투자하는 시간 비율은?',a:['20%','40-50%','70%','90%'],c:1},
+{q:'PGA 투어 평균 GIR 근접도(핀까지 거리)는?',a:['10ft','20-25ft','35ft','50ft'],c:1},
+{q:'Par 5홀에서 이글을 위해 필요한 타수는?',a:['2타','3타','4타','1타'],c:1},
+{q:'클럽 갸핑에서 하이브리드 클럽의 장점은?',a:['무게가 가벼움','가격이 저렴','관용성과 비거리 균형','스핀량이 많음'],c:2},
+{q:'멘털 게임에서 프리샷 루틴의 목적은?',a:['시간 절약','일관성 확보','동반자 배려','체력 절약'],c:1},
+{q:'순풍(Tailwind) 시 샷의 특성 변화는?',a:['스핀 감소+비거리 증가','비거리 감소','사이드스핀 증가','탄도 낮아짐+비거리 증가'],c:3}
 ];
 function showQuizV20(){
 playSfx('quiz_correct_v20');
@@ -559,7 +559,7 @@ var qIdx=lsGet('quiz_v20_idx',0);var score=lsGet('quiz_v20_score',0);var total=l
 if(qIdx>=QUIZ_V20.length)qIdx=0;
 var q=QUIZ_V20[qIdx];
 var html='<button class="v20-close" onclick="window._v20Close(\'quizv20\')">&times;</button>';
-html+='<div class="v20-title">&#x1F4DA; Golf Quiz v20 ('+(qIdx+1)+'/'+QUIZ_V20.length+')</div>';
+html+='<div class="v20-title">📚 Golf Quiz v20 ('+(qIdx+1)+'/'+QUIZ_V20.length+')</div>';
 html+='<div class="v20-card"><h3>'+q.q+'</h3>';
 html+='<div style="display:grid;gap:6px;margin-top:8px">';
 for(var a=0;a<q.a.length;a++){
@@ -567,17 +567,17 @@ html+='<button class="v20-btn" style="width:100%;text-align:left;padding:10px" o
 }
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+score+'</div><div class="v20-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FF6B6B">'+total+'</div><div class="v20-stat-label">&#xCD1D; &#xD480;&#xC774;</div></div>';
-html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+(total>0?Math.round(score/total*100):0)+'%</div><div class="v20-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#00FF88">'+score+'</div><div class="v20-stat-label">정답</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FF6B6B">'+total+'</div><div class="v20-stat-label">총 풀이</div></div>';
+html+='<div class="v20-stat-card"><div class="v20-stat-val" style="color:#FFB800">'+(total>0?Math.round(score/total*100):0)+'%</div><div class="v20-stat-label">정답률</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv20');
 }
 window._v20AnswerQuiz=function(sel,correct){
 var score=lsGet('quiz_v20_score',0);var total=lsGet('quiz_v20_total',0);var qIdx=lsGet('quiz_v20_idx',0);
 total++;
-if(sel===correct){score++;playSfx('quiz_correct_v20');showToast('&#xC815;&#xB2F5;!');}
-else{playSfx('quiz_wrong_v20');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+String.fromCharCode(65+correct));}
+if(sel===correct){score++;playSfx('quiz_correct_v20');showToast('정답!');}
+else{playSfx('quiz_wrong_v20');showToast('오답! 정답: '+String.fromCharCode(65+correct));}
 qIdx++;
 lsSet('quiz_v20_score',score);lsSet('quiz_v20_total',total);lsSet('quiz_v20_idx',qIdx);
 setTimeout(showQuizV20,800);checkAchievements();
@@ -585,18 +585,18 @@ setTimeout(showQuizV20,800);checkAchievements();
 
 // ===== ACHIEVEMENTS v20 (+12 = 144->156) =====
 var ACHIEVEMENTS_V20=[
-{id:'shape_tracker',name:'Shot Shape Tracker',desc:'&#xC0F7; &#xC250;&#xC774;&#xD504; 10&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('shape_log',[]).length>=10}},
-{id:'gap_analyst',name:'Gap Analyst',desc:'&#xD074;&#xB7FD; &#xAC38;&#xD551; &#xBD84;&#xC11D; &#xC644;&#xB8CC;',check:function(){return lsGet('gap_data',null)!==null}},
-{id:'round_comparer',name:'Round Comparer',desc:'&#xB77C;&#xC6B4;&#xB4DC; &#xBE44;&#xAD50; 3&#xD68C;',check:function(){return lsGet('compare_rounds',[]).length>=3}},
-{id:'practice_planner',name:'Practice Planner',desc:'&#xC5F0;&#xC2B5; &#xD50C;&#xB79C; &#xC0DD;&#xC131;',check:function(){return lsGet('practice_plan',null)!==null}},
-{id:'gir_collector',name:'GIR Collector',desc:'GIR &#xADFC;&#xC811;&#xB3C4; 20&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('gir_prox',[]).length>=20}},
-{id:'wind_master',name:'Wind Master',desc:'&#xBC14;&#xB78C; &#xACC4;&#xC0B0; 5&#xD68C; &#xC0AC;&#xC6A9;',check:function(){return lsGet('wind_uses',0)>=5}},
-{id:'par_recorder',name:'Par Recorder',desc:'Par&#xBCC4; &#xC2A4;&#xCF54;&#xC5B4; 30&#xD68C; &#xAE30;&#xB85D;',check:function(){var d=lsGet('par_perf',{par3:[],par4:[],par5:[]});return d.par3.length+d.par4.length+d.par5.length>=30}},
-{id:'mental_coach',name:'Mental Coach',desc:'&#xBA58;&#xD138; &#xB85C;&#xADF8; 10&#xD68C;',check:function(){return lsGet('mental_log',[]).length>=10}},
-{id:'quiz_v20_master',name:'Quiz v20 Master',desc:'v20 &#xD034;&#xC988; &#xC804;&#xBB38; &#xC815;&#xB2F5;',check:function(){return lsGet('quiz_v20_score',0)>=15}},
-{id:'quiz_v20_clear',name:'Quiz v20 Clear',desc:'v20 &#xD034;&#xC988; &#xC644;&#xC8FC;',check:function(){return lsGet('quiz_v20_total',0)>=15}},
-{id:'shape_50',name:'Shape Expert',desc:'&#xC0F7; &#xC250;&#xC774;&#xD504; 50&#xD68C;',check:function(){return lsGet('shape_log',[]).length>=50}},
-{id:'v20_complete',name:'v20 Complete',desc:'v20 &#xC804;&#xCCB4; &#xAE30;&#xB2A5; &#xD0D0;&#xC0C9;',check:function(){return lsGet('v20_explored',0)>=8}}
+{id:'shape_tracker',name:'Shot Shape Tracker',desc:'샷 쉐이프 10회 기록',check:function(){return lsGet('shape_log',[]).length>=10}},
+{id:'gap_analyst',name:'Gap Analyst',desc:'클럽 갸핑 분석 완료',check:function(){return lsGet('gap_data',null)!==null}},
+{id:'round_comparer',name:'Round Comparer',desc:'라운드 비교 3회',check:function(){return lsGet('compare_rounds',[]).length>=3}},
+{id:'practice_planner',name:'Practice Planner',desc:'연습 플랜 생성',check:function(){return lsGet('practice_plan',null)!==null}},
+{id:'gir_collector',name:'GIR Collector',desc:'GIR 근접도 20회 기록',check:function(){return lsGet('gir_prox',[]).length>=20}},
+{id:'wind_master',name:'Wind Master',desc:'바람 계산 5회 사용',check:function(){return lsGet('wind_uses',0)>=5}},
+{id:'par_recorder',name:'Par Recorder',desc:'Par별 스코어 30회 기록',check:function(){var d=lsGet('par_perf',{par3:[],par4:[],par5:[]});return d.par3.length+d.par4.length+d.par5.length>=30}},
+{id:'mental_coach',name:'Mental Coach',desc:'멘털 로그 10회',check:function(){return lsGet('mental_log',[]).length>=10}},
+{id:'quiz_v20_master',name:'Quiz v20 Master',desc:'v20 퀴즈 전문 정답',check:function(){return lsGet('quiz_v20_score',0)>=15}},
+{id:'quiz_v20_clear',name:'Quiz v20 Clear',desc:'v20 퀴즈 완주',check:function(){return lsGet('quiz_v20_total',0)>=15}},
+{id:'shape_50',name:'Shape Expert',desc:'샷 쉐이프 50회',check:function(){return lsGet('shape_log',[]).length>=50}},
+{id:'v20_complete',name:'v20 Complete',desc:'v20 전체 기능 탐색',check:function(){return lsGet('v20_explored',0)>=8}}
 ];
 function checkAchievements(){
 var unlocked=lsGet('achievements_v20',[]);
@@ -604,7 +604,7 @@ for(var i=0;i<ACHIEVEMENTS_V20.length;i++){
 var a=ACHIEVEMENTS_V20[i];
 if(unlocked.indexOf(a.id)===-1&&a.check()){
 unlocked.push(a.id);lsSet('achievements_v20',unlocked);
-playSfx('achieve_v20');showToast('&#x1F3C6; '+a.name+' unlocked!');
+playSfx('achieve_v20');showToast('🏆 '+a.name+' unlocked!');
 }
 }
 }
@@ -634,15 +634,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Shape',fn:showShotShape,icon:'&#x1F3AF;'},
-{label:'Gap',fn:showClubGapping,icon:'&#x1F4CA;'},
-{label:'Compare',fn:showRoundCompare,icon:'&#x1F4C8;'},
-{label:'Plan',fn:showPracticePlan,icon:'&#x1F4DD;'},
-{label:'GIR',fn:showGIRProximity,icon:'&#x1F3CC;'},
-{label:'Wind',fn:showWindCalc,icon:'&#x1F32C;&#xFE0F;'},
-{label:'Par',fn:showParPerformance,icon:'&#x26F3;'},
-{label:'Mental',fn:showMentalGame,icon:'&#x1F9E0;'},
-{label:'Quiz20',fn:showQuizV20,icon:'&#x1F4DA;'}
+{label:'Shape',fn:showShotShape,icon:'🎯'},
+{label:'Gap',fn:showClubGapping,icon:'📊'},
+{label:'Compare',fn:showRoundCompare,icon:'📈'},
+{label:'Plan',fn:showPracticePlan,icon:'📝'},
+{label:'GIR',fn:showGIRProximity,icon:'🏌'},
+{label:'Wind',fn:showWindCalc,icon:'🌬️'},
+{label:'Par',fn:showParPerformance,icon:'⛳'},
+{label:'Mental',fn:showMentalGame,icon:'🧠'},
+{label:'Quiz20',fn:showQuizV20,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

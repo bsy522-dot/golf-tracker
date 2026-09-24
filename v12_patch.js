@@ -21,7 +21,7 @@ var CLUB_AVG_DIST=[230,210,195,185,170,160,150,140,130,120,105,90,70,0];
 function showPuttingDash(){
 var pn=getPanel('putting');
 var puttLog=lsGet('putting_log',[]);
-var html='<div class="v12-title">&#x26F3; 퍼팅 분석 대시보드</div>';
+var html='<div class="v12-title">⛳ 퍼팅 분석 대시보드</div>';
 
 html+='<div class="v12-card"><h3>퍼팅 기록 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
@@ -53,7 +53,7 @@ html+='</div>';
 
 html+='<canvas id="v12-putt-canvas" width="560" height="300" style="width:100%;max-width:560px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
-html+='<div class="v12-card"><h3>&#x1F4CA; 거리별 퍼팅 성공률</h3>';
+html+='<div class="v12-card"><h3>📊 거리별 퍼팅 성공률</h3>';
 html+='<table class="v12-table"><tr><th>거리</th><th>시도</th><th>평균 퍼트</th><th>1퍼트율</th></tr>';
 var buckets=[{name:'숏 (1~10ft)',data:distBuckets.short},{name:'미들 (11~30ft)',data:distBuckets.mid},{name:'롱 (31ft+)',data:distBuckets.long}];
 for(var b=0;b<buckets.length;b++){
@@ -66,7 +66,7 @@ for(var b=0;b<buckets.length;b++){
 html+='</table></div>';
 
 if(puttLog.length>5){
-  html+='<div class="v12-card"><h3>&#x1F4C8; 최근 20홀 퍼팅 추이</h3>';
+  html+='<div class="v12-card"><h3>📈 최근 20홀 퍼팅 추이</h3>';
   html+='<canvas id="v12-putt-trend" width="560" height="220" style="width:100%;max-width:560px;height:auto;display:block;margin:8px auto;border-radius:10px"></canvas></div>';
 }
 
@@ -160,7 +160,7 @@ ctx.fillText('Recent Putting Trend',50,18);
 function showShotDispersion(){
 var pn=getPanel('dispersion');
 var shots=lsGet('dispersion_shots',[]);
-var html='<div class="v12-title">&#x1F3AF; 샷 분산도 분석</div>';
+var html='<div class="v12-title">🎯 샷 분산도 분석</div>';
 
 html+='<div class="v12-card"><h3>샷 착탄 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
@@ -189,11 +189,11 @@ if(totalShots>0){
   html+='<div class="v12-stat-card"><div class="v12-stat-val" style="color:#ff6b6b">'+maxDev.toFixed(0)+'yd</div><div class="v12-stat-label">최대 편차</div></div>';
   html+='</div>';
 
-  html+='<div class="v12-card"><h3>&#x1F4CB; 분석 결과</h3>';
-  html+='<p>&#x25C6; 좌우 경향: <strong style="color:#00B4D8">'+tendency+'</strong> (평균 '+avgLR+'yd)</p>';
-  html+='<p>&#x25C6; 장단 경향: <strong style="color:#FFB800">'+distTend+'</strong> (평균 '+avgFB+'yd)</p>';
-  html+='<p>&#x25C6; 분산 반경: <strong style="color:#ff6b6b">'+maxDev.toFixed(0)+'yd</strong></p>';
-  html+='<p style="margin-top:8px;color:#888;font-size:.8em">&#x1F4A1; ';
+  html+='<div class="v12-card"><h3>📋 분석 결과</h3>';
+  html+='<p>◆ 좌우 경향: <strong style="color:#00B4D8">'+tendency+'</strong> (평균 '+avgLR+'yd)</p>';
+  html+='<p>◆ 장단 경향: <strong style="color:#FFB800">'+distTend+'</strong> (평균 '+avgFB+'yd)</p>';
+  html+='<p>◆ 분산 반경: <strong style="color:#ff6b6b">'+maxDev.toFixed(0)+'yd</strong></p>';
+  html+='<p style="margin-top:8px;color:#888;font-size:.8em">💡 ';
   if(parseFloat(avgLR)>5)html+='우측으로 밀리는 경향. 그립과 정렬을 점검하세요.';
   else if(parseFloat(avgLR)<-5)html+='좌측으로 당기는 경향. 다운스윙 궤도를 확인하세요.';
   else if(maxDev>25)html+='분산이 큽니다. 일관된 스윙 템포와 정렬에 집중하세요.';
@@ -271,7 +271,7 @@ ctx.fillText('Shot Dispersion ('+shots.length+' shots)',12,18);
 function showSGAnalyzer(){
 var pn=getPanel('sg');
 var sgData=lsGet('sg_data',{tee:0,approach:0,around:0,putting:0,rounds:0});
-var html='<div class="v12-title">&#x1F4CA; 스트로크 게인 분석기</div>';
+var html='<div class="v12-title">📊 스트로크 게인 분석기</div>';
 
 html+='<div class="v12-card"><h3>라운드 SG 입력</h3>';
 html+='<p style="color:#888;font-size:.8em;margin-bottom:8px">각 카테고리에서 스크래치 골퍼 대비 얻은/잃은 타수를 입력하세요.</p>';
@@ -302,7 +302,7 @@ html+='</div>';
 
 html+='<canvas id="v12-sg-canvas" width="560" height="320" style="width:100%;max-width:560px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
-html+='<div class="v12-card"><h3>&#x1F4D6; SG 해석 가이드</h3>';
+html+='<div class="v12-card"><h3>📖 SG 해석 가이드</h3>';
 html+='<table class="v12-table"><tr><th>SG 값</th><th>의미</th><th>등급</th></tr>';
 html+='<tr><td style="color:#00FF88">+2.0 이상</td><td>투어 프로 수준</td><td><span class="v12-badge v12-badge-a">S</span></td></tr>';
 html+='<tr><td style="color:#00FF88">+0.5 ~ +2.0</td><td>상급 아마추어</td><td><span class="v12-badge v12-badge-a">A</span></td></tr>';
@@ -382,7 +382,7 @@ ctx.fillText('Strokes Gained Analysis ('+data.rounds+' rounds)',40,22);
 // ===== 4. COURSE MANAGEMENT AI =====
 function showCourseAI(){
 var pn=getPanel('caddie');
-var html='<div class="v12-title">&#x1F916; 코스 매니지먼트 AI</div>';
+var html='<div class="v12-title">🤖 코스 매니지먼트 AI</div>';
 
 html+='<div class="v12-card"><h3>홀 정보 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
@@ -399,15 +399,15 @@ html+='<button class="v12-btn v12-btn-primary" style="width:100%;margin-top:12px
 
 html+='<div id="v12-ai-result"></div>';
 
-html+='<div class="v12-card"><h3>&#x1F4D6; 코스 매니지먼트 원칙</h3>';
+html+='<div class="v12-card"><h3>📖 코스 매니지먼트 원칙</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 var principles=[
-  {icon:'&#x1F3AF;',title:'미스의 방향 관리',desc:'해저드 반대편을 겨냥하라'},
-  {icon:'&#x1F4CA;',title:'확률적 판단',desc:'영웅 샷보다 안전한 플레이'},
-  {icon:'&#x26F3;',title:'그린 센터 공략',desc:'핀을 직접 공략하지 마라'},
-  {icon:'&#x1F9E0;',title:'감정 통제',desc:'실수 후 과도한 만회 금지'},
-  {icon:'&#x1F4A8;',title:'바람 고려',desc:'클럽 1~2개 여유있게'},
-  {icon:'&#x1F3CC;&#xFE0F;',title:'레이업 전략',desc:'Par 5에서 무리한 2온 금지'}
+  {icon:'🎯',title:'미스의 방향 관리',desc:'해저드 반대편을 겨냥하라'},
+  {icon:'📊',title:'확률적 판단',desc:'영웅 샷보다 안전한 플레이'},
+  {icon:'⛳',title:'그린 센터 공략',desc:'핀을 직접 공략하지 마라'},
+  {icon:'🧠',title:'감정 통제',desc:'실수 후 과도한 만회 금지'},
+  {icon:'💨',title:'바람 고려',desc:'클럽 1~2개 여유있게'},
+  {icon:'🏌️',title:'레이업 전략',desc:'Par 5에서 무리한 2온 금지'}
 ];
 for(var pi=0;pi<principles.length;pi++){
   html+='<div class="v12-mini-stat"><div style="font-size:1.3em">'+principles[pi].icon+'</div><div class="v12-mini-val" style="font-size:.85em">'+principles[pi].title+'</div><div class="v12-mini-label">'+principles[pi].desc+'</div></div>';
@@ -435,43 +435,43 @@ if(par===3){
   if(wind==='head_light'){clubIdx=Math.max(0,clubIdx-1)}
   else if(wind==='head_strong'){clubIdx=Math.max(0,clubIdx-2)}
   else if(wind==='tail_light'){clubIdx=Math.min(CLUBS.length-2,clubIdx+1)}
-  advice.push('&#x1F3CC;&#xFE0F; <strong>추천 클럽:</strong> '+CLUBS[clubIdx]+' ('+CLUB_AVG_DIST[clubIdx]+'yd)');
+  advice.push('🏌️ <strong>추천 클럽:</strong> '+CLUBS[clubIdx]+' ('+CLUB_AVG_DIST[clubIdx]+'yd)');
   if(hazard!=='none'){
     riskLevel='MED';strategy='안전';
     var safeDir=hazard.indexOf('left')>-1?'우측':'좌측';
-    advice.push('&#x26A0;&#xFE0F; <strong>해저드 경고:</strong> '+safeDir+' 방향으로 에임');
+    advice.push('⚠️ <strong>해저드 경고:</strong> '+safeDir+' 방향으로 에임');
   }
-  if(pin==='front')advice.push('&#x26F3; <strong>핀 프론트:</strong> 그린 센터 공략 → 내리막 퍼팅 회피');
-  else if(pin==='back')advice.push('&#x26F3; <strong>핀 백:</strong> 1클럽 업 고려');
-  advice.push('&#x1F4A1; <strong>전략:</strong> 그린 센터 착탄 후 2퍼트 파 세이브 목표');
+  if(pin==='front')advice.push('⛳ <strong>핀 프론트:</strong> 그린 센터 공략 → 내리막 퍼팅 회피');
+  else if(pin==='back')advice.push('⛳ <strong>핀 백:</strong> 1클럽 업 고려');
+  advice.push('💡 <strong>전략:</strong> 그린 센터 착탄 후 2퍼트 파 세이브 목표');
 } else if(par===4){
-  advice.push('&#x1F3CC;&#xFE0F; <strong>티샷:</strong> Driver ('+CLUB_AVG_DIST[0]+'yd)');
+  advice.push('🏌️ <strong>티샷:</strong> Driver ('+CLUB_AVG_DIST[0]+'yd)');
   var remain=dist-CLUB_AVG_DIST[0];
   if(wind==='head_light')remain+=10;else if(wind==='head_strong')remain+=20;
   else if(wind==='tail_light')remain-=8;else if(wind==='tail_strong')remain-=15;
   var appClub=0;
   for(var j=0;j<CLUB_AVG_DIST.length;j++){if(CLUB_AVG_DIST[j]<=remain+10&&CLUB_AVG_DIST[j]>=remain-15){appClub=j;break}}
-  advice.push('&#x26F3; <strong>세컨샷:</strong> ~'+Math.max(0,remain)+'yd 남음 → '+CLUBS[appClub]);
+  advice.push('⛳ <strong>세컨샷:</strong> ~'+Math.max(0,remain)+'yd 남음 → '+CLUBS[appClub]);
   if(hazard!=='none'){
     riskLevel='MED';
     var safeDir2=hazard.indexOf('left')>-1?'우측':'좌측';
-    advice.push('&#x26A0;&#xFE0F; <strong>해저드:</strong> 티샷 '+safeDir2+' 페어웨이 타겟');
-    if(hazard.indexOf('water')>-1){riskLevel='HIGH';strategy='보수';advice.push('&#x1F4A7; <strong>워터:</strong> 레이업 고려 (리스크 &gt; 리워드)')}
+    advice.push('⚠️ <strong>해저드:</strong> 티샷 '+safeDir2+' 페어웨이 타겟');
+    if(hazard.indexOf('water')>-1){riskLevel='HIGH';strategy='보수';advice.push('💧 <strong>워터:</strong> 레이업 고려 (리스크 &gt; 리워드)')}
   }
-  if(dist>430){riskLevel='HIGH';strategy='보수';advice.push('&#x1F4AA; <strong>장홀:</strong> 보기 회피 전략. 2온 무리 X')}
-  advice.push('&#x1F4A1; <strong>목표:</strong> 페어웨이 안착 → 그린 온 → 2퍼트 파');
+  if(dist>430){riskLevel='HIGH';strategy='보수';advice.push('💪 <strong>장홀:</strong> 보기 회피 전략. 2온 무리 X')}
+  advice.push('💡 <strong>목표:</strong> 페어웨이 안착 → 그린 온 → 2퍼트 파');
 } else {
-  advice.push('&#x1F3CC;&#xFE0F; <strong>티샷:</strong> Driver → 페어웨이 안착 우선');
+  advice.push('🏌️ <strong>티샷:</strong> Driver → 페어웨이 안착 우선');
   var rem2=dist-CLUB_AVG_DIST[0];
   if(rem2>CLUB_AVG_DIST[0]){
-    advice.push('&#x26F3; <strong>세컨샷:</strong> 3W/5W 레이업 → ~'+Math.max(0,rem2-CLUB_AVG_DIST[1])+'yd 남기기');
+    advice.push('⛳ <strong>세컨샷:</strong> 3W/5W 레이업 → ~'+Math.max(0,rem2-CLUB_AVG_DIST[1])+'yd 남기기');
     strategy='보수';
   } else {
-    advice.push('&#x26F3; <strong>2온 시도:</strong> '+rem2+'yd → 3W/5W (리스크 주의)');
+    advice.push('⛳ <strong>2온 시도:</strong> '+rem2+'yd → 3W/5W (리스크 주의)');
     riskLevel='HIGH';strategy='공격';
   }
-  if(hazard.indexOf('water')>-1){strategy='보수';advice.push('&#x1F4A7; <strong>워터:</strong> 레이업 강력 추천')}
-  advice.push('&#x1F4A1; <strong>전략:</strong> 3온 2퍼트 버디/파 목표');
+  if(hazard.indexOf('water')>-1){strategy='보수';advice.push('💧 <strong>워터:</strong> 레이업 강력 추천')}
+  advice.push('💡 <strong>전략:</strong> 3온 2퍼트 버디/파 목표');
 }
 
 var riskColor=riskLevel==='LOW'?'#00FF88':riskLevel==='MED'?'#FFB800':'#ff6b6b';
@@ -479,7 +479,7 @@ var stratColor=strategy==='공격'?'#00FF88':strategy==='안전'?'#FFB800':'#ff6
 
 var rhtml='<div class="v12-card" style="border-color:'+riskColor+'">';
 rhtml+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
-rhtml+='<h3 style="margin:0">&#x1F916; AI 공략: #'+hole+' Par '+par+' ('+dist+'yd)</h3>';
+rhtml+='<h3 style="margin:0">🤖 AI 공략: #'+hole+' Par '+par+' ('+dist+'yd)</h3>';
 rhtml+='<div><span class="v12-badge" style="background:'+riskColor+'22;color:'+riskColor+'">리스크: '+riskLevel+'</span> ';
 rhtml+='<span class="v12-badge" style="background:'+stratColor+'22;color:'+stratColor+'">전략: '+strategy+'</span></div></div>';
 for(var a=0;a<advice.length;a++){rhtml+='<p style="margin:6px 0;font-size:.88em;line-height:1.6">'+advice[a]+'</p>'}
@@ -492,7 +492,7 @@ playSfx('caddie_advice');
 // ===== 5. PLAYING CONDITIONS CALCULATOR =====
 function showConditionCalc(){
 var pn=getPanel('conditions');
-var html='<div class="v12-title">&#x1F321;&#xFE0F; 컨디션 보정 계산기</div>';
+var html='<div class="v12-title">🌡️ 컨디션 보정 계산기</div>';
 
 html+='<div class="v12-card"><h3>플레이 환경 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
@@ -507,13 +507,13 @@ html+='<div id="v12-cond-result"></div>';
 
 html+='<canvas id="v12-cond-canvas" width="560" height="280" style="width:100%;max-width:560px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
-html+='<div class="v12-card"><h3>&#x1F4D6; 환경 보정 기본 원칙</h3>';
+html+='<div class="v12-card"><h3>📖 환경 보정 기본 원칙</h3>';
 html+='<table class="v12-table"><tr><th>요인</th><th>효과</th><th>보정량</th></tr>';
-html+='<tr><td>&#x1F321;&#xFE0F; 기온 +10&deg;C</td><td style="color:#00FF88">비거리 증가</td><td>+2~3 yd</td></tr>';
-html+='<tr><td>&#x1F321;&#xFE0F; 기온 -10&deg;C</td><td style="color:#ff6b6b">비거리 감소</td><td>-3~5 yd</td></tr>';
-html+='<tr><td>&#x26F0;&#xFE0F; 고도 +300m</td><td style="color:#00FF88">비거리 증가</td><td>+2% (~4yd)</td></tr>';
-html+='<tr><td>&#x1F4A7; 습도 높음</td><td style="color:#00FF88">약간 증가</td><td>+1~2 yd</td></tr>';
-html+='<tr><td>&#x1F327;&#xFE0F; 비/젖은 페웨</td><td style="color:#ff6b6b">런 감소</td><td>-5~15 yd</td></tr>';
+html+='<tr><td>🌡️ 기온 +10&deg;C</td><td style="color:#00FF88">비거리 증가</td><td>+2~3 yd</td></tr>';
+html+='<tr><td>🌡️ 기온 -10&deg;C</td><td style="color:#ff6b6b">비거리 감소</td><td>-3~5 yd</td></tr>';
+html+='<tr><td>⛰️ 고도 +300m</td><td style="color:#00FF88">비거리 증가</td><td>+2% (~4yd)</td></tr>';
+html+='<tr><td>💧 습도 높음</td><td style="color:#00FF88">약간 증가</td><td>+1~2 yd</td></tr>';
+html+='<tr><td>🌧️ 비/젖은 페웨</td><td style="color:#ff6b6b">런 감소</td><td>-5~15 yd</td></tr>';
 html+='</table></div>';
 
 pn.innerHTML='<button class="v12-close" onclick="window._v12Close(\'conditions\')">&times;</button>'+html;
@@ -548,7 +548,7 @@ var hColor=humidAdj>=0?'#00FF88':'#ff6b6b';
 rhtml+='<div class="v12-mini-stat"><div class="v12-mini-val" style="color:'+hColor+'">'+(humidAdj>=0?'+':'')+humidAdj.toFixed(1)+'%</div><div class="v12-mini-label">습도 ('+humid+'%)</div></div>';
 rhtml+='</div>';
 
-rhtml+='<p style="margin-top:12px;font-size:.82em;color:#888">&#x1F4A1; ';
+rhtml+='<p style="margin-top:12px;font-size:.82em;color:#888">💡 ';
 if(temp<10)rhtml+='추운 날씨입니다. 공의 탄성이 줄어 비거리가 감소합니다. 1~2클럽 업하세요.';
 else if(temp>35)rhtml+='더운 날씨입니다. 체력 관리에 유의하고 수분을 충분히 섭취하세요.';
 else if(alt>500)rhtml+='고도가 높습니다. 공기 밀도가 낮아 비거리가 증가합니다.';
@@ -599,7 +599,7 @@ ctx.fillText(dist+'yd → '+adjDist+'yd ('+(totalPct>=0?'+':'')+totalPct.toFixed
 // ===== 6. GREEN READING GUIDE =====
 function showGreenReading(){
 var pn=getPanel('green');
-var html='<div class="v12-title">&#x26F3; 퍼팅 그린 리딩 가이드</div>';
+var html='<div class="v12-title">⛳ 퍼팅 그린 리딩 가이드</div>';
 
 html+='<div class="v12-card"><h3>그린 정보 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
@@ -616,13 +616,13 @@ html+='<button class="v12-btn v12-btn-primary" style="width:100%;margin-top:12px
 html+='<canvas id="v12-green-canvas" width="400" height="400" style="width:100%;max-width:400px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 html+='<div id="v12-green-result"></div>';
 
-html+='<div class="v12-card"><h3>&#x1F4D6; 그린 리딩 팁</h3>';
+html+='<div class="v12-card"><h3>📖 그린 리딩 팁</h3>';
 html+='<div style="font-size:.85em;color:#aaa;line-height:1.7">';
-html+='<p>&#x25C6; <strong>에임포인트:</strong> 경사 반대편으로 홀컵 1~3개 너비만큼 에임</p>';
-html+='<p>&#x25C6; <strong>내리막:</strong> 거리 감각 -20~30%. 부드럽게 굴리기</p>';
-html+='<p>&#x25C6; <strong>오르막:</strong> 거리 감각 +15~25%. 확실하게 지나가도록</p>';
-html+='<p>&#x25C6; <strong>빠른 그린:</strong> 경사 영향 2배. 보수적 에임</p>';
-html+='<p>&#x25C6; <strong>브레이크 포인트:</strong> 전체 거리의 1/3~1/2 지점에서 최대 꺾임</p>';
+html+='<p>◆ <strong>에임포인트:</strong> 경사 반대편으로 홀컵 1~3개 너비만큼 에임</p>';
+html+='<p>◆ <strong>내리막:</strong> 거리 감각 -20~30%. 부드럽게 굴리기</p>';
+html+='<p>◆ <strong>오르막:</strong> 거리 감각 +15~25%. 확실하게 지나가도록</p>';
+html+='<p>◆ <strong>빠른 그린:</strong> 경사 영향 2배. 보수적 에임</p>';
+html+='<p>◆ <strong>브레이크 포인트:</strong> 전체 거리의 1/3~1/2 지점에서 최대 꺾임</p>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v12-close" onclick="window._v12Close(\'green\')">&times;</button>'+html;
@@ -664,7 +664,7 @@ rhtml+='<div class="v12-mini-stat"><div class="v12-mini-val" style="color:#FFB80
 rhtml+='<div class="v12-mini-stat"><div class="v12-mini-val" style="color:#00B4D8">'+aimDir+'</div><div class="v12-mini-label">에임 방향</div></div>';
 rhtml+='</div>';
 if(aimCups>0){rhtml+='<p style="margin-top:10px;font-size:.88em;color:#aaa">에임포인트: 홀컵 <strong style="color:#FFB800">'+aimCups+'</strong>개 '+aimDir+'으로 에임</p>'}
-rhtml+='<p style="margin-top:6px;font-size:.82em;color:#888">&#x1F4A1; ';
+rhtml+='<p style="margin-top:6px;font-size:.82em;color:#888">💡 ';
 if(slope.indexOf('down')>-1)rhtml+='내리막 퍼팅. 터치만으로 굴리세요. 롱 퍼팅 주의!';
 else if(slope.indexOf('up')>-1)rhtml+='오르막 퍼팅. 홀컵 30cm 뒤까지 보내는 느낌으로!';
 else if(breakAmount>2)rhtml+='브레이크가 큽니다. 에임포인트를 충분히 잡으세요.';
@@ -732,7 +732,7 @@ ctx.fillStyle='#888';ctx.font='11px sans-serif';ctx.fillText('경사: '+slopeLab
 function showClubGap(){
 var pn=getPanel('gap');
 var gapData=lsGet('club_gap_data',{});
-var html='<div class="v12-title">&#x1F4CF; 클럽 갭 분석</div>';
+var html='<div class="v12-title">📏 클럽 갭 분석</div>';
 
 html+='<div class="v12-card"><h3>클럽별 비거리 설정</h3>';
 html+='<p style="color:#888;font-size:.8em;margin-bottom:8px">각 클럽의 평균 비거리를 입력하세요. 적정 갭: 10~15yd</p>';
@@ -773,14 +773,14 @@ for(var j=0;j<distances.length-1;j++){
 
 var rhtml='';
 if(issues.length>0){
-  rhtml+='<div class="v12-card"><h3>&#x26A0;&#xFE0F; 갭 이슈 ('+issues.length+'건)</h3>';
+  rhtml+='<div class="v12-card"><h3>⚠️ 갭 이슈 ('+issues.length+'건)</h3>';
   for(var k=0;k<issues.length;k++){
     var color=issues[k].type==='big'?'#ff6b6b':'#FFB800';
-    rhtml+='<p style="margin:6px 0;font-size:.85em;color:'+color+'">&#x25C6; '+issues[k].msg+'</p>';
+    rhtml+='<p style="margin:6px 0;font-size:.85em;color:'+color+'">◆ '+issues[k].msg+'</p>';
   }
   rhtml+='</div>';
 } else {
-  rhtml+='<div class="v12-card" style="text-align:center"><p style="color:#00FF88;font-size:1em">&#x2705; 모든 클럽 갭이 적정 범위 (5~20yd)입니다!</p></div>';
+  rhtml+='<div class="v12-card" style="text-align:center"><p style="color:#00FF88;font-size:1em">✅ 모든 클럽 갭이 적정 범위 (5~20yd)입니다!</p></div>';
 }
 
 var el=document.getElementById('v12-gap-result');if(el)el.innerHTML=rhtml;
@@ -824,7 +824,7 @@ var pn=getPanel('season');
 var now=new Date();var month=now.getMonth();var year=now.getFullYear();
 var monthNames=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
 var seasonLog=lsGet('season_log',[]);
-var html='<div class="v12-title">&#x1F4C5; '+year+'년 시즌 통계</div>';
+var html='<div class="v12-title">📅 '+year+'년 시즌 통계</div>';
 
 html+='<div class="v12-card"><h3>라운드 기록 추가</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:8px">';
@@ -855,7 +855,7 @@ html+='<canvas id="v12-season-canvas" width="560" height="300" style="width:100%
 
 if(totalRounds>=3){
   var recent5=seasonLog.slice(-5);
-  html+='<div class="v12-card"><h3>&#x1F4CB; 최근 라운드</h3>';
+  html+='<div class="v12-card"><h3>📋 최근 라운드</h3>';
   html+='<table class="v12-table"><tr><th>날짜</th><th>스코어</th><th>퍼트</th><th>GIR</th></tr>';
   for(var j=recent5.length-1;j>=0;j--){
     var r=recent5[j];var sc=r.score<=72?'#00FF88':r.score<=85?'#00B4D8':r.score<=95?'#FFB800':'#ff6b6b';
@@ -974,7 +974,7 @@ var qs=lsGet('v12quiz_state',{answered:[],correct:0,currentIdx:0});
 var idx=qs.currentIdx;
 if(idx>=V12_QUIZ.length)idx=0;
 
-var html='<div class="v12-title">&#x1F4DD; 골프 퀴즈 v5 ('+V12_QUIZ.length+'문)</div>';
+var html='<div class="v12-title">📝 골프 퀴즈 v5 ('+V12_QUIZ.length+'문)</div>';
 html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">';
 html+='<span style="color:#888;font-size:.85em">진행: '+(qs.answered||[]).length+'/'+V12_QUIZ.length+'</span>';
 html+='<span style="color:#00FF88;font-size:.85em">정답: '+qs.correct+'/'+((qs.answered||[]).length||0)+'</span>';
@@ -1006,7 +1006,7 @@ var qs=lsGet('v12quiz_state',{answered:[],correct:0,currentIdx:0});
 if(!qs.answered)qs.answered=[];
 if(qs.answered.indexOf(idx)>-1)return;
 qs.answered.push(idx);
-if(ans===V12_QUIZ[idx].c){qs.correct++;playSfx('quiz_correct12');showToast('정답! &#x2705;')}
+if(ans===V12_QUIZ[idx].c){qs.correct++;playSfx('quiz_correct12');showToast('정답! ✅')}
 else{showToast('오답! 정답: '+String.fromCharCode(65+V12_QUIZ[idx].c)+'. '+V12_QUIZ[idx].a[V12_QUIZ[idx].c])}
 lsSet('v12quiz_state',qs);
 closePanel('v12quiz');setTimeout(showV12Quiz,200);
@@ -1021,18 +1021,18 @@ window._v12QuizReset=function(){lsSet('v12quiz_state',{answered:[],correct:0,cur
 
 // ===== ACHIEVEMENTS (+12 = 60 total) =====
 var V12_ACH=[
-{id:'v12_putting_view',name:'퍼팅 분석가',desc:'퍼팅 분석 대시보드 사용',icon:'&#x26F3;',check:function(){return lsGet('ach_putting_viewed',false)}},
-{id:'v12_putting_10',name:'퍼팅 기록가',desc:'퍼팅 10회 기록',icon:'&#x1F3CC;&#xFE0F;',check:function(){return lsGet('putting_log',[]).length>=10}},
-{id:'v12_dispersion',name:'분산도 마스터',desc:'샷 분산도 분석 사용',icon:'&#x1F3AF;',check:function(){return lsGet('ach_disp_viewed',false)}},
-{id:'v12_disp_20',name:'착탄 수집가',desc:'착탄 20회 기록',icon:'&#x1F4CD;',check:function(){return lsGet('dispersion_shots',[]).length>=20}},
-{id:'v12_sg_view',name:'SG 분석가',desc:'스트로크 게인 분석 사용',icon:'&#x1F4CA;',check:function(){return lsGet('ach_sg_viewed',false)}},
-{id:'v12_sg_5rounds',name:'SG 전문가',desc:'SG 데이터 5라운드 기록',icon:'&#x1F4C8;',check:function(){var d=lsGet('sg_data',{rounds:0});return d.rounds>=5}},
-{id:'v12_caddie',name:'AI 캐디 사용자',desc:'코스 매니지먼트 AI 사용',icon:'&#x1F916;',check:function(){return lsGet('ach_caddie_used',false)}},
-{id:'v12_condition',name:'컨디션 전문가',desc:'컨디션 보정 계산기 사용',icon:'&#x1F321;&#xFE0F;',check:function(){return lsGet('ach_cond_used',false)}},
-{id:'v12_green',name:'그린 리더',desc:'퍼팅 그린 리딩 가이드 사용',icon:'&#x1F7E2;',check:function(){return lsGet('ach_green_used',false)}},
-{id:'v12_gap',name:'갭 분석가',desc:'클럽 갭 분석 사용',icon:'&#x1F4CF;',check:function(){return lsGet('ach_gap_viewed',false)}},
-{id:'v12_season',name:'시즌 관리자',desc:'시즌 요약 대시보드 사용',icon:'&#x1F4C5;',check:function(){return lsGet('ach_season_viewed',false)}},
-{id:'v12_all_features',name:'v12 탐험가',desc:'v12 전체 기능 탐색',icon:'&#x1F30D;',check:function(){return lsGet('ach_putting_viewed',false)&&lsGet('ach_disp_viewed',false)&&lsGet('ach_sg_viewed',false)&&lsGet('ach_caddie_used',false)&&lsGet('ach_cond_used',false)&&lsGet('ach_green_used',false)&&lsGet('ach_gap_viewed',false)&&lsGet('ach_season_viewed',false)}}
+{id:'v12_putting_view',name:'퍼팅 분석가',desc:'퍼팅 분석 대시보드 사용',icon:'⛳',check:function(){return lsGet('ach_putting_viewed',false)}},
+{id:'v12_putting_10',name:'퍼팅 기록가',desc:'퍼팅 10회 기록',icon:'🏌️',check:function(){return lsGet('putting_log',[]).length>=10}},
+{id:'v12_dispersion',name:'분산도 마스터',desc:'샷 분산도 분석 사용',icon:'🎯',check:function(){return lsGet('ach_disp_viewed',false)}},
+{id:'v12_disp_20',name:'착탄 수집가',desc:'착탄 20회 기록',icon:'📍',check:function(){return lsGet('dispersion_shots',[]).length>=20}},
+{id:'v12_sg_view',name:'SG 분석가',desc:'스트로크 게인 분석 사용',icon:'📊',check:function(){return lsGet('ach_sg_viewed',false)}},
+{id:'v12_sg_5rounds',name:'SG 전문가',desc:'SG 데이터 5라운드 기록',icon:'📈',check:function(){var d=lsGet('sg_data',{rounds:0});return d.rounds>=5}},
+{id:'v12_caddie',name:'AI 캐디 사용자',desc:'코스 매니지먼트 AI 사용',icon:'🤖',check:function(){return lsGet('ach_caddie_used',false)}},
+{id:'v12_condition',name:'컨디션 전문가',desc:'컨디션 보정 계산기 사용',icon:'🌡️',check:function(){return lsGet('ach_cond_used',false)}},
+{id:'v12_green',name:'그린 리더',desc:'퍼팅 그린 리딩 가이드 사용',icon:'🟢',check:function(){return lsGet('ach_green_used',false)}},
+{id:'v12_gap',name:'갭 분석가',desc:'클럽 갭 분석 사용',icon:'📏',check:function(){return lsGet('ach_gap_viewed',false)}},
+{id:'v12_season',name:'시즌 관리자',desc:'시즌 요약 대시보드 사용',icon:'📅',check:function(){return lsGet('ach_season_viewed',false)}},
+{id:'v12_all_features',name:'v12 탐험가',desc:'v12 전체 기능 탐색',icon:'🌍',check:function(){return lsGet('ach_putting_viewed',false)&&lsGet('ach_disp_viewed',false)&&lsGet('ach_sg_viewed',false)&&lsGet('ach_caddie_used',false)&&lsGet('ach_cond_used',false)&&lsGet('ach_green_used',false)&&lsGet('ach_gap_viewed',false)&&lsGet('ach_season_viewed',false)}}
 ];
 
 function v12CheckAch(){
@@ -1059,14 +1059,14 @@ function injectV12QuickActions(){
 var existing=document.querySelector('.v12-quick-actions');if(existing)return;
 var nav=document.createElement('div');nav.className='v12-scroll-nav';
 var buttons=[
-  {icon:'&#x26F3;',title:'퍼팅분석 (Shift+P)',fn:'showPuttingDash'},
-  {icon:'&#x1F3AF;',title:'분산도 (Shift+T)',fn:'showShotDispersion'},
-  {icon:'&#x1F4CA;',title:'스트로크게인 (Shift+S)',fn:'showSGAnalyzer'},
-  {icon:'&#x1F916;',title:'AI캐디 (Shift+C)',fn:'showCourseAI'},
-  {icon:'&#x1F321;&#xFE0F;',title:'컨디션 (Shift+W)',fn:'showConditionCalc'},
-  {icon:'&#x1F7E2;',title:'그린리딩 (Shift+R)',fn:'showGreenReading'},
-  {icon:'&#x1F4CF;',title:'클럽갭 (Shift+K)',fn:'showClubGap'},
-  {icon:'&#x1F4C5;',title:'시즌통계 (Shift+N)',fn:'showSeasonSummary'}
+  {icon:'⛳',title:'퍼팅분석 (Shift+P)',fn:'showPuttingDash'},
+  {icon:'🎯',title:'분산도 (Shift+T)',fn:'showShotDispersion'},
+  {icon:'📊',title:'스트로크게인 (Shift+S)',fn:'showSGAnalyzer'},
+  {icon:'🤖',title:'AI캐디 (Shift+C)',fn:'showCourseAI'},
+  {icon:'🌡️',title:'컨디션 (Shift+W)',fn:'showConditionCalc'},
+  {icon:'🟢',title:'그린리딩 (Shift+R)',fn:'showGreenReading'},
+  {icon:'📏',title:'클럽갭 (Shift+K)',fn:'showClubGap'},
+  {icon:'📅',title:'시즌통계 (Shift+N)',fn:'showSeasonSummary'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');btn.className='v12-nav-btn';

@@ -23,40 +23,40 @@ var bpm=lsGet('tempo_bpm',72);
 var ratio=lsGet('tempo_ratio','3:1');
 var RATIOS=['3:1','2.5:1','2:1','4:1'];
 var html='<button class="v23-close" onclick="window._v23Close(\'tempo\')">&times;</button>';
-html+='<div class="v23-title">&#x1F3B5; &#xC2A4;&#xC719; &#xD15C;&#xD3EC; &#xBA54;&#xD2B8;&#xB85C;&#xB188;</div>';
+html+='<div class="v23-title">🎵 스윙 템포 메트로놈</div>';
 html+='<canvas id="v23-tempo-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xD15C;&#xD3EC; &#xC124;&#xC815;</h3>';
+html+='<div class="v23-card"><h3>템포 설정</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">';
-html+='<div><label class="v23-label">BPM (&#xBC15;&#xC790;/&#xBD84;)</label><input class="v23-input" type="number" id="v23-bpm" value="'+bpm+'" min="40" max="120"></div>';
-html+='<div><label class="v23-label">&#xBC31;&#xC2A4;&#xC719;:&#xB2E4;&#xC6B4;&#xC2A4;&#xC719; &#xBE44;&#xC728;</label><select class="v23-input" id="v23-ratio">';
+html+='<div><label class="v23-label">BPM (박자/분)</label><input class="v23-input" type="number" id="v23-bpm" value="'+bpm+'" min="40" max="120"></div>';
+html+='<div><label class="v23-label">백스윙:다운스윙 비율</label><select class="v23-input" id="v23-ratio">';
 for(var i=0;i<RATIOS.length;i++)html+='<option'+(RATIOS[i]===ratio?' selected':'')+'>'+RATIOS[i]+'</option>';
 html+='</select></div></div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v23-btn v23-btn-primary" id="v23-tempo-start" onclick="window._v23ToggleTempo()">&#x25B6; &#xC2DC;&#xC791;</button>';
-html+='<button class="v23-btn" onclick="window._v23RecordTempo()">&#x1F4BE; &#xAE30;&#xB85D;</button>';
-html+='<button class="v23-btn" onclick="window._v23TapTempo()">&#x1F44F; &#xD0ED; &#xD15C;&#xD3EC;</button>';
+html+='<button class="v23-btn v23-btn-primary" id="v23-tempo-start" onclick="window._v23ToggleTempo()">▶ 시작</button>';
+html+='<button class="v23-btn" onclick="window._v23RecordTempo()">💾 기록</button>';
+html+='<button class="v23-btn" onclick="window._v23TapTempo()">👏 탭 템포</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
 html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+bpm+'</div><div class="v23-stat-label">BPM</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+ratio+'</div><div class="v23-stat-label">&#xBE44;&#xC728;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+ratio+'</div><div class="v23-stat-label">비율</div></div>';
 var avgBpm=0;if(log.length>0){for(var j=0;j<log.length;j++)avgBpm+=log[j].bpm;avgBpm=Math.round(avgBpm/log.length)}
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+avgBpm+'</div><div class="v23-stat-label">&#xD3C9;&#xADE0; BPM</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v23-stat-label">&#xC138;&#xC158;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+avgBpm+'</div><div class="v23-stat-label">평균 BPM</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#A855F7">'+log.length+'</div><div class="v23-stat-label">세션</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v23ResetTempo()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v23ResetTempo()">초기화</button>';
 pn.innerHTML=html;openPanel('tempo');drawTempoCanvas(log,bpm,ratio);
 }
 var _tempoInterval=null;var _tempoCount=0;var _tapTimes=[];
 window._v23ToggleTempo=function(){
 var btn=document.getElementById('v23-tempo-start');
-if(_tempoInterval){clearInterval(_tempoInterval);_tempoInterval=null;_tempoCount=0;if(btn)btn.innerHTML='&#x25B6; &#xC2DC;&#xC791;';return}
+if(_tempoInterval){clearInterval(_tempoInterval);_tempoInterval=null;_tempoCount=0;if(btn)btn.innerHTML='▶ 시작';return}
 var bpm=parseInt(document.getElementById('v23-bpm').value)||72;
 var rStr=(document.getElementById('v23-ratio').value||'3:1').split(':');
 var bRatio=parseFloat(rStr[0])||3;var dRatio=parseFloat(rStr[1])||1;
 var totalBeats=bRatio+dRatio;
 var interval=60000/bpm;
 _tempoCount=0;
-if(btn)btn.innerHTML='&#x23F8; &#xC815;&#xC9C0;';
+if(btn)btn.innerHTML='⏸ 정지';
 _tempoInterval=setInterval(function(){
 _tempoCount++;
 var beatInCycle=(_tempoCount-1)%Math.round(totalBeats);
@@ -87,7 +87,7 @@ var log=lsGet('tempo_log',[]);
 log.push({date:todayStr(),bpm:bpm,ratio:ratio});
 if(log.length>50)log.shift();
 lsSet('tempo_log',log);lsSet('tempo_bpm',bpm);lsSet('tempo_ratio',ratio);
-showToast('&#xD15C;&#xD3EC; &#xAE30;&#xB85D; &#xC800;&#xC7A5;!');checkAchievements();showSwingTempo();
+showToast('템포 기록 저장!');checkAchievements();showSwingTempo();
 };
 window._v23ResetTempo=function(){lsSet('tempo_log',[]);showSwingTempo();};
 function drawTempoCanvas(log,bpm,ratio){
@@ -147,38 +147,38 @@ var pn=getPanel('ci');
 var data=lsGet('ci_data',{});
 var CLUBS=['Driver','3W','5W','4I','5I','6I','7I','8I','9I','PW','GW','SW','LW'];
 var html='<button class="v23-close" onclick="window._v23Close(\'ci\')">&times;</button>';
-html+='<div class="v23-title">&#x1F4CF; &#xD074;&#xB7FD; &#xBE44;&#xAC70;&#xB9AC; &#xC2E0;&#xB8B0;&#xAD6C;&#xAC04;</div>';
+html+='<div class="v23-title">📏 클럽 비거리 신뢰구간</div>';
 html+='<canvas id="v23-ci-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xC0F7; &#xAC70;&#xB9AC; &#xC785;&#xB825;</h3>';
+html+='<div class="v23-card"><h3>샷 거리 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:auto 1fr auto;gap:6px;align-items:center">';
 html+='<select class="v23-input" id="v23-ci-club" style="width:90px">';
 for(var i=0;i<CLUBS.length;i++)html+='<option>'+CLUBS[i]+'</option>';
 html+='</select>';
-html+='<input class="v23-input" type="number" id="v23-ci-dist" placeholder="&#xAC70;&#xB9AC;(yd)" min="10" max="350">';
-html+='<button class="v23-btn v23-btn-primary" onclick="window._v23AddCI()">&#xCD94;&#xAC00;</button>';
+html+='<input class="v23-input" type="number" id="v23-ci-dist" placeholder="거리(yd)" min="10" max="350">';
+html+='<button class="v23-btn v23-btn-primary" onclick="window._v23AddCI()">추가</button>';
 html+='</div></div>';
 var totalShots=0;for(var k in data)if(data[k])totalShots+=data[k].length;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v23-stat-label">&#xCD1D; &#xC0F7;&#xC218;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v23-stat-label">총 샷수</div></div>';
 var clubCount=0;for(var k in data)if(data[k]&&data[k].length>=3)clubCount++;
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+clubCount+'</div><div class="v23-stat-label">&#xBD84;&#xC11D;&#xAC00;&#xB2A5; &#xD074;&#xB7FD;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+clubCount+'</div><div class="v23-stat-label">분석가능 클럽</div></div>';
 var grade=totalShots>=100?'S':totalShots>=60?'A':totalShots>=30?'B':totalShots>=10?'C':'D';
 var gColor=grade==='S'?'#FFD700':grade==='A'?'#00FF88':grade==='B'?'#4ECDC4':grade==='C'?'#FFB800':'#FF6B6B';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:'+gColor+'">'+grade+'</div><div class="v23-stat-label">&#xB370;&#xC774;&#xD130; &#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:'+gColor+'">'+grade+'</div><div class="v23-stat-label">데이터 등급</div></div>';
 html+='</div>';
-if(totalShots>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v23ResetCI()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(totalShots>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v23ResetCI()">초기화</button>';
 pn.innerHTML=html;openPanel('ci');drawCICanvas(data,CLUBS);
 }
 window._v23AddCI=function(){
 playSfx('save_v23');
 var club=document.getElementById('v23-ci-club').value;
 var dist=parseInt(document.getElementById('v23-ci-dist').value);
-if(!dist||dist<10)return showToast('&#xAC70;&#xB9AC;&#xB97C; &#xC785;&#xB825;&#xD558;&#xC138;&#xC694;');
+if(!dist||dist<10)return showToast('거리를 입력하세요');
 var data=lsGet('ci_data',{});
 if(!data[club])data[club]=[];
 data[club].push(dist);
 if(data[club].length>100)data[club].shift();
-lsSet('ci_data',data);showToast(club+': '+dist+'yd &#xCD94;&#xAC00;');checkAchievements();showClubCI();
+lsSet('ci_data',data);showToast(club+': '+dist+'yd 추가');checkAchievements();showClubCI();
 };
 window._v23ResetCI=function(){lsSet('ci_data',{});showClubCI();};
 function drawCICanvas(data,CLUBS){
@@ -238,29 +238,29 @@ function showSQI(){
 playSfx('sqi_open');
 var pn=getPanel('sqi');
 var log=lsGet('sqi_log',[]);
-var AXES=['&#xBE44;&#xAC70;&#xB9AC;','&#xBC29;&#xD5A5;','&#xD0C4;&#xB3C4;','&#xC2A4;&#xD540;','&#xCC29;&#xC9C0;','&#xACB0;&#xACFC;','&#xC758;&#xB3C4;'];
+var AXES=['비거리','방향','탄도','스핀','착지','결과','의도'];
 var AXES_EN=['Distance','Direction','Trajectory','Spin','Landing','Result','Intent'];
 var html='<button class="v23-close" onclick="window._v23Close(\'sqi\')">&times;</button>';
-html+='<div class="v23-title">&#x2B50; &#xC0F7; &#xD038;&#xB9AC;&#xD2F0; &#xC778;&#xB371;&#xC2A4; (SQI)</div>';
+html+='<div class="v23-title">⭐ 샷 퀸리티 인덱스 (SQI)</div>';
 html+='<canvas id="v23-sqi-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xC0F7; &#xD3C9;&#xAC00; (1~10&#xC810;)</h3>';
+html+='<div class="v23-card"><h3>샷 평가 (1~10점)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var i=0;i<AXES.length;i++){
 html+='<div><label class="v23-label">'+AXES[i]+'</label><input class="v23-input v23-sqi-in" type="number" min="1" max="10" value="7" data-axis="'+i+'"></div>';
 }
-html+='<div><button class="v23-btn v23-btn-primary" style="height:100%;width:100%" onclick="window._v23RateSQI()">&#x1F3AF; &#xD3C9;&#xAC00;</button></div>';
+html+='<div><button class="v23-btn v23-btn-primary" style="height:100%;width:100%" onclick="window._v23RateSQI()">🎯 평가</button></div>';
 html+='</div></div>';
 var avgSqi=0;if(log.length>0){for(var j=0;j<log.length;j++)avgSqi+=log[j].total;avgSqi=Math.round(avgSqi/log.length*10)/10}
 var bestSqi=0;for(var j=0;j<log.length;j++)if(log[j].total>bestSqi)bestSqi=log[j].total;
 var sqiGrade=avgSqi>=9?'S':avgSqi>=7.5?'A':avgSqi>=6?'B':avgSqi>=4?'C':'D';
 var sqiColor=sqiGrade==='S'?'#FFD700':sqiGrade==='A'?'#00FF88':sqiGrade==='B'?'#4ECDC4':sqiGrade==='C'?'#FFB800':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">&#xD3C9;&#xAC00;&#xD68C;</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgSqi+'</div><div class="v23-stat-label">&#xD3C9;&#xADE0; SQI</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+bestSqi+'</div><div class="v23-stat-label">&#xCD5C;&#xACE0; SQI</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:'+sqiColor+'">'+sqiGrade+'</div><div class="v23-stat-label">&#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">평가회</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgSqi+'</div><div class="v23-stat-label">평균 SQI</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+bestSqi+'</div><div class="v23-stat-label">최고 SQI</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:'+sqiColor+'">'+sqiGrade+'</div><div class="v23-stat-label">등급</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v23ResetSQI()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v23ResetSQI()">초기화</button>';
 pn.innerHTML=html;openPanel('sqi');drawSQICanvas(log,AXES_EN);
 }
 window._v23RateSQI=function(){
@@ -332,28 +332,28 @@ playSfx('slope_open');
 var pn=getPanel('slope');
 var log=lsGet('slope_log',[]);
 var html='<button class="v23-close" onclick="window._v23Close(\'slope\')">&times;</button>';
-html+='<div class="v23-title">&#x26F3; &#xADF8;&#xB9B0; &#xACBD;&#xC0AC; &#xACC4;&#xC0B0;&#xAE30;</div>';
+html+='<div class="v23-title">⛳ 그린 경사 계산기</div>';
 html+='<canvas id="v23-slope-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xACBD;&#xC0AC; &#xC785;&#xB825; (%)</h3>';
+html+='<div class="v23-card"><h3>경사 입력 (%)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px">';
-html+='<div><label class="v23-label">&#xC55E;-&#xB4A4; (+ = &#xC624;&#xB974;&#xB9C9;)</label><input class="v23-input" type="number" id="v23-slope-fb" value="0" min="-10" max="10" step="0.5"></div>';
-html+='<div><label class="v23-label">&#xC88C;-&#xC6B0; (+ = &#xC6B0;&#xCE21;)</label><input class="v23-input" type="number" id="v23-slope-lr" value="0" min="-10" max="10" step="0.5"></div>';
-html+='<div><label class="v23-label">&#xAC70;&#xB9AC; (ft)</label><input class="v23-input" type="number" id="v23-slope-dist" value="20" min="1" max="100"></div>';
-html+='<div><label class="v23-label">&#xADF8;&#xB9B0;&#xC2A4;&#xD53C;&#xB4DC; (Stimp)</label><input class="v23-input" type="number" id="v23-slope-stimp" value="10" min="6" max="14" step="0.5"></div>';
+html+='<div><label class="v23-label">앞-뒤 (+ = 오르막)</label><input class="v23-input" type="number" id="v23-slope-fb" value="0" min="-10" max="10" step="0.5"></div>';
+html+='<div><label class="v23-label">좌-우 (+ = 우측)</label><input class="v23-input" type="number" id="v23-slope-lr" value="0" min="-10" max="10" step="0.5"></div>';
+html+='<div><label class="v23-label">거리 (ft)</label><input class="v23-input" type="number" id="v23-slope-dist" value="20" min="1" max="100"></div>';
+html+='<div><label class="v23-label">그린스피드 (Stimp)</label><input class="v23-input" type="number" id="v23-slope-stimp" value="10" min="6" max="14" step="0.5"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v23-btn v23-btn-primary" onclick="window._v23CalcSlope()">&#x1F4D0; &#xACC4;&#xC0B0;</button>';
-html+='<button class="v23-btn" onclick="window._v23SaveSlope()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v23-btn v23-btn-primary" onclick="window._v23CalcSlope()">📐 계산</button>';
+html+='<button class="v23-btn" onclick="window._v23SaveSlope()">💾 저장</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">&#xAE30;&#xB85D;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">기록</div></div>';
 var avgSlope=0;if(log.length>0){for(var j=0;j<log.length;j++)avgSlope+=Math.abs(log[j].fb)+Math.abs(log[j].lr);avgSlope=Math.round(avgSlope/log.length*10)/10}
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgSlope+'%</div><div class="v23-stat-label">&#xD3C9;&#xADE0; &#xACBD;&#xC0AC;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgSlope+'%</div><div class="v23-stat-label">평균 경사</div></div>';
 var uphill=0;for(var j=0;j<log.length;j++)if(log[j].fb>0)uphill++;
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+(log.length>0?Math.round(uphill/log.length*100):0)+'%</div><div class="v23-stat-label">&#xC624;&#xB974;&#xB9C9;</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#A855F7">'+(log.length>0?Math.round((log.length-uphill)/log.length*100):0)+'%</div><div class="v23-stat-label">&#xB0B4;&#xB9AC;&#xB9C9;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+(log.length>0?Math.round(uphill/log.length*100):0)+'%</div><div class="v23-stat-label">오르막</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#A855F7">'+(log.length>0?Math.round((log.length-uphill)/log.length*100):0)+'%</div><div class="v23-stat-label">내리막</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v23ResetSlope()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v23ResetSlope()">초기화</button>';
 pn.innerHTML=html;openPanel('slope');drawSlopeCanvas(log);
 }
 window._v23CalcSlope=function(){
@@ -376,7 +376,7 @@ var dist=parseFloat(document.getElementById('v23-slope-dist').value)||20;
 var stimp=parseFloat(document.getElementById('v23-slope-stimp').value)||10;
 var log=lsGet('slope_log',[]);log.push({date:todayStr(),fb:fb,lr:lr,dist:dist,stimp:stimp});
 if(log.length>50)log.shift();lsSet('slope_log',log);
-showToast('&#xACBD;&#xC0AC; &#xAE30;&#xB85D; &#xC800;&#xC7A5;!');checkAchievements();showGreenSlope();
+showToast('경사 기록 저장!');checkAchievements();showGreenSlope();
 };
 window._v23ResetSlope=function(){lsSet('slope_log',[]);showGreenSlope();};
 function drawSlopeCanvas(log,calc){
@@ -440,13 +440,13 @@ var mode=lsGet('tourney_mode','stroke');
 var MODES=[{id:'stroke',name:'Stroke Play'},{id:'match',name:'Match Play'},{id:'stableford',name:'Stableford'},{id:'skins',name:'Skins'}];
 var PARS=[4,4,3,5,4,4,3,4,5,4,3,5,4,4,3,4,5,4];
 var html='<button class="v23-close" onclick="window._v23Close(\'tourney\')">&times;</button>';
-html+='<div class="v23-title">&#x1F3C6; &#xD1A0;&#xB108;&#xBA3C;&#xD2B8; &#xC2A4;&#xCF54;&#xC5B4;&#xB9C1; &#xC2DC;&#xBBAC;</div>';
+html+='<div class="v23-title">🏆 토너먼트 스코어링 시뮬</div>';
 html+='<canvas id="v23-tourney-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xBC29;&#xC2DD; &#xC120;&#xD0DD;</h3>';
+html+='<div class="v23-card"><h3>방식 선택</h3>';
 html+='<div style="display:flex;gap:4px;flex-wrap:wrap">';
 for(var i=0;i<MODES.length;i++)html+='<button class="v23-btn v23-btn-sm'+(MODES[i].id===mode?' v23-btn-primary':'')+'" onclick="window._v23SetTourneyMode(\''+MODES[i].id+'\')">'+MODES[i].name+'</button>';
 html+='</div></div>';
-html+='<div class="v23-card"><h3>18&#xD640; &#xC2A4;&#xCF54;&#xC5B4; &#xC785;&#xB825;</h3>';
+html+='<div class="v23-card"><h3>18홀 스코어 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(9,1fr);gap:2px;font-size:10px;text-align:center">';
 for(var h=0;h<18;h++){
 var saved=lsGet('tourney_scores',[]);var val=saved[h]||PARS[h];
@@ -454,15 +454,15 @@ html+='<div><div style="color:rgba(255,255,255,0.4)">H'+(h+1)+'</div><div style=
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v23-btn v23-btn-primary" onclick="window._v23CalcTourney()">&#x1F4CA; &#xACC4;&#xC0B0;</button>';
-html+='<button class="v23-btn" onclick="window._v23SaveTourney()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v23-btn v23-btn-primary" onclick="window._v23CalcTourney()">📊 계산</button>';
+html+='<button class="v23-btn" onclick="window._v23SaveTourney()">💾 저장</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">라운드</div></div>';
 var avgScore=0;if(log.length>0){for(var j=0;j<log.length;j++)avgScore+=log[j].total;avgScore=Math.round(avgScore/log.length)}
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgScore+'</div><div class="v23-stat-label">&#xD3C9;&#xADE0; &#xC2A4;&#xCF54;&#xC5B4;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgScore+'</div><div class="v23-stat-label">평균 스코어</div></div>';
 var bestScore=999;for(var j=0;j<log.length;j++)if(log[j].total<bestScore)bestScore=log[j].total;if(bestScore===999)bestScore=0;
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+bestScore+'</div><div class="v23-stat-label">&#xBCA0;&#xC2A4;&#xD2B8;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+bestScore+'</div><div class="v23-stat-label">베스트</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('tourney');drawTourneyCanvas(log,mode,PARS);
 }
@@ -490,7 +490,7 @@ var scores=[];var total=0;var PARS=[4,4,3,5,4,4,3,4,5,4,3,5,4,4,3,4,5,4];
 for(var i=0;i<inputs.length;i++){var v=parseInt(inputs[i].value)||PARS[i];scores.push(v);total+=v}
 var log=lsGet('tourney_log',[]);log.push({date:todayStr(),scores:scores,total:total,mode:lsGet('tourney_mode','stroke')});
 if(log.length>30)log.shift();lsSet('tourney_log',log);lsSet('tourney_scores',scores);
-showToast('&#xD1A0;&#xB108;&#xBA3C;&#xD2B8; &#xAE30;&#xB85D; &#xC800;&#xC7A5;!');checkAchievements();showTourneySim();
+showToast('토너먼트 기록 저장!');checkAchievements();showTourneySim();
 };
 function drawTourneyCanvas(log,mode,PARS,current){
 var c=document.getElementById('v23-tourney-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -542,28 +542,28 @@ var log=lsGet('drivezone_log',[]);
 var ZONES=['Far Left','Left','Slight Left','Center','Slight Right','Right','Far Right'];
 var RESULTS=['Fairway','Rough','Bunker','Trees','OB','Hazard'];
 var html='<button class="v23-close" onclick="window._v23Close(\'drivezone\')">&times;</button>';
-html+='<div class="v23-title">&#x1F3CC; &#xB4DC;&#xB77C;&#xC774;&#xBE59; &#xC815;&#xD655;&#xB3C4; &#xC874;&#xB9F5;</div>';
+html+='<div class="v23-title">🏌 드라이빙 정확도 존맵</div>';
 html+='<canvas id="v23-drivezone-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xC0F7; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v23-card"><h3>샷 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<div><label class="v23-label">&#xCC29;&#xC9C0; &#xBC29;&#xD5A5;</label><select class="v23-input" id="v23-dz-zone">';
+html+='<div><label class="v23-label">착지 방향</label><select class="v23-input" id="v23-dz-zone">';
 for(var i=0;i<ZONES.length;i++)html+='<option'+(i===3?' selected':'')+'>'+ZONES[i]+'</option>';
 html+='</select></div>';
-html+='<div><label class="v23-label">&#xCC29;&#xC9C0; &#xACB0;&#xACFC;</label><select class="v23-input" id="v23-dz-result">';
+html+='<div><label class="v23-label">착지 결과</label><select class="v23-input" id="v23-dz-result">';
 for(var i=0;i<RESULTS.length;i++)html+='<option>'+RESULTS[i]+'</option>';
 html+='</select></div>';
 html+='</div>';
-html+='<button class="v23-btn v23-btn-primary" style="width:100%;margin-top:8px" onclick="window._v23AddDriveZone()">&#xCD94;&#xAC00;</button>';
+html+='<button class="v23-btn v23-btn-primary" style="width:100%;margin-top:8px" onclick="window._v23AddDriveZone()">추가</button>';
 html+='</div>';
 var fwPct=0;if(log.length>0){var fw=0;for(var j=0;j<log.length;j++)if(log[j].result==='Fairway')fw++;fwPct=Math.round(fw/log.length*100)}
 var leftPct=0,rightPct=0;if(log.length>0){var l=0,r=0;for(var j=0;j<log.length;j++){var zi=ZONES.indexOf(log[j].zone);if(zi<3)l++;else if(zi>3)r++}leftPct=Math.round(l/log.length*100);rightPct=Math.round(r/log.length*100)}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">&#xC0F7;&#xC218;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+log.length+'</div><div class="v23-stat-label">샷수</div></div>';
 html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+fwPct+'%</div><div class="v23-stat-label">FIR</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+leftPct+'%</div><div class="v23-stat-label">&#xC88C;&#xCE21;</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#A855F7">'+rightPct+'%</div><div class="v23-stat-label">&#xC6B0;&#xCE21;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+leftPct+'%</div><div class="v23-stat-label">좌측</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#A855F7">'+rightPct+'%</div><div class="v23-stat-label">우측</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v23ResetDriveZone()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v23-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v23ResetDriveZone()">초기화</button>';
 pn.innerHTML=html;openPanel('drivezone');drawDriveZoneCanvas(log,ZONES,RESULTS);
 }
 window._v23AddDriveZone=function(){
@@ -615,11 +615,11 @@ function showPracticeEff(){
 playSfx('practice_open');
 var pn=getPanel('practiceeff');
 var data=lsGet('practice_eff',{});
-var AREAS=[{id:'short',name:'&#xC21;&#xAC8C;&#xC784;',en:'Short Game'},{id:'middle',name:'&#xBBF8;&#xB4E4;&#xC544;&#xC774;&#xC5B8;',en:'Mid Iron'},{id:'long',name:'&#xB871;&#xAC8C;&#xC784;',en:'Long Game'},{id:'putting',name:'&#xD37C;&#xD305;',en:'Putting'},{id:'chipping',name:'&#xCE69;&#xD551;',en:'Chipping'},{id:'bunker',name:'&#xBC99;&#xCEE4;',en:'Bunker'}];
+var AREAS=[{id:'short',name:'డ게임',en:'Short Game'},{id:'middle',name:'미들아이언',en:'Mid Iron'},{id:'long',name:'롱게임',en:'Long Game'},{id:'putting',name:'퍼팅',en:'Putting'},{id:'chipping',name:'칩핑',en:'Chipping'},{id:'bunker',name:'벙커',en:'Bunker'}];
 var html='<button class="v23-close" onclick="window._v23Close(\'practiceeff\')">&times;</button>';
-html+='<div class="v23-title">&#x1F4CA; &#xC5F0;&#xC2B5; &#xD6A8;&#xC728; &#xB300;&#xC2DC;&#xBCF4;&#xB4DC;</div>';
+html+='<div class="v23-title">📊 연습 효율 대시보드</div>';
 html+='<canvas id="v23-practiceeff-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xC5F0;&#xC2B5; &#xAE30;&#xB85D; (&#xBD84;/&#xD5A5;&#xC0C1;&#xB3C4;1~10)</h3>';
+html+='<div class="v23-card"><h3>연습 기록 (분/향상도1~10)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">';
 for(var i=0;i<AREAS.length;i++){
 var val=data[AREAS[i].id]||{time:0,improve:5};
@@ -628,16 +628,16 @@ html+='<input class="v23-input" type="number" id="v23-pe-t-'+AREAS[i].id+'" plac
 html+='<input class="v23-input" type="number" id="v23-pe-i-'+AREAS[i].id+'" placeholder="1-10" value="'+val.improve+'" min="1" max="10"></div>';
 }
 html+='</div>';
-html+='<button class="v23-btn v23-btn-primary" style="width:100%;margin-top:8px" onclick="window._v23SavePracticeEff()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v23-btn v23-btn-primary" style="width:100%;margin-top:8px" onclick="window._v23SavePracticeEff()">💾 저장</button>';
 html+='</div>';
 var totalTime=0;for(var k in data)if(data[k])totalTime+=data[k].time;
 var avgImprove=0,cnt=0;for(var k in data)if(data[k]&&data[k].time>0){avgImprove+=data[k].improve;cnt++}
 if(cnt>0)avgImprove=Math.round(avgImprove/cnt*10)/10;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+totalTime+'</div><div class="v23-stat-label">&#xCD1D; &#xC5F0;&#xC2B5;(&#xBD84;)</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgImprove+'</div><div class="v23-stat-label">&#xD3C9;&#xADE0; &#xD5A5;&#xC0C1;&#xB3C4;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+totalTime+'</div><div class="v23-stat-label">총 연습(분)</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+avgImprove+'</div><div class="v23-stat-label">평균 향상도</div></div>';
 var efficiency=totalTime>0?Math.round(avgImprove/(totalTime/60)*10)/10:0;
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+efficiency+'</div><div class="v23-stat-label">&#xD6A8;&#xC728;&#xC810;&#xC218;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+efficiency+'</div><div class="v23-stat-label">효율점수</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('practiceeff');drawPracticeEffCanvas(data,AREAS);
 }
@@ -649,7 +649,7 @@ var t=parseInt(document.getElementById('v23-pe-t-'+AREAS[i]).value)||0;
 var imp=parseInt(document.getElementById('v23-pe-i-'+AREAS[i]).value)||5;
 data[AREAS[i]]={time:t,improve:Math.max(1,Math.min(10,imp))};
 }
-lsSet('practice_eff',data);showToast('&#xC5F0;&#xC2B5; &#xD6A8;&#xC728; &#xC800;&#xC7A5;!');checkAchievements();showPracticeEff();
+lsSet('practice_eff',data);showToast('연습 효율 저장!');checkAchievements();showPracticeEff();
 };
 function drawPracticeEffCanvas(data,AREAS){
 var c=document.getElementById('v23-practiceeff-canvas');if(!c)return;var ctx=c.getContext('2d');
@@ -712,16 +712,16 @@ playSfx('fitness_open');
 var pn=getPanel('fitness');
 var plan=lsGet('fitness_plan',{week:1,phase:'base'});
 var log=lsGet('fitness_log',[]);
-var PHASES=[{id:'base',name:'&#xAE30;&#xCD08;&#xCCB4;&#xB825;',en:'Base',weeks:3,color:'#4ECDC4'},
-{id:'build',name:'&#xBC1C;&#xB2EC;',en:'Build',weeks:4,color:'#FFB800'},
-{id:'compete',name:'&#xACBD;&#xC7C1;',en:'Compete',weeks:3,color:'#FF6B6B'},
-{id:'recovery',name:'&#xD68C;&#xBCF5;',en:'Recovery',weeks:2,color:'#A855F7'}];
-var EXERCISES=['&#xCF54;&#xC5B4;&#xC548;&#xC815;&#xC131;','&#xD558;&#xCCB4;&#xADFC;&#xB825;','&#xD68C;&#xC804;&#xC720;&#xC5F0;&#xC131;','&#xC2EC;&#xD3D0;&#xC9C0;&#xAD6C;&#xB825;','&#xBC38;&#xB7F0;&#xC2A4;','&#xC2A4;&#xD2B8;&#xB808;&#xCE6D;'];
+var PHASES=[{id:'base',name:'기초체력',en:'Base',weeks:3,color:'#4ECDC4'},
+{id:'build',name:'발달',en:'Build',weeks:4,color:'#FFB800'},
+{id:'compete',name:'경쟁',en:'Compete',weeks:3,color:'#FF6B6B'},
+{id:'recovery',name:'회복',en:'Recovery',weeks:2,color:'#A855F7'}];
+var EXERCISES=['코어안정성','하체근력','회전유연성','심폐지구력','밸런스','스트레칭'];
 var EXERCISES_EN=['Core','Lower Body','Rotation','Cardio','Balance','Stretch'];
 var html='<button class="v23-close" onclick="window._v23Close(\'fitness\')">&times;</button>';
-html+='<div class="v23-title">&#x1F4AA; &#xACE8;&#xD504; &#xCCB4;&#xB825; &#xC8FC;&#xAE30;&#xD654;</div>';
+html+='<div class="v23-title">💪 골프 체력 주기화</div>';
 html+='<canvas id="v23-fitness-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v23-card"><h3>&#xD604;&#xC7AC; &#xC8FC;&#xCC28;: '+plan.week+' ('+PHASES.filter(function(p){return p.id===plan.phase})[0].name+')</h3>';
+html+='<div class="v23-card"><h3>현재 주차: '+plan.week+' ('+PHASES.filter(function(p){return p.id===plan.phase})[0].name+')</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px">';
 for(var i=0;i<EXERCISES.length;i++){
 var done=lsGet('fit_w'+plan.week+'_'+i,false);
@@ -729,18 +729,18 @@ html+='<button class="v23-btn v23-btn-sm'+(done?' v23-btn-primary':'')+'" onclic
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v23-btn" onclick="window._v23PrevWeek()">&#x25C0; &#xC774;&#xC804;</button>';
-html+='<button class="v23-btn v23-btn-primary" onclick="window._v23NextWeek()">&#xB2E4;&#xC74C; &#x25B6;</button>';
-html+='<button class="v23-btn" onclick="window._v23ResetFitness()">&#xCD08;&#xAE30;&#xD654;</button>';
+html+='<button class="v23-btn" onclick="window._v23PrevWeek()">◀ 이전</button>';
+html+='<button class="v23-btn v23-btn-primary" onclick="window._v23NextWeek()">다음 ▶</button>';
+html+='<button class="v23-btn" onclick="window._v23ResetFitness()">초기화</button>';
 html+='</div></div>';
 var totalDone=0;for(var w=1;w<=12;w++)for(var i=0;i<6;i++)if(lsGet('fit_w'+w+'_'+i,false))totalDone++;
 var completion=Math.round(totalDone/(12*6)*100);
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+plan.week+'/12</div><div class="v23-stat-label">&#xC8FC;&#xCC28;</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+totalDone+'</div><div class="v23-stat-label">&#xC644;&#xB8CC; &#xC6B4;&#xB3D9;</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+completion+'%</div><div class="v23-stat-label">&#xC644;&#xC131;&#xB960;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+plan.week+'/12</div><div class="v23-stat-label">주차</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+totalDone+'</div><div class="v23-stat-label">완료 운동</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+completion+'%</div><div class="v23-stat-label">완성률</div></div>';
 var phaseInfo=PHASES.filter(function(p){return p.id===plan.phase})[0];
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:'+phaseInfo.color+'">'+phaseInfo.en+'</div><div class="v23-stat-label">&#xD398;&#xC774;&#xC988;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:'+phaseInfo.color+'">'+phaseInfo.en+'</div><div class="v23-stat-label">페이즈</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('fitness');drawFitnessCanvas(plan,PHASES,EXERCISES_EN);
 }
@@ -826,21 +826,21 @@ ctx.fillText(EXERCISES[i],padL-6,padTop+rowH*i+rowH/2);
 
 // ===== QUIZ v23 (+15 = 225->240) =====
 var QUIZ_V23=[
-{q:'&#xC2A4;&#xC719; &#xD15C;&#xD3EC;&#xC5D0;&#xC11C; &#xC774;&#xC0C1;&#xC801;&#xC778; &#xBC31;&#xC2A4;&#xC719;:&#xB2E4;&#xC6B4;&#xC2A4;&#xC719; &#xBE44;&#xC728;&#xC740;?',a:['1:1','2:1','3:1','5:1'],c:2},
-{q:'Strokes Gained&#xC5D0;&#xC11C; SG:Approach&#xAC00; &#xCE21;&#xC815;&#xD558;&#xB294; &#xAC83;&#xC740;?',a:['&#xD37C;&#xD305; &#xC2E4;&#xB825;','100yd &#xC774;&#xB0B4; &#xC0F7;','&#xADF8;&#xB9B0; &#xC8FC;&#xBCC0; &#xC811;&#xADFC;','&#xD2F0;&#xC0F7; &#xC815;&#xD655;&#xB3C4;'],c:2},
-{q:'&#xBC15;&#xC2A4;&#xD50C;&#xB86F;&#xC5D0;&#xC11C; Q1(25%)~Q3(75%) &#xAD6C;&#xAC04;&#xC744; &#xBD80;&#xB974;&#xB294; &#xBA85;&#xCE6D;&#xC740;?',a:['&#xC218;&#xC5FC;(Whisker)','IQR','&#xC911;&#xC559;&#xAC12;','&#xBC94;&#xC704;'],c:1},
-{q:'SQI(Shot Quality Index)&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xC694;&#xC18C;&#xB294;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xBC29;&#xD5A5; &#xC815;&#xD655;&#xB3C4;','&#xC758;&#xB3C4;&#xC640; &#xACB0;&#xACFC;&#xC758; &#xC77C;&#xCE58;','&#xC2A4;&#xD540;&#xB7C9;'],c:2},
-{q:'&#xADF8;&#xB9B0; &#xACBD;&#xC0AC;&#xAC00; 2% &#xC624;&#xB974;&#xB9C9;&#xC774;&#xBA74; &#xD37C;&#xD305; &#xD798;&#xC744; &#xC5B4;&#xB5BB;&#xAC8C; &#xC870;&#xC808;?',a:['&#xB354; &#xC57D;&#xD558;&#xAC8C;','&#xAC19;&#xAC8C;','&#xB354; &#xAC15;&#xD558;&#xAC8C;','&#xBC29;&#xD5A5;&#xB9CC; &#xBCC0;&#xACBD;'],c:2},
-{q:'Stimpmeter &#xC218;&#xCE58;&#xAC00; 12&#xC774;&#xBA74; &#xADF8;&#xB9B0; &#xC18D;&#xB3C4;&#xB294;?',a:['&#xB290;&#xB9BC;','&#xBCF4;&#xD1B5;','&#xBE60;&#xB984;','&#xB9E4;&#xC6B0; &#xBE60;&#xB984;'],c:2},
-{q:'Stableford &#xBC29;&#xC2DD;&#xC5D0;&#xC11C; &#xBC84;&#xB514;&#xB294; &#xBA87; &#xD3EC;&#xC778;&#xD2B8;?',a:['1&#xC810;','2&#xC810;','3&#xC810;','4&#xC810;'],c:2},
-{q:'Match Play&#xC5D0;&#xC11C; 3&2&#xB294; &#xBB34;&#xC2A8; &#xB73B;?',a:['3&#xD640; &#xB0A8;&#xAE30;&#xACE0; 2&#xD640; &#xC55E;&#xC11C; &#xC2B9;&#xB9AC;','3&#xBC88;&#xC9F8; &#xD640;&#xC5D0;&#xC11C; 2&#xD0C0; &#xCC28;','3&#xB77C;&#xC6B4;&#xB4DC; 2&#xBC88;&#xC9F8; &#xC2DC;&#xB3C4;','3&#xC77C; 2&#xC2DC;&#xAC04;'],c:0},
-{q:'FIR(Fairway In Regulation)&#xC774; 60%&#xC774;&#xBA74; &#xC5B4;&#xB290; &#xC218;&#xC900;?',a:['&#xCD08;&#xBCF4;&#xC790;','&#xC544;&#xB9C8;&#xCD94;&#xC5B4; &#xD3C9;&#xADE0;','&#xC0C1;&#xAE09;&#xC790;','&#xD504;&#xB85C; &#xC218;&#xC900;'],c:1},
-{q:'&#xACE8;&#xD504; &#xC2A4;&#xC719;&#xC5D0;&#xC11C; &#xCF54;&#xC5B4; &#xADFC;&#xC721;&#xC774; &#xC911;&#xC694;&#xD55C; &#xC774;&#xC720;&#xB294;?',a:['&#xD30C;&#xC6CC; &#xC0DD;&#xC131;','&#xD68C;&#xC804;&#xB825; &#xC548;&#xC815;&#xC131;','&#xBC38;&#xB7F0;&#xC2A4; &#xC720;&#xC9C0;','&#xBAA8;&#xB450; &#xD574;&#xB2F9;'],c:3},
-{q:'&#xACE8;&#xD504; &#xD53C;&#xD2B8;&#xB2C8;&#xC2A4; &#xC8FC;&#xAE30;&#xD654;&#xC5D0;&#xC11C; Taper &#xB2E8;&#xACC4;&#xC758; &#xBAA9;&#xC801;&#xC740;?',a:['&#xADFC;&#xB825; &#xADF9;&#xB300;&#xD654;','&#xACBD;&#xAE30; &#xC804; &#xD68C;&#xBCF5;','&#xC9C0;&#xAD6C;&#xB825; &#xD5A5;&#xC0C1;','&#xC720;&#xC5F0;&#xC131; &#xD5A5;&#xC0C1;'],c:1},
-{q:'&#xB4DC;&#xB77C;&#xC774;&#xBC84; &#xCC29;&#xC9C0; &#xC874;&#xC5D0;&#xC11C; &quot;Slight Left&quot;&#xAC00; &#xBC18;&#xBCF5;&#xB418;&#xBA74;?',a:['&#xD074;&#xB7FD;&#xC744; &#xBCC0;&#xACBD;','&#xC5BC;&#xB77C;&#xC778;&#xBA3C;&#xD2B8; &#xC810;&#xAC80;','&#xB354; &#xC138;&#xAC8C; &#xCE58;&#xAE30;','&#xBB34;&#xC2DC;'],c:1},
-{q:'&#xC5F0;&#xC2B5; &#xD6A8;&#xC728; &#xBD84;&#xC11D;&#xC5D0;&#xC11C; &#xD22C;&#xC790;&#xC2DC;&#xAC04; &#xB300;&#xBE44; &#xD5A5;&#xC0C1;&#xB3C4;&#xAC00; &#xB0AE;&#xC73C;&#xBA74;?',a:['&#xB354; &#xB9CE;&#xC774; &#xC5F0;&#xC2B5;','&#xC5F0;&#xC2B5; &#xBC29;&#xBC95; &#xBCC0;&#xACBD;','&#xB2E4;&#xB978; &#xC601;&#xC5ED; &#xC5F0;&#xC2B5;','&#xC5F0;&#xC2B5; &#xC911;&#xB2E8;'],c:1},
-{q:'&#xC2A4;&#xC719; &#xD15C;&#xD3EC; 72BPM&#xC740; &#xC5B4;&#xB5A4; &#xD2B9;&#xC131;&#xC758; &#xC2A4;&#xC719;?',a:['&#xB9E4;&#xC6B0; &#xBE60;&#xB978;','&#xBE60;&#xB978;','&#xC77C;&#xBC18;&#xC801;','&#xB290;&#xB9B0;'],c:2},
-{q:'Shot Tracer &#xC571;&#xC758; &#xD575;&#xC2EC; &#xAE30;&#xB2A5;&#xC740;?',a:['GPS &#xAC70;&#xB9AC; &#xCE21;&#xC815;','&#xC2E4;&#xC2DC;&#xAC04; &#xAD6C;&#xC9C8; &#xC2DC;&#xAC01;&#xD654;','&#xC774;&#xC0C1;&#xC801; &#xCE74;&#xB4DC; &#xC0DD;&#xC131;','&#xCF54;&#xC2A4; &#xC608;&#xC57D;'],c:1}
+{q:'스윙 템포에서 이상적인 백스윙:다운스윙 비율은?',a:['1:1','2:1','3:1','5:1'],c:2},
+{q:'Strokes Gained에서 SG:Approach가 측정하는 것은?',a:['퍼팅 실력','100yd 이내 샷','그린 주변 접근','티샷 정확도'],c:2},
+{q:'박스플롯에서 Q1(25%)~Q3(75%) 구간을 부르는 명칭은?',a:['수염(Whisker)','IQR','중앙값','범위'],c:1},
+{q:'SQI(Shot Quality Index)에서 가장 중요한 요소는?',a:['비거리','방향 정확도','의도와 결과의 일치','스핀량'],c:2},
+{q:'그린 경사가 2% 오르막이면 퍼팅 힘을 어떻게 조절?',a:['더 약하게','같게','더 강하게','방향만 변경'],c:2},
+{q:'Stimpmeter 수치가 12이면 그린 속도는?',a:['느림','보통','빠름','매우 빠름'],c:2},
+{q:'Stableford 방식에서 버디는 몇 포인트?',a:['1점','2점','3점','4점'],c:2},
+{q:'Match Play에서 3&2는 무슨 뜻?',a:['3홀 남기고 2홀 앞서 승리','3번째 홀에서 2타 차','3라운드 2번째 시도','3일 2시간'],c:0},
+{q:'FIR(Fairway In Regulation)이 60%이면 어느 수준?',a:['초보자','아마추어 평균','상급자','프로 수준'],c:1},
+{q:'골프 스윙에서 코어 근육이 중요한 이유는?',a:['파워 생성','회전력 안정성','밸런스 유지','모두 해당'],c:3},
+{q:'골프 피트니스 주기화에서 Taper 단계의 목적은?',a:['근력 극대화','경기 전 회복','지구력 향상','유연성 향상'],c:1},
+{q:'드라이버 착지 존에서 &quot;Slight Left&quot;가 반복되면?',a:['클럽을 변경','얼라인먼트 점검','더 세게 치기','무시'],c:1},
+{q:'연습 효율 분석에서 투자시간 대비 향상도가 낮으면?',a:['더 많이 연습','연습 방법 변경','다른 영역 연습','연습 중단'],c:1},
+{q:'스윙 템포 72BPM은 어떤 특성의 스윙?',a:['매우 빠른','빠른','일반적','느린'],c:2},
+{q:'Shot Tracer 앱의 핵심 기능은?',a:['GPS 거리 측정','실시간 구질 시각화','이상적 카드 생성','코스 예약'],c:1}
 ];
 function showQuizV23(){
 playSfx('nav_v23');
@@ -849,25 +849,25 @@ var score=lsGet('quiz_v23_score',0);var total=lsGet('quiz_v23_total',0);var qIdx
 if(qIdx>=QUIZ_V23.length)qIdx=0;
 var q=QUIZ_V23[qIdx];
 var html='<button class="v23-close" onclick="window._v23Close(\'quizv23\')">&times;</button>';
-html+='<div class="v23-title">&#x1F4DA; Golf Tracker Quiz v23</div>';
+html+='<div class="v23-title">📚 Golf Tracker Quiz v23</div>';
 html+='<div class="v23-card"><h3>Q'+(qIdx+1)+'/'+QUIZ_V23.length+'</h3><p style="font-size:14px;margin:8px 0">'+q.q+'</p>';
 for(var i=0;i<q.a.length;i++){
 html+='<button class="v23-btn" style="width:100%;margin:3px 0;text-align:left" onclick="window._v23AnswerQuiz('+i+','+q.c+')">'+String.fromCharCode(65+i)+'. '+q.a[i]+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+score+'</div><div class="v23-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+total+'</div><div class="v23-stat-label">&#xCD1D;&#xBB38;&#xC81C;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#00FF88">'+score+'</div><div class="v23-stat-label">정답</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#FFB800">'+total+'</div><div class="v23-stat-label">총문제</div></div>';
 var pct=total>0?Math.round(score/total*100):0;
-html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+pct+'%</div><div class="v23-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
+html+='<div class="v23-stat-card"><div class="v23-stat-val" style="color:#4ECDC4">'+pct+'%</div><div class="v23-stat-label">정답률</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv23');
 }
 window._v23AnswerQuiz=function(sel,correct){
 var score=lsGet('quiz_v23_score',0);var total=lsGet('quiz_v23_total',0);var qIdx=lsGet('quiz_v23_idx',0);
 total++;
-if(sel===correct){score++;playSfx('quiz_correct_v23');showToast('&#xC815;&#xB2F5;!');}
-else{playSfx('quiz_wrong_v23');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+String.fromCharCode(65+correct));}
+if(sel===correct){score++;playSfx('quiz_correct_v23');showToast('정답!');}
+else{playSfx('quiz_wrong_v23');showToast('오답! 정답: '+String.fromCharCode(65+correct));}
 qIdx++;
 lsSet('quiz_v23_score',score);lsSet('quiz_v23_total',total);lsSet('quiz_v23_idx',qIdx);
 setTimeout(showQuizV23,800);checkAchievements();
@@ -875,18 +875,18 @@ setTimeout(showQuizV23,800);checkAchievements();
 
 // ===== ACHIEVEMENTS v23 (+12 = 180->192) =====
 var ACHIEVEMENTS_V23=[
-{id:'tempo_tracker',name:'Tempo Tracker',desc:'&#xD15C;&#xD3EC; 5&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('tempo_log',[]).length>=5}},
-{id:'tempo_master',name:'Tempo Master',desc:'&#xD15C;&#xD3EC; 15&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('tempo_log',[]).length>=15}},
-{id:'ci_collector',name:'CI Data Collector',desc:'&#xBE44;&#xAC70;&#xB9AC; &#xB370;&#xC774;&#xD130; 30&#xAC1C;',check:function(){var d=lsGet('ci_data',{});var s=0;for(var k in d)if(d[k])s+=d[k].length;return s>=30}},
-{id:'sqi_rater',name:'SQI Rater',desc:'&#xC0F7; &#xD038;&#xB9AC;&#xD2F0; 10&#xD68C; &#xD3C9;&#xAC00;',check:function(){return lsGet('sqi_log',[]).length>=10}},
-{id:'slope_reader',name:'Slope Reader',desc:'&#xACBD;&#xC0AC; 10&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('slope_log',[]).length>=10}},
-{id:'tourney_player',name:'Tournament Player',desc:'&#xD1A0;&#xB108;&#xBA3C;&#xD2B8; 5&#xB77C;&#xC6B4;&#xB4DC;',check:function(){return lsGet('tourney_log',[]).length>=5}},
-{id:'drive_analyst',name:'Drive Analyst',desc:'&#xB4DC;&#xB77C;&#xC774;&#xBE59; 30&#xC0F7; &#xAE30;&#xB85D;',check:function(){return lsGet('drivezone_log',[]).length>=30}},
-{id:'practice_planner',name:'Practice Planner',desc:'&#xC5F0;&#xC2B5; &#xD6A8;&#xC728; &#xAE30;&#xB85D;',check:function(){var d=lsGet('practice_eff',{});var t=0;for(var k in d)if(d[k])t+=d[k].time;return t>=60}},
-{id:'fitness_starter',name:'Fitness Starter',desc:'&#xCCB4;&#xB825; &#xD504;&#xB85C;&#xADF8;&#xB7A8; 6&#xC6B4;&#xB3D9; &#xC644;&#xB8CC;',check:function(){var c=0;for(var w=1;w<=12;w++)for(var i=0;i<6;i++)if(lsGet('fit_w'+w+'_'+i,false))c++;return c>=6}},
-{id:'quiz_v23_master',name:'Quiz v23 Master',desc:'v23 &#xD038;&#xC988; &#xC804;&#xBB38; &#xC815;&#xB2F5;',check:function(){return lsGet('quiz_v23_score',0)>=15}},
-{id:'quiz_v23_clear',name:'Quiz v23 Clear',desc:'v23 &#xD038;&#xC988; &#xC644;&#xC8FC;',check:function(){return lsGet('quiz_v23_total',0)>=15}},
-{id:'v23_complete',name:'v23 Complete',desc:'v23 &#xC804;&#xCCB4; &#xAE30;&#xB2A5; &#xD0D0;&#xC0C9;',check:function(){return lsGet('v23_explored',0)>=8}}
+{id:'tempo_tracker',name:'Tempo Tracker',desc:'템포 5회 기록',check:function(){return lsGet('tempo_log',[]).length>=5}},
+{id:'tempo_master',name:'Tempo Master',desc:'템포 15회 기록',check:function(){return lsGet('tempo_log',[]).length>=15}},
+{id:'ci_collector',name:'CI Data Collector',desc:'비거리 데이터 30개',check:function(){var d=lsGet('ci_data',{});var s=0;for(var k in d)if(d[k])s+=d[k].length;return s>=30}},
+{id:'sqi_rater',name:'SQI Rater',desc:'샷 퀸리티 10회 평가',check:function(){return lsGet('sqi_log',[]).length>=10}},
+{id:'slope_reader',name:'Slope Reader',desc:'경사 10회 기록',check:function(){return lsGet('slope_log',[]).length>=10}},
+{id:'tourney_player',name:'Tournament Player',desc:'토너먼트 5라운드',check:function(){return lsGet('tourney_log',[]).length>=5}},
+{id:'drive_analyst',name:'Drive Analyst',desc:'드라이빙 30샷 기록',check:function(){return lsGet('drivezone_log',[]).length>=30}},
+{id:'practice_planner',name:'Practice Planner',desc:'연습 효율 기록',check:function(){var d=lsGet('practice_eff',{});var t=0;for(var k in d)if(d[k])t+=d[k].time;return t>=60}},
+{id:'fitness_starter',name:'Fitness Starter',desc:'체력 프로그램 6운동 완료',check:function(){var c=0;for(var w=1;w<=12;w++)for(var i=0;i<6;i++)if(lsGet('fit_w'+w+'_'+i,false))c++;return c>=6}},
+{id:'quiz_v23_master',name:'Quiz v23 Master',desc:'v23 퀸즈 전문 정답',check:function(){return lsGet('quiz_v23_score',0)>=15}},
+{id:'quiz_v23_clear',name:'Quiz v23 Clear',desc:'v23 퀸즈 완주',check:function(){return lsGet('quiz_v23_total',0)>=15}},
+{id:'v23_complete',name:'v23 Complete',desc:'v23 전체 기능 탐색',check:function(){return lsGet('v23_explored',0)>=8}}
 ];
 function checkAchievements(){
 var unlocked=lsGet('achievements_v23',[]);
@@ -924,15 +924,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Tempo',fn:showSwingTempo,icon:'&#x1F3B5;'},
-{label:'CI',fn:showClubCI,icon:'&#x1F4CF;'},
-{label:'SQI',fn:showSQI,icon:'&#x2B50;'},
-{label:'Slope',fn:showGreenSlope,icon:'&#x26F3;'},
-{label:'Tourney',fn:showTourneySim,icon:'&#x1F3C6;'},
-{label:'DriveZn',fn:showDriveZone,icon:'&#x1F3CC;'},
-{label:'PractEff',fn:showPracticeEff,icon:'&#x1F4CA;'},
-{label:'Fitness',fn:showFitnessPeriod,icon:'&#x1F4AA;'},
-{label:'Quiz23',fn:showQuizV23,icon:'&#x1F4DA;'}
+{label:'Tempo',fn:showSwingTempo,icon:'🎵'},
+{label:'CI',fn:showClubCI,icon:'📏'},
+{label:'SQI',fn:showSQI,icon:'⭐'},
+{label:'Slope',fn:showGreenSlope,icon:'⛳'},
+{label:'Tourney',fn:showTourneySim,icon:'🏆'},
+{label:'DriveZn',fn:showDriveZone,icon:'🏌'},
+{label:'PractEff',fn:showPracticeEff,icon:'📊'},
+{label:'Fitness',fn:showFitnessPeriod,icon:'💪'},
+{label:'Quiz23',fn:showQuizV23,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

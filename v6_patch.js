@@ -37,7 +37,7 @@ function showCourseSimulator(){
   var h=HOLES[currentHole];
   var totalPar=0,totalScore=0;
   for(var i=0;i<scores.length;i++){totalPar+=HOLES[i].par;totalScore+=scores[i]}
-  var html='<div class="v6-title">&#9971; &#xFE0E; &#xFE0E;코스 전략 시뮬레이터</div>';
+  var html='<div class="v6-title">⛳ ︎ ︎코스 전략 시뮬레이터</div>';
   if(currentHole>=9){
     var diff=totalScore-totalPar;
     html+='<div class="v6-card" style="text-align:center"><h3>9홀 라운드 완료!</h3>';
@@ -56,10 +56,10 @@ function showCourseSimulator(){
     html+='<div class="v6-card"><h3>Hole '+(currentHole+1)+' &mdash; Par '+h.par+' &middot; '+h.dist+'yd</h3>';
     html+='<p>'+h.desc+'</p>';
     html+='<div style="margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:0.8em">';
-    html+='<div><span style="color:#888">&#xFE0E;페어웨이:</span> <span style="color:#ccc">'+h.fairway+'</span></div>';
-    html+='<div><span style="color:#888">&#xFE0E;해저드:</span> <span style="color:#ff6b6b">'+h.hazard+'</span></div>';
-    html+='<div><span style="color:#888">&#xFE0E;그린:</span> <span style="color:#ccc">'+h.green+'</span></div>';
-    html+='<div><span style="color:#888">&#xFE0E;팁:</span> <span style="color:#00FF88">'+h.tip+'</span></div>';
+    html+='<div><span style="color:#888">︎페어웨이:</span> <span style="color:#ccc">'+h.fairway+'</span></div>';
+    html+='<div><span style="color:#888">︎해저드:</span> <span style="color:#ff6b6b">'+h.hazard+'</span></div>';
+    html+='<div><span style="color:#888">︎그린:</span> <span style="color:#ccc">'+h.green+'</span></div>';
+    html+='<div><span style="color:#888">︎팁:</span> <span style="color:#00FF88">'+h.tip+'</span></div>';
     html+='</div></div>';
 
     var strategies=[];
@@ -116,7 +116,7 @@ function showPracticePlanner(){
   var today=todayStr();
   var thisWeekCount=countThisWeek(practiced);
 
-  var html='<div class="v6-title">&#128197; &#xFE0E;연습 플래너</div>';
+  var html='<div class="v6-title">📅 ︎연습 플래너</div>';
   html+='<div class="v6-grid" style="margin-bottom:16px">';
   html+='<div class="v6-card v6-stat"><div class="v6-stat-num">'+streak+'</div><div class="v6-stat-label">연속 일수</div></div>';
   html+='<div class="v6-card v6-stat"><div class="v6-stat-num">'+thisWeekCount+'/'+goals.sessionsPerWeek+'</div><div class="v6-stat-label">이번 주</div></div>';
@@ -124,7 +124,7 @@ function showPracticePlanner(){
 
   html+='<div class="v6-card"><h3>오늘의 연습</h3>';
   if(practiced[today]){
-    html+='<p style="color:#00FF88">&#10003; 오늘 연습 완료! ('+practiced[today].minutes+'분)</p>';
+    html+='<p style="color:#00FF88">✓ 오늘 연습 완료! ('+practiced[today].minutes+'분)</p>';
   } else {
     html+='<p>목표: '+goals.minutesPerSession+'분</p>';
     html+='<div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">';
@@ -173,7 +173,7 @@ function showInsights(){
   if(!pn){pn=createOverlay('insights');pn.id='v6-insights-panel'}
   else{pn=document.getElementById('v6-insights-panel')}
   var shots=getShotHistory();
-  var html='<div class="v6-title">&#129504; &#xFE0E;AI &#xFE0E;인사이트</div>';
+  var html='<div class="v6-title">🧠 ︎AI ︎인사이트</div>';
 
   if(shots.length<3){
     html+='<div class="v6-card"><p>최소 3개 이상의 샷 데이터가 필요합니다. 카메라 트래킹으로 샷을 기록해주세요.</p></div>';
@@ -183,7 +183,7 @@ function showInsights(){
       var ins=insights[i];
       html+='<div class="v6-card"><h3>'+ins.icon+' '+ins.title+'</h3>';
       html+='<p>'+ins.text+'</p>';
-      if(ins.action){html+='<div style="margin-top:8px;padding:8px 12px;background:rgba(0,255,136,0.08);border-radius:8px;font-size:0.8em;color:#00FF88">&#10148; '+ins.action+'</div>'}
+      if(ins.action){html+='<div style="margin-top:8px;padding:8px 12px;background:rgba(0,255,136,0.08);border-radius:8px;font-size:0.8em;color:#00FF88">➤ '+ins.action+'</div>'}
       html+='</div>';
     }
   }
@@ -221,19 +221,19 @@ function generateInsights(shots){
     }
   }
 
-  insights.push({icon:'&#128202;',title:'가장 많이 사용한 클럽',text:mostUsed+' ('+mostCount+'회 사용). 전체 샷의 '+Math.round(mostCount/shots.length*100)+'%를 차지합니다.',action:'다양한 클럽으로 연습해 게임 폭을 넓혀보세요'});
+  insights.push({icon:'📊',title:'가장 많이 사용한 클럽',text:mostUsed+' ('+mostCount+'회 사용). 전체 샷의 '+Math.round(mostCount/shots.length*100)+'%를 차지합니다.',action:'다양한 클럽으로 연습해 게임 폭을 넓혀보세요'});
 
-  if(leastConsistent){insights.push({icon:'&#9888;&#xFE0E;',title:'일관성 개선 필요',text:leastConsistent+'의 속도 편차가 가장 큽니다 (표준편차: '+worstStdDev.toFixed(1)+').',action:leastConsistent+' 연습에 집중하세요. 같은 스윙 템포로 10회 반복 드릴을 추천합니다'})}
+  if(leastConsistent){insights.push({icon:'⚠︎',title:'일관성 개선 필요',text:leastConsistent+'의 속도 편차가 가장 큽니다 (표준편차: '+worstStdDev.toFixed(1)+').',action:leastConsistent+' 연습에 집중하세요. 같은 스윙 템포로 10회 반복 드릴을 추천합니다'})}
 
   var sliceHook=(curves.Slice||0)+(curves.slice||0)+(curves.Hook||0)+(curves.hook||0);
   var straight=(curves.Straight||0)+(curves.straight||0);
   var drawFade=(curves.Draw||0)+(curves.draw||0)+(curves.Fade||0)+(curves.fade||0);
   var total=sliceHook+straight+drawFade;
   if(total>0){
-    if(straight/total>0.5){insights.push({icon:'&#127919;',title:'직진성 우수!',text:'샷의 '+Math.round(straight/total*100)+'%가 직진(Straight)입니다. 경쟁앱 유저 평균(35%) 대비 우수합니다.'})}
+    if(straight/total>0.5){insights.push({icon:'🎯',title:'직진성 우수!',text:'샷의 '+Math.round(straight/total*100)+'%가 직진(Straight)입니다. 경쟁앱 유저 평균(35%) 대비 우수합니다.'})}
     else if(sliceHook/total>0.4){
       var dominant=(curves.Slice||0)+(curves.slice||0)>(curves.Hook||0)+(curves.hook||0)?'슬라이스':'훅';
-      insights.push({icon:'&#128260;',title:dominant+' 경향 감지',text:dominant+' 비율이 '+Math.round(sliceHook/total*100)+'%로 높습니다.',action:'그립과 얼라인먼트를 체크하세요. '+dominant+' 교정 드릴을 추천합니다'})
+      insights.push({icon:'🔄',title:dominant+' 경향 감지',text:dominant+' 비율이 '+Math.round(sliceHook/total*100)+'%로 높습니다.',action:'그립과 얼라인먼트를 체크하세요. '+dominant+' 교정 드릴을 추천합니다'})
     }
   }
 
@@ -243,18 +243,18 @@ function generateInsights(shots){
       var recentAvg=recent5.reduce(function(a,b){return a+b},0)/5;
       var olderAvg=older5.reduce(function(a,b){return a+b},0)/5;
       var diff=recentAvg-olderAvg;
-      if(diff>50){insights.push({icon:'&#128200;',title:'속도 향상 추세!',text:'최근 5샷 평균 속도가 이전 대비 '+Math.round(diff)+' 향상되었습니다.'})}
-      else if(diff<-50){insights.push({icon:'&#128201;',title:'속도 하락 추세',text:'최근 5샷 평균 속도가 이전 대비 '+Math.round(Math.abs(diff))+' 하락했습니다.',action:'피로 관리에 신경 쓰세요. 워밍업 루틴을 추천합니다'})}
+      if(diff>50){insights.push({icon:'📈',title:'속도 향상 추세!',text:'최근 5샷 평균 속도가 이전 대비 '+Math.round(diff)+' 향상되었습니다.'})}
+      else if(diff<-50){insights.push({icon:'📉',title:'속도 하락 추세',text:'최근 5샷 평균 속도가 이전 대비 '+Math.round(Math.abs(diff))+' 하락했습니다.',action:'피로 관리에 신경 쓰세요. 워밍업 루틴을 추천합니다'})}
     }
   }
 
   if(angles.length>3){
     var avgAngle=angles.reduce(function(a,b){return a+b},0)/angles.length;
-    if(avgAngle<15){insights.push({icon:'&#127744;',title:'낮은 탄도',text:'평균 발사 각도 '+avgAngle.toFixed(1)+'&deg;. 탄도가 낮아 롤이 많을 수 있습니다.',action:'볼 위치를 왼발 쪽으로 옮기거나 어드레스를 체크하세요'})}
-    else if(avgAngle>35){insights.push({icon:'&#9925;&#xFE0E;',title:'높은 탄도',text:'평균 발사 각도 '+avgAngle.toFixed(1)+'&deg;. 바람에 영향을 많이 받을 수 있습니다.',action:'로프트 낮은 클럽이나 펀치샷 연습을 추천합니다'})}
+    if(avgAngle<15){insights.push({icon:'🌀',title:'낮은 탄도',text:'평균 발사 각도 '+avgAngle.toFixed(1)+'&deg;. 탄도가 낮아 롤이 많을 수 있습니다.',action:'볼 위치를 왼발 쪽으로 옮기거나 어드레스를 체크하세요'})}
+    else if(avgAngle>35){insights.push({icon:'⛅︎',title:'높은 탄도',text:'평균 발사 각도 '+avgAngle.toFixed(1)+'&deg;. 바람에 영향을 많이 받을 수 있습니다.',action:'로프트 낮은 클럽이나 펀치샷 연습을 추천합니다'})}
   }
 
-  insights.push({icon:'&#128203;',title:'데이터 요약',text:'총 '+shots.length+'개 샷, '+Object.keys(clubStats).length+'종 클럽 사용. '+(speeds.length>0?'평균 속도: '+Math.round(speeds.reduce(function(a,b){return a+b},0)/speeds.length):'')});
+  insights.push({icon:'📋',title:'데이터 요약',text:'총 '+shots.length+'개 샷, '+Object.keys(clubStats).length+'종 클럽 사용. '+(speeds.length>0?'평균 속도: '+Math.round(speeds.reduce(function(a,b){return a+b},0)/speeds.length):'')});
 
   return insights;
 }
@@ -265,7 +265,7 @@ function showClubFitting(){
   if(!pn){pn=createOverlay('fitting');pn.id='v6-fitting-panel'}
   else{pn=document.getElementById('v6-fitting-panel')}
   var shots=getShotHistory();
-  var html='<div class="v6-title">&#128295; &#xFE0E;클럽 피팅 리포트</div>';
+  var html='<div class="v6-title">🔧 ︎클럽 피팅 리포트</div>';
 
   if(shots.length<5){
     html+='<div class="v6-card"><p>최소 5개 이상의 샷 데이터가 필요합니다.</p></div>';
@@ -297,11 +297,11 @@ function showClubFitting(){
     for(var k in clubData){if(clubData[k].count>=2){var acc=clubData[k].straights/clubData[k].count*100;if(acc>bestAcc){bestAcc=acc;bestClub=k}if(acc<worstAcc){worstAcc=acc;worstClub=k}}}
 
     if(bestClub){
-      html+='<div class="v6-card" style="margin-top:12px"><h3>&#127942; &#xFE0E;최고 성능 클럽</h3>';
+      html+='<div class="v6-card" style="margin-top:12px"><h3>🏆 ︎최고 성능 클럽</h3>';
       html+='<p><strong style="color:#00FF88">'+bestClub+'</strong> &mdash; 정확도 '+Math.round(bestAcc)+'%. 자신감을 가지고 사용하세요.</p></div>';
     }
     if(worstClub&&worstClub!==bestClub){
-      html+='<div class="v6-card"><h3>&#128296; &#xFE0E;개선 필요 클럽</h3>';
+      html+='<div class="v6-card"><h3>🔨 ︎개선 필요 클럽</h3>';
       html+='<p><strong style="color:#ff6b6b">'+worstClub+'</strong> &mdash; 정확도 '+Math.round(worstAcc)+'%. 레슨이나 피팅 상담을 고려하세요.</p></div>';
     }
   }
@@ -315,18 +315,18 @@ function showJournal(){
   if(!pn){pn=createOverlay('journal');pn.id='v6-journal-panel'}
   else{pn=document.getElementById('v6-journal-panel')}
   var entries=lsGet('journal',[]);
-  var html='<div class="v6-title">&#128221; &#xFE0E;연습 일지</div>';
+  var html='<div class="v6-title">📝 ︎연습 일지</div>';
 
   html+='<div class="v6-card"><h3>새 기록 작성</h3>';
   html+='<textarea id="v6-journal-text" class="v6-input v6-textarea" placeholder="오늘의 연습 내용, 느낀 점, 개선할 점..."></textarea>';
   html+='<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">';
-  var moods=[{id:'great',emoji:'&#128170;',label:'컨디션 최고'},{id:'good',emoji:'&#128077;',label:'좋음'},{id:'normal',emoji:'&#128528;',label:'보통'},{id:'tired',emoji:'&#128564;',label:'피곤'},{id:'bad',emoji:'&#128078;',label:'나쁨'}];
+  var moods=[{id:'great',emoji:'💪',label:'컨디션 최고'},{id:'good',emoji:'👍',label:'좋음'},{id:'normal',emoji:'😐',label:'보통'},{id:'tired',emoji:'😴',label:'피곤'},{id:'bad',emoji:'👎',label:'나쁨'}];
   for(var m=0;m<moods.length;m++){
     html+='<span class="v6-tag v6-tag-inactive" id="v6-mood-'+moods[m].id+'" onclick="window._v6SelectMood(\''+moods[m].id+'\')">'+moods[m].emoji+' '+moods[m].label+'</span>';
   }
   html+='</div>';
   html+='<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">';
-  var weathers=[{id:'sunny',label:'&#9728;&#xFE0E; 맑음'},{id:'cloudy',label:'&#9729;&#xFE0E; 흐림'},{id:'rainy',label:'&#127783;&#xFE0E; 비'},{id:'windy',label:'&#127788;&#xFE0E; 바람'}];
+  var weathers=[{id:'sunny',label:'☀︎ 맑음'},{id:'cloudy',label:'☁︎ 흐림'},{id:'rainy',label:'🌧︎ 비'},{id:'windy',label:'🌬︎ 바람'}];
   for(var w=0;w<weathers.length;w++){
     html+='<span class="v6-tag v6-tag-inactive" id="v6-weather-'+weathers[w].id+'" onclick="window._v6SelectWeather(\''+weathers[w].id+'\')">'+weathers[w].label+'</span>';
   }
@@ -366,7 +366,7 @@ function showClusters(){
   if(!pn){pn=createOverlay('clusters');pn.id='v6-clusters-panel'}
   else{pn=document.getElementById('v6-clusters-panel')}
   var shots=getShotHistory();
-  var html='<div class="v6-title">&#128208; &#xFE0E;샷 클러스터 분석</div>';
+  var html='<div class="v6-title">📐 ︎샷 클러스터 분석</div>';
 
   if(shots.length<6){
     html+='<div class="v6-card"><p>최소 6개 이상의 샷 데이터가 필요합니다.</p></div>';
@@ -378,7 +378,7 @@ function showClusters(){
     }
     var clusters=kMeansClusters(features,3);
 
-    var clusterNames=['&#127941; &#xFE0E;프리미엄 샷','&#127775; &#xFE0E;평균 샷','&#128296; &#xFE0E;개선 필요'];
+    var clusterNames=['🏅 ︎프리미엄 샷','🌟 ︎평균 샷','🔨 ︎개선 필요'];
     clusters.sort(function(a,b){return b.avgSpeed-a.avgSpeed});
 
     for(var c=0;c<clusters.length;c++){
@@ -396,7 +396,7 @@ function showClusters(){
       html+='</div>';
     }
 
-    html+='<div class="v6-card"><h3>&#128161; &#xFE0E;클러스터 인사이트</h3>';
+    html+='<div class="v6-card"><h3>💡 ︎클러스터 인사이트</h3>';
     if(clusters[0]&&clusters[2]&&clusters[0].members.length>0&&clusters[2].members.length>0){
       var speedGap=clusters[0].avgSpeed-clusters[2].avgSpeed;
       html+='<p>프리미엄 샷과 개선 필요 샷의 속도 차이: <strong style="color:#00B4D8">'+Math.round(speedGap)+'</strong></p>';
@@ -455,7 +455,7 @@ function showLeaderboard(){
   else{pn=document.getElementById('v6-leaderboard-panel')}
   var shots=getShotHistory();
   var records=lsGet('records',{});
-  var html='<div class="v6-title">&#127942; &#xFE0E;개인 리더보드</div>';
+  var html='<div class="v6-title">🏆 ︎개인 리더보드</div>';
 
   var currentBest={maxSpeed:0,bestAngle:0,longestDistance:0,straightCount:0};
   for(var i=0;i<shots.length;i++){
@@ -468,11 +468,11 @@ function showLeaderboard(){
   }
 
   var categories=[
-    {key:'maxSpeed',name:'최고 속도',value:Math.round(currentBest.maxSpeed),unit:'px/s',icon:'&#9889;&#xFE0E;'},
-    {key:'bestAngle',name:'최고 발사각',value:currentBest.bestAngle.toFixed(1),unit:'&deg;',icon:'&#128640;'},
-    {key:'longestDistance',name:'최장 거리',value:Math.round(currentBest.longestDistance),unit:'px',icon:'&#127948;&#xFE0E;'},
-    {key:'straightCount',name:'직진 샷 수',value:currentBest.straightCount,unit:'회',icon:'&#127919;'},
-    {key:'totalShots',name:'총 샷 수',value:shots.length,unit:'개',icon:'&#9971;&#xFE0E;'}
+    {key:'maxSpeed',name:'최고 속도',value:Math.round(currentBest.maxSpeed),unit:'px/s',icon:'⚡︎'},
+    {key:'bestAngle',name:'최고 발사각',value:currentBest.bestAngle.toFixed(1),unit:'&deg;',icon:'🚀'},
+    {key:'longestDistance',name:'최장 거리',value:Math.round(currentBest.longestDistance),unit:'px',icon:'🏌︎'},
+    {key:'straightCount',name:'직진 샷 수',value:currentBest.straightCount,unit:'회',icon:'🎯'},
+    {key:'totalShots',name:'총 샷 수',value:shots.length,unit:'개',icon:'⛳︎'}
   ];
 
   html+='<div class="v6-grid">';
@@ -495,7 +495,7 @@ function showLeaderboard(){
   var totalDays=Object.keys(practiced).length;
   var totalMinutes=0;
   for(var pd in practiced){if(practiced[pd].minutes)totalMinutes+=practiced[pd].minutes}
-  html+='<div class="v6-card" style="margin-top:12px"><h3>&#128200; &#xFE0E;누적 통계</h3>';
+  html+='<div class="v6-card" style="margin-top:12px"><h3>📈 ︎누적 통계</h3>';
   html+='<div class="v6-grid">';
   html+='<div class="v6-stat"><div class="v6-stat-num" style="font-size:1.3em">'+totalDays+'</div><div class="v6-stat-label">연습 일수</div></div>';
   html+='<div class="v6-stat"><div class="v6-stat-num" style="font-size:1.3em">'+Math.round(totalMinutes/60*10)/10+'</div><div class="v6-stat-label">총 연습 시간(h)</div></div>';
@@ -503,7 +503,7 @@ function showLeaderboard(){
 
   var courseScores=lsGet('course_scores',[]);
   if(courseScores.length>0){
-    html+='<div class="v6-card"><h3>&#9971;&#xFE0E; 코스 시뮬 기록</h3>';
+    html+='<div class="v6-card"><h3>⛳︎ 코스 시뮬 기록</h3>';
     html+='<p>최근 라운드: '+courseScores.length+'홀, 총 '+courseScores.reduce(function(a,b){return a+b},0)+'타</p></div>';
   }
 
@@ -531,7 +531,7 @@ function showShotShapeGuide(){
   var shapeCounts={};
   for(var i=0;i<shots.length;i++){var ct=shots[i].curveType||'Unknown';shapeCounts[ct]=(shapeCounts[ct]||0)+1}
 
-  var html='<div class="v6-title">&#127919; &#xFE0E;샷 형태 가이드</div>';
+  var html='<div class="v6-title">🎯 ︎샷 형태 가이드</div>';
   html+='<div style="text-align:center;margin-bottom:16px">';
   html+='<svg width="260" height="200" viewBox="0 0 260 200">';
   html+='<rect x="0" y="0" width="260" height="200" fill="rgba(0,50,0,0.3)" rx="8"/>';
@@ -563,7 +563,7 @@ function showShotShapeGuide(){
     if(count>0)html+='<span class="v6-badge v6-badge-b">'+count+'회</span>';
     html+='</div>';
     html+='<p>'+sh.desc+'</p>';
-    html+='<div style="margin-top:4px;font-size:0.8em;color:#00FF88">&#128161; '+sh.fix+'</div>';
+    html+='<div style="margin-top:4px;font-size:0.8em;color:#00FF88">💡 '+sh.fix+'</div>';
     html+='</div>';
   }
 
@@ -578,14 +578,14 @@ function injectQuickActions(){
   var container=document.createElement('div');
   container.className='v6-quick-actions';
   var buttons=[
-    {icon:'&#9971;&#xFE0E;',title:'코스 시뮬 (N)',fn:'showCourseSimulator'},
-    {icon:'&#128197;',title:'연습 플래너 (P)',fn:'showPracticePlanner'},
-    {icon:'&#129504;',title:'AI 인사이트 (I)',fn:'showInsights'},
-    {icon:'&#128295;',title:'클럽 피팅 (F)',fn:'showClubFitting'},
-    {icon:'&#128221;',title:'연습 일지 (J)',fn:'showJournal'},
-    {icon:'&#128208;',title:'샷 클러스터 (K)',fn:'showClusters'},
-    {icon:'&#127942;',title:'리더보드 (L)',fn:'showLeaderboard'},
-    {icon:'&#127919;',title:'샷 형태 가이드 (G)',fn:'showShotShapeGuide'}
+    {icon:'⛳︎',title:'코스 시뮬 (N)',fn:'showCourseSimulator'},
+    {icon:'📅',title:'연습 플래너 (P)',fn:'showPracticePlanner'},
+    {icon:'🧠',title:'AI 인사이트 (I)',fn:'showInsights'},
+    {icon:'🔧',title:'클럽 피팅 (F)',fn:'showClubFitting'},
+    {icon:'📝',title:'연습 일지 (J)',fn:'showJournal'},
+    {icon:'📐',title:'샷 클러스터 (K)',fn:'showClusters'},
+    {icon:'🏆',title:'리더보드 (L)',fn:'showLeaderboard'},
+    {icon:'🎯',title:'샷 형태 가이드 (G)',fn:'showShotShapeGuide'}
   ];
   for(var i=0;i<buttons.length;i++){
     var btn=document.createElement('button');

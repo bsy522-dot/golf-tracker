@@ -23,7 +23,7 @@ var WIND_LABELS=['북','북동','동','남동','남','남서','서','북서'];
 
 function showWindCalc(){
 var pn=getPanel('wind');
-var html='<div class="v11-title">&#x1F4A8; 바람 보정 계산기</div>';
+var html='<div class="v11-title">💨 바람 보정 계산기</div>';
 
 html+='<div class="v11-card"><h3>바람 정보 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
@@ -44,7 +44,7 @@ html+='<button class="v11-btn v11-btn-primary" style="width:100%;margin-top:12px
 html+='<div id="v11-wind-result"></div>';
 html+='<canvas id="v11-wind-canvas" width="320" height="320" style="width:100%;max-width:320px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
-html+='<div class="v11-card"><h3>&#x1F4D6; 바람 보정 참고표</h3>';
+html+='<div class="v11-card"><h3>📖 바람 보정 참고표</h3>';
 html+='<table class="v11-table"><tr><th>풍속</th><th>맞바람</th><th>뒷바람</th><th>측바람</th></tr>';
 html+='<tr><td>5 m/s</td><td style="color:#ff6b6b">+8~12 yd</td><td style="color:#00FF88">-5~8 yd</td><td style="color:#FFC107">좌우 5~8 yd</td></tr>';
 html+='<tr><td>10 m/s</td><td style="color:#ff6b6b">+18~25 yd</td><td style="color:#00FF88">-10~15 yd</td><td style="color:#FFC107">좌우 12~18 yd</td></tr>';
@@ -87,11 +87,11 @@ rhtml+='<div><div style="font-size:1.1em;font-weight:700;color:#FFC107">'+(sideA
 rhtml+='<div><div style="font-size:1.1em;font-weight:700;color:#E040FB">'+speed+'m/s</div><div style="font-size:.65em;color:#888">풍속</div></div>';
 rhtml+='</div></div>';
 
-rhtml+='<div class="v11-card"><h3>&#x1F3CC;&#xFE0F; 클럽 추천</h3>';
-if(distAdj>10)rhtml+='<p style="color:#FFC107">&#x26A0; 맞바람이 강합니다. 1~2클럽 올려 선택하세요.</p>';
-else if(distAdj<-10)rhtml+='<p style="color:#00FF88">&#x2705; 뒷바람입니다. 1클럽 내려서 3/4 스윙을 추천합니다.</p>';
-else rhtml+='<p style="color:#00B4D8">&#x2139; 바람 영향이; 크지 않습니다. 기본 클럽 선택으로 충분합니다.</p>';
-if(sideAdj>8)rhtml+='<p style="color:#FFC107;margin-top:4px">&#x27A1; '+sideDir+'으로 '+sideAdj+'yd 휘어짐. 반대방향으로 에임;하세요.</p>';
+rhtml+='<div class="v11-card"><h3>🏌️ 클럽 추천</h3>';
+if(distAdj>10)rhtml+='<p style="color:#FFC107">⚠ 맞바람이 강합니다. 1~2클럽 올려 선택하세요.</p>';
+else if(distAdj<-10)rhtml+='<p style="color:#00FF88">✅ 뒷바람입니다. 1클럽 내려서 3/4 스윙을 추천합니다.</p>';
+else rhtml+='<p style="color:#00B4D8">ℹ 바람 영향이; 크지 않습니다. 기본 클럽 선택으로 충분합니다.</p>';
+if(sideAdj>8)rhtml+='<p style="color:#FFC107;margin-top:4px">➡ '+sideDir+'으로 '+sideAdj+'yd 휘어짐. 반대방향으로 에임;하세요.</p>';
 rhtml+='</div>';
 
 var resEl=document.getElementById('v11-wind-result');if(resEl)resEl.innerHTML=rhtml;
@@ -140,9 +140,9 @@ ctx.lineWidth=1;
 function showClubDist(){
 var pn=getPanel('clubdist');
 var data=lsGet('club_distances',{});
-var html='<div class="v11-title">&#x1F4CF; 클럽별 비거리 트래커</div>';
+var html='<div class="v11-title">📏 클럽별 비거리 트래커</div>';
 
-html+='<div class="v11-card"><h3>&#x2795; 비거리 기록</h3>';
+html+='<div class="v11-card"><h3>➕ 비거리 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v11-label">클럽</label><select id="v11-cd-club" class="v11-input">';
 for(var ci2=0;ci2<CLUBS.length-1;ci2++)html+='<option>'+CLUBS[ci2]+'</option>';
@@ -155,7 +155,7 @@ html+='<button class="v11-btn v11-btn-primary" style="width:100%;margin-top:12px
 html+='<canvas id="v11-clubdist-canvas" width="560" height="300" style="width:100%;height:auto;border-radius:12px;margin-bottom:12px"></canvas>';
 
 var hasData=false;
-html+='<div class="v11-card"><h3>&#x1F4CA; 클럽별 통계</h3>';
+html+='<div class="v11-card"><h3>📊 클럽별 통계</h3>';
 html+='<table class="v11-table"><tr><th>클럽</th><th>AVG</th><th>MAX</th><th>MIN</th><th>캐리</th><th>회;/수;</th></tr>';
 for(var ci3=0;ci3<CLUBS.length-1;ci3++){
   var c=CLUBS[ci3];var cd=data[c]||[];
@@ -176,7 +176,7 @@ for(var ci3=0;ci3<CLUBS.length-1;ci3++){
 if(!hasData)html+='<tr><td colspan="6" style="color:#666;text-align:center">데이터가; 없습니다</td></tr>';
 html+='</table></div>';
 
-html+='<div class="v11-card"><h3>&#x1F4A1; 클럽 거리 가이드</h3>';
+html+='<div class="v11-card"><h3>💡 클럽 거리 가이드</h3>';
 html+='<table class="v11-table"><tr><th>클럽</th><th>아마추어;</th><th>싱글;</th><th>PGA</th></tr>';
 html+='<tr><td>Driver</td><td style="color:#888">180~220</td><td style="color:#FFC107">230~260</td><td style="color:#00FF88">290+</td></tr>';
 html+='<tr><td>7I</td><td style="color:#888">120~140</td><td style="color:#FFC107">150~165</td><td style="color:#00FF88">175+</td></tr>';
@@ -261,7 +261,7 @@ function showParPerf(){
 var pn=getPanel('parperf');
 var rounds=[];
 try{var r9=localStorage.getItem('gt_v9_scorecard_rounds');if(r9)rounds=JSON.parse(r9)}catch(e){}
-var html='<div class="v11-title">&#x26F3; Par별 성적 분석기</div>';
+var html='<div class="v11-title">⛳ Par별 성적 분석기</div>';
 
 var par3={total:0,birdies:0,pars:0,bogeys:0,dbls:0,avg:0,scores:[]};
 var par4={total:0,birdies:0,pars:0,bogeys:0,dbls:0,avg:0,scores:[]};
@@ -283,7 +283,7 @@ for(var ri=0;ri<rounds.length;ri++){
   }
 }
 
-var buckets=[{name:'Par 3',data:par3,color:'#00FF88',icon:'&#x1F3AF;'},{name:'Par 4',data:par4,color:'#00B4D8',icon:'&#x1F3CC;&#xFE0F;'},{name:'Par 5',data:par5,color:'#FFC107',icon:'&#x1F680;'}];
+var buckets=[{name:'Par 3',data:par3,color:'#00FF88',icon:'🎯'},{name:'Par 4',data:par4,color:'#00B4D8',icon:'🏌️'},{name:'Par 5',data:par5,color:'#FFC107',icon:'🚀'}];
 
 if(par3.total+par4.total+par5.total===0){
   html+='<div class="v11-card"><p>스코어카드에; 라운드를 기록하면 Par별 분석이; 표시됩니다.</p></div>';
@@ -383,9 +383,9 @@ for(var di2=0;di2<datasets.length;di2++){
 function showMental(){
 var pn=getPanel('mental');
 var data=lsGet('mental_log',[]);
-var html='<div class="v11-title">&#x1F9E0; 멘탈 게임 트래커</div>';
+var html='<div class="v11-title">🧠 멘탈 게임 트래커</div>';
 
-html+='<div class="v11-card"><h3>&#x2795; 멘탈 기록</h3>';
+html+='<div class="v11-card"><h3>➕ 멘탈 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v11-label">자신감 (1~10)</label><input id="v11-mt-conf" class="v11-input" type="range" min="1" max="10" value="7"><div style="text-align:center;font-size:.8em;color:#00B4D8" id="v11-mt-conf-val">7</div></div>';
 html+='<div><label class="v11-label">집중력 (1~10)</label><input id="v11-mt-focus" class="v11-input" type="range" min="1" max="10" value="7"><div style="text-align:center;font-size:.8em;color:#00B4D8" id="v11-mt-focus-val">7</div></div>';
@@ -409,7 +409,7 @@ if(data.length>0){
   html+='<div class="v11-stat-card"><div class="v11-stat-val" style="color:#E040FB">'+avgPressure+'</div><div class="v11-stat-label">압박감</div></div>';
   html+='</div>';
 
-  html+='<div class="v11-card"><h3>&#x1F4C5; 최근 기록</h3>';
+  html+='<div class="v11-card"><h3>📅 최근 기록</h3>';
   for(var mi=data.length-1;mi>=Math.max(0,data.length-8);mi--){
     var m=data[mi];
     html+='<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04)">';
@@ -425,12 +425,12 @@ if(data.length>0){
   html+='</div>';
 }
 
-html+='<div class="v11-card"><h3>&#x1F4A1; 멘탈 게임 팁;</h3>';
+html+='<div class="v11-card"><h3>💡 멘탈 게임 팁;</h3>';
 html+='<div style="font-size:.85em;color:#aaa;line-height:1.7">';
-html+='<p>&#x2022; 프리샷 루틴을 반드시 지키세요 - 일관성이 핵심</p>';
-html+='<p>&#x2022; 실수 후; 4-7-8 호흡법으로 리셋</p>';
-html+='<p>&#x2022; 과거 샷은 잊고 다음 샷에 집중 (One Shot at a Time)</p>';
-html+='<p>&#x2022; 처음 3홀은 워밍업으로 생각하세요</p>';
+html+='<p>• 프리샷 루틴을 반드시 지키세요 - 일관성이 핵심</p>';
+html+='<p>• 실수 후; 4-7-8 호흡법으로 리셋</p>';
+html+='<p>• 과거 샷은 잊고 다음 샷에 집중 (One Shot at a Time)</p>';
+html+='<p>• 처음 3홀은 워밍업으로 생각하세요</p>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v11-close" onclick="window._v11Close(\'mental\')">&times;</button>'+html;
@@ -462,9 +462,9 @@ showToast('멘탈 기록 완료!');playSfx('mental_save');showMental();v11CheckA
 function showCourseJournal(){
 var pn=getPanel('journal');
 var entries=lsGet('course_journal',[]);
-var html='<div class="v11-title">&#x1F4D3; 코스 전략 저널</div>';
+var html='<div class="v11-title">📓 코스 전략 저널</div>';
 
-html+='<div class="v11-card"><h3>&#x2795; 새 저널 작성</h3>';
+html+='<div class="v11-card"><h3>➕ 새 저널 작성</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
 html+='<div><label class="v11-label">코스명</label><input id="v11-jn-course" class="v11-input" type="text" placeholder="코스 이름" maxlength="30"></div>';
 html+='<div><label class="v11-label">컨디션</label><select id="v11-jn-cond" class="v11-input"><option value="excellent">⭐ 최상</option><option value="good" selected>✅ 좋음</option><option value="normal">➖ 보통</option><option value="tough">❌ 어려움</option></select></div>';
@@ -478,7 +478,7 @@ html+='</div>';
 html+='<button class="v11-btn v11-btn-primary" style="width:100%;margin-top:12px" onclick="window._v11SaveJournal()">저장</button></div>';
 
 if(entries.length>0){
-  html+='<div class="v11-card"><h3>&#x1F4DA; 저널 목록 ('+entries.length+'개)</h3>';
+  html+='<div class="v11-card"><h3>📚 저널 목록 ('+entries.length+'개)</h3>';
   var condIcons={excellent:'⭐',good:'✅',normal:'➖',tough:'❌'};
   var condColors={excellent:'#FFC107',good:'#00FF88',normal:'#888',tough:'#ff6b6b'};
   for(var ei=entries.length-1;ei>=Math.max(0,entries.length-10);ei--){
@@ -519,7 +519,7 @@ function showRoundCompare(){
 var pn=getPanel('compare');
 var rounds=[];
 try{var r9=localStorage.getItem('gt_v9_scorecard_rounds');if(r9)rounds=JSON.parse(r9)}catch(e){}
-var html='<div class="v11-title">&#x1F504; 라운드 비교 분석</div>';
+var html='<div class="v11-title">🔄 라운드 비교 분석</div>';
 
 if(rounds.length<2){
   html+='<div class="v11-card"><p>2회 이상 라운드를 기록하면 비교 분석이 가능합니다.</p></div>';
@@ -564,7 +564,7 @@ function calcStats(rd){
 }
 var sA=calcStats(rdA);var sB=calcStats(rdB);
 
-var rhtml='<div class="v11-card"><h3>&#x1F4CA; 비교 결과</h3>';
+var rhtml='<div class="v11-card"><h3>📊 비교 결과</h3>';
 rhtml+='<table class="v11-table"><tr><th>항목</th><th style="color:#00FF88">'+(rdA.course||'A')+'</th><th style="color:#FFC107">'+(rdB.course||'B')+'</th><th>차이</th></tr>';
 
 function diffCell(va,vb,lower){var d=va-vb;var better=lower?(d<0):(d>0);return'<td style="color:'+(d===0?'#888':better?'#00FF88':'#ff6b6b')+';font-weight:700">'+(d>0?'+':'')+d+'</td>'}
@@ -575,7 +575,7 @@ rhtml+='<tr><td>GIR</td><td>'+sA.gir+'%</td><td>'+sB.gir+'%</td>'+diffCell(sA.gi
 rhtml+='<tr><td>FIR</td><td>'+sA.fir+'%</td><td>'+sB.fir+'%</td>'+diffCell(sA.fir,sB.fir,false)+'</tr>';
 rhtml+='</table></div>';
 
-rhtml+='<div class="v11-card"><h3>&#x1F3CC;&#xFE0F; 홀별 비교</h3>';
+rhtml+='<div class="v11-card"><h3>🏌️ 홀별 비교</h3>';
 rhtml+='<canvas id="v11-compare-canvas" width="560" height="220" style="width:100%;height:auto;border-radius:12px"></canvas></div>';
 
 var resEl=document.getElementById('v11-compare-result');if(resEl)resEl.innerHTML=rhtml;
@@ -604,12 +604,12 @@ setTimeout(function(){
 
 // ===== 7. PRACTICE GOAL PLANNER =====
 var GOAL_PRESETS=[
-  {id:'range30',name:'레인지 30분',target:30,unit:'분',icon:'&#x1F3AF;'},
-  {id:'putting20',name:'퍼팅 20분',target:20,unit:'분',icon:'&#x26F3;'},
-  {id:'chip15',name:'칩/피치 15분',target:15,unit:'분',icon:'&#x1F3CC;&#xFE0F;'},
-  {id:'mental',name:'멘탈 트레이닝',target:1,unit:'회',icon:'&#x1F9E0;'},
-  {id:'video',name:'스윙 영상 분석',target:1,unit:'회',icon:'&#x1F4F9;'},
-  {id:'stretch',name:'스트레칭 10분',target:10,unit:'분',icon:'&#x1F9D8;'}
+  {id:'range30',name:'레인지 30분',target:30,unit:'분',icon:'🎯'},
+  {id:'putting20',name:'퍼팅 20분',target:20,unit:'분',icon:'⛳'},
+  {id:'chip15',name:'칩/피치 15분',target:15,unit:'분',icon:'🏌️'},
+  {id:'mental',name:'멘탈 트레이닝',target:1,unit:'회',icon:'🧠'},
+  {id:'video',name:'스윙 영상 분석',target:1,unit:'회',icon:'📹'},
+  {id:'stretch',name:'스트레칭 10분',target:10,unit:'분',icon:'🧘'}
 ];
 
 function showGoalPlanner(){
@@ -627,7 +627,7 @@ if(!goals){
 var completed=0;var total=GOAL_PRESETS.length;
 for(var k in goals.items)if(goals.items[k].done)completed++;
 
-var html='<div class="v11-title">&#x1F3AF; 주간 연습 목표</div>';
+var html='<div class="v11-title">🎯 주간 연습 목표</div>';
 html+='<div style="text-align:center;margin-bottom:16px">';
 html+='<div style="font-size:2em;font-weight:800;color:'+(completed===total?'#00FF88':'#00B4D8')+'">'+completed+' / '+total+'</div>';
 html+='<div style="color:#888;font-size:.85em">주차 '+wk+' 목표 달성률</div>';
@@ -641,14 +641,14 @@ for(var gi=0;gi<GOAL_PRESETS.length;gi++){
   html+='<div style="display:flex;align-items:center;gap:10px"><span style="font-size:1.3em">'+gp.icon+'</span>';
   html+='<div><div style="font-weight:700;color:'+(gs.done?'#00FF88':'#ccc')+'">'+gp.name+'</div>';
   html+='<div style="font-size:.72em;color:#888">목표: '+gp.target+gp.unit+'</div></div></div>';
-  if(gs.done)html+='<span class="v11-badge v11-badge-a">&#x2705; 완료</span>';
+  if(gs.done)html+='<span class="v11-badge v11-badge-a">✅ 완료</span>';
   else html+='<button class="v11-btn v11-btn-primary" onclick="window._v11CompleteGoal(\''+gp.id+'\')">완료</button>';
   html+='</div></div>';
 }
 
 if(completed===total){
   html+='<div class="v11-card" style="text-align:center;background:linear-gradient(135deg,rgba(0,255,136,.06),rgba(0,180,216,.06))">';
-  html+='<div style="font-size:2.5em;margin-bottom:8px">&#x1F3C6;</div>';
+  html+='<div style="font-size:2.5em;margin-bottom:8px">🏆</div>';
   html+='<h3 style="color:#00FF88">주간 목표 전체 달성!</h3>';
   html+='<p>이번 주 연습을 모두 완료했습니다. 훌륭합니다!</p></div>';
 }
@@ -670,7 +670,7 @@ var tempoRunning=false;var tempoInterval=null;var tempoBeatCount=0;
 function showTempoTrainer(){
 var pn=getPanel('tempo');
 var settings=lsGet('tempo_settings',{bpm:72,ratio:'3:1',beats:0});
-var html='<div class="v11-title">&#x1F3B5; 스윙 템포 트레이너</div>';
+var html='<div class="v11-title">🎵 스윙 템포 트레이너</div>';
 
 html+='<div class="v11-card"><h3>템포 설정</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px">';
@@ -689,13 +689,13 @@ html+='<div style="text-align:center;margin:16px 0">';
 html+='<canvas id="v11-tempo-canvas" width="280" height="280" style="width:280px;height:280px;border-radius:50%"></canvas></div>';
 
 html+='<div style="display:flex;gap:12px;justify-content:center;margin-bottom:16px">';
-html+='<button class="v11-btn v11-btn-primary" id="v11-tp-start" onclick="window._v11ToggleTempo()" style="padding:12px 32px;font-size:1.1em">'+(tempoRunning?'&#x23F9; 정지':'&#x25B6; 시작')+'</button>';
+html+='<button class="v11-btn v11-btn-primary" id="v11-tp-start" onclick="window._v11ToggleTempo()" style="padding:12px 32px;font-size:1.1em">'+(tempoRunning?'⏹ 정지':'▶ 시작')+'</button>';
 html+='</div>';
 
 html+='<div style="text-align:center;color:#888;font-size:.85em;margin-bottom:16px">총 비트: <span style="color:#00FF88;font-weight:700" id="v11-tp-beats">'+settings.beats+'</span></div>';
 html+='</div>';
 
-html+='<div class="v11-card"><h3>&#x1F4A1; 스윙 템포 가이드</h3>';
+html+='<div class="v11-card"><h3>💡 스윙 템포 가이드</h3>';
 html+='<table class="v11-table"><tr><th>비율</th><th>특징</th><th>추천</th></tr>';
 html+='<tr><td style="color:#00FF88;font-weight:700">3:1</td><td>프로 표준 비율</td><td style="color:#888">모든 레벨</td></tr>';
 html+='<tr><td style="color:#00B4D8;font-weight:700">2:1</td><td>빠른 템포</td><td style="color:#888">상급자</td></tr>';
@@ -769,10 +769,10 @@ if(tempoRunning){
   var s=lsGet('tempo_settings',{bpm:72,ratio:'3:1',beats:0});s.beats+=tempoBeatCount;lsSet('tempo_settings',s);
   tempoBeatCount=0;
   renderTempoCanvas(0);
-  var btn=document.getElementById('v11-tp-start');if(btn)btn.innerHTML='&#x25B6; 시작';
+  var btn=document.getElementById('v11-tp-start');if(btn)btn.innerHTML='▶ 시작';
 } else {
   tempoRunning=true;tempoBeatCount=0;
-  var btn2=document.getElementById('v11-tp-start');if(btn2)btn2.innerHTML='&#x23F9; 정지';
+  var btn2=document.getElementById('v11-tp-start');if(btn2)btn2.innerHTML='⏹ 정지';
   var s2=lsGet('tempo_settings',{bpm:72,ratio:'3:1',beats:0});
   var bpm=s2.bpm;var parts=s2.ratio.split(':');
   var backR=parseFloat(parts[0]);var downR=parseFloat(parts[1]);
@@ -803,12 +803,12 @@ lsSet('ach_tempo_used',true);v11CheckAch();
 // ===== 9. SHARE CARD =====
 function showShareCard(){
 var pn=getPanel('share');
-var html='<div class="v11-title">&#x1F4F1; 골프 성적 공유 카드</div>';
+var html='<div class="v11-title">📱 골프 성적 공유 카드</div>';
 html+='<div class="v11-card" style="text-align:center">';
 html+='<canvas id="v11-share-canvas" width="600" height="380" style="width:100%;height:auto;border-radius:12px;margin-bottom:12px"></canvas>';
 html+='<div style="display:flex;gap:8px;justify-content:center">';
-html+='<button class="v11-btn v11-btn-primary" onclick="window._v11DownloadShare()">&#x1F4E5; PNG 다운로드</button>';
-html+='<button class="v11-btn" onclick="window._v11CopyShare()">&#x1F4CB; 클립보드 복사</button>';
+html+='<button class="v11-btn v11-btn-primary" onclick="window._v11DownloadShare()">📥 PNG 다운로드</button>';
+html+='<button class="v11-btn" onclick="window._v11CopyShare()">📋 클립보드 복사</button>';
 html+='</div></div>';
 pn.innerHTML='<button class="v11-close" onclick="window._v11Close(\'share\')">&times;</button>'+html;
 openPanel('share');playSfx('share_capture');
@@ -909,12 +909,12 @@ var V11_QUIZ=[
 function showV11Quiz(){
 var pn=getPanel('v11quiz');
 var qs=lsGet('v11quiz_state',{current:0,correct:0,answered:[]});
-var html='<div class="v11-title">&#x1F4DD; 골프 심화 퀴즈 v4</div>';
+var html='<div class="v11-title">📝 골프 심화 퀴즈 v4</div>';
 
 if(qs.answered.length>=V11_QUIZ.length){
   var grade=qs.correct>=14?'S':qs.correct>=12?'A':qs.correct>=10?'B':qs.correct>=7?'C':'D';
   var gcolor=grade==='S'?'#00FF88':grade==='A'?'#00B4D8':grade==='B'?'#FFC107':'#ff6b6b';
-  html+='<div class="v11-card" style="text-align:center"><div style="font-size:3em;margin-bottom:8px">&#x1F3C6;</div>';
+  html+='<div class="v11-card" style="text-align:center"><div style="font-size:3em;margin-bottom:8px">🏆</div>';
   html+='<h3>퀴즈 완료!</h3>';
   html+='<div style="font-size:2.5em;font-weight:800;color:'+gcolor+';margin:12px 0">'+grade+'</div>';
   html+='<div style="color:#aaa">'+qs.correct+' / '+V11_QUIZ.length+' 정답</div>';
@@ -949,18 +949,18 @@ window._v11ResetQuiz=function(){lsSet('v11quiz_state',{current:0,correct:0,answe
 
 // ===== ACHIEVEMENTS (+12 = 48 total) =====
 var V11_ACH=[
-{id:'v11_wind_calc',name:'바람 마스터',desc:'바람 보정 계산기 사용',icon:'&#x1F4A8;',check:function(){return lsGet('ach_wind_used',false)}},
-{id:'v11_club_10',name:'클럽 분석가',desc:'클럽 비거리 10회 기록',icon:'&#x1F4CF;',check:function(){var d=lsGet('club_distances',{});var t=0;for(var k in d)t+=d[k].length;return t>=10}},
-{id:'v11_club_all',name:'풀 세트 분석',desc:'5종 이상 클럽 비거리 기록',icon:'&#x1F3CC;&#xFE0F;',check:function(){var d=lsGet('club_distances',{});return Object.keys(d).length>=5}},
-{id:'v11_par_viewer',name:'Par 분석가',desc:'Par별 성적 분석 조회',icon:'&#x26F3;',check:function(){return lsGet('ach_par_viewed',false)}},
-{id:'v11_mental_5',name:'멘탈 트레이너',desc:'멘탈 게임 5회 기록',icon:'&#x1F9E0;',check:function(){return lsGet('mental_log',[]).length>=5}},
-{id:'v11_journal_3',name:'코스 탐험가',desc:'코스 저널 3개 작성',icon:'&#x1F4D3;',check:function(){return lsGet('course_journal',[]).length>=3}},
-{id:'v11_compare',name:'비교 분석가',desc:'라운드 비교 수행',icon:'&#x1F504;',check:function(){return lsGet('ach_compare_used',false)}},
-{id:'v11_goal_all',name:'주간 목표 달성',desc:'주간 목표 전체 완료',icon:'&#x1F3AF;',check:function(){var wk=weekNum();var g=lsGet('weekly_goals_'+wk,null);if(!g)return false;for(var k in g.items)if(!g.items[k].done)return false;return true}},
-{id:'v11_tempo',name:'템포 트레이너',desc:'스윙 템포 트레이너 사용',icon:'&#x1F3B5;',check:function(){return lsGet('ach_tempo_used',false)}},
-{id:'v11_share',name:'공유의 달인',desc:'성적 공유 카드 생성',icon:'&#x1F4F1;',check:function(){return lsGet('ach_share_used',false)}},
-{id:'v11_quiz_perfect',name:'퀴즈 v4 만점',desc:'v4 퀴즈 15문제 전부 정답',icon:'&#x1F4DD;',check:function(){var qs=lsGet('v11quiz_state',{});return qs.correct>=15&&(qs.answered||[]).length>=15}},
-{id:'v11_all_features',name:'v11 탐험가',desc:'v11 전체 기능 탐색',icon:'&#x1F30D;',check:function(){return lsGet('ach_wind_used',false)&&Object.keys(lsGet('club_distances',{})).length>=1&&lsGet('ach_par_viewed',false)&&lsGet('mental_log',[]).length>=1&&lsGet('course_journal',[]).length>=1&&lsGet('ach_tempo_used',false)&&lsGet('ach_share_used',false)}}
+{id:'v11_wind_calc',name:'바람 마스터',desc:'바람 보정 계산기 사용',icon:'💨',check:function(){return lsGet('ach_wind_used',false)}},
+{id:'v11_club_10',name:'클럽 분석가',desc:'클럽 비거리 10회 기록',icon:'📏',check:function(){var d=lsGet('club_distances',{});var t=0;for(var k in d)t+=d[k].length;return t>=10}},
+{id:'v11_club_all',name:'풀 세트 분석',desc:'5종 이상 클럽 비거리 기록',icon:'🏌️',check:function(){var d=lsGet('club_distances',{});return Object.keys(d).length>=5}},
+{id:'v11_par_viewer',name:'Par 분석가',desc:'Par별 성적 분석 조회',icon:'⛳',check:function(){return lsGet('ach_par_viewed',false)}},
+{id:'v11_mental_5',name:'멘탈 트레이너',desc:'멘탈 게임 5회 기록',icon:'🧠',check:function(){return lsGet('mental_log',[]).length>=5}},
+{id:'v11_journal_3',name:'코스 탐험가',desc:'코스 저널 3개 작성',icon:'📓',check:function(){return lsGet('course_journal',[]).length>=3}},
+{id:'v11_compare',name:'비교 분석가',desc:'라운드 비교 수행',icon:'🔄',check:function(){return lsGet('ach_compare_used',false)}},
+{id:'v11_goal_all',name:'주간 목표 달성',desc:'주간 목표 전체 완료',icon:'🎯',check:function(){var wk=weekNum();var g=lsGet('weekly_goals_'+wk,null);if(!g)return false;for(var k in g.items)if(!g.items[k].done)return false;return true}},
+{id:'v11_tempo',name:'템포 트레이너',desc:'스윙 템포 트레이너 사용',icon:'🎵',check:function(){return lsGet('ach_tempo_used',false)}},
+{id:'v11_share',name:'공유의 달인',desc:'성적 공유 카드 생성',icon:'📱',check:function(){return lsGet('ach_share_used',false)}},
+{id:'v11_quiz_perfect',name:'퀴즈 v4 만점',desc:'v4 퀴즈 15문제 전부 정답',icon:'📝',check:function(){var qs=lsGet('v11quiz_state',{});return qs.correct>=15&&(qs.answered||[]).length>=15}},
+{id:'v11_all_features',name:'v11 탐험가',desc:'v11 전체 기능 탐색',icon:'🌍',check:function(){return lsGet('ach_wind_used',false)&&Object.keys(lsGet('club_distances',{})).length>=1&&lsGet('ach_par_viewed',false)&&lsGet('mental_log',[]).length>=1&&lsGet('course_journal',[]).length>=1&&lsGet('ach_tempo_used',false)&&lsGet('ach_share_used',false)}}
 ];
 
 function v11CheckAch(){
@@ -987,14 +987,14 @@ function injectV11QuickActions(){
 var existing=document.querySelector('.v11-quick-actions');if(existing)return;
 var container=document.createElement('div');container.className='v11-quick-actions';
 var buttons=[
-  {icon:'&#x1F4A8;',title:'바람계산기 (Shift+A)',fn:'showWindCalc'},
-  {icon:'&#x1F4CF;',title:'클럽비거리 (Shift+D)',fn:'showClubDist'},
-  {icon:'&#x26F3;',title:'Par분석 (Shift+E)',fn:'showParPerf'},
-  {icon:'&#x1F9E0;',title:'멘탈 (Shift+M)',fn:'showMental'},
-  {icon:'&#x1F4D3;',title:'코스저널 (Shift+J)',fn:'showCourseJournal'},
-  {icon:'&#x1F504;',title:'라운드비교 (Shift+O)',fn:'showRoundCompare'},
-  {icon:'&#x1F3AF;',title:'연습목표 (Shift+G)',fn:'showGoalPlanner'},
-  {icon:'&#x1F3B5;',title:'템포 (Shift+B)',fn:'showTempoTrainer'}
+  {icon:'💨',title:'바람계산기 (Shift+A)',fn:'showWindCalc'},
+  {icon:'📏',title:'클럽비거리 (Shift+D)',fn:'showClubDist'},
+  {icon:'⛳',title:'Par분석 (Shift+E)',fn:'showParPerf'},
+  {icon:'🧠',title:'멘탈 (Shift+M)',fn:'showMental'},
+  {icon:'📓',title:'코스저널 (Shift+J)',fn:'showCourseJournal'},
+  {icon:'🔄',title:'라운드비교 (Shift+O)',fn:'showRoundCompare'},
+  {icon:'🎯',title:'연습목표 (Shift+G)',fn:'showGoalPlanner'},
+  {icon:'🎵',title:'템포 (Shift+B)',fn:'showTempoTrainer'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');btn.className='v11-quick-btn';btn.innerHTML=buttons[i].icon;btn.title=buttons[i].title;

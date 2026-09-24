@@ -1,4 +1,4 @@
-var CACHE_NAME = 'golf-tracker-v29-hb1';
+var CACHE_NAME = 'golf-tracker-v29-hb1-m0924';
 var PRECACHE = [
   './',
   './index.html',

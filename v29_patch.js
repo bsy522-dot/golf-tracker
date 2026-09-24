@@ -26,9 +26,9 @@ playSfx('ellipse_open');
 var pn=getPanel('ellipse');
 var selClub=lsGet('ellipse_club',0);
 var html='<button class="v29-close" onclick="window._v29Close(\'ellipse\')">&times;</button>';
-html+='<div class="v29-title">&#x1F4CD; &#xC0F7; &#xBD84;&#xC0B0; &#xD0C0;&#xC6D0; &#xD53C;&#xD130;</div>';
+html+='<div class="v29-title">📍 샷 분산 타원 피터</div>';
 html+='<canvas id="v29-ellipse-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xD074;&#xB7FD; &#xC120;&#xD0DD;</h3>';
+html+='<div class="v29-card"><h3>클럽 선택</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px">';
 for(var i=0;i<7;i++){html+='<button class="v29-btn v29-btn-sm'+(i===selClub?' v29-btn-primary':'')+'" onclick="window._v29SelEllipse('+i+')">'+CLUBS_14[i]+'</button>';}
 html+='</div><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">';
@@ -40,10 +40,10 @@ var ratio=(dep/lat).toFixed(1);
 var grade=area<200?'S':area<400?'A':area<650?'B':area<950?'C':'D';
 var gc=grade==='S'?'#00FF88':grade==='A'?'#4ECDC4':grade==='B'?'#FECA57':grade==='C'?'#FF9F43':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">&plusmn;'+lat+'yd</div><div class="v29-stat-label">&#xC88C;&#xC6B0; &#xBD84;&#xC0B0;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">&plusmn;'+dep+'yd</div><div class="v29-stat-label">&#xC804;&#xD6C4; &#xBD84;&#xC0B0;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+area+'yd&sup2;</div><div class="v29-stat-label">&#xD0C0;&#xC6D0; &#xBA74;&#xC801;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+gc+'">'+grade+'</div><div class="v29-stat-label">&#xC815;&#xBC00;&#xB3C4;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">&plusmn;'+lat+'yd</div><div class="v29-stat-label">좌우 분산</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">&plusmn;'+dep+'yd</div><div class="v29-stat-label">전후 분산</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+area+'yd&sup2;</div><div class="v29-stat-label">타원 면적</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+gc+'">'+grade+'</div><div class="v29-stat-label">정밀도</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('ellipse');drawEllipseCanvas(selClub);
 }
@@ -100,9 +100,9 @@ playSfx('lie_open');
 var pn=getPanel('lie');
 var selLie=lsGet('lie_sel',0);
 var html='<button class="v29-close" onclick="window._v29Close(\'lie\')">&times;</button>';
-html+='<div class="v29-title">&#x26F3; &#xB77C;&#xC774; &#xAC01;&#xB3C4; &#xC784;&#xD329;&#xD2B8; &#xC2DC;&#xBBAC;&#xB808;&#xC774;&#xD130;</div>';
+html+='<div class="v29-title">⛳ 라이 각도 임팩트 시뮬레이터</div>';
 html+='<canvas id="v29-lie-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xB77C;&#xC774; &#xC720;&#xD615; &#xC120;&#xD0DD;</h3>';
+html+='<div class="v29-card"><h3>라이 유형 선택</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var i=0;i<8;i++){html+='<button class="v29-btn v29-btn-sm'+(i===selLie?' v29-btn-primary':'')+'" onclick="window._v29SelLie('+i+')">'+LIE_TYPES[i]+'</button>';}
 html+='</div></div>';
@@ -111,12 +111,12 @@ var accPen=LIE_ACC_PENALTY[selLie];
 var risk=accPen<5?'Low':accPen<12?'Medium':accPen<18?'High':'Very High';
 var riskClr=accPen<5?'#00FF88':accPen<12?'#FECA57':accPen<18?'#FF9F43':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+distPct+'%</div><div class="v29-stat-label">&#xBE44;&#xAC70;&#xB9AC; &#xBE44;&#xC728;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF9F43">'+accPen+'yd</div><div class="v29-stat-label">&#xC815;&#xD655;&#xB3C4; &#xD398;&#xB110;&#xD2F0;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+riskClr+'">'+risk+'</div><div class="v29-stat-label">&#xC704;&#xD5D8;&#xB3C4;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+LIE_TYPES[selLie]+'</div><div class="v29-stat-label">&#xD604;&#xC7AC; &#xB77C;&#xC774;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+distPct+'%</div><div class="v29-stat-label">비거리 비율</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF9F43">'+accPen+'yd</div><div class="v29-stat-label">정확도 페널티</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+riskClr+'">'+risk+'</div><div class="v29-stat-label">위험도</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+LIE_TYPES[selLie]+'</div><div class="v29-stat-label">현재 라이</div></div>';
 html+='</div>';
-html+='<div class="v29-card"><h3>&#xD074;&#xB7FD;&#xBCC4; &#xBE44;&#xAC70;&#xB9AC; &#xC601;&#xD5A5;</h3><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:10px;text-align:center;color:rgba(255,255,255,0.7)">';
+html+='<div class="v29-card"><h3>클럽별 비거리 영향</h3><div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;font-size:10px;text-align:center;color:rgba(255,255,255,0.7)">';
 for(var ci=0;ci<14;ci++){
 var adjDist=Math.round(CLUB_AVG_D[ci]*LIE_DIST_MULT[selLie]);
 html+='<div style="padding:4px;background:rgba(255,255,255,0.04);border-radius:6px"><div style="font-size:8px;opacity:0.6">'+CLUBS_14[ci]+'</div><div style="color:'+LIE_COLORS[selLie]+';font-weight:bold">'+adjDist+'</div></div>';
@@ -164,16 +164,16 @@ playSfx('heat_open');
 var pn=getPanel('heat');
 var heatData=lsGet('heat_data',null);
 var html='<button class="v29-close" onclick="window._v29Close(\'heat\')">&times;</button>';
-html+='<div class="v29-title">&#x1F525; &#xCF54;&#xC2A4; &#xB9E4;&#xB2C8;&#xC9C0;&#xBA3C;&#xD2B8; &#xD788;&#xD2B8; &#xC778;&#xB371;&#xC2A4;</div>';
+html+='<div class="v29-title">🔥 코스 매니지먼트 히트 인덱스</div>';
 html+='<canvas id="v29-heat-canvas" width="640" height="400" style="width:100%;max-width:640px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xAD6C;&#xC5ED;&#xBCC4; &#xC704;&#xD5D8;&#xB3C4; &#xD3C9;&#xAC00; (1-10)</h3>';
+html+='<div class="v29-card"><h3>구역별 위험도 평가 (1-10)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var z=0;z<8;z++){
 var val=heatData?heatData[z]:RISK_BASE[z];
 html+='<div><label class="v29-label">'+ZONE_NAMES[z]+'</label><input class="v29-input v29-heat-input" type="number" data-zone="'+z+'" value="'+val+'" min="1" max="10"></div>';
 }
 html+='</div>';
-html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveHeat()">&#xC800;&#xC7A5; &amp; &#xBD84;&#xC11D;</button>';
+html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveHeat()">저장 &amp; 분석</button>';
 html+='</div>';
 var risks=heatData||RISK_BASE;
 var totalRisk=0;for(var z=0;z<8;z++)totalRisk+=risks[z];
@@ -181,9 +181,9 @@ var avgRisk=(totalRisk/8).toFixed(1);
 var riskGrade=avgRisk<=3?'S':avgRisk<=4.5?'A':avgRisk<=6?'B':avgRisk<=7.5?'C':'D';
 var rgClr=riskGrade==='S'?'#00FF88':riskGrade==='A'?'#4ECDC4':riskGrade==='B'?'#FECA57':riskGrade==='C'?'#FF9F43':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF9F43">'+avgRisk+'</div><div class="v29-stat-label">&#xD3C9;&#xADE0; &#xC704;&#xD5D8;&#xB3C4;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+rgClr+'">'+riskGrade+'</div><div class="v29-stat-label">&#xCF54;&#xC2A4; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+totalRisk+'</div><div class="v29-stat-label">&#xCD1D; &#xC704;&#xD5D8;&#xC810;&#xC218;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF9F43">'+avgRisk+'</div><div class="v29-stat-label">평균 위험도</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+rgClr+'">'+riskGrade+'</div><div class="v29-stat-label">코스 등급</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+totalRisk+'</div><div class="v29-stat-label">총 위험점수</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('heat');drawHeatCanvas(risks);
 }
@@ -237,9 +237,9 @@ playSfx('hybrid_open');
 var pn=getPanel('hybrid');
 var selPair=lsGet('hybrid_pair',0);
 var html='<button class="v29-close" onclick="window._v29Close(\'hybrid\')">&times;</button>';
-html+='<div class="v29-title">&#x1F3CC;&#xFE0F; &#xD398;&#xC5B4;&#xC6E8;&#xC774;&#xC6B0;&#xB4DC; vs &#xD558;&#xC774;&#xBE0C;&#xB9AC;&#xB4DC;</div>';
+html+='<div class="v29-title">🏌️ 페어웨이우드 vs 하이브리드</div>';
 html+='<canvas id="v29-hybrid-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xBE44;&#xAD50; &#xC30D; &#xC120;&#xD0DD;</h3>';
+html+='<div class="v29-card"><h3>비교 쌍 선택</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var i=0;i<4;i++){html+='<button class="v29-btn v29-btn-sm'+(i===selPair?' v29-btn-primary':'')+'" onclick="window._v29SelHybrid('+i+')">'+FW_CLUBS[i]+' vs '+HY_CLUBS[i]+'</button>';}
 html+='</div></div>';
@@ -249,13 +249,13 @@ var accDiff=Math.abs(FW_ACC[selPair]-HY_ACC[selPair]);
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:8px 0">';
 html+='<div class="v29-card" style="text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.5)">'+FW_CLUBS[selPair]+'</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:6px">';
-html+='<div><div class="v29-stat-val" style="color:#FF9F43;font-size:16px">'+FW_DIST[selPair]+'yd</div><div class="v29-stat-label">&#xBE44;&#xAC70;&#xB9AC;</div></div>';
-html+='<div><div class="v29-stat-val" style="color:#4ECDC4;font-size:16px">'+FW_ACC[selPair]+'%</div><div class="v29-stat-label">&#xC815;&#xD655;&#xB3C4;</div></div>';
+html+='<div><div class="v29-stat-val" style="color:#FF9F43;font-size:16px">'+FW_DIST[selPair]+'yd</div><div class="v29-stat-label">비거리</div></div>';
+html+='<div><div class="v29-stat-val" style="color:#4ECDC4;font-size:16px">'+FW_ACC[selPair]+'%</div><div class="v29-stat-label">정확도</div></div>';
 html+='</div></div>';
 html+='<div class="v29-card" style="text-align:center"><div style="font-size:11px;color:rgba(255,255,255,0.5)">'+HY_CLUBS[selPair]+'</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-top:6px">';
-html+='<div><div class="v29-stat-val" style="color:#FF9F43;font-size:16px">'+HY_DIST[selPair]+'yd</div><div class="v29-stat-label">&#xBE44;&#xAC70;&#xB9AC;</div></div>';
-html+='<div><div class="v29-stat-val" style="color:#4ECDC4;font-size:16px">'+HY_ACC[selPair]+'%</div><div class="v29-stat-label">&#xC815;&#xD655;&#xB3C4;</div></div>';
+html+='<div><div class="v29-stat-val" style="color:#FF9F43;font-size:16px">'+HY_DIST[selPair]+'yd</div><div class="v29-stat-label">비거리</div></div>';
+html+='<div><div class="v29-stat-val" style="color:#4ECDC4;font-size:16px">'+HY_ACC[selPair]+'%</div><div class="v29-stat-label">정확도</div></div>';
 html+='</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('hybrid');drawHybridCanvas(selPair);
@@ -300,16 +300,16 @@ playSfx('momentum_open');
 var pn=getPanel('momentum');
 var momData=lsGet('mom_data',[]);
 var html='<button class="v29-close" onclick="window._v29Close(\'momentum\')">&times;</button>';
-html+='<div class="v29-title">&#x1F4CA; &#xB77C;&#xC6B4;&#xB4DC; &#xBAA8;&#xBA58;&#xD140; &#xC2A4;&#xC719; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v29-title">📊 라운드 모멘텀 스윙 분석기</div>';
 html+='<canvas id="v29-mom-canvas" width="640" height="400" style="width:100%;max-width:640px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xD640;&#xBCC4; &#xBAA8;&#xBA58;&#xD140; &#xC810;&#xC218; (-5 ~ +5)</h3>';
+html+='<div class="v29-card"><h3>홀별 모멘텀 점수 (-5 ~ +5)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px">';
 for(var h=0;h<18;h++){
 var val=momData[h]||0;
 html+='<div><label class="v29-label">H'+(h+1)+'</label><input class="v29-input v29-mom-input" type="number" data-hole="'+h+'" value="'+val+'" min="-5" max="5"></div>';
 }
 html+='</div>';
-html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveMom()">&#xC800;&#xC7A5; &amp; &#xBD84;&#xC11D;</button>';
+html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveMom()">저장 &amp; 분석</button>';
 html+='</div>';
 var totalMom=0,posCount=0,negCount=0,streak=0,maxStreak=0,curStrk=0;
 for(var h=0;h<18;h++){var v=momData[h]||0;totalMom+=v;if(v>0){posCount++;curStrk++;if(curStrk>maxStreak)maxStreak=curStrk;}else{curStrk=0;if(v<0)negCount++;}}
@@ -317,10 +317,10 @@ var avgMom=(totalMom/18).toFixed(1);
 var momGrade=totalMom>=20?'S':totalMom>=10?'A':totalMom>=0?'B':totalMom>=-10?'C':'D';
 var mgClr=momGrade==='S'?'#00FF88':momGrade==='A'?'#4ECDC4':momGrade==='B'?'#FECA57':momGrade==='C'?'#FF9F43':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+totalMom+'</div><div class="v29-stat-label">&#xCD1D; &#xBAA8;&#xBA58;&#xD140;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">'+avgMom+'</div><div class="v29-stat-label">&#xD3C9;&#xADE0;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+maxStreak+'H</div><div class="v29-stat-label">&#xCD5C;&#xC7A5; &#xC5F0;&#xC18D;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+mgClr+'">'+momGrade+'</div><div class="v29-stat-label">&#xBAA8;&#xBA58;&#xD140; &#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+totalMom+'</div><div class="v29-stat-label">총 모멘텀</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">'+avgMom+'</div><div class="v29-stat-label">평균</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+maxStreak+'H</div><div class="v29-stat-label">최장 연속</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+mgClr+'">'+momGrade+'</div><div class="v29-stat-label">모멘텀 등급</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('momentum');drawMomCanvas(momData);
 }
@@ -376,16 +376,16 @@ playSfx('drill_open');
 var pn=getPanel('drill');
 var drillData=lsGet('drill_data',null);
 var html='<button class="v29-close" onclick="window._v29Close(\'drill\')">&times;</button>';
-html+='<div class="v29-title">&#x1F3AF; &#xC5F0;&#xC2B5; &#xB4DC;&#xB9B4; &#xD6A8;&#xACFC; &#xCD94;&#xC801;&#xAE30;</div>';
+html+='<div class="v29-title">🎯 연습 드릴 효과 추적기</div>';
 html+='<canvas id="v29-drill-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xB4DC;&#xB9B4; &#xD6A8;&#xACFC; &#xD3C9;&#xAC00; (1-10)</h3>';
+html+='<div class="v29-card"><h3>드릴 효과 평가 (1-10)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var d=0;d<8;d++){
 var val=drillData?drillData[d]:5;
 html+='<div><label class="v29-label">'+DRILL_TYPES[d]+'</label><input class="v29-input v29-drill-input" type="number" data-drill="'+d+'" value="'+val+'" min="1" max="10"></div>';
 }
 html+='</div>';
-html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveDrill()">&#xC800;&#xC7A5; &amp; &#xBD84;&#xC11D;</button>';
+html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveDrill()">저장 &amp; 분석</button>';
 html+='</div>';
 var vals=drillData||[5,5,5,5,5,5,5,5];
 var totalEff=0;for(var d=0;d<8;d++)totalEff+=vals[d];
@@ -394,10 +394,10 @@ var bestDrill=0;for(var d=1;d<8;d++){if(vals[d]>vals[bestDrill])bestDrill=d;}
 var effGrade=avgEff>=8?'S':avgEff>=6.5?'A':avgEff>=5?'B':avgEff>=3.5?'C':'D';
 var egClr=effGrade==='S'?'#00FF88':effGrade==='A'?'#4ECDC4':effGrade==='B'?'#FECA57':effGrade==='C'?'#FF9F43':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+avgEff+'</div><div class="v29-stat-label">&#xD3C9;&#xADE0; &#xD6A8;&#xACFC;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">'+DRILL_TYPES[bestDrill]+'</div><div class="v29-stat-label" style="font-size:8px">&#xBCA0;&#xC2A4;&#xD2B8; &#xB4DC;&#xB9B4;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+totalEff+'</div><div class="v29-stat-label">&#xCD1D;&#xC810;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+egClr+'">'+effGrade+'</div><div class="v29-stat-label">&#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+avgEff+'</div><div class="v29-stat-label">평균 효과</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">'+DRILL_TYPES[bestDrill]+'</div><div class="v29-stat-label" style="font-size:8px">베스트 드릴</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#A855F7">'+totalEff+'</div><div class="v29-stat-label">총점</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+egClr+'">'+effGrade+'</div><div class="v29-stat-label">등급</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('drill');drawDrillCanvas(vals);
 }
@@ -445,12 +445,12 @@ var pn=getPanel('windadj');
 var windSpeed=lsGet('wind_speed',15);
 var selShape=lsGet('wind_shape',0);
 var html='<button class="v29-close" onclick="window._v29Close(\'windadj\')">&times;</button>';
-html+='<div class="v29-title">&#x1F32C;&#xFE0F; &#xC0F7;&#xC170;&#xC774;&#xD504; &#xBC14;&#xB78C; &#xBCF4;&#xC815; &#xACC4;&#xC0B0;&#xAE30;</div>';
+html+='<div class="v29-title">🌬️ 샷셰이프 바람 보정 계산기</div>';
 html+='<canvas id="v29-wind-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>&#xBC14;&#xB78C; &#xC18D;&#xB3C4; (mph)</h3>';
+html+='<div class="v29-card"><h3>바람 속도 (mph)</h3>';
 html+='<input class="v29-input" type="range" min="0" max="40" value="'+windSpeed+'" id="v29-wind-slider" style="width:100%" oninput="window._v29UpdateWind(this.value)">';
 html+='<div style="text-align:center;color:#FFB800;font-weight:bold;margin:4px 0" id="v29-wind-val">'+windSpeed+' mph</div>';
-html+='<h3>&#xC0F7; &#xC170;&#xC774;&#xD504;</h3>';
+html+='<h3>샷 셰이프</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var s=0;s<8;s++){html+='<button class="v29-btn v29-btn-sm'+(s===selShape?' v29-btn-primary':'')+'" onclick="window._v29SelWind('+s+')">'+SHOT_SHAPES[s]+'</button>';}
 html+='</div></div>';
@@ -461,10 +461,10 @@ var diff=Math.abs(totalAdj);
 var adjGrade=diff<=5?'S':diff<=10?'A':diff<=18?'B':diff<=25?'C':'D';
 var agClr=adjGrade==='S'?'#00FF88':adjGrade==='A'?'#4ECDC4':adjGrade==='B'?'#FECA57':adjGrade==='C'?'#FF9F43':'#FF6B6B';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#48DBFB">'+effWind+'mph</div><div class="v29-stat-label">&#xCCB4;&#xAC10; &#xBC14;&#xB78C;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF9F43">'+(distAdj>0?'+':'')+distAdj+'yd</div><div class="v29-stat-label">&#xC170;&#xC774;&#xD504; &#xBCF4;&#xC815;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+(totalAdj>=0?'#00FF88':'#FF6B6B')+'">'+(totalAdj>=0?'+':'')+totalAdj+'yd</div><div class="v29-stat-label">&#xCD1D; &#xBE44;&#xAC70;&#xB9AC; &#xBCF4;&#xC815;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+agClr+'">'+adjGrade+'</div><div class="v29-stat-label">&#xBC14;&#xB78C; &#xB4F1;&#xAE09;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#48DBFB">'+effWind+'mph</div><div class="v29-stat-label">체감 바람</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF9F43">'+(distAdj>0?'+':'')+distAdj+'yd</div><div class="v29-stat-label">셰이프 보정</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+(totalAdj>=0?'#00FF88':'#FF6B6B')+'">'+(totalAdj>=0?'+':'')+totalAdj+'yd</div><div class="v29-stat-label">총 비거리 보정</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+agClr+'">'+adjGrade+'</div><div class="v29-stat-label">바람 등급</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('windadj');drawWindCanvas(windSpeed,selShape);
 }
@@ -506,16 +506,16 @@ playSfx('analytics_open');
 var pn=getPanel('analytics');
 var kpiData=lsGet('analytics_kpi',null);
 var html='<button class="v29-close" onclick="window._v29Close(\'analytics\')">&times;</button>';
-html+='<div class="v29-title">&#x1F4CA; &#xC885;&#xD569; &#xB77C;&#xC6B4;&#xB4DC; &#xBD84;&#xC11D; &#xB300;&#xC2DC;&#xBCF4;&#xB4DC;</div>';
+html+='<div class="v29-title">📊 종합 라운드 분석 대시보드</div>';
 html+='<canvas id="v29-analytics-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v29-card"><h3>KPI &#xC810;&#xC218; &#xC785;&#xB825; (0-100)</h3>';
+html+='<div class="v29-card"><h3>KPI 점수 입력 (0-100)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var k=0;k<8;k++){
 var val=kpiData?kpiData[k]:50;
 html+='<div><label class="v29-label">'+ANALYTICS_KPI[k]+'</label><input class="v29-input v29-kpi-input" type="number" data-kpi="'+k+'" value="'+val+'" min="0" max="100"></div>';
 }
 html+='</div>';
-html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveKPI()">&#xC800;&#xC7A5; &amp; &#xBD84;&#xC11D;</button>';
+html+='<button class="v29-btn v29-btn-primary" style="width:100%;margin-top:8px" onclick="window._v29SaveKPI()">저장 &amp; 분석</button>';
 html+='</div>';
 var vals=kpiData||[50,50,50,50,50,50,50,50];
 var weightedSum=0,totalW=0;
@@ -526,10 +526,10 @@ var ogClr=oGrade==='S'?'#00FF88':oGrade==='A'?'#4ECDC4':oGrade==='B'?'#FECA57':o
 var bestKpi=0,worstKpi=0;
 for(var k=1;k<8;k++){if(vals[k]>vals[bestKpi])bestKpi=k;if(vals[k]<vals[worstKpi])worstKpi=k;}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+ogClr+'">'+oGrade+'</div><div class="v29-stat-label">&#xC885;&#xD569; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+overall+'</div><div class="v29-stat-label">&#xC885;&#xD569; &#xC810;&#xC218;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#4ECDC4;font-size:12px">'+ANALYTICS_KPI[bestKpi]+'</div><div class="v29-stat-label">&#xAC15;&#xC810;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF6B6B;font-size:12px">'+ANALYTICS_KPI[worstKpi]+'</div><div class="v29-stat-label">&#xAC1C;&#xC120;&#xD544;&#xC694;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:'+ogClr+'">'+oGrade+'</div><div class="v29-stat-label">종합 등급</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+overall+'</div><div class="v29-stat-label">종합 점수</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#4ECDC4;font-size:12px">'+ANALYTICS_KPI[bestKpi]+'</div><div class="v29-stat-label">강점</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF6B6B;font-size:12px">'+ANALYTICS_KPI[worstKpi]+'</div><div class="v29-stat-label">개선필요</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('analytics');drawAnalyticsCanvas(vals);
 }
@@ -575,21 +575,21 @@ ctx.fillText('w:'+ANALYTICS_WEIGHTS[k]+'%',cx,cy+r+27);
 
 // ===== QUIZ v29 (15 questions, total 330) =====
 var QUIZ_V29=[
-{q:'&#xC0F7; &#xBD84;&#xC0B0; &#xD0C0;&#xC6D0;&#xC5D0;&#xC11C; CEP&#xB780;?',a:['Circular Error Probable','Club Efficiency Point','Course Entry Position','Center Exit Point'],c:0},
-{q:'&#xC5B8;&#xB355;&#xD30C; &#xB77C;&#xC774;&#xC5D0;&#xC11C; &#xBE44;&#xAC70;&#xB9AC;&#xB294;?',a:['&#xAC19;&#xB2E4;','&#xC904;&#xC5B4;&#xB4E0;&#xB2E4;','&#xB298;&#xC5B4;&#xB09C;&#xB2E4;','&#xC608;&#xCE21; &#xBD88;&#xAC00;'],c:1},
-{q:'&#xD398;&#xC5B4;&#xC6E8;&#xC774;&#xC6B0;&#xB4DC; &#xB300;&#xBE44; &#xD558;&#xC774;&#xBE0C;&#xB9AC;&#xB4DC;&#xC758; &#xC7A5;&#xC810;&#xC740;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xC815;&#xD655;&#xB3C4;&#xC640; &#xB2E4;&#xC591;&#xC131;','&#xC2A4;&#xD540;','&#xBB34;&#xAC8C;'],c:1},
-{q:'&#xBAA8;&#xBA58;&#xD140; &#xC810;&#xC218;&#xAC00; &#xC591;&#xC218;&#xC77C; &#xB54C;&#xB294;?',a:['&#xBABB; &#xCE5C; &#xD640;','&#xC798; &#xCE5C; &#xD640;','&#xBCF4;&#xAE30; &#xD640;','&#xD30C;3 &#xD640;'],c:1},
-{q:'Putting Gate &#xB4DC;&#xB9B4;&#xC758; &#xBAA9;&#xC801;&#xC740;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xBC29;&#xD5A5;&#xC131;','&#xC2A4;&#xD53C;&#xB4DC;','&#xC885;&#xD569;'],c:1},
-{q:'&#xD5E4;&#xB4DC;&#xC708;&#xB4DC; 15mph&#xC77C; &#xB54C; &#xB178;&#xD06C;&#xB2E4;&#xC6B4;&#xC0F7;&#xC758; &#xCCB4;&#xAC10; &#xBC14;&#xB78C;&#xC740;?',a:['15mph','21mph','7.5mph','10.5mph'],c:2},
-{q:'&#xBC99;&#xCEE4; &#xB77C;&#xC774;&#xC5D0;&#xC11C; &#xBE44;&#xAC70;&#xB9AC; &#xBE44;&#xC728;&#xC740; &#xC57D;?',a:['100%','90%','80%','70%'],c:3},
-{q:'KPI &#xAC00;&#xC911; &#xD3C9;&#xADE0;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xB192;&#xC740; &#xBE44;&#xC911;&#xC740;?',a:['Short Game','Putting','Strategy','Mental'],c:1},
-{q:'1σ &#xD0C0;&#xC6D0; &#xC548;&#xC5D0; &#xB4E4;&#xC5B4;&#xAC08; &#xD655;&#xB960;&#xC740; &#xC57D;?',a:['50%','68%','95%','99%'],c:1},
-{q:'&#xB4DC;&#xB85C;(Draw) &#xC0F7;&#xC774; &#xBC14;&#xB78C;&#xC5D0; &#xAC15;&#xD55C; &#xC774;&#xC720;&#xB294;?',a:['&#xB0AE;&#xC740; &#xD0C4;&#xB3C4;','&#xB0AE;&#xC740; &#xC2A4;&#xD540;','&#xAC15;&#xD55C; &#xC784;&#xD329;&#xD2B8;','&#xC801;&#xC740; &#xCE21;&#xBA74; &#xC2A4;&#xD540;'],c:1},
-{q:'Round Momentum&#xC5D0;&#xC11C; &#xCF54;&#xC2A4; &#xC870;&#xAC74; &#xBCC0;&#xD654;&#xAC00; &#xC911;&#xC694;&#xD55C; &#xC774;&#xC720;&#xB294;?',a:['&#xC2A4;&#xCF54;&#xC5B4;','&#xC790;&#xC2E0;&#xAC10;','&#xC804;&#xB7B5; &#xC801;&#xC751;','&#xCCB4;&#xB825;'],c:2},
-{q:'Side-hill &#xB77C;&#xC774;&#xC5D0;&#xC11C; &#xACF5;&#xC740; &#xC5B4;&#xB514;&#xB85C; &#xD718;&#xB294;&#xAC00;?',a:['&#xACBD;&#xC0AC;&#xBA74; &#xC704;&#xCABD;','&#xACBD;&#xC0AC;&#xBA74; &#xC544;&#xB798;&#xCABD;','&#xC9C1;&#xC9C4;','&#xC608;&#xCE21; &#xBD88;&#xAC00;'],c:1},
-{q:'&#xCF54;&#xC2A4; &#xD788;&#xD2B8; &#xC778;&#xB371;&#xC2A4;&#xC5D0;&#xC11C; OB &#xAD6C;&#xC5ED;&#xC758; &#xBCF4;&#xC0C1;&#xC740;?',a:['10','5','0','1'],c:2},
-{q:'Lag Putt &#xB4DC;&#xB9B4;&#xC758; &#xBAA9;&#xD45C;&#xB294;?',a:['&#xD640;&#xC778;','3&#xD53C;&#xD2B8; &#xC774;&#xB0B4;','&#xC815;&#xD655;&#xD55C; &#xBC29;&#xD5A5;','&#xCD5C;&#xB300; &#xAC70;&#xB9AC;'],c:1},
-{q:'&#xBCF4;&#xAE30;(Bogey) &#xD640; &#xD6C4; &#xBAA8;&#xBA58;&#xD140; &#xD68C;&#xBCF5;&#xC5D0; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xAC83;&#xC740;?',a:['&#xACF5;&#xACA9;&#xC801; &#xD50C;&#xB808;&#xC774;','&#xBA58;&#xD0C8; &#xB9AC;&#xC14B;','&#xBCF4;&#xC218;&#xC801; &#xC804;&#xB7B5;','&#xC7A5;&#xBE44; &#xAD50;&#xCCB4;'],c:2}
+{q:'샷 분산 타원에서 CEP란?',a:['Circular Error Probable','Club Efficiency Point','Course Entry Position','Center Exit Point'],c:0},
+{q:'언덕파 라이에서 비거리는?',a:['같다','줄어든다','늘어난다','예측 불가'],c:1},
+{q:'페어웨이우드 대비 하이브리드의 장점은?',a:['비거리','정확도와 다양성','스핀','무게'],c:1},
+{q:'모멘텀 점수가 양수일 때는?',a:['못 친 홀','잘 친 홀','보기 홀','파3 홀'],c:1},
+{q:'Putting Gate 드릴의 목적은?',a:['비거리','방향성','스피드','종합'],c:1},
+{q:'헤드윈드 15mph일 때 노크다운샷의 체감 바람은?',a:['15mph','21mph','7.5mph','10.5mph'],c:2},
+{q:'벙커 라이에서 비거리 비율은 약?',a:['100%','90%','80%','70%'],c:3},
+{q:'KPI 가중 평균에서 가장 높은 비중은?',a:['Short Game','Putting','Strategy','Mental'],c:1},
+{q:'1σ 타원 안에 들어갈 확률은 약?',a:['50%','68%','95%','99%'],c:1},
+{q:'드로(Draw) 샷이 바람에 강한 이유는?',a:['낮은 탄도','낮은 스핀','강한 임팩트','적은 측면 스핀'],c:1},
+{q:'Round Momentum에서 코스 조건 변화가 중요한 이유는?',a:['스코어','자신감','전략 적응','체력'],c:2},
+{q:'Side-hill 라이에서 공은 어디로 휘는가?',a:['경사면 위쪽','경사면 아래쪽','직진','예측 불가'],c:1},
+{q:'코스 히트 인덱스에서 OB 구역의 보상은?',a:['10','5','0','1'],c:2},
+{q:'Lag Putt 드릴의 목표는?',a:['홀인','3피트 이내','정확한 방향','최대 거리'],c:1},
+{q:'보기(Bogey) 홀 후 모멘텀 회복에 가장 중요한 것은?',a:['공격적 플레이','멘탈 리셋','보수적 전략','장비 교체'],c:2}
 ];
 var quizState29=lsGet('quiz_state29',{idx:0,score:0,total:0,done:false});
 function showQuizV29(){
@@ -599,7 +599,7 @@ var qs=quizState29;
 if(qs.done){qs={idx:0,score:0,total:0,done:false};lsSet('quiz_state29',qs);}
 var q=QUIZ_V29[qs.idx];
 var html='<button class="v29-close" onclick="window._v29Close(\'quiz29\')">&times;</button>';
-html+='<div class="v29-title">&#x1F4DA; Golf IQ v29 (Q'+(qs.idx+1)+'/'+QUIZ_V29.length+')</div>';
+html+='<div class="v29-title">📚 Golf IQ v29 (Q'+(qs.idx+1)+'/'+QUIZ_V29.length+')</div>';
 html+='<div class="v29-card"><h3>'+q.q+'</h3></div>';
 html+='<div style="display:grid;gap:6px;margin:8px 0">';
 for(var i=0;i<q.a.length;i++){
@@ -608,16 +608,16 @@ html+='<button class="v29-btn" style="width:100%;text-align:left;margin-bottom:6
 html+='</div>';
 var pct=qs.total>0?Math.round(qs.score/qs.total*100):0;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+qs.score+'</div><div class="v29-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF6B6B">'+(qs.total-qs.score)+'</div><div class="v29-stat-label">&#xC624;&#xB2F5;</div></div>';
-html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v29-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#00FF88">'+qs.score+'</div><div class="v29-stat-label">정답</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FF6B6B">'+(qs.total-qs.score)+'</div><div class="v29-stat-label">오답</div></div>';
+html+='<div class="v29-stat-card"><div class="v29-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v29-stat-label">정답률</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quiz29');
 }
 window._v29AnswerQuiz=function(i){
 var qs=quizState29;var q=QUIZ_V29[qs.idx];qs.total++;
-if(i===q.c){qs.score++;playSfx('quiz_correct_v29');showToast('&#xC815;&#xB2F5;! ✔');}
-else{playSfx('quiz_wrong_v29');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+q.a[q.c]);}
+if(i===q.c){qs.score++;playSfx('quiz_correct_v29');showToast('정답! ✔');}
+else{playSfx('quiz_wrong_v29');showToast('오답! 정답: '+q.a[q.c]);}
 qs.idx++;if(qs.idx>=QUIZ_V29.length){qs.done=true;showToast('Quiz Complete! '+qs.score+'/'+qs.total);}
 lsSet('quiz_state29',qs);setTimeout(showQuizV29,800);
 };
@@ -672,15 +672,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav){if(addNavButtons._retries<20){addNavButtons._retries++;setTimeout(addNavButtons,500);}return;}
 var btns=[
-{label:'Ellipse',fn:showEllipseFitter,icon:'&#x1F4CD;'},
-{label:'LieImp',fn:showLieImpact,icon:'&#x26F3;'},
-{label:'HeatIdx',fn:showCourseHeatIndex,icon:'&#x1F525;'},
-{label:'FWvsHY',fn:showHybridCompare,icon:'&#x1F3CC;&#xFE0F;'},
-{label:'MomSwg',fn:showMomentumAnalyzer,icon:'&#x1F4CA;'},
-{label:'DrillEf',fn:showDrillTracker,icon:'&#x1F3AF;'},
-{label:'WindAdj',fn:showWindAdjust,icon:'&#x1F32C;&#xFE0F;'},
-{label:'RndAnly',fn:showAnalyticsDash,icon:'&#x1F4CA;'},
-{label:'Quiz29',fn:showQuizV29,icon:'&#x1F4DA;'}
+{label:'Ellipse',fn:showEllipseFitter,icon:'📍'},
+{label:'LieImp',fn:showLieImpact,icon:'⛳'},
+{label:'HeatIdx',fn:showCourseHeatIndex,icon:'🔥'},
+{label:'FWvsHY',fn:showHybridCompare,icon:'🏌️'},
+{label:'MomSwg',fn:showMomentumAnalyzer,icon:'📊'},
+{label:'DrillEf',fn:showDrillTracker,icon:'🎯'},
+{label:'WindAdj',fn:showWindAdjust,icon:'🌬️'},
+{label:'RndAnly',fn:showAnalyticsDash,icon:'📊'},
+{label:'Quiz29',fn:showQuizV29,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

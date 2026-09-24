@@ -18,7 +18,7 @@ function getPanel(id){var ov=document.getElementById('v15-'+id);if(!ov){var pn=c
 function showRoundRhythm(){
 var pn=getPanel('rhythm');
 var rounds=lsGet('rhythm_rounds',[]);
-var html='<div class="v15-title">&#x23F1;&#xFE0F; 라운드 리듬 분석기</div>';
+var html='<div class="v15-title">⏱️ 라운드 리듬 분석기</div>';
 
 html+='<div class="v15-card"><h3>홀별 시간/스코어 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
@@ -56,12 +56,12 @@ if(currentRound.length>0){
     if(currentRound[j].time>slowHole.time) slowHole=currentRound[j];
   }
   html+='<div style="margin-top:8px;font-size:.82em;color:#aaa">';
-  html+='<div>&#x26A1; 가장 빠른 홀: '+fastHole.hole+'번 ('+fastHole.time+'분)</div>';
-  html+='<div>&#x1F422; 가장 느린 홀: '+slowHole.hole+'번 ('+slowHole.time+'분)</div>';
+  html+='<div>⚡ 가장 빠른 홀: '+fastHole.hole+'번 ('+fastHole.time+'분)</div>';
+  html+='<div>🐢 가장 느린 홀: '+slowHole.hole+'번 ('+slowHole.time+'분)</div>';
   var condCounts={};
   for(var c=0;c<currentRound.length;c++){condCounts[currentRound[c].cond]=(condCounts[currentRound[c].cond]||0)+1;}
   var topCond='',topCnt=0;for(var cn in condCounts){if(condCounts[cn]>topCnt){topCnt=condCounts[cn];topCond=cn;}}
-  html+='<div>&#x1F3AF; 주요 컨디션: '+topCond+' ('+topCnt+'홀)</div>';
+  html+='<div>🎯 주요 컨디션: '+topCond+' ('+topCnt+'홀)</div>';
   html+='</div>';
   if(currentRound.length>=18){
     html+='<button class="v15-btn" style="width:100%;margin-top:8px" onclick="window._v15SaveRound()">라운드 완료 &amp; 저장</button>';
@@ -70,12 +70,12 @@ if(currentRound.length>0){
   html+='</div>';
 }
 
-html+='<div class="v15-card"><h3>&#x1F4D6; 리듬 관리 팁</h3>';
+html+='<div class="v15-card"><h3>📖 리듬 관리 팁</h3>';
 html+='<div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; Par3는 10-12분, Par4는 13-15분, Par5는 15-18분이 이상적</div>';
-html+='<div>&#x2022; 전반 9홀과 후반 9홀의 시간 균형을 유지하세요</div>';
-html+='<div>&#x2022; 보기 이후 홀에서 서두르지 말고 루틴을 유지하세요</div>';
-html+='<div>&#x2022; 피로를 느끼면 프리샷 루틴에 더 집중하세요</div>';
+html+='<div>• Par3는 10-12분, Par4는 13-15분, Par5는 15-18분이 이상적</div>';
+html+='<div>• 전반 9홀과 후반 9홀의 시간 균형을 유지하세요</div>';
+html+='<div>• 보기 이후 홀에서 서두르지 말고 루틴을 유지하세요</div>';
+html+='<div>• 피로를 느끼면 프리샷 루틴에 더 집중하세요</div>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v15-close" onclick="window._v15Close(\'rhythm\')">&times;</button>'+html;
@@ -181,7 +181,7 @@ var CLUB_DATA=[
 
 function showClubRecommendation(){
 var pn=getPanel('clubrec');
-var html='<div class="v15-title">&#x1F916; 클럽 추천 AI</div>';
+var html='<div class="v15-title">🤖 클럽 추천 AI</div>';
 
 html+='<div class="v15-card"><h3>상황 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
@@ -203,7 +203,7 @@ html+='<canvas id="v15-clubrec-canvas" width="600" height="360" style="width:100
 
 html+='<div id="v15-clubrec-result"></div>';
 
-html+='<div class="v15-card"><h3>&#x1F4CB; 클럽별 기본 비거리 참고</h3>';
+html+='<div class="v15-card"><h3>📋 클럽별 기본 비거리 참고</h3>';
 html+='<table class="v15-table"><tr><th>클럽</th><th>비거리</th><th>로프트</th><th>용도</th></tr>';
 for(var i=0;i<CLUB_DATA.length;i++){
   html+='<tr><td style="color:#00FF88;font-weight:600">'+CLUB_DATA[i].name+'</td><td>'+CLUB_DATA[i].dist+'yd</td><td>'+CLUB_DATA[i].loft+'&deg;</td><td style="font-size:.78em;color:#888">'+CLUB_DATA[i].use+'</td></tr>';
@@ -257,7 +257,7 @@ else strategy='적절한 클럽 선택 후 프리샷 루틴을 반드시 수행�
 var resultDiv=document.getElementById('v15-clubrec-result');
 if(resultDiv){
   var rhtml='<div class="v15-card" style="border-color:rgba(0,255,136,.3)">';
-  rhtml+='<h3>&#x2705; AI 추천 결과</h3>';
+  rhtml+='<h3>✅ AI 추천 결과</h3>';
   rhtml+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">';
   rhtml+='<div class="v15-stat-card" style="border-color:rgba(0,255,136,.2)"><div style="font-size:.7em;color:#888">1순위 추천</div><div class="v15-stat-val" style="color:#00FF88;font-size:1.4em">'+primary.name+'</div><div style="font-size:.78em;color:#aaa">기본 '+primary.dist+'yd</div></div>';
   rhtml+='<div class="v15-stat-card"><div style="font-size:.7em;color:#888">대안 클럽</div><div class="v15-stat-val" style="color:#00B4D8;font-size:1.4em">'+altClub.name+'</div><div style="font-size:.78em;color:#aaa">기본 '+altClub.dist+'yd</div></div>';
@@ -320,7 +320,7 @@ ctx.fillText('Golf Tracker Pro v15 - Club AI',W/2,H-8);
 // ===== 3. SCORE PREDICTION ENGINE Canvas =====
 function showScorePrediction(){
 var pn=getPanel('predict');
-var html='<div class="v15-title">&#x1F52E; 스코어 예측 엔진</div>';
+var html='<div class="v15-title">🔮 스코어 예측 엔진</div>';
 
 html+='<div class="v15-card"><h3>현재 라운드 데이터 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
@@ -342,12 +342,12 @@ html+='<canvas id="v15-predict-canvas" width="600" height="360" style="width:100
 
 html+='<div id="v15-predict-result"></div>';
 
-html+='<div class="v15-card"><h3>&#x1F4CA; 예측 알고리즘 설명</h3>';
+html+='<div class="v15-card"><h3>📊 예측 알고리즘 설명</h3>';
 html+='<div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; 현재까지의 홀당 평균 스코어를 기반으로 18홀 추정</div>';
-html+='<div>&#x2022; 코스레이팅/슬로프로 코스 난이도 가중치 반영</div>';
-html+='<div>&#x2022; 컨디션 변수로 후반 9홀 피로도 보정</div>';
-html+='<div>&#x2022; &#x00B1;3타 범위의 신뢰구간 함께 제공</div>';
+html+='<div>• 현재까지의 홀당 평균 스코어를 기반으로 18홀 추정</div>';
+html+='<div>• 코스레이팅/슬로프로 코스 난이도 가중치 반영</div>';
+html+='<div>• 컨디션 변수로 후반 9홀 피로도 보정</div>';
+html+='<div>• ±3타 범위의 신뢰구간 함께 제공</div>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v15-close" onclick="window._v15Close(\'predict\')">&times;</button>'+html;
@@ -383,7 +383,7 @@ var gradeColor=grade==='S'?'#00FF88':grade==='A'?'#00B4D8':grade==='B'?'#FFB800'
 var resultDiv=document.getElementById('v15-predict-result');
 if(resultDiv){
   var rhtml='<div class="v15-card" style="border-color:'+gradeColor+'">';
-  rhtml+='<h3>&#x1F3AF; 예측 결과</h3>';
+  rhtml+='<h3>🎯 예측 결과</h3>';
   rhtml+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px">';
   rhtml+='<div class="v15-stat-card"><div class="v15-stat-val" style="color:'+gradeColor+';font-size:1.5em">'+predicted+'</div><div class="v15-stat-label">예상 스코어</div></div>';
   rhtml+='<div class="v15-stat-card"><div class="v15-stat-val" style="color:'+(vsPar<=0?'#00FF88':'#ff6b6b')+'">'+vsParStr+'</div><div class="v15-stat-label">vs Par '+par+'</div></div>';
@@ -489,7 +489,7 @@ ctx.fillText('Golf Tracker Pro v15 - Score Prediction',W/2,H-8);
 function showHoleInOneSimulator(){
 var pn=getPanel('holeinone');
 var sims=lsGet('hio_sims',[]);
-var html='<div class="v15-title">&#x26F3; 홀인원 시뮬레이터</div>';
+var html='<div class="v15-title">⛳ 홀인원 시뮬레이터</div>';
 
 html+='<div class="v15-card"><h3>파라미터 설정</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
@@ -507,13 +507,13 @@ html+='<canvas id="v15-hio-canvas" width="600" height="400" style="width:100%;ma
 
 html+='<div id="v15-hio-result"></div>';
 
-html+='<div class="v15-card"><h3>&#x1F4D6; 홀인원 통계</h3>';
+html+='<div class="v15-card"><h3>📖 홀인원 통계</h3>';
 html+='<div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; 프로 골퍼 홀인원 확률: 약 1/2,500 (0.04%)</div>';
-html+='<div>&#x2022; 아마추어 홀인원 확률: 약 1/12,500 (0.008%)</div>';
-html+='<div>&#x2022; 평균 골퍼의 일생 홀인원 기대값: 약 0.3~0.5회</div>';
-html+='<div>&#x2022; 홀인원 최적 거리: 130~160yd (Par 3)</div>';
-html+='<div>&#x2022; 연속 홀인원 확률: 약 1/67,000,000</div>';
+html+='<div>• 프로 골퍼 홀인원 확률: 약 1/2,500 (0.04%)</div>';
+html+='<div>• 아마추어 홀인원 확률: 약 1/12,500 (0.008%)</div>';
+html+='<div>• 평균 골퍼의 일생 홀인원 기대값: 약 0.3~0.5회</div>';
+html+='<div>• 홀인원 최적 거리: 130~160yd (Par 3)</div>';
+html+='<div>• 연속 홀인원 확률: 약 1/67,000,000</div>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v15-close" onclick="window._v15Close(\'holeinone\')">&times;</button>'+html;
@@ -546,7 +546,7 @@ var odds=hits>0?Math.round(trials/hits):99999;
 var resultDiv=document.getElementById('v15-hio-result');
 if(resultDiv){
   var rhtml='<div class="v15-card" style="border-color:rgba(0,255,136,.3)">';
-  rhtml+='<h3>&#x1F3AF; 시뮬레이션 결과</h3>';
+  rhtml+='<h3>🎯 시뮬레이션 결과</h3>';
   rhtml+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px">';
   rhtml+='<div class="v15-stat-card"><div class="v15-stat-val" style="color:#00FF88;font-size:1.2em">'+hits+'</div><div class="v15-stat-label">홀인원 횟수</div></div>';
   rhtml+='<div class="v15-stat-card"><div class="v15-stat-val" style="color:#FFB800;font-size:1.1em">'+prob.toFixed(3)+'%</div><div class="v15-stat-label">확률</div></div>';
@@ -605,7 +605,7 @@ ctx.fillText('Golf Tracker Pro v15 - HIO Simulator',W/2,H-8);
 function showSwingComparison(){
 var pn=getPanel('swingcomp');
 var sessions=lsGet('swing_sessions',[]);
-var html='<div class="v15-title">&#x1F504; 스윙 비교 분석기</div>';
+var html='<div class="v15-title">🔄 스윙 비교 분석기</div>';
 
 html+='<div class="v15-card"><h3>스윙 세션 기록</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
@@ -746,7 +746,7 @@ var SAMPLE_COURSES=[
 
 function showCourseDifficulty(){
 var pn=getPanel('coursediff');
-var html='<div class="v15-title">&#x1F3D4;&#xFE0F; 코스 난이도 평가</div>';
+var html='<div class="v15-title">🏔️ 코스 난이도 평가</div>';
 
 html+='<div class="v15-card"><h3>코스 선택 또는 직접 입력</h3>';
 html+='<div style="margin-bottom:8px"><label class="v15-label">샘플 코스</label><select id="v15-cd-preset" class="v15-input" onchange="window._v15LoadCourse()">';
@@ -814,7 +814,7 @@ var diffLabel=grade==='S'?'극상급 (챔피언십)':grade==='A'?'상급 (도전
 var resultDiv=document.getElementById('v15-coursediff-result');
 if(resultDiv){
   var rhtml='<div class="v15-card" style="border-color:'+gradeColor+'">';
-  rhtml+='<h3>&#x1F3F7;&#xFE0F; 평가 결과</h3>';
+  rhtml+='<h3>🏷️ 평가 결과</h3>';
   rhtml+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">';
   rhtml+='<div class="v15-stat-card"><div class="v15-stat-val" style="color:'+gradeColor+';font-size:2em">'+grade+'</div><div class="v15-stat-label">난이도 등급</div></div>';
   rhtml+='<div class="v15-stat-card"><div class="v15-stat-val" style="color:#FFB800">'+overall+'/10</div><div class="v15-stat-label">종합 점수</div></div>';
@@ -895,22 +895,22 @@ ctx.fillText('Golf Tracker Pro v15 - Course Rating',W/2,H-8);
 
 // ===== 7. GOLF NUTRITION TIMER =====
 var NUTRITION_PLAN=[
-{hole:1,time:0,item:'물 200ml',icon:'&#x1F4A7;',desc:'출발 전 수분 섭취'},
-{hole:3,time:40,item:'에너지바 반쪽',icon:'&#x1F36B;',desc:'초반 에너지 보충'},
-{hole:5,time:65,item:'물 200ml + 전해질',icon:'&#x1F4A7;',desc:'전해질 보충'},
-{hole:7,time:90,item:'바나나 1개',icon:'&#x1F34C;',desc:'칼륨/탄수화물 보충'},
-{hole:9,time:120,item:'물 300ml + 간식',icon:'&#x1F375;',desc:'전반 종료 충전'},
-{hole:10,time:135,item:'에너지젤/음료',icon:'&#x26A1;',desc:'후반 시작 부스팅'},
-{hole:12,time:160,item:'물 200ml',icon:'&#x1F4A7;',desc:'후반 수분 유지'},
-{hole:14,time:185,item:'견과류 한줌',icon:'&#x1F95C;',desc:'집중력 유지'},
-{hole:16,time:210,item:'물 200ml + 전해질',icon:'&#x1F4A7;',desc:'마무리 수분'},
-{hole:18,time:240,item:'단백질바/회복음료',icon:'&#x1F4AA;',desc:'라운드 후 회복'}
+{hole:1,time:0,item:'물 200ml',icon:'💧',desc:'출발 전 수분 섭취'},
+{hole:3,time:40,item:'에너지바 반쪽',icon:'🍫',desc:'초반 에너지 보충'},
+{hole:5,time:65,item:'물 200ml + 전해질',icon:'💧',desc:'전해질 보충'},
+{hole:7,time:90,item:'바나나 1개',icon:'🍌',desc:'칼륨/탄수화물 보충'},
+{hole:9,time:120,item:'물 300ml + 간식',icon:'🍵',desc:'전반 종료 충전'},
+{hole:10,time:135,item:'에너지젤/음료',icon:'⚡',desc:'후반 시작 부스팅'},
+{hole:12,time:160,item:'물 200ml',icon:'💧',desc:'후반 수분 유지'},
+{hole:14,time:185,item:'견과류 한줌',icon:'🥜',desc:'집중력 유지'},
+{hole:16,time:210,item:'물 200ml + 전해질',icon:'💧',desc:'마무리 수분'},
+{hole:18,time:240,item:'단백질바/회복음료',icon:'💪',desc:'라운드 후 회복'}
 ];
 
 function showNutritionTimer(){
 var pn=getPanel('nutrition');
 var consumed=lsGet('nutrition_consumed',{});
-var html='<div class="v15-title">&#x1F34E; 골프 영양 타이머</div>';
+var html='<div class="v15-title">🍎 골프 영양 타이머</div>';
 
 html+='<div class="v15-card"><h3>라운드 영양 플랜 (18홀)</h3>';
 html+='<div style="margin-top:8px">';
@@ -921,7 +921,7 @@ for(var i=0;i<NUTRITION_PLAN.length;i++){
   html+='<div style="font-size:1.5em;width:36px;text-align:center">'+np.icon+'</div>';
   html+='<div style="flex:1"><div style="font-weight:600;font-size:.88em;color:'+(done?'#00FF88':'#fff')+'">'+np.hole+'번홀 ('+np.time+'분) - '+np.item+'</div>';
   html+='<div style="font-size:.75em;color:#888">'+np.desc+'</div></div>';
-  html+='<div style="font-size:1.2em;color:'+(done?'#00FF88':'#333')+'">'+(done?'&#x2705;':'&#x2B1C;')+'</div>';
+  html+='<div style="font-size:1.2em;color:'+(done?'#00FF88':'#333')+'">'+(done?'✅':'⬜')+'</div>';
   html+='</div>';
 }
 html+='</div>';
@@ -934,13 +934,13 @@ html+='</div></div>';
 
 html+='<canvas id="v15-nutrition-canvas" width="600" height="300" style="width:100%;max-width:600px;height:auto;display:block;margin:12px auto;border-radius:12px"></canvas>';
 
-html+='<div class="v15-card"><h3>&#x1F4D6; 라운드 영양 가이드</h3>';
+html+='<div class="v15-card"><h3>📖 라운드 영양 가이드</h3>';
 html+='<div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; 18홀 동안 최소 1.5~2L 수분 섭취 필요</div>';
-html+='<div>&#x2022; 탄수화물 위주의 간식이 지구력 유지에 효과적</div>';
-html+='<div>&#x2022; 카페인은 초반에만 (후반 수면 영향 주의)</div>';
-html+='<div>&#x2022; 과식 금지 - 소량 자주 섭취가 핵심</div>';
-html+='<div>&#x2022; 알코올은 집중력과 판단력 저하 원인</div>';
+html+='<div>• 18홀 동안 최소 1.5~2L 수분 섭취 필요</div>';
+html+='<div>• 탄수화물 위주의 간식이 지구력 유지에 효과적</div>';
+html+='<div>• 카페인은 초반에만 (후반 수면 영향 주의)</div>';
+html+='<div>• 과식 금지 - 소량 자주 섭취가 핵심</div>';
+html+='<div>• 알코올은 집중력과 판단력 저하 원인</div>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v15-close" onclick="window._v15Close(\'nutrition\')">&times;</button>'+html;
@@ -1033,7 +1033,7 @@ var GOLF_RULES=[
 
 function showGolfRules(){
 var pn=getPanel('rules');
-var html='<div class="v15-title">&#x1F4DC; 골프 룰 퀵 레퍼런스</div>';
+var html='<div class="v15-title">📜 골프 룰 퀵 레퍼런스</div>';
 
 for(var c=0;c<GOLF_RULES.length;c++){
   var cat=GOLF_RULES[c];
@@ -1051,14 +1051,14 @@ for(var c=0;c<GOLF_RULES.length;c++){
   html+='</div>';
 }
 
-html+='<div class="v15-card"><h3>&#x1F4A1; 알아두면 좋은 최신 룰 (2019 개정)</h3>';
+html+='<div class="v15-card"><h3>💡 알아두면 좋은 최신 룰 (2019 개정)</h3>';
 html+='<div style="font-size:.82em;color:#aaa;line-height:1.7">';
-html+='<div>&#x2022; 드롭: 어깨높이 &rarr; <b>무릎높이</b>로 변경</div>';
-html+='<div>&#x2022; 탐색 시간: 5분 &rarr; <b>3분</b>으로 단축</div>';
-html+='<div>&#x2022; 깃대 꽂은 채 퍼팅 허용 (선택)</div>';
-html+='<div>&#x2022; 벙커 내 루스 임페디먼트 제거 가능</div>';
-html+='<div>&#x2022; 더블히트(한 스트로크 중 2번 맞음) 벌타 없음</div>';
-html+='<div>&#x2022; 캐디가 그린 위 퍼팅라인 뒤에 서는 것 금지</div>';
+html+='<div>• 드롭: 어깨높이 &rarr; <b>무릎높이</b>로 변경</div>';
+html+='<div>• 탐색 시간: 5분 &rarr; <b>3분</b>으로 단축</div>';
+html+='<div>• 깃대 꽂은 채 퍼팅 허용 (선택)</div>';
+html+='<div>• 벙커 내 루스 임페디먼트 제거 가능</div>';
+html+='<div>• 더블히트(한 스트로크 중 2번 맞음) 벌타 없음</div>';
+html+='<div>• 캐디가 그린 위 퍼팅라인 뒤에 서는 것 금지</div>';
 html+='</div></div>';
 
 pn.innerHTML='<button class="v15-close" onclick="window._v15Close(\'rules\')">&times;</button>'+html;
@@ -1093,7 +1093,7 @@ var q=V15_QUIZ[qIdx];
 var total=lsGet('v15_quiz_correct',0);
 var attempted=lsGet('v15_quiz_attempted',0);
 
-var html='<div class="v15-title">&#x1F4DD; 골프 퀴즈 v15 ('+V15_QUIZ.length+'문)</div>';
+var html='<div class="v15-title">📝 골프 퀴즈 v15 ('+V15_QUIZ.length+'문)</div>';
 html+='<div class="v15-card"><div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="color:#00B4D8;font-size:.85em">Q'+(qIdx+1)+'/'+V15_QUIZ.length+'</span><span style="color:#00FF88;font-size:.85em">정답: '+total+'/'+attempted+'</span></div>';
 html+='<div style="font-weight:700;font-size:1em;margin-bottom:12px;line-height:1.5">'+q.q+'</div>';
 for(var i=0;i<q.a.length;i++){
@@ -1117,10 +1117,10 @@ lsSet('v15_quiz_attempted',attempted);
 if(ans===q.c){
   var correct=lsGet('v15_quiz_correct',0)+1;
   lsSet('v15_quiz_correct',correct);
-  showToast('&#x2705; 정답! '+q.a[q.c]);
+  showToast('✅ 정답! '+q.a[q.c]);
   playSfx('clubrec_pick');
 } else {
-  showToast('&#x274C; 오답! 정답: '+q.a[q.c]);
+  showToast('❌ 오답! 정답: '+q.a[q.c]);
   playSfx('nutrition_open');
 }
 lsSet('v15_quiz_idx',qIdx+1);
@@ -1130,18 +1130,18 @@ v15CheckAch();
 
 // ===== ACHIEVEMENTS (12개, 84→96) =====
 var V15_ACH=[
-{id:'v15_rhythm',name:'리듬 마스터',desc:'라운드 리듬 분석기 사용',icon:'&#x23F1;&#xFE0F;',check:function(){return lsGet('ach_rhythm_viewed',false)}},
-{id:'v15_rhythm_9',name:'하프 라운드',desc:'9홀 이상 리듬 기록',icon:'&#x1F3CC;&#xFE0F;',check:function(){return lsGet('current_rhythm_holes',[]).length>=9}},
-{id:'v15_clubrec',name:'AI 캐디 사용자',desc:'클럽 추천 AI 사용',icon:'&#x1F916;',check:function(){return lsGet('ach_clubrec_viewed',false)}},
-{id:'v15_clubrec_5',name:'클럽 전문가',desc:'클럽 추천 5회 이상',icon:'&#x1F3AF;',check:function(){return lsGet('clubrec_logs',[]).length>=5}},
-{id:'v15_predict',name:'점쟁이',desc:'스코어 예측 엔진 사용',icon:'&#x1F52E;',check:function(){return lsGet('ach_predict_viewed',false)}},
-{id:'v15_predict_3',name:'예측 달인',desc:'스코어 예측 3회 이상',icon:'&#x1F4CA;',check:function(){return lsGet('predict_count',0)>=3}},
-{id:'v15_hio',name:'에이스 꿈나무',desc:'홀인원 시뮬레이터 사용',icon:'&#x26F3;',check:function(){return lsGet('ach_hio_viewed',false)}},
-{id:'v15_hio_sim',name:'시뮬레이션 중독',desc:'HIO 시뮬 3회 이상',icon:'&#x1F3B0;',check:function(){return lsGet('hio_sim_count',0)>=3}},
-{id:'v15_swing',name:'스윙 분석가',desc:'스윙 비교 분석기 사용',icon:'&#x1F504;',check:function(){return lsGet('ach_swing_viewed',false)}},
-{id:'v15_coursediff',name:'코스 평론가',desc:'코스 난이도 평가 사용',icon:'&#x1F3D4;&#xFE0F;',check:function(){return lsGet('ach_coursediff_viewed',false)}},
-{id:'v15_nutrition',name:'영양 관리자',desc:'영양 타이머 사용',icon:'&#x1F34E;',check:function(){return lsGet('ach_nutrition_viewed',false)}},
-{id:'v15_all',name:'v15 탐험가',desc:'v15 전체 기능 탐색',icon:'&#x1F30D;',check:function(){return lsGet('ach_rhythm_viewed',false)&&lsGet('ach_clubrec_viewed',false)&&lsGet('ach_predict_viewed',false)&&lsGet('ach_hio_viewed',false)&&lsGet('ach_swing_viewed',false)&&lsGet('ach_coursediff_viewed',false)&&lsGet('ach_nutrition_viewed',false)&&lsGet('ach_rules_viewed',false)}}
+{id:'v15_rhythm',name:'리듬 마스터',desc:'라운드 리듬 분석기 사용',icon:'⏱️',check:function(){return lsGet('ach_rhythm_viewed',false)}},
+{id:'v15_rhythm_9',name:'하프 라운드',desc:'9홀 이상 리듬 기록',icon:'🏌️',check:function(){return lsGet('current_rhythm_holes',[]).length>=9}},
+{id:'v15_clubrec',name:'AI 캐디 사용자',desc:'클럽 추천 AI 사용',icon:'🤖',check:function(){return lsGet('ach_clubrec_viewed',false)}},
+{id:'v15_clubrec_5',name:'클럽 전문가',desc:'클럽 추천 5회 이상',icon:'🎯',check:function(){return lsGet('clubrec_logs',[]).length>=5}},
+{id:'v15_predict',name:'점쟁이',desc:'스코어 예측 엔진 사용',icon:'🔮',check:function(){return lsGet('ach_predict_viewed',false)}},
+{id:'v15_predict_3',name:'예측 달인',desc:'스코어 예측 3회 이상',icon:'📊',check:function(){return lsGet('predict_count',0)>=3}},
+{id:'v15_hio',name:'에이스 꿈나무',desc:'홀인원 시뮬레이터 사용',icon:'⛳',check:function(){return lsGet('ach_hio_viewed',false)}},
+{id:'v15_hio_sim',name:'시뮬레이션 중독',desc:'HIO 시뮬 3회 이상',icon:'🎰',check:function(){return lsGet('hio_sim_count',0)>=3}},
+{id:'v15_swing',name:'스윙 분석가',desc:'스윙 비교 분석기 사용',icon:'🔄',check:function(){return lsGet('ach_swing_viewed',false)}},
+{id:'v15_coursediff',name:'코스 평론가',desc:'코스 난이도 평가 사용',icon:'🏔️',check:function(){return lsGet('ach_coursediff_viewed',false)}},
+{id:'v15_nutrition',name:'영양 관리자',desc:'영양 타이머 사용',icon:'🍎',check:function(){return lsGet('ach_nutrition_viewed',false)}},
+{id:'v15_all',name:'v15 탐험가',desc:'v15 전체 기능 탐색',icon:'🌍',check:function(){return lsGet('ach_rhythm_viewed',false)&&lsGet('ach_clubrec_viewed',false)&&lsGet('ach_predict_viewed',false)&&lsGet('ach_hio_viewed',false)&&lsGet('ach_swing_viewed',false)&&lsGet('ach_coursediff_viewed',false)&&lsGet('ach_nutrition_viewed',false)&&lsGet('ach_rules_viewed',false)}}
 ];
 
 function v15CheckAch(){
@@ -1168,14 +1168,14 @@ function injectV15QuickActions(){
 var existing=document.querySelector('.v15-scroll-nav');if(existing)return;
 var nav=document.createElement('div');nav.className='v15-scroll-nav';
 var buttons=[
-  {icon:'&#x23F1;&#xFE0F;',title:'리듬 (Shift+A)',fn:'showRoundRhythm'},
-  {icon:'&#x1F916;',title:'클럽AI (Shift+C)',fn:'showClubRecommendation'},
-  {icon:'&#x1F52E;',title:'예측 (Shift+F)',fn:'showScorePrediction'},
-  {icon:'&#x26F3;',title:'HIO (Shift+H)',fn:'showHoleInOneSimulator'},
-  {icon:'&#x1F504;',title:'스윙비교 (Shift+W)',fn:'showSwingComparison'},
-  {icon:'&#x1F3D4;&#xFE0F;',title:'코스평가 (Shift+D)',fn:'showCourseDifficulty'},
-  {icon:'&#x1F34E;',title:'영양 (Shift+I)',fn:'showNutritionTimer'},
-  {icon:'&#x1F4DC;',title:'룰북 (Shift+L)',fn:'showGolfRules'}
+  {icon:'⏱️',title:'리듬 (Shift+A)',fn:'showRoundRhythm'},
+  {icon:'🤖',title:'클럽AI (Shift+C)',fn:'showClubRecommendation'},
+  {icon:'🔮',title:'예측 (Shift+F)',fn:'showScorePrediction'},
+  {icon:'⛳',title:'HIO (Shift+H)',fn:'showHoleInOneSimulator'},
+  {icon:'🔄',title:'스윙비교 (Shift+W)',fn:'showSwingComparison'},
+  {icon:'🏔️',title:'코스평가 (Shift+D)',fn:'showCourseDifficulty'},
+  {icon:'🍎',title:'영양 (Shift+I)',fn:'showNutritionTimer'},
+  {icon:'📜',title:'룰북 (Shift+L)',fn:'showGolfRules'}
 ];
 for(var i=0;i<buttons.length;i++){
   var btn=document.createElement('button');btn.className='v15-nav-btn';

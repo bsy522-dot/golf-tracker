@@ -25,31 +25,31 @@ var log=lsGet('tempo_log',[]);
 var selClub=lsGet('tempo_club',0);
 var clubNames=['Driver','3W','5I','7I','PW','SW'];
 var html='<button class="v26-close" onclick="window._v26Close(\'tempo\')">&times;</button>';
-html+='<div class="v26-title">&#x23F1; &#xC2A4;&#xC719; &#xD15C;&#xD3EC; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v26-title">⏱ 스윙 템포 분석기</div>';
 html+='<canvas id="v26-tempo-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xD074;&#xB7FD; &#xC120;&#xD0DD; &amp; &#xD15C;&#xD3EC; &#xCE21;&#xC815;</h3>';
+html+='<div class="v26-card"><h3>클럽 선택 &amp; 템포 측정</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin-bottom:8px">';
 for(var i=0;i<clubNames.length;i++){
 html+='<button class="v26-btn v26-btn-sm'+(i===selClub?' v26-btn-primary':'')+'" onclick="window._v26SelectTempoClub('+i+')">'+clubNames[i]+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
-html+='<div><label class="v26-label">&#xBC31;&#xC2A4;&#xC719; &#xBE44;&#xC728; (&#xBC31;:&#xB2E4;&#xC6B4;)</label><input class="v26-input" type="text" id="v26-tempo-ratio" value="3:1" placeholder="3:1"></div>';
-html+='<div><label class="v26-label">&#xCD1D; &#xC2A4;&#xC719; &#xC2DC;&#xAC04; (&#xCD08;)</label><input class="v26-input" type="number" id="v26-tempo-total" value="1.2" step="0.1" min="0.5" max="3"></div>';
+html+='<div><label class="v26-label">백스윙 비율 (백:다운)</label><input class="v26-input" type="text" id="v26-tempo-ratio" value="3:1" placeholder="3:1"></div>';
+html+='<div><label class="v26-label">총 스윙 시간 (초)</label><input class="v26-input" type="number" id="v26-tempo-total" value="1.2" step="0.1" min="0.5" max="3"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v26-btn v26-btn-primary" onclick="window._v26RecordTempo()">&#x23FA; &#xAE30;&#xB85D;</button>';
-html+='<button class="v26-btn" onclick="window._v26SaveTempo()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v26-btn v26-btn-primary" onclick="window._v26RecordTempo()">⏺ 기록</button>';
+html+='<button class="v26-btn" onclick="window._v26SaveTempo()">💾 저장</button>';
 html+='</div></div>';
 var avgRatio=3.0;if(log.length>0){var sum=0;for(var i=0;i<log.length;i++)sum+=log[i].ratio;avgRatio=Math.round(sum/log.length*10)/10;}
 var grade=avgRatio>=2.8&&avgRatio<=3.2?'S':avgRatio>=2.5&&avgRatio<=3.5?'A':avgRatio>=2.0&&avgRatio<=4.0?'B':'C';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avgRatio+':1</div><div class="v26-stat-label">&#xD3C9;&#xADE0; &#xBE44;&#xC728;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+grade+'</div><div class="v26-stat-label">&#xD15C;&#xD3EC; &#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">&#xCE21;&#xC815; &#xD69F;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">3:1</div><div class="v26-stat-label">&#xC774;&#xC0C1;&#xC801; &#xBE44;&#xC728;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avgRatio+':1</div><div class="v26-stat-label">평균 비율</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+grade+'</div><div class="v26-stat-label">템포 등급</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">측정 횟수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">3:1</div><div class="v26-stat-label">이상적 비율</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v26ResetTempo()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'초기화?\'))window._v26ResetTempo()">초기화</button>';
 pn.innerHTML=html;openPanel('tempo');drawTempoCanvas(log);
 }
 window._v26SelectTempoClub=function(i){lsSet('tempo_club',i);showTempoAnalyzer();};
@@ -122,27 +122,27 @@ playSfx('stroke_open');
 var pn=getPanel('sgdeep');
 var log=lsGet('sg_deep_log',[]);
 var html='<button class="v26-close" onclick="window._v26Close(\'sgdeep\')">&times;</button>';
-html+='<div class="v26-title">&#x1F4C9; &#xC2A4;&#xD2B8;&#xB85C;&#xD06C; &#xAC8C;&#xC778;&#xB4DC; &#xB525; &#xB2E4;&#xC774;&#xBE0C;</div>';
+html+='<div class="v26-title">📉 스트로크 게인드 딥 다이브</div>';
 html+='<canvas id="v26-sg-canvas" width="640" height="400" style="width:100%;max-width:640px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xB77C;&#xC6B4;&#xB4DC; SG &#xC785;&#xB825;</h3>';
+html+='<div class="v26-card"><h3>라운드 SG 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">';
 for(var i=0;i<SG_CATEGORIES.length;i++){
 html+='<div><label class="v26-label" style="color:'+SG_COLORS[i]+'">'+SG_CATEGORIES[i]+'</label><input class="v26-input" type="number" id="v26-sg-'+i+'" value="0" step="0.1" min="-5" max="5"></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveSG()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v26-btn" onclick="window._v26SimulateSG()">&#x1F3B2; &#xC2DC;&#xBBAC;&#xB808;&#xC774;&#xC158;</button>';
+html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveSG()">💾 저장</button>';
+html+='<button class="v26-btn" onclick="window._v26SimulateSG()">🎲 시뮬레이션</button>';
 html+='</div></div>';
 var total=0;if(log.length>0){var last=log[log.length-1];for(var i=0;i<last.values.length;i++)total+=last.values[i];}
 var totalGrade=total>=2?'S':total>=1?'A':total>=0?'B':total>=-1?'C':'D';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
 html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:'+(total>=0?'#00FF88':'#FF6B6B')+'">'+total.toFixed(1)+'</div><div class="v26-stat-label">Total SG</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+totalGrade+'</div><div class="v26-stat-label">&#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">6</div><div class="v26-stat-label">&#xBD84;&#xC11D; &#xCD95;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+totalGrade+'</div><div class="v26-stat-label">등급</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">라운드</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">6</div><div class="v26-stat-label">분석 축</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v26ResetSG()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'초기화?\'))window._v26ResetSG()">초기화</button>';
 pn.innerHTML=html;openPanel('sgdeep');drawSGCanvas(log);
 }
 window._v26SaveSG=function(){
@@ -208,34 +208,34 @@ ctx.fillStyle=SG_COLORS[0];ctx.fillRect(L+80,H-18,8,8);
 }
 
 // ===== 3. MENTAL GAME PRESSURE TRACKER Canvas 620x400 =====
-var MENTAL_AXES=['&#xC9D1;&#xC911;&#xB825;','&#xD68C;&#xBCF5;&#xB825;','&#xC790;&#xC2E0;&#xAC10;','&#xB8E8;&#xD2F4;&#xC77C;&#xAD00;&#xC131;','&#xC555;&#xBC15;&#xB300;&#xCC98;','&#xAC10;&#xC815;&#xC81C;&#xC5B4;','&#xBAA9;&#xD45C;&#xC124;&#xC815;','&#xC2DC;&#xAC01;&#xD654;'];
+var MENTAL_AXES=['집중력','회복력','자신감','루틴일관성','압박대처','감정제어','목표설정','시각화'];
 var MENTAL_COLORS_AX=['#FF6B6B','#FF9F43','#FECA57','#00FF88','#48DBFB','#A855F7','#FF85A2','#4ECDC4'];
 function showMentalTracker(){
 playSfx('mental_open');
 var pn=getPanel('mental');
 var log=lsGet('mental_log',[]);
 var html='<button class="v26-close" onclick="window._v26Close(\'mental\')">&times;</button>';
-html+='<div class="v26-title">&#x1F9E0; &#xBA58;&#xD0C8; &#xAC8C;&#xC784; &#xC555;&#xBC15; &#xD2B8;&#xB798;&#xCEE4;</div>';
+html+='<div class="v26-title">🧠 멘탈 게임 압박 트래커</div>';
 html+='<canvas id="v26-mental-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xC2EC;&#xB9AC; &#xC0C1;&#xD0DC; &#xD3C9;&#xAC00; (0-100)</h3>';
+html+='<div class="v26-card"><h3>심리 상태 평가 (0-100)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">';
 for(var i=0;i<MENTAL_AXES.length;i++){
 html+='<div><label class="v26-label" style="color:'+MENTAL_COLORS_AX[i]+'">'+MENTAL_AXES[i]+'</label><input class="v26-input" type="number" id="v26-mental-'+i+'" value="70" min="0" max="100"></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveMental()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v26-btn" onclick="window._v26SimMental()">&#x1F3B2; &#xC2DC;&#xBBAC;</button>';
+html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveMental()">💾 저장</button>';
+html+='<button class="v26-btn" onclick="window._v26SimMental()">🎲 시뮬</button>';
 html+='</div></div>';
 var avg=70;if(log.length>0){var s=0;var last=log[log.length-1];for(var i=0;i<last.values.length;i++)s+=last.values[i];avg=Math.round(s/last.values.length);}
 var mentalGrade=avg>=85?'S':avg>=70?'A':avg>=55?'B':avg>=40?'C':'D';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avg+'</div><div class="v26-stat-label">&#xC885;&#xD569; &#xC810;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+mentalGrade+'</div><div class="v26-stat-label">&#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">&#xD3C9;&#xAC00; &#xD69F;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">8</div><div class="v26-stat-label">&#xBD84;&#xC11D; &#xCD95;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avg+'</div><div class="v26-stat-label">종합 점수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+mentalGrade+'</div><div class="v26-stat-label">등급</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">평가 횟수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">8</div><div class="v26-stat-label">분석 축</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v26ResetMental()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'초기화?\'))window._v26ResetMental()">초기화</button>';
 pn.innerHTML=html;openPanel('mental');drawMentalCanvas(log);
 }
 window._v26SaveMental=function(){
@@ -280,7 +280,7 @@ ctx.closePath();ctx.fill();ctx.stroke();ctx.setLineDash([]);
 }
 
 // ===== 4. COURSE DIFFICULTY RATING SYSTEM Canvas 640x400 =====
-var COURSE_FACTORS=['&#xAC70;&#xB9AC;','&#xD574;&#xC800;&#xB4DC;','&#xADF8;&#xB9B0; &#xB09C;&#xC774;&#xB3C4;','OB &#xC704;&#xD5D8;','&#xBC14;&#xB78C; &#xB178;&#xCD9C;','&#xACE0;&#xC800;&#xCC28;','&#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xD3ED;','&#xC6CC;&#xD130; &#xD574;&#xC800;&#xB4DC;'];
+var COURSE_FACTORS=['거리','해저드','그린 난이도','OB 위험','바람 노출','고저차','페어웨이 폭','워터 해저드'];
 var COURSE_COLORS=['#FF6B6B','#FF9F43','#FECA57','#48DBFB','#00FF88','#A855F7','#FF85A2','#4ECDC4'];
 var COURSE_PRESETS=[
 {name:'Easy',vals:[40,20,30,15,25,20,70,10]},
@@ -294,9 +294,9 @@ var pn=getPanel('coursediff');
 var log=lsGet('course_diff_log',[]);
 var selPreset=lsGet('course_preset',1);
 var html='<button class="v26-close" onclick="window._v26Close(\'coursediff\')">&times;</button>';
-html+='<div class="v26-title">&#x26F3; &#xCF54;&#xC2A4; &#xB09C;&#xC774;&#xB3C4; &#xB808;&#xC774;&#xD305; &#xC2DC;&#xC2A4;&#xD15C;</div>';
+html+='<div class="v26-title">⛳ 코스 난이도 레이팅 시스템</div>';
 html+='<canvas id="v26-course-canvas" width="640" height="400" style="width:100%;max-width:640px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xD504;&#xB9AC;&#xC14B; &amp; &#xCEE4;&#xC2A4;&#xD140; (0-100)</h3>';
+html+='<div class="v26-card"><h3>프리셋 &amp; 커스텀 (0-100)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:8px">';
 for(var i=0;i<COURSE_PRESETS.length;i++){
 html+='<button class="v26-btn v26-btn-sm'+(i===selPreset?' v26-btn-primary':'')+'" onclick="window._v26SelectCoursePreset('+i+')">'+COURSE_PRESETS[i].name+'</button>';
@@ -308,15 +308,15 @@ for(var i=0;i<COURSE_FACTORS.length;i++){
 html+='<div><label class="v26-label" style="color:'+COURSE_COLORS[i]+'">'+COURSE_FACTORS[i]+'</label><input class="v26-input" type="number" id="v26-course-'+i+'" value="'+preset.vals[i]+'" min="0" max="100"></div>';
 }
 html+='</div>';
-html+='<button class="v26-btn v26-btn-primary" style="width:100%;margin-top:8px" onclick="window._v26SaveCourse()">&#x1F4BE; &#xD3C9;&#xAC00; &#xC800;&#xC7A5;</button>';
+html+='<button class="v26-btn v26-btn-primary" style="width:100%;margin-top:8px" onclick="window._v26SaveCourse()">💾 평가 저장</button>';
 html+='</div>';
 var overall=0;if(preset)for(var i=0;i<preset.vals.length;i++)overall+=preset.vals[i];overall=Math.round(overall/8);
 var diffGrade=overall>=80?'Champion':overall>=60?'Hard':overall>=40?'Medium':'Easy';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FF6B6B">'+overall+'</div><div class="v26-stat-label">&#xB09C;&#xC774;&#xB3C4;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+diffGrade+'</div><div class="v26-stat-label">&#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">&#xD3C9;&#xAC00; &#xD69F;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">8</div><div class="v26-stat-label">&#xBD84;&#xC11D; &#xCD95;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FF6B6B">'+overall+'</div><div class="v26-stat-label">난이도</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+diffGrade+'</div><div class="v26-stat-label">등급</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">평가 횟수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">8</div><div class="v26-stat-label">분석 축</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('coursediff');drawCourseCanvas(preset.vals,log);
 }
@@ -359,16 +359,16 @@ ctx.fillStyle=grdBar;ctx.fillRect(L+30,H-22,R-L-80,8);
 
 // ===== 5. EQUIPMENT WEAR DASHBOARD Canvas 620x400 =====
 var EQUIP_ITEMS=['Driver','3W','3H','4I','5I','6I','7I','8I','9I','PW','GW','SW','LW','Putter'];
-var EQUIP_METRICS=['&#xADF8;&#xB8E8;&#xBE0C;','&#xC0E4;&#xD504;&#xD2B8;','&#xADF8;&#xB9BD;','&#xD5E4;&#xB4DC;'];
+var EQUIP_METRICS=['그루브','샤프트','그립','헤드'];
 var EQUIP_COLORS2=['#FF6B6B','#FF9F43','#00FF88','#48DBFB'];
 function showEquipWear(){
 playSfx('equip_open');
 var pn=getPanel('equipwear');
 var data=lsGet('equip_wear',{});
 var html='<button class="v26-close" onclick="window._v26Close(\'equipwear\')">&times;</button>';
-html+='<div class="v26-title">&#x1F3CC; &#xC7A5;&#xBE44; &#xB9C8;&#xBAA8; &#xB300;&#xC2DC;&#xBCF4;&#xB4DC;</div>';
+html+='<div class="v26-title">🏌 장비 마모 대시보드</div>';
 html+='<canvas id="v26-equip-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xD074;&#xB7FD;&#xBCC4; &#xB9C8;&#xBAA8;&#xB3C4; &#xC124;&#xC815; (0-100%)</h3>';
+html+='<div class="v26-card"><h3>클럽별 마모도 설정 (0-100%)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">';
 for(var i=0;i<Math.min(8,EQUIP_ITEMS.length);i++){
 var wear=data[EQUIP_ITEMS[i]]||{groove:80,shaft:90,grip:70,head:95};
@@ -377,17 +377,17 @@ html+='<input class="v26-input" type="number" id="v26-eq-'+i+'" value="'+Math.ro
 html+='</div>';
 }
 html+='</div>';
-html+='<button class="v26-btn v26-btn-primary" style="width:100%;margin-top:8px" onclick="window._v26SaveEquip()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v26-btn v26-btn-primary" style="width:100%;margin-top:8px" onclick="window._v26SaveEquip()">💾 저장</button>';
 html+='</div>';
 var totalWear=0,count=0;
 for(var k in data){var w=data[k];totalWear+=(w.groove+w.shaft+w.grip+w.head)/4;count++;}
 var avgWear=count>0?Math.round(totalWear/count):85;
 var wearGrade=avgWear>=85?'S':avgWear>=70?'A':avgWear>=55?'B':avgWear>=40?'C':'D';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avgWear+'%</div><div class="v26-stat-label">&#xD3C9;&#xADE0; &#xC0C1;&#xD0DC;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+wearGrade+'</div><div class="v26-stat-label">&#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+count+'</div><div class="v26-stat-label">&#xB4F1;&#xB85D; &#xD074;&#xB7FD;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">14</div><div class="v26-stat-label">&#xCD1D; &#xD074;&#xB7FD;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avgWear+'%</div><div class="v26-stat-label">평균 상태</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+wearGrade+'</div><div class="v26-stat-label">등급</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+count+'</div><div class="v26-stat-label">등록 클럽</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">14</div><div class="v26-stat-label">총 클럽</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('equipwear');drawEquipCanvas(data);
 }
@@ -435,28 +435,28 @@ playSfx('score_open');
 var pn=getPanel('scorepred');
 var log=lsGet('score_pred_log',[]);
 var html='<button class="v26-close" onclick="window._v26Close(\'scorepred\')">&times;</button>';
-html+='<div class="v26-title">&#x1F52E; &#xC2A4;&#xCF54;&#xC5B4; &#xC608;&#xCE21; &#xC5D4;&#xC9C4;</div>';
+html+='<div class="v26-title">🔮 스코어 예측 엔진</div>';
 html+='<canvas id="v26-score-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xB77C;&#xC6B4;&#xB4DC; &#xC2A4;&#xCF54;&#xC5B4; &#xC785;&#xB825;</h3>';
+html+='<div class="v26-card"><h3>라운드 스코어 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">';
-html+='<div><label class="v26-label">&#xC2A4;&#xCF54;&#xC5B4;</label><input class="v26-input" type="number" id="v26-score-val" value="90" min="60" max="150"></div>';
-html+='<div><label class="v26-label">&#xD37C;&#xD305;&#xC218;</label><input class="v26-input" type="number" id="v26-score-putts" value="32" min="18" max="60"></div>';
+html+='<div><label class="v26-label">스코어</label><input class="v26-input" type="number" id="v26-score-val" value="90" min="60" max="150"></div>';
+html+='<div><label class="v26-label">퍼팅수</label><input class="v26-input" type="number" id="v26-score-putts" value="32" min="18" max="60"></div>';
 html+='<div><label class="v26-label">GIR (%)</label><input class="v26-input" type="number" id="v26-score-gir" value="40" min="0" max="100"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveScore()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v26-btn" onclick="window._v26PredictScore()">&#x1F52E; &#xC608;&#xCE21;</button>';
+html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveScore()">💾 저장</button>';
+html+='<button class="v26-btn" onclick="window._v26PredictScore()">🔮 예측</button>';
 html+='</div></div>';
 var predicted=90;if(log.length>=3){var sum=0;for(var i=Math.max(0,log.length-5);i<log.length;i++)sum+=log[i].score;predicted=Math.round(sum/(Math.min(5,log.length))*0.95);}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+predicted+'</div><div class="v26-stat-label">&#xC608;&#xCE21; &#xC2A4;&#xCF54;&#xC5B4;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+log.length+'</div><div class="v26-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+predicted+'</div><div class="v26-stat-label">예측 스코어</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+log.length+'</div><div class="v26-stat-label">라운드</div></div>';
 var best=999;for(var i=0;i<log.length;i++)if(log[i].score<best)best=log[i].score;
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FF6B6B">'+(best<999?best:'-')+'</div><div class="v26-stat-label">&#xBCA0;&#xC2A4;&#xD2B8;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FF6B6B">'+(best<999?best:'-')+'</div><div class="v26-stat-label">베스트</div></div>';
 var avg=0;if(log.length>0){for(var i=0;i<log.length;i++)avg+=log[i].score;avg=Math.round(avg/log.length);}
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+(avg||'-')+'</div><div class="v26-stat-label">&#xD3C9;&#xADE0;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+(avg||'-')+'</div><div class="v26-stat-label">평균</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v26ResetScore()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'초기화?\'))window._v26ResetScore()">초기화</button>';
 pn.innerHTML=html;openPanel('scorepred');drawScoreCanvas(log,predicted);
 }
 window._v26SaveScore=function(){
@@ -510,34 +510,34 @@ for(var i=0;i<n;i++){var x=L+i*dx;ctx.fillText('R'+(startI+i+1),x,B+14);}
 }
 
 // ===== 7. WEATHER IMPACT ANALYZER Canvas 620x400 =====
-var WEATHER_FACTORS=['&#xAE30;&#xC628;','&#xC2B5;&#xB3C4;','&#xACE0;&#xB3C4;','&#xAE30;&#xC555;','&#xBE44;','&#xC548;&#xAC1C;'];
+var WEATHER_FACTORS=['기온','습도','고도','기압','비','안개'];
 var WEATHER_COLORS=['#FF6B6B','#48DBFB','#00FF88','#FF9F43','#A855F7','#FECA57'];
 function showWeatherImpact(){
 playSfx('weather_open');
 var pn=getPanel('weather');
 var log=lsGet('weather_log',[]);
 var html='<button class="v26-close" onclick="window._v26Close(\'weather\')">&times;</button>';
-html+='<div class="v26-title">&#x1F326; &#xB0A0;&#xC528; &#xC784;&#xD329;&#xD2B8; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v26-title">🌦 날씨 임팩트 분석기</div>';
 html+='<canvas id="v26-weather-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>&#xB0A0;&#xC528; &#xC870;&#xAC74; &#xC785;&#xB825;</h3>';
+html+='<div class="v26-card"><h3>날씨 조건 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">';
-html+='<div><label class="v26-label" style="color:#FF6B6B">&#xAE30;&#xC628; (&deg;C)</label><input class="v26-input" type="number" id="v26-weather-temp" value="25" min="-10" max="45"></div>';
-html+='<div><label class="v26-label" style="color:#48DBFB">&#xC2B5;&#xB3C4; (%)</label><input class="v26-input" type="number" id="v26-weather-humid" value="60" min="0" max="100"></div>';
-html+='<div><label class="v26-label" style="color:#00FF88">&#xACE0;&#xB3C4; (m)</label><input class="v26-input" type="number" id="v26-weather-alt" value="50" min="0" max="3000"></div>';
-html+='<div><label class="v26-label" style="color:#FF9F43">&#xAE30;&#xC555; (hPa)</label><input class="v26-input" type="number" id="v26-weather-press" value="1013" min="950" max="1060"></div>';
-html+='<div><label class="v26-label" style="color:#A855F7">&#xBE44; (mm/h)</label><input class="v26-input" type="number" id="v26-weather-rain" value="0" min="0" max="50"></div>';
-html+='<div><label class="v26-label" style="color:#FECA57">&#xC548;&#xAC1C; &#xB18D;&#xB3C4; (0-10)</label><input class="v26-input" type="number" id="v26-weather-fog" value="0" min="0" max="10"></div>';
+html+='<div><label class="v26-label" style="color:#FF6B6B">기온 (&deg;C)</label><input class="v26-input" type="number" id="v26-weather-temp" value="25" min="-10" max="45"></div>';
+html+='<div><label class="v26-label" style="color:#48DBFB">습도 (%)</label><input class="v26-input" type="number" id="v26-weather-humid" value="60" min="0" max="100"></div>';
+html+='<div><label class="v26-label" style="color:#00FF88">고도 (m)</label><input class="v26-input" type="number" id="v26-weather-alt" value="50" min="0" max="3000"></div>';
+html+='<div><label class="v26-label" style="color:#FF9F43">기압 (hPa)</label><input class="v26-input" type="number" id="v26-weather-press" value="1013" min="950" max="1060"></div>';
+html+='<div><label class="v26-label" style="color:#A855F7">비 (mm/h)</label><input class="v26-input" type="number" id="v26-weather-rain" value="0" min="0" max="50"></div>';
+html+='<div><label class="v26-label" style="color:#FECA57">안개 농도 (0-10)</label><input class="v26-input" type="number" id="v26-weather-fog" value="0" min="0" max="10"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v26-btn v26-btn-primary" onclick="window._v26CalcWeather()">&#x1F4CA; &#xBD84;&#xC11D;</button>';
-html+='<button class="v26-btn" onclick="window._v26SaveWeather()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v26-btn v26-btn-primary" onclick="window._v26CalcWeather()">📊 분석</button>';
+html+='<button class="v26-btn" onclick="window._v26SaveWeather()">💾 저장</button>';
 html+='</div></div>';
 var distAdj=0;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+distAdj+'%</div><div class="v26-stat-label">&#xBE44;&#xAC70;&#xB9AC; &#xBCF4;&#xC815;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+log.length+'</div><div class="v26-stat-label">&#xAE30;&#xB85D;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">6</div><div class="v26-stat-label">&#xBCC0;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">&#xC2E4;&#xC2DC;&#xAC04;</div><div class="v26-stat-label">&#xBD84;&#xC11D;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+distAdj+'%</div><div class="v26-stat-label">비거리 보정</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+log.length+'</div><div class="v26-stat-label">기록</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">6</div><div class="v26-stat-label">변수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">실시간</div><div class="v26-stat-label">분석</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('weather');drawWeatherCanvas(log);
 }
@@ -606,27 +606,27 @@ playSfx('dash_open');
 var pn=getPanel('dashboard');
 var log=lsGet('dash_log',[]);
 var html='<button class="v26-close" onclick="window._v26Close(\'dashboard\')">&times;</button>';
-html+='<div class="v26-title">&#x1F4CA; &#xC885;&#xD569; &#xB77C;&#xC6B4;&#xB4DC; &#xB300;&#xC2DC;&#xBCF4;&#xB4DC;</div>';
+html+='<div class="v26-title">📊 종합 라운드 대시보드</div>';
 html+='<canvas id="v26-dash-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v26-card"><h3>8&#xCD95; KPI &#xC785;&#xB825; (0-100)</h3>';
+html+='<div class="v26-card"><h3>8축 KPI 입력 (0-100)</h3>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">';
 for(var i=0;i<DASH_KPIS.length;i++){
 html+='<div><label class="v26-label" style="color:'+DASH_COLORS[i]+'">'+DASH_KPIS[i]+'</label><input class="v26-input" type="number" id="v26-dash-'+i+'" value="70" min="0" max="100"></div>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveDash()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
-html+='<button class="v26-btn" onclick="window._v26SimDash()">&#x1F3B2; &#xC2DC;&#xBBAC;</button>';
+html+='<button class="v26-btn v26-btn-primary" onclick="window._v26SaveDash()">💾 저장</button>';
+html+='<button class="v26-btn" onclick="window._v26SimDash()">🎲 시뮬</button>';
 html+='</div></div>';
 var avg=70;if(log.length>0){var s=0;var last=log[log.length-1];for(var i=0;i<last.scores.length;i++)s+=last.scores[i];avg=Math.round(s/last.scores.length);}
 var dashGrade=avg>=85?'S':avg>=70?'A':avg>=55?'B':avg>=40?'C':'D';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avg+'</div><div class="v26-stat-label">&#xC885;&#xD569;&#xC810;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+dashGrade+'</div><div class="v26-stat-label">&#xB4F1;&#xAE09;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">&#xD3C9;&#xAC00; &#xD69F;&#xC218;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">8</div><div class="v26-stat-label">KPI &#xCD95;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+avg+'</div><div class="v26-stat-label">종합점수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+dashGrade+'</div><div class="v26-stat-label">등급</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#4ECDC4">'+log.length+'</div><div class="v26-stat-label">평가 횟수</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">8</div><div class="v26-stat-label">KPI 축</div></div>';
 html+='</div>';
-if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v26ResetDash()">&#xCD08;&#xAE30;&#xD654;</button>';
+if(log.length>0)html+='<button class="v26-btn" style="width:100%;margin-top:6px;border-color:rgba(0,212,180,.3);color:#00D4B4" onclick="if(confirm(\'초기화?\'))window._v26ResetDash()">초기화</button>';
 pn.innerHTML=html;openPanel('dashboard');drawDashCanvas(log);
 }
 window._v26SaveDash=function(){
@@ -676,21 +676,21 @@ ctx.fillText('Overall: '+avg+'/100',W/2,H-15);
 
 // ===== QUIZ V26 (15 Questions) =====
 var QUIZ_V26=[
-{q:'&#xC2A4;&#xC719; &#xD15C;&#xD3EC;&#xC758; &#xC774;&#xC0C1;&#xC801;&#xC778; &#xBC31;&#xC2A4;&#xC719;:&#xB2E4;&#xC6B4;&#xC2A4;&#xC719; &#xBE44;&#xC728;&#xC740;?',a:['1:1','2:1','3:1','4:1'],c:2},
-{q:'Strokes Gained Approach&#xAC00; &#xCE21;&#xC815;&#xD558;&#xB294; &#xAC83;&#xC740;?',a:['&#xD2F0;&#xC0F7; &#xBE44;&#xAC70;&#xB9AC;','&#xC5B4;&#xD504;&#xB85C;&#xCE58; &#xC0F7; &#xD488;&#xC9C8;','&#xD37C;&#xD305; &#xC815;&#xD655;&#xB3C4;','&#xBC88;&#xCEE4; &#xD0C8;&#xCD9C;&#xB960;'],c:1},
-{q:'&#xACE8;&#xD504;&#xC5D0;&#xC11C; &#xBA58;&#xD0C8; &#xAC8C;&#xC784;&#xC758; &#xD575;&#xC2EC; &#xC694;&#xC18C;&#xB294;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xD504;&#xB9AC;&#xC0F7; &#xB8E8;&#xD2F4;','&#xD074;&#xB7FD; &#xC120;&#xD0DD;','&#xC2A4;&#xC719; &#xC2A4;&#xD53C;&#xB4DC;'],c:1},
-{q:'&#xAE30;&#xC628;&#xC774; 10&deg;C &#xC0C1;&#xC2B9;&#xD558;&#xBA74; &#xBE44;&#xAC70;&#xB9AC;&#xB294;?',a:['&#xAC10;&#xC18C;','&#xBCC0;&#xD654; &#xC5C6;&#xC74C;','&#xC57D; 1.5% &#xC99D;&#xAC00;','&#xC57D; 5% &#xC99D;&#xAC00;'],c:2},
-{q:'&#xACE0;&#xB3C4; 1000m&#xC5D0;&#xC11C; &#xBE44;&#xAC70;&#xB9AC; &#xBCC0;&#xD654;&#xB294;?',a:['&#xBCC0;&#xD654; &#xC5C6;&#xC74C;','&#xC57D; 2% &#xC99D;&#xAC00;','&#xC57D; 5% &#xC99D;&#xAC00;','&#xC57D; 10% &#xC99D;&#xAC00;'],c:1},
-{q:'Scoring Zone (100yd &#xC774;&#xB0B4;)&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xAE30;&#xC220;&#xC740;?',a:['&#xD480; &#xC2A4;&#xC719;','&#xB514;&#xC2A4;&#xD134;&#xC2A4; &#xCEE8;&#xD2B8;&#xB864;','&#xB4DC;&#xB77C;&#xC774;&#xBC84; &#xC815;&#xD655;&#xB3C4;','&#xD37C;&#xD305; &#xC2A4;&#xD53C;&#xB4DC; &#xC77D;&#xAE30;'],c:1},
-{q:'&#xD074;&#xB7FD; &#xADF8;&#xB8E8;&#xBE0C; &#xC218;&#xBA85;&#xC740; &#xBCF4;&#xD1B5; &#xBA87; &#xB77C;&#xC6B4;&#xB4DC;?',a:['50-100','100-200','200-300','300-500'],c:2},
-{q:'GIR(Green in Regulation) &#xD3C9;&#xADE0; &#xD504;&#xB85C; &#xC120;&#xC218;&#xC758; &#xBE44;&#xC728;&#xC740;?',a:['45-55%','55-65%','65-75%','75-85%'],c:2},
-{q:'&#xC2A4;&#xCF54;&#xC5B4; &#xC608;&#xCE21;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xC911;&#xC694;&#xD55C; &#xBCC0;&#xC218;&#xB294;?',a:['&#xBE44;&#xAC70;&#xB9AC;','&#xCD5C;&#xADFC; &#xB77C;&#xC6B4;&#xB4DC; &#xD2B8;&#xB80C;&#xB4DC;','&#xB0A0;&#xC528; &#xC870;&#xAC74;','&#xCF54;&#xC2A4; &#xB09C;&#xC774;&#xB3C4;'],c:1},
-{q:'&#xBE44; &#xC624;&#xB294; &#xB0A0; &#xACE8;&#xD504;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xD070; &#xC601;&#xD5A5;&#xC740;?',a:['&#xBE44;&#xAC70;&#xB9AC; &#xAC10;&#xC18C;','&#xADF8;&#xB9BD; &#xBBF8;&#xB044;&#xB7EC;&#xC9D0;','&#xADF8;&#xB9B0; &#xC2A4;&#xD53C;&#xB4DC; &#xAC10;&#xC18C;','&#xC2DC;&#xC57C; &#xC81C;&#xD55C;'],c:2},
-{q:'&#xC555;&#xBC15; &#xC0C1;&#xD669;&#xC5D0;&#xC11C; &#xAC00;&#xC7A5; &#xD6A8;&#xACFC;&#xC801;&#xC778; &#xB300;&#xCC98;&#xBC95;&#xC740;?',a:['&#xBE60;&#xB9AC; &#xC2A4;&#xC719;&#xD558;&#xAE30;','&#xD638;&#xD761; &#xC870;&#xC808; &#xB8E8;&#xD2F4;','&#xBAA9;&#xD45C;&#xB97C; &#xB354; &#xB192;&#xAC8C; &#xC124;&#xC815;','&#xD074;&#xB7FD;&#xC744; &#xBC14;&#xAFB8;&#xAE30;'],c:1},
-{q:'Course Rating 72.0, Slope 130&#xC778; &#xCF54;&#xC2A4;&#xC758; &#xB09C;&#xC774;&#xB3C4;&#xB294;?',a:['&#xC27D;&#xC74C;','&#xBCF4;&#xD1B5;','&#xC5B4;&#xB824;&#xC6C0;','&#xB9E4;&#xC6B0; &#xC5B4;&#xB824;&#xC6C0;'],c:2},
-{q:'&#xC7A5;&#xBE44; &#xAD00;&#xB9AC;&#xC5D0;&#xC11C; &#xADF8;&#xB9BD; &#xAD50;&#xCCB4; &#xAD8C;&#xC7A5; &#xC8FC;&#xAE30;&#xB294;?',a:['3&#xAC1C;&#xC6D4;','6&#xAC1C;&#xC6D4;','1&#xB144;','2&#xB144;'],c:1},
-{q:'PGA &#xD22C;&#xC5B4; &#xD3C9;&#xADE0; &#xD37C;&#xD305; &#xC218;&#xB294;?',a:['26-28','28-30','30-32','32-34'],c:1},
-{q:'&#xC2A4;&#xC719; &#xD15C;&#xD3EC;&#xAC00; &#xB108;&#xBB34; &#xBE60;&#xB974;&#xBA74; &#xBC1C;&#xC0DD;&#xD558;&#xB294; &#xBB38;&#xC81C;&#xB294;?',a:['&#xBE44;&#xAC70;&#xB9AC; &#xAC10;&#xC18C;','&#xC2AC;&#xB77C;&#xC774;&#xC2A4; &#xBC1C;&#xC0DD;','&#xC815;&#xD655;&#xB3C4;/&#xC77C;&#xAD00;&#xC131; &#xC800;&#xD558;','&#xBC31;&#xC2A4;&#xD540; &#xC99D;&#xAC00;'],c:2}
+{q:'스윙 템포의 이상적인 백스윙:다운스윙 비율은?',a:['1:1','2:1','3:1','4:1'],c:2},
+{q:'Strokes Gained Approach가 측정하는 것은?',a:['티샷 비거리','어프로치 샷 품질','퍼팅 정확도','번커 탈출률'],c:1},
+{q:'골프에서 멘탈 게임의 핵심 요소는?',a:['비거리','프리샷 루틴','클럽 선택','스윙 스피드'],c:1},
+{q:'기온이 10&deg;C 상승하면 비거리는?',a:['감소','변화 없음','약 1.5% 증가','약 5% 증가'],c:2},
+{q:'고도 1000m에서 비거리 변화는?',a:['변화 없음','약 2% 증가','약 5% 증가','약 10% 증가'],c:1},
+{q:'Scoring Zone (100yd 이내)에서 가장 중요한 기술은?',a:['풀 스윙','디스턴스 컨트롤','드라이버 정확도','퍼팅 스피드 읽기'],c:1},
+{q:'클럽 그루브 수명은 보통 몇 라운드?',a:['50-100','100-200','200-300','300-500'],c:2},
+{q:'GIR(Green in Regulation) 평균 프로 선수의 비율은?',a:['45-55%','55-65%','65-75%','75-85%'],c:2},
+{q:'스코어 예측에서 가장 중요한 변수는?',a:['비거리','최근 라운드 트렌드','날씨 조건','코스 난이도'],c:1},
+{q:'비 오는 날 골프에서 가장 큰 영향은?',a:['비거리 감소','그립 미끄러짐','그린 스피드 감소','시야 제한'],c:2},
+{q:'압박 상황에서 가장 효과적인 대처법은?',a:['빠리 스윙하기','호흡 조절 루틴','목표를 더 높게 설정','클럽을 바꾸기'],c:1},
+{q:'Course Rating 72.0, Slope 130인 코스의 난이도는?',a:['쉽음','보통','어려움','매우 어려움'],c:2},
+{q:'장비 관리에서 그립 교체 권장 주기는?',a:['3개월','6개월','1년','2년'],c:1},
+{q:'PGA 투어 평균 퍼팅 수는?',a:['26-28','28-30','30-32','32-34'],c:1},
+{q:'스윙 템포가 너무 빠르면 발생하는 문제는?',a:['비거리 감소','슬라이스 발생','정확도/일관성 저하','백스핀 증가'],c:2}
 ];
 var quizState26={idx:0,score:0,total:0,answered:false};
 function showQuizV26(){
@@ -699,43 +699,43 @@ var pn=getPanel('quizv26');
 var idx=quizState26.idx;
 var q=QUIZ_V26[idx%QUIZ_V26.length];
 var html='<button class="v26-close" onclick="window._v26Close(\'quizv26\')">&times;</button>';
-html+='<div class="v26-title">&#x1F4DA; Golf Quiz v26 (Q'+(idx+1)+'/'+QUIZ_V26.length+')</div>';
+html+='<div class="v26-title">📚 Golf Quiz v26 (Q'+(idx+1)+'/'+QUIZ_V26.length+')</div>';
 html+='<div class="v26-card"><h3>'+q.q+'</h3>';
 for(var i=0;i<q.a.length;i++){
 html+='<button class="v26-btn" style="width:100%;margin:3px 0;text-align:left" onclick="window._v26AnswerQuiz('+i+','+q.c+')">'+String.fromCharCode(65+i)+'. '+q.a[i]+'</button>';
 }
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+quizState26.score+'</div><div class="v26-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FF6B6B">'+(quizState26.total-quizState26.score)+'</div><div class="v26-stat-label">&#xC624;&#xB2F5;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#00FF88">'+quizState26.score+'</div><div class="v26-stat-label">정답</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FF6B6B">'+(quizState26.total-quizState26.score)+'</div><div class="v26-stat-label">오답</div></div>';
 var pct=quizState26.total>0?Math.round(quizState26.score*100/quizState26.total):0;
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v26-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
-html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">'+(idx+1)+'/'+QUIZ_V26.length+'</div><div class="v26-stat-label">&#xC9C4;&#xD589;</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#FFB800">'+pct+'%</div><div class="v26-stat-label">정답률</div></div>';
+html+='<div class="v26-stat-card"><div class="v26-stat-val" style="color:#A855F7">'+(idx+1)+'/'+QUIZ_V26.length+'</div><div class="v26-stat-label">진행</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv26');
 }
 window._v26AnswerQuiz=function(sel,correct){
 if(quizState26.answered)return;quizState26.answered=true;quizState26.total++;
-if(sel===correct){quizState26.score++;playSfx('quiz_correct_v26');showToast('&#xC815;&#xB2F5;!');}
-else{playSfx('quiz_wrong_v26');showToast('&#xC624;&#xB2F5;! &#xC815;&#xB2F5;: '+String.fromCharCode(65+correct));}
+if(sel===correct){quizState26.score++;playSfx('quiz_correct_v26');showToast('정답!');}
+else{playSfx('quiz_wrong_v26');showToast('오답! 정답: '+String.fromCharCode(65+correct));}
 lsSet('quiz_v26_score',quizState26.score);lsSet('quiz_v26_total',quizState26.total);
 setTimeout(function(){quizState26.answered=false;quizState26.idx++;if(quizState26.idx>=QUIZ_V26.length)quizState26.idx=0;checkAchievements();showQuizV26();},1200);
 };
 
 // ===== ACHIEVEMENTS (12) =====
 var ACHIEVEMENTS_V26=[
-{id:'tempo_analyst',name:'Tempo Analyst',desc:'&#xD15C;&#xD3EC; 10&#xD68C; &#xCE21;&#xC815;',check:function(){return lsGet('tempo_log',[]).length>=10}},
-{id:'sg_expert',name:'SG Expert',desc:'SG 5&#xB77C;&#xC6B4;&#xB4DC; &#xAE30;&#xB85D;',check:function(){return lsGet('sg_deep_log',[]).length>=5}},
-{id:'mental_coach',name:'Mental Coach',desc:'&#xBA58;&#xD0C8; 5&#xD68C; &#xD3C9;&#xAC00;',check:function(){return lsGet('mental_log',[]).length>=5}},
-{id:'course_rater',name:'Course Rater',desc:'&#xCF54;&#xC2A4; 3&#xAC1C; &#xD3C9;&#xAC00;',check:function(){return lsGet('course_diff_log',[]).length>=3}},
-{id:'equip_manager',name:'Equipment Manager',desc:'&#xC7A5;&#xBE44; 8&#xAC1C; &#xB4F1;&#xB85D;',check:function(){return Object.keys(lsGet('equip_wear',{})).length>=8}},
-{id:'score_predictor',name:'Score Predictor',desc:'&#xC2A4;&#xCF54;&#xC5B4; 10&#xB77C;&#xC6B4;&#xB4DC; &#xAE30;&#xB85D;',check:function(){return lsGet('score_pred_log',[]).length>=10}},
-{id:'weather_watcher',name:'Weather Watcher',desc:'&#xB0A0;&#xC528; 5&#xD68C; &#xAE30;&#xB85D;',check:function(){return lsGet('weather_log',[]).length>=5}},
-{id:'dash_master',name:'Dashboard Master',desc:'&#xB300;&#xC2DC;&#xBCF4;&#xB4DC; 5&#xD68C; &#xD3C9;&#xAC00;',check:function(){return lsGet('dash_log',[]).length>=5}},
-{id:'quiz_v26_master',name:'Quiz v26 Master',desc:'v26 &#xD038;&#xC988; &#xC804;&#xBB38; &#xC815;&#xB2F5;',check:function(){return lsGet('quiz_v26_score',0)>=15}},
-{id:'quiz_v26_clear',name:'Quiz v26 Clear',desc:'v26 &#xD038;&#xC988; &#xC644;&#xC8FC;',check:function(){return lsGet('quiz_v26_total',0)>=15}},
-{id:'tempo_s_grade',name:'Tempo S Grade',desc:'&#xD15C;&#xD3EC; S&#xB4F1;&#xAE09; &#xD68D;&#xB4DD;',check:function(){var log=lsGet('tempo_log',[]);for(var i=0;i<log.length;i++){if(log[i].ratio>=2.8&&log[i].ratio<=3.2)return true;}return false}},
-{id:'v26_complete',name:'v26 Complete',desc:'v26 &#xC804;&#xCCB4; &#xAE30;&#xB2A5; &#xD0D0;&#xC0C9;',check:function(){return lsGet('v26_explored',0)>=8}}
+{id:'tempo_analyst',name:'Tempo Analyst',desc:'템포 10회 측정',check:function(){return lsGet('tempo_log',[]).length>=10}},
+{id:'sg_expert',name:'SG Expert',desc:'SG 5라운드 기록',check:function(){return lsGet('sg_deep_log',[]).length>=5}},
+{id:'mental_coach',name:'Mental Coach',desc:'멘탈 5회 평가',check:function(){return lsGet('mental_log',[]).length>=5}},
+{id:'course_rater',name:'Course Rater',desc:'코스 3개 평가',check:function(){return lsGet('course_diff_log',[]).length>=3}},
+{id:'equip_manager',name:'Equipment Manager',desc:'장비 8개 등록',check:function(){return Object.keys(lsGet('equip_wear',{})).length>=8}},
+{id:'score_predictor',name:'Score Predictor',desc:'스코어 10라운드 기록',check:function(){return lsGet('score_pred_log',[]).length>=10}},
+{id:'weather_watcher',name:'Weather Watcher',desc:'날씨 5회 기록',check:function(){return lsGet('weather_log',[]).length>=5}},
+{id:'dash_master',name:'Dashboard Master',desc:'대시보드 5회 평가',check:function(){return lsGet('dash_log',[]).length>=5}},
+{id:'quiz_v26_master',name:'Quiz v26 Master',desc:'v26 퀸즈 전문 정답',check:function(){return lsGet('quiz_v26_score',0)>=15}},
+{id:'quiz_v26_clear',name:'Quiz v26 Clear',desc:'v26 퀸즈 완주',check:function(){return lsGet('quiz_v26_total',0)>=15}},
+{id:'tempo_s_grade',name:'Tempo S Grade',desc:'템포 S등급 획득',check:function(){var log=lsGet('tempo_log',[]);for(var i=0;i<log.length;i++){if(log[i].ratio>=2.8&&log[i].ratio<=3.2)return true;}return false}},
+{id:'v26_complete',name:'v26 Complete',desc:'v26 전체 기능 탐색',check:function(){return lsGet('v26_explored',0)>=8}}
 ];
 function checkAchievements(){
 var unlocked=lsGet('achievements_v26',[]);
@@ -773,15 +773,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Tempo',fn:showTempoAnalyzer,icon:'&#x23F1;'},
-{label:'SGDeep',fn:showStrokesGained,icon:'&#x1F4C9;'},
-{label:'Mental',fn:showMentalTracker,icon:'&#x1F9E0;'},
-{label:'CourseDif',fn:showCourseDifficulty,icon:'&#x26F3;'},
-{label:'EquipWear',fn:showEquipWear,icon:'&#x1F3CC;'},
-{label:'ScorePred',fn:showScorePredictor,icon:'&#x1F52E;'},
-{label:'Weather',fn:showWeatherImpact,icon:'&#x1F326;'},
-{label:'Dashboard',fn:showRoundDashboard,icon:'&#x1F4CA;'},
-{label:'Quiz26',fn:showQuizV26,icon:'&#x1F4DA;'}
+{label:'Tempo',fn:showTempoAnalyzer,icon:'⏱'},
+{label:'SGDeep',fn:showStrokesGained,icon:'📉'},
+{label:'Mental',fn:showMentalTracker,icon:'🧠'},
+{label:'CourseDif',fn:showCourseDifficulty,icon:'⛳'},
+{label:'EquipWear',fn:showEquipWear,icon:'🏌'},
+{label:'ScorePred',fn:showScorePredictor,icon:'🔮'},
+{label:'Weather',fn:showWeatherImpact,icon:'🌦'},
+{label:'Dashboard',fn:showRoundDashboard,icon:'📊'},
+{label:'Quiz26',fn:showQuizV26,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){

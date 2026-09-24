@@ -30,16 +30,16 @@ SW:{speed:80,angle:42,spin:10000,carry:90},LW:{speed:75,angle:48,spin:10500,carr
 Putter:{speed:15,angle:3,spin:200,carry:0}};
 var selClub=lsGet('launch_club','7I');
 var html='<button class="v22-close" onclick="window._v22Close(\'launch\')">&times;</button>';
-html+='<div class="v22-title">&#x1F680; &#xC0F7; &#xB7F0;&#xCE58; &#xBAA8;&#xB2C8;&#xD130; &#xC2DC;&#xBBAC;&#xB808;&#xC774;&#xD130;</div>';
+html+='<div class="v22-title">🚀 샷 런치 모니터 시뮬레이터</div>';
 html+='<canvas id="v22-launch-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xD074;&#xB7FD; &#xC120;&#xD0DD;</h3>';
+html+='<div class="v22-card"><h3>클럽 선택</h3>';
 html+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">';
 for(var i=0;i<CLUBS.length;i++){
 html+='<button class="v22-btn v22-btn-sm'+(CLUBS[i]===selClub?' v22-btn-primary':'')+'" onclick="window._v22SelectClub(\''+CLUBS[i]+'\')">'+CLUBS[i]+'</button>';
 }
 html+='</div></div>';
 var def=DEFAULTS[selClub]||DEFAULTS['7I'];
-html+='<div class="v22-card"><h3>&#xB7F0;&#xCE58; &#xB370;&#xC774;&#xD130; ('+selClub+')</h3>';
+html+='<div class="v22-card"><h3>런치 데이터 ('+selClub+')</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 html+='<div><label class="v22-label">Ball Speed (mph)</label><input class="v22-input" type="number" id="v22-lm-speed" value="'+def.speed+'" min="10" max="200"></div>';
 html+='<div><label class="v22-label">Launch Angle (&deg;)</label><input class="v22-input" type="number" id="v22-lm-angle" value="'+def.angle+'" min="0" max="60" step="0.5"></div>';
@@ -47,19 +47,19 @@ html+='<div><label class="v22-label">Spin Rate (rpm)</label><input class="v22-in
 html+='<div><label class="v22-label">Carry (yd)</label><input class="v22-input" type="number" id="v22-lm-carry" value="'+def.carry+'" min="0" max="350"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px">';
-html+='<button class="v22-btn v22-btn-primary" onclick="window._v22SimLaunch()">&#x1F3AF; &#xC2DC;&#xBBAC;&#xB808;&#xC774;&#xC158;</button>';
-html+='<button class="v22-btn" onclick="window._v22SaveLaunch()">&#x1F4BE; &#xC800;&#xC7A5;</button>';
+html+='<button class="v22-btn v22-btn-primary" onclick="window._v22SimLaunch()">🎯 시뮬레이션</button>';
+html+='<button class="v22-btn" onclick="window._v22SaveLaunch()">💾 저장</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">&#xCE21;&#xC815;&#xD68C;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">측정회</div></div>';
 var avgCarry=0;if(data.length>0){for(var j=0;j<data.length;j++)avgCarry+=data[j].carry;avgCarry=Math.round(avgCarry/data.length);}
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgCarry+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; Carry</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgCarry+'</div><div class="v22-stat-label">평균 Carry</div></div>';
 var avgSpin=0;if(data.length>0){for(var j=0;j<data.length;j++)avgSpin+=data[j].spin;avgSpin=Math.round(avgSpin/data.length);}
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgSpin+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; Spin</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgSpin+'</div><div class="v22-stat-label">평균 Spin</div></div>';
 var bestCarry=0;for(var j=0;j<data.length;j++)if(data[j].carry>bestCarry)bestCarry=data[j].carry;
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#A855F7">'+bestCarry+'</div><div class="v22-stat-label">&#xCD5C;&#xB300; Carry</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#A855F7">'+bestCarry+'</div><div class="v22-stat-label">최대 Carry</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetLaunch()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetLaunch()">초기화</button>';}
 pn.innerHTML=html;openPanel('launch');drawLaunchCanvas(data,selClub,def);
 }
 window._v22SelectClub=function(c){lsSet('launch_club',c);showLaunchMonitor();};
@@ -153,27 +153,27 @@ data.push({club:CLUBS[i],price:DEFAULT_PRICES[i],rounds:0,shots:0,satisfaction:3
 lsSet('club_roi',data);
 }
 var html='<button class="v22-close" onclick="window._v22Close(\'roi\')">&times;</button>';
-html+='<div class="v22-title">&#x1F4B0; &#xD074;&#xB7FD; &#xAC00;&#xC131;&#xBE44; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v22-title">💰 클럽 가성비 분석기</div>';
 html+='<canvas id="v22-roi-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xD074;&#xB7FD;&#xBCC4; &#xC0AC;&#xC6A9; &#xB370;&#xC774;&#xD130;</h3>';
+html+='<div class="v22-card"><h3>클럽별 사용 데이터</h3>';
 html+='<div style="max-height:200px;overflow-y:auto">';
 for(var i=0;i<data.length;i++){
 var d=data[i];var costPerShot=d.shots>0?(d.price*1000/d.shots).toFixed(0):'--';
 html+='<div style="display:grid;grid-template-columns:60px 1fr 1fr 1fr 50px;gap:4px;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:11px">';
 html+='<span style="color:#00FF88;font-weight:bold">'+d.club+'</span>';
-html+='<input class="v22-input" type="number" value="'+d.price+'" min="0" max="9999" style="font-size:10px" onchange="window._v22UpdateROI('+i+',\'price\',this.value)" placeholder="&#xB9CC;&#xC6D0;">';
-html+='<input class="v22-input" type="number" value="'+d.shots+'" min="0" max="99999" style="font-size:10px" onchange="window._v22UpdateROI('+i+',\'shots\',this.value)" placeholder="&#xD0C0;&#xC218;">';
-html+='<span style="color:'+(parseInt(costPerShot)>1000?'#FF6B6B':'#00FF88')+'">&#x20A9;'+costPerShot+'/&#xD0C0;</span>';
+html+='<input class="v22-input" type="number" value="'+d.price+'" min="0" max="9999" style="font-size:10px" onchange="window._v22UpdateROI('+i+',\'price\',this.value)" placeholder="만원">';
+html+='<input class="v22-input" type="number" value="'+d.shots+'" min="0" max="99999" style="font-size:10px" onchange="window._v22UpdateROI('+i+',\'shots\',this.value)" placeholder="타수">';
+html+='<span style="color:'+(parseInt(costPerShot)>1000?'#FF6B6B':'#00FF88')+'">₩'+costPerShot+'/타</span>';
 html+='<span>'+'⭐'.repeat(d.satisfaction)+'</span>';
 html+='</div>';
 }
 html+='</div></div>';
 var totalInvest=0,totalShots=0;for(var i=0;i<data.length;i++){totalInvest+=data[i].price;totalShots+=data[i].shots;}
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+totalInvest+'</div><div class="v22-stat-label">&#xCD1D;&#xD22C;&#xC790;(&#xB9CC;&#xC6D0;)</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+totalShots+'</div><div class="v22-stat-label">&#xCD1D; &#xD0C0;&#xC218;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+totalInvest+'</div><div class="v22-stat-label">총투자(만원)</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+totalShots+'</div><div class="v22-stat-label">총 타수</div></div>';
 var avgCost=totalShots>0?Math.round(totalInvest*10000/totalShots):0;
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgCost+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; &#xC6D0;/&#xD0C0;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgCost+'</div><div class="v22-stat-label">평균 원/타</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('roi');drawROICanvas(data);
 }
@@ -211,26 +211,26 @@ playSfx('turnaround_open');
 var pn=getPanel('turnaround');
 var data=lsGet('turnaround_log',[]);
 var html='<button class="v22-close" onclick="window._v22Close(\'turnaround\')">&times;</button>';
-html+='<div class="v22-title">&#x1F504; &#xB77C;&#xC6B4;&#xB4DC; &#xD134;&#xC5B4;&#xB77C;&#xC6B4;&#xB4DC; &#xBD84;&#xC11D;</div>';
+html+='<div class="v22-title">🔄 라운드 턴어라운드 분석</div>';
 html+='<canvas id="v22-turn-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xC804;&#xBC18; vs &#xD6C4;&#xBC18; &#xC2A4;&#xCF54;&#xC5B4; &#xC785;&#xB825;</h3>';
+html+='<div class="v22-card"><h3>전반 vs 후반 스코어 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 html+='<div><label class="v22-label">Front 9</label><input class="v22-input" type="number" id="v22-turn-front" value="45" min="27" max="90"></div>';
 html+='<div><label class="v22-label">Back 9</label><input class="v22-input" type="number" id="v22-turn-back" value="47" min="27" max="90"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">';
-html+='<button class="v22-btn v22-btn-primary" onclick="window._v22SaveTurn()">&#xC800;&#xC7A5;</button>';
-html+='<button class="v22-btn" onclick="window._v22AnalyzeTurn()">&#xBD84;&#xC11D;</button>';
+html+='<button class="v22-btn v22-btn-primary" onclick="window._v22SaveTurn()">저장</button>';
+html+='<button class="v22-btn" onclick="window._v22AnalyzeTurn()">분석</button>';
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
 var avgFront=0,avgBack=0,improveCount=0,declineCount=0;
 if(data.length>0){for(var i=0;i<data.length;i++){avgFront+=data[i].front;avgBack+=data[i].back;if(data[i].back<data[i].front)improveCount++;else if(data[i].back>data[i].front)declineCount++;}avgFront=Math.round(avgFront/data.length*10)/10;avgBack=Math.round(avgBack/data.length*10)/10;}
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">&#xB77C;&#xC6B4;&#xB4DC;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgFront+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; Front</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgBack+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; Back</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:'+(improveCount>=declineCount?'#00FF88':'#FF6B6B')+'">'+improveCount+'/'+declineCount+'</div><div class="v22-stat-label">&#xAC1C;&#xC120;/&#xD558;&#xB77D;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">라운드</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgFront+'</div><div class="v22-stat-label">평균 Front</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgBack+'</div><div class="v22-stat-label">평균 Back</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:'+(improveCount>=declineCount?'#00FF88':'#FF6B6B')+'">'+improveCount+'/'+declineCount+'</div><div class="v22-stat-label">개선/하락</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetTurn()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetTurn()">초기화</button>';}
 pn.innerHTML=html;openPanel('turnaround');drawTurnCanvas(data);
 }
 window._v22SaveTurn=function(){
@@ -297,9 +297,9 @@ var data=lsGet('fwzone_log',[]);
 var ZONES=['Left Rough','Left Semi','Fairway Left','Center','Fairway Right','Right Semi','Right Rough'];
 var ZONE_COLORS=['#FF3366','#FF6B6B','#FFB800','#00FF88','#FFB800','#FF6B6B','#FF3366'];
 var html='<button class="v22-close" onclick="window._v22Close(\'fwzone\')">&times;</button>';
-html+='<div class="v22-title">&#x1F3CC; &#xD398;&#xC5B4;&#xC6E8;&#xC774; &#xD788;&#xD305;&#xC874; &#xC2DC;&#xAC01;&#xD654;</div>';
+html+='<div class="v22-title">🏌 페어웨이 히팅존 시각화</div>';
 html+='<canvas id="v22-fwzone-canvas" width="620" height="380" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xD2F0;&#xC0F7; &#xCC29;&#xC9C0;&#xC810; &#xAE30;&#xB85D;</h3>';
+html+='<div class="v22-card"><h3>티샷 착지점 기록</h3>';
 html+='<div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">';
 for(var i=0;i<ZONES.length;i++){
 html+='<button class="v22-btn v22-btn-sm" style="border-color:'+ZONE_COLORS[i]+';color:'+ZONE_COLORS[i]+'" onclick="window._v22AddFWZone('+i+')">'+ZONES[i]+'</button>';
@@ -309,13 +309,13 @@ var counts=new Array(7);for(var i=0;i<7;i++)counts[i]=0;
 for(var i=0;i<data.length;i++)counts[data[i].zone]++;
 var fir=data.length>0?Math.round((counts[2]+counts[3]+counts[4])/data.length*100):0;
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">&#xCD1D; &#xC0F7;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">총 샷</div></div>';
 html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+fir+'%</div><div class="v22-stat-label">FIR</div></div>';
 var leftMiss=counts[0]+counts[1],rightMiss=counts[5]+counts[6];
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FF6B6B">'+leftMiss+'</div><div class="v22-stat-label">&#xC88C; &#xBBF8;&#xC2A4;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+rightMiss+'</div><div class="v22-stat-label">&#xC6B0; &#xBBF8;&#xC2A4;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FF6B6B">'+leftMiss+'</div><div class="v22-stat-label">좌 미스</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+rightMiss+'</div><div class="v22-stat-label">우 미스</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetFWZone()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetFWZone()">초기화</button>';}
 pn.innerHTML=html;openPanel('fwzone');drawFWZoneCanvas(counts,ZONES,ZONE_COLORS,data.length);
 }
 window._v22AddFWZone=function(zone){
@@ -366,28 +366,28 @@ var pn=getPanel('lagputt');
 var data=lsGet('lagputt_log',[]);
 var TARGETS=[10,15,20,25,30,40,50,60];
 var html='<button class="v22-close" onclick="window._v22Close(\'lagputt\')">&times;</button>';
-html+='<div class="v22-title">&#x26F3; &#xD37C;&#xD305; &#xAC70;&#xB9AC; &#xCEE8;&#xD2B8;&#xB864; &#xD2B8;&#xB808;&#xC774;&#xB108;</div>';
+html+='<div class="v22-title">⛳ 퍼팅 거리 컨트롤 트레이너</div>';
 html+='<canvas id="v22-lagputt-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xB7A9; &#xD37C;&#xD305; &#xC5F0;&#xC2B5;</h3>';
-html+='<p style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:6px">&#xBAA9;&#xD45C; &#xAC70;&#xB9AC;&#xC640; &#xC2E4;&#xC81C; &#xAC70;&#xB9AC;&#xB97C; &#xC785;&#xB825;&#xD558;&#xC138;&#xC694;</p>';
+html+='<div class="v22-card"><h3>랩 퍼팅 연습</h3>';
+html+='<p style="font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:6px">목표 거리와 실제 거리를 입력하세요</p>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">';
 html+='<div><label class="v22-label">Target (ft)</label><select class="v22-input" id="v22-lag-target">';
 for(var i=0;i<TARGETS.length;i++)html+='<option value="'+TARGETS[i]+'">'+TARGETS[i]+' ft</option>';
 html+='</select></div>';
 html+='<div><label class="v22-label">Actual (ft)</label><input class="v22-input" type="number" id="v22-lag-actual" value="10" min="0" max="100" step="0.5"></div>';
 html+='</div>';
-html+='<button class="v22-btn v22-btn-primary" style="width:100%;margin-top:6px" onclick="window._v22SaveLag()">&#xAE30;&#xB85D;</button>';
+html+='<button class="v22-btn v22-btn-primary" style="width:100%;margin-top:6px" onclick="window._v22SaveLag()">기록</button>';
 html+='</div>';
 var avgError=0,bestError=999;
 if(data.length>0){for(var i=0;i<data.length;i++){var err=Math.abs(data[i].actual-data[i].target);avgError+=err;if(err<bestError)bestError=err;}avgError=Math.round(avgError/data.length*10)/10;}else{bestError=0;}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">&#xC5F0;&#xC2B5;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgError+'ft</div><div class="v22-stat-label">&#xD3C9;&#xADE0; &#xC624;&#xCC28;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+bestError+'ft</div><div class="v22-stat-label">&#xCD5C;&#xC18C; &#xC624;&#xCC28;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">연습</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgError+'ft</div><div class="v22-stat-label">평균 오차</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+bestError+'ft</div><div class="v22-stat-label">최소 오차</div></div>';
 var within3=0;for(var i=0;i<data.length;i++)if(Math.abs(data[i].actual-data[i].target)<=3)within3++;
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#A855F7">'+(data.length>0?Math.round(within3/data.length*100):0)+'%</div><div class="v22-stat-label">3ft &#xC774;&#xB0B4;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#A855F7">'+(data.length>0?Math.round(within3/data.length*100):0)+'%</div><div class="v22-stat-label">3ft 이내</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetLag()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetLag()">초기화</button>';}
 pn.innerHTML=html;openPanel('lagputt');drawLagPuttCanvas(data,TARGETS);
 }
 window._v22SaveLag=function(){
@@ -452,9 +452,9 @@ var data=lsGet('season_plan',{goals:[],milestones:[]});
 var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var CATEGORIES=[{name:'Rounds',color:'#00FF88'},{name:'Practice',color:'#FFB800'},{name:'Fitness',color:'#4ECDC4'},{name:'Handicap',color:'#A855F7'},{name:'Tournament',color:'#FF3366'},{name:'Equipment',color:'#00B4D8'}];
 var html='<button class="v22-close" onclick="window._v22Close(\'season\')">&times;</button>';
-html+='<div class="v22-title">&#x1F4C5; &#xACE8;&#xD504; &#xC2DC;&#xC98C; &#xB85C;&#xB4DC;&#xB9F5; &#xD50C;&#xB798;&#xB108;</div>';
+html+='<div class="v22-title">📅 골프 시즌 로드맵 플래너</div>';
 html+='<canvas id="v22-season-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xBAA9;&#xD45C; &#xCD94;&#xAC00;</h3>';
+html+='<div class="v22-card"><h3>목표 추가</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
 html+='<div><label class="v22-label">Month</label><select class="v22-input" id="v22-season-month">';
 for(var i=0;i<12;i++)html+='<option value="'+i+'">'+MONTHS[i]+'</option>';
@@ -462,26 +462,26 @@ html+='</select></div>';
 html+='<div><label class="v22-label">Category</label><select class="v22-input" id="v22-season-cat">';
 for(var i=0;i<CATEGORIES.length;i++)html+='<option value="'+i+'">'+CATEGORIES[i].name+'</option>';
 html+='</select></div>';
-html+='<div><label class="v22-label">Goal</label><input class="v22-input" type="text" id="v22-season-goal" placeholder="&#xBAA9;&#xD45C;" maxlength="30"></div>';
+html+='<div><label class="v22-label">Goal</label><input class="v22-input" type="text" id="v22-season-goal" placeholder="목표" maxlength="30"></div>';
 html+='</div>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">';
-html+='<button class="v22-btn v22-btn-primary" onclick="window._v22AddGoal()">&#xCD94;&#xAC00;</button>';
-html+='<button class="v22-btn" onclick="window._v22AddMilestone()">&#xB9C8;&#xC77C;&#xC2A4;&#xD1A4;</button>';
+html+='<button class="v22-btn v22-btn-primary" onclick="window._v22AddGoal()">추가</button>';
+html+='<button class="v22-btn" onclick="window._v22AddMilestone()">마일스톤</button>';
 html+='</div></div>';
 var completed=0;for(var i=0;i<data.goals.length;i++)if(data.goals[i].done)completed++;
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.goals.length+'</div><div class="v22-stat-label">&#xBAA9;&#xD45C;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+completed+'</div><div class="v22-stat-label">&#xC644;&#xB8CC;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+(data.goals.length>0?Math.round(completed/data.goals.length*100):0)+'%</div><div class="v22-stat-label">&#xB2EC;&#xC131;&#xB960;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.goals.length+'</div><div class="v22-stat-label">목표</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+completed+'</div><div class="v22-stat-label">완료</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+(data.goals.length>0?Math.round(completed/data.goals.length*100):0)+'%</div><div class="v22-stat-label">달성률</div></div>';
 html+='</div>';
 if(data.goals.length>0){
-html+='<div class="v22-card"><h3>&#xBAA9;&#xD45C; &#xBAA9;&#xB85D;</h3><div style="max-height:150px;overflow-y:auto">';
+html+='<div class="v22-card"><h3>목표 목록</h3><div style="max-height:150px;overflow-y:auto">';
 for(var i=0;i<data.goals.length;i++){
 var g=data.goals[i];
 html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:11px"><span style="color:'+CATEGORIES[g.cat].color+'">['+MONTHS[g.month]+'] '+g.text+'</span><button class="v22-btn v22-btn-sm" onclick="window._v22ToggleGoal('+i+')">'+(g.done?'✅':'⬜')+'</button></div>';
 }
 html+='</div></div>';
-html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetSeason()">&#xCD08;&#xAE30;&#xD654;</button>';
+html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetSeason()">초기화</button>';
 }
 pn.innerHTML=html;openPanel('season');drawSeasonCanvas(data,MONTHS,CATEGORIES);
 }
@@ -559,9 +559,9 @@ var pn=getPanel('cluster');
 var data=lsGet('cluster_log',[]);
 var CLUBS=['Driver','3W','5I','7I','9I','PW','SW'];
 var html='<button class="v22-close" onclick="window._v22Close(\'cluster\')">&times;</button>';
-html+='<div class="v22-title">&#x1F4CA; &#xC0F7; &#xD074;&#xB7EC;&#xC2A4;&#xD130; &#xBD84;&#xC11D;&#xAE30;</div>';
+html+='<div class="v22-title">📊 샷 클러스터 분석기</div>';
 html+='<canvas id="v22-cluster-canvas" width="600" height="380" style="width:100%;max-width:600px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xC0F7; &#xB370;&#xC774;&#xD130; &#xC785;&#xB825;</h3>';
+html+='<div class="v22-card"><h3>샷 데이터 입력</h3>';
 html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">';
 html+='<div><label class="v22-label">Club</label><select class="v22-input" id="v22-cl-club">';
 for(var i=0;i<CLUBS.length;i++)html+='<option>'+CLUBS[i]+'</option>';
@@ -569,18 +569,18 @@ html+='</select></div>';
 html+='<div><label class="v22-label">Distance (yd)</label><input class="v22-input" type="number" id="v22-cl-dist" value="150" min="10" max="350"></div>';
 html+='<div><label class="v22-label">Offline (yd)</label><input class="v22-input" type="number" id="v22-cl-off" value="0" min="-50" max="50"></div>';
 html+='</div>';
-html+='<button class="v22-btn v22-btn-primary" style="width:100%;margin-top:6px" onclick="window._v22AddCluster()">&#xAE30;&#xB85D;</button>';
+html+='<button class="v22-btn v22-btn-primary" style="width:100%;margin-top:6px" onclick="window._v22AddCluster()">기록</button>';
 html+='</div>';
 var totalShots=data.length;var avgDist=0,avgOff=0;
 if(totalShots>0){for(var i=0;i<data.length;i++){avgDist+=data[i].dist;avgOff+=Math.abs(data[i].off);}avgDist=Math.round(avgDist/totalShots);avgOff=Math.round(avgOff/totalShots*10)/10;}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v22-stat-label">&#xCD1D; &#xC0F7;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgDist+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; &#xAC70;&#xB9AC;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgOff+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; &#xD3B8;&#xCC28;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+totalShots+'</div><div class="v22-stat-label">총 샷</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgDist+'</div><div class="v22-stat-label">평균 거리</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgOff+'</div><div class="v22-stat-label">평균 편차</div></div>';
 var stdDev=0;if(totalShots>1){var mean=avgDist;for(var i=0;i<data.length;i++)stdDev+=Math.pow(data[i].dist-mean,2);stdDev=Math.round(Math.sqrt(stdDev/(totalShots-1))*10)/10;}
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#A855F7">'+stdDev+'</div><div class="v22-stat-label">&#xD45C;&#xC900;&#xD3B8;&#xCC28;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#A855F7">'+stdDev+'</div><div class="v22-stat-label">표준편차</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetCluster()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetCluster()">초기화</button>';}
 pn.innerHTML=html;openPanel('cluster');drawClusterCanvas(data);
 }
 window._v22AddCluster=function(){
@@ -640,26 +640,26 @@ var SAMPLE_COURSES=[
 ];
 if(data.length===0){data=SAMPLE_COURSES;lsSet('course_ratings',data);}
 var html='<button class="v22-close" onclick="window._v22Close(\'rating\')">&times;</button>';
-html+='<div class="v22-title">&#x1F3CC; &#xCF54;&#xC2A4; &#xB808;&#xC774;&#xD305; &#xBE44;&#xAD50; &#xCC28;&#xD2B8;</div>';
+html+='<div class="v22-title">🏌 코스 레이팅 비교 차트</div>';
 html+='<canvas id="v22-rating-canvas" width="620" height="400" style="width:100%;max-width:620px;height:auto;display:block;margin:8px auto;border-radius:12px"></canvas>';
-html+='<div class="v22-card"><h3>&#xCF54;&#xC2A4; &#xCD94;&#xAC00;</h3>';
+html+='<div class="v22-card"><h3>코스 추가</h3>';
 html+='<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:6px">';
-html+='<div><label class="v22-label">Course Name</label><input class="v22-input" type="text" id="v22-rt-name" placeholder="&#xCF54;&#xC2A4;&#xBA85;" maxlength="20"></div>';
+html+='<div><label class="v22-label">Course Name</label><input class="v22-input" type="text" id="v22-rt-name" placeholder="코스명" maxlength="20"></div>';
 html+='<div><label class="v22-label">Rating</label><input class="v22-input" type="number" id="v22-rt-rating" value="72.0" min="60" max="80" step="0.1"></div>';
 html+='<div><label class="v22-label">Slope</label><input class="v22-input" type="number" id="v22-rt-slope" value="130" min="55" max="155"></div>';
 html+='</div>';
-html+='<button class="v22-btn v22-btn-primary" style="width:100%;margin-top:6px" onclick="window._v22AddCourse()">&#xCD94;&#xAC00;</button>';
+html+='<button class="v22-btn v22-btn-primary" style="width:100%;margin-top:6px" onclick="window._v22AddCourse()">추가</button>';
 html+='</div>';
 var avgRating=0,avgSlope=0,hardest='',easiest='',maxSlope=0,minSlope=999;
 for(var i=0;i<data.length;i++){avgRating+=data[i].rating;avgSlope+=data[i].slope;if(data[i].slope>maxSlope){maxSlope=data[i].slope;hardest=data[i].name;}if(data[i].slope<minSlope){minSlope=data[i].slope;easiest=data[i].name;}}
 if(data.length>0){avgRating=Math.round(avgRating/data.length*10)/10;avgSlope=Math.round(avgSlope/data.length);}
 html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">&#xCF54;&#xC2A4;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgRating+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; Rating</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgSlope+'</div><div class="v22-stat-label">&#xD3C9;&#xADE0; Slope</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FF3366;font-size:12px">'+hardest.substring(0,6)+'</div><div class="v22-stat-label">&#xCD5C;&#xB09C;&#xCF54;&#xC2A4;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+data.length+'</div><div class="v22-stat-label">코스</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+avgRating+'</div><div class="v22-stat-label">평균 Rating</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#4ECDC4">'+avgSlope+'</div><div class="v22-stat-label">평균 Slope</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FF3366;font-size:12px">'+hardest.substring(0,6)+'</div><div class="v22-stat-label">최난코스</div></div>';
 html+='</div>';
-if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'&#xCD08;&#xAE30;&#xD654;?\'))window._v22ResetRating()">&#xCD08;&#xAE30;&#xD654;</button>';}
+if(data.length>0){html+='<button class="v22-btn" style="width:100%;margin-top:6px;border-color:rgba(255,107,107,.3);color:#ff6b6b" onclick="if(confirm(\'초기화?\'))window._v22ResetRating()">초기화</button>';}
 pn.innerHTML=html;openPanel('rating');drawRatingCanvas(data);
 }
 window._v22AddCourse=function(){
@@ -732,7 +732,7 @@ var qIdx=lsGet('quiz_v22_idx',0);var score=lsGet('quiz_v22_score',0);var total=l
 if(qIdx>=QUIZ_V22.length)qIdx=0;
 var q=QUIZ_V22[qIdx];
 var html='<button class="v22-close" onclick="window._v22Close(\'quizv22\')">&times;</button>';
-html+='<div class="v22-title">&#x1F4DA; Golf Quiz v22 ('+(qIdx+1)+'/'+QUIZ_V22.length+')</div>';
+html+='<div class="v22-title">📚 Golf Quiz v22 ('+(qIdx+1)+'/'+QUIZ_V22.length+')</div>';
 html+='<div class="v22-card"><h3>'+q.q+'</h3>';
 html+='<div style="display:grid;gap:6px;margin-top:8px">';
 for(var a=0;a<q.a.length;a++){
@@ -740,9 +740,9 @@ html+='<button class="v22-btn" style="width:100%;text-align:left;padding:10px" o
 }
 html+='</div></div>';
 html+='<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0">';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+score+'</div><div class="v22-stat-label">&#xC815;&#xB2F5;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FF6B6B">'+total+'</div><div class="v22-stat-label">&#xCD1D; &#xD480;&#xC774;</div></div>';
-html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+(total>0?Math.round(score/total*100):0)+'%</div><div class="v22-stat-label">&#xC815;&#xB2F5;&#xB960;</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#00FF88">'+score+'</div><div class="v22-stat-label">정답</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FF6B6B">'+total+'</div><div class="v22-stat-label">총 풀이</div></div>';
+html+='<div class="v22-stat-card"><div class="v22-stat-val" style="color:#FFB800">'+(total>0?Math.round(score/total*100):0)+'%</div><div class="v22-stat-label">정답률</div></div>';
 html+='</div>';
 pn.innerHTML=html;openPanel('quizv22');
 }
@@ -807,15 +807,15 @@ if(s.position==='fixed'&&(s.bottom==='0px'||s.bottom==='0')&&parseInt(s.zIndex)>
 }
 if(!nav)return;
 var btns=[
-{label:'Launch',fn:showLaunchMonitor,icon:'&#x1F680;'},
-{label:'ROI',fn:showClubROI,icon:'&#x1F4B0;'},
-{label:'Turn',fn:showTurnaround,icon:'&#x1F504;'},
-{label:'FW Zone',fn:showFairwayZone,icon:'&#x1F3CC;'},
-{label:'Lag',fn:showLagPutt,icon:'&#x26F3;'},
-{label:'Season',fn:showSeasonRoadmap,icon:'&#x1F4C5;'},
-{label:'Cluster',fn:showShotCluster,icon:'&#x1F4CA;'},
-{label:'Course',fn:showCourseRating,icon:'&#x1F3CC;'},
-{label:'Quiz22',fn:showQuizV22,icon:'&#x1F4DA;'}
+{label:'Launch',fn:showLaunchMonitor,icon:'🚀'},
+{label:'ROI',fn:showClubROI,icon:'💰'},
+{label:'Turn',fn:showTurnaround,icon:'🔄'},
+{label:'FW Zone',fn:showFairwayZone,icon:'🏌'},
+{label:'Lag',fn:showLagPutt,icon:'⛳'},
+{label:'Season',fn:showSeasonRoadmap,icon:'📅'},
+{label:'Cluster',fn:showShotCluster,icon:'📊'},
+{label:'Course',fn:showCourseRating,icon:'🏌'},
+{label:'Quiz22',fn:showQuizV22,icon:'📚'}
 ];
 for(var i=0;i<btns.length;i++){
 (function(b){
