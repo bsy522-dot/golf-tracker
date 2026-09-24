@@ -4137,6 +4137,35 @@ if ("serviceWorker" in navigator) {
   try { SPLIT = new RegExp('^([^\\p{L}\\p{N}]*)([\\s\\S]*)$', 'u'); } catch (e) { SPLIT = /^([^A-Za-z0-9ㄱ-힣]*)([\s\S]*)$/; }
   var each = function(list, fn){ Array.prototype.forEach.call(list, fn); };
   var dec = document.createElement('textarea');
+  /* v20~v29 바닥줄 버튼은 영어 줄임말(SGDeep 등)뿐 → 서랍에서는 각 버전 기록(커밋 메시지)의 한국어 기능 이름으로.
+     같은 줄임말이 두 번 나오는 것(Tempo·Mental)은 나오는 순서대로. 목록에 없으면 원래 이름 그대로. */
+  var KO = {Shape:'샷 모양 경향', Gap:'클럽 갭 시각화', Compare:'라운드 비교', Plan:'스마트 연습 플랜', GIR:'GIR 근접도 분석',
+    Wind:'바람 물리 계산', Par:'파별 성적 분석', Mental:['멘탈 게임 기록', '멘탈 압력 트래커'],
+    Rhythm:'스윙 리듬 분석', 'Club AI':'클럽 결정 트리', Heatmap:'스코어카드 히트맵', Break:'퍼팅 브레이크', Scenario:'코스 공략 시나리오',
+    Pace:'라운드 페이스 타이머', Roadmap:'핸디캡 목표 로드맵', Grip:'그립 압력 가이드',
+    Launch:'발사 모니터 시뮬', ROI:'클럽 ROI 분석', Turn:'라운드 반전 분석', 'FW Zone':'페어웨이 적중 구역', Lag:'래그 퍼트 거리',
+    Season:'시즌 로드맵', Cluster:'샷 클러스터 분석', Course:'코스 레이팅 비교',
+    Tempo:['스윙 템포 분석', '샷 템포 분석'], CI:'클럽 거리 신뢰구간', SQI:'샷 품질 지수', Slope:'그린 경사 읽기', Tourney:'토너먼트 시뮬',
+    DriveZn:'드라이빙 존 히트맵', PractEff:'연습 효율 분석', Fitness:'피트니스 주기화',
+    Spin:'스핀율 추정', Fitting:'클럽 피팅 프로필', Zone:'스코어링 존 분석', Recovery:'리커버리 분석', Consist:'샷 일관성 매트릭스',
+    'IQ Trend':'GolfIQ 시즌 트렌드', Proximity:'GIR 근접도 맵', PerfRadar:'종합 퍼포먼스 레이더',
+    Trajectory:'샷 궤적 시뮬', WindMtx:'바람 영향 매트릭스', ClubLife:'클럽 수명 트래커', Strategy:'코스 전략 미니맵',
+    Nutrition:'라운드 영양 관리', SwingPlane:'스윙 평면 분석', PeerComp:'또래 그룹 비교', RoundIQ:'종합 라운드 인텔리전스',
+    SGDeep:'SG 딥다이브', CourseDif:'코스 난이도 평가', EquipWear:'장비 마모 대시보드', ScorePred:'스코어 예측 엔진',
+    Weather:'날씨 영향 분석', Dashboard:'종합 라운드 대시보드',
+    DistNorm:'클럽 거리 분포', HoleSim:'홀 공략 시뮬', PuttZone:'퍼팅 존 히트맵', Energy:'라운드 에너지 관리', Caddie:'캐디 조언 트리',
+    HCapTrend:'핸디캡 추세 예측', ShotPred:'샷 결과 예측', CourseIQ:'코스 IQ 대시보드',
+    ShotGrp:'샷 그루핑 밀도', Pacing:'라운드 페이싱 전략', PracROI:'연습 세션 ROI', Elev:'고도 영향 분석', SGTrend:'SG 트렌드 분석',
+    GrnRead:'그린 컨투어 읽기', ClubMix:'클럽 조합 시뮬', StratIdx:'코스 전략 지수',
+    Ellipse:'샷 타원 피팅', LieImp:'라이 임팩트 분석', HeatIdx:'코스 히트 인덱스', FWvsHY:'하이브리드 vs 롱아이언',
+    MomSwg:'모멘텀 분석', DrillEf:'드릴 트래커', WindAdj:'바람 보정 계산기', RndAnly:'분석 대시보드'};
+  var koSeen = {};
+  function ko(label){
+    var q = /^Quiz(\d+)$/.exec(label); if (q) return '퀴즈 ' + q[1];
+    var v = KO.hasOwnProperty(label) ? KO[label] : null; if (!v) return label;
+    if (typeof v === 'string') return v;
+    var i = koSeen[label] || 0; koSeen[label] = i + 1; return v[Math.min(i, v.length - 1)];
+  }
   var btn, sheet, body, find;
 
   function clean(s){
@@ -4151,7 +4180,7 @@ if ("serviceWorker" in navigator) {
     else { var m = (b.textContent || '').trim().match(SPLIT); icon = m ? m[1].trim() : ''; label = m ? clean(m[2]) : ''; }
     if (title && title.length > label.length) label = title; /* 기둥 버튼은 그림뿐 → 풍선 도움말이 이름 */
     if (!label) return null;
-    return {icon: icon || '•', label: label};
+    return {icon: icon || '•', label: ko(label)};
   }
   function collect(){
     var seen = {}, out = [];
@@ -4161,8 +4190,9 @@ if ("serviceWorker" in navigator) {
         if (c.style.display === 'none') return;
         each(c.querySelectorAll('button'), function(b){
           if (b.style.display === 'none') return;
-          var k = b.getAttribute('data-fn') || (b.getAttribute('onclick') || '') || b.textContent;
-          if (seen[k]) return; seen[k] = 1; items.push(b);
+          var k = b.getAttribute('data-fn');
+          if (k) { if (seen[k]) return; seen[k] = 1; } /* 같은 기능(data-fn)은 한 번만 — 이름표 없는 버튼은 모두 */
+          items.push(b);
         });
       });
       out.push({name:g.name, items:items});
@@ -4184,7 +4214,7 @@ if ("serviceWorker" in navigator) {
     if (empty) empty.style.display = shown ? 'none' : '';
   }
   function render(){
-    body.innerHTML = '';
+    body.innerHTML = ''; koSeen = {};
     collect().forEach(function(g){
       var grp = document.createElement('div'); grp.className = 'gtm-group';
       var sec = document.createElement('div'); sec.className = 'gtm-sec';
